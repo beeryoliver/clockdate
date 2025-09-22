@@ -1,0 +1,512 @@
+\documentclass{beery}
+
+
+\ExplSyntaxOn
+% \debug_on:n { all }
+\usepackage[overwrite-date]{clockdate}
+\clockdatesetup
+  {
+    date / star =
+      {
+          days-final-separator   = { ,~or~ }
+        , days-pair-separator    = {  ~or~ }
+        , months-final-separator = { ,~or~ }
+        , months-pair-separator  = {  ~or~ }
+      }
+  }
+\ExplSyntaxOff
+
+
+\begin{document}
+
+
+\section*{\stepfontsize{1}The \pkg{clockdate} package}
+
+Provides \cs{clock} and \cs{calendardate}.
+
+Oliver Beery
+
+Version 0.0.0\quad\date{2025-9-22}
+
+
+\section{Introduction}
+\label{sec:introduction}
+
+\subsection{About}
+
+This package provides \cs{clock} and \cs{calendardate}.
+\cs{clock} prints the time of day.
+\cs{calendardate} prints the calendar date.
+
+\subsection{Loading the package}
+\label{subsec:loading}
+
+\listheading{Requirements:}
+\begin{itemize}
+  \item \LaTeXe{} version 2023-11-01 or newer
+  \item \pkg{l3kernel} version 2023-11-01 or newer
+\end{itemize}
+
+\pkg{clockdate} does not load or require any other packages.
+
+\subsection{Syntax}
+\label{subsec:syntax}
+
+This documentation uses the syntax \meta{int expr}.
+This syntax has the same meaning as the argument to \cs{inteval}, which is documented in \pkg{usrguide}.
+
+
+\section{Package options}
+\label{sec:packageoptions}
+
+This section documents the package options provided by the \pkg{clockdate} package.
+
+\begin{variable}{overwrite-date}
+  \begin{syntax}
+    \key{overwrite-date}
+  \end{syntax}
+  Declares a new document command \cs{date} that is equivalent to \cs{calendardate}.
+  This new definition of \cs{date} overwrites its previous definition.
+  By default, \cs{date} sets the document\rq s date which is used in \cs{maketitle}.
+  Use this package option only if your document does not rely on the old definition of \cs{date}.
+\end{variable}
+
+
+\section{Commands}
+\label{sec:commands}
+
+% This package defines some commands that take an \meta{int expr}.
+% This syntax has the same meaning as the argument to \cs{inteval}, which is documented in \pkg{usrguide}.
+
+\begin{function}{\clockdatesetup}
+  \begin{syntax}
+    \cs{clockdatesetup} \sarg{} \marg{key-value list}
+  \end{syntax}
+  Sets and processes the \pkg{clockdate} package keys (\S\ref{sec:keys}) in \meta{key-value list}.
+  Adding the optional star first resets the \pkg{clockdate} package keys to their initial values.
+  Can be used mid-document.
+  The scope of the effect is local to the current group.
+\end{function}
+
+\begin{function}{\clock}
+  \begin{syntax}
+    \cs{clock} \sarg{} \oarg{key-value list} \marg{token list}
+  \end{syntax}
+  Prints the time of day or a time of day range.
+  \meta{token list} must take either of the following forms:
+  \begin{itemize}
+    \item \meta{clock}
+    \item \meta{clock_1}|--|\meta{clock_2}
+  \end{itemize}
+
+  \meta{clock} must take any of the following forms:
+  \begin{itemize}
+    \item \meta{hour}|:|\meta{minute}|:|\meta{second}
+    \item \meta{hour}|:|\meta{minute}
+    \item \meta{hour}
+  \end{itemize}
+
+  \meta{hour}, \meta{minute}, and \meta{second} are evaluated as an \meta{int expr}.
+  \meta{hour} must evaluate to an integer from \num{0} to \num{24}.
+  \meta{minute} and \meta{second} must evaluate to an integer from \num{0} to \num{59}.
+
+  If the optional argument is used, \meta{key-value list} sets the keys in path \key{clock/} for only that particular usage of \cs{clock}.
+  For details on adding the optional star, see the key \key{clock/star} (\S\ref{subsec:clock}).
+\end{function}
+
+\begin{function}{\calendardate}
+  \begin{syntax}
+    \cs{calendardate} \sarg{} \oarg{key-value list} \marg{token list}
+  \end{syntax}
+  \listheading
+    {
+      Prints the calendar date.
+      \meta{token list} must take any of the following forms:
+    }
+  \begin{itemize}
+    \item \meta{year}|-|\meta{month}|-|\meta{day(s)}
+    \item \meta{month}|-|\meta{day(s)}
+    \item \meta{year}|-|\meta{month(s)}
+  \end{itemize}
+
+  \meta{year} and \meta{month} are evaluated as an \meta{int expr}.
+  \meta{year} must evaluate to an integer from \num{1000} to \num{9999}.
+  \meta{month} must evaluate to an integer from \num{1} to \num{12}.
+
+  \listheading{\meta{day(s)} must take any of the following forms:}
+  \begin{itemize}
+    \item a single day \meta{day}
+    \item a day range \meta{day_1}|--|\meta{day_2}
+    \item a comma-separated list of items where each item must be either a single day \meta{day} or a day range \meta{day_1}|--|\meta{day_2}
+  \end{itemize}
+  Each \meta{day} is evaluated as an \meta{int expr} and must evaluate to a valid calendar date.
+  The calendar date \calendardate{2-29} is always valid if \meta{year} is omitted.
+
+  \listheading{\meta{month(s)} must take any of the following forms:}
+  \begin{itemize}
+    \item a single month \meta{month}
+    \item a month range \meta{month_1}|--|\meta{month_2}
+    \item a comma-separated list of items where each item must be either a single month \meta{month} or a month range \meta{month_1}|--|\meta{month_2}
+  \end{itemize}
+
+  If the optional argument is used, \meta{key-value list} sets the keys in path \key{date/} for only that particular usage of \cs{calendardate}.
+  For details on adding the optional star, see the key \key{date/star} (\S\ref{subsec:date}).
+\end{function}
+
+
+\section{Keys}
+\label{sec:keys}
+
+This section documents the keys provided by the \pkg{clockdate} package.
+Set the package keys using \cs{clockdatesetup}\marg{key-value list} (\S\ref{sec:commands}).
+
+
+\subsection{\cs{clock}}
+\label{subsec:clock}
+
+This subsection documents the keys that modify the behavior of \cs{clock}.
+
+\begin{variable}{clock}
+  \begin{syntax}
+    \key{clock=\meta{key-value list}}
+  \end{syntax}
+  Meta key that sets the keys in \meta{key-value list} in path \key{clock/}.
+\end{variable}
+
+\begin{variable}{clock/star}
+  \begin{syntax}
+    \key{clock/star=\meta{key-value list}}
+  \end{syntax}
+  When adding the optional star in \cs{clock}, the keys in \meta{key-value list} in path \key{clock/} will be set for only that particular usage of \cs{clock}.
+  This key is initially not set.
+\end{variable}
+
+\begin{variable}{clock/hour}
+  \begin{syntax}
+    \key{clock/hour=\choices{12,24}}
+  \end{syntax}
+  Choice key that sets whether to print the hour in 12-hour or 24-hour format.
+  In 24-hour format, the am/pm is always omitted.
+  The initial value is \key{=12}.
+\end{variable}
+
+\begin{variable}{clock/hour-leading-zero}
+  \begin{syntax}
+    \key{clock/hour-leading-zero=\choices{true,false}}
+  \end{syntax}
+  Boolean key that sets whether to print the hour with a leading zero.
+  The initial value is \key{=false}.
+\end{variable}
+
+\begin{variable}{clock/ampm}
+  \begin{syntax}
+    \key{clock/ampm=\meta{choice}}
+  \end{syntax}
+  \listheading
+    {
+      Choice key that sets the am/pm format.
+      \meta{choice} must match any of the following:
+    }
+  \begin{itemize}
+    \item \key{=lowercase-with-periods} (a.m./p.m.)
+    \item \key{=lowercase} (am/pm)
+    \item \key{=uppercase-with-periods} (A.M./P.M.)
+    \item \key{=uppercase} (AM/PM)
+    \item \key{=small-caps-with-periods} (\textsc{a}.\textsc{m}./\textsc{p}.\textsc{m}.)
+    \item \key{=small-caps} (\textsc{am}/\textsc{pm})
+    \item \key{=none}
+  \end{itemize}
+  The initial value is \key{=lowercase-with-periods}.
+
+  If the next token after \cs{clock} is a period, the am/pm will not print an extra period.
+  When the am/pm prints the period, it is followed by \cs{@} because the sentence does not end here.
+  % \begin{itemize}
+  %   \item
+  %   With option \key{=lowercase-with-periods}, the am/pm is displayed as a.m.} and p.m. where the period after the \enquote{m is printed only if the next token is not a period.
+  %   This prevents two consecutive periods from being mistakenly printed.
+  %   When printing the period after the m}, the period is followed by \cs{@.
+  %   With \cs{nonfrenchspacing}, this corrects the interword spacing because this period would not mark the end of a sentence.
+  %   \item
+  %   With option \key{=lowercase}, the am/pm is displayed as am} or \enquote{pm.
+  %   \item
+  %   With option \key{=uppercase}, the am/pm is displayed as AM} or PM followed by \cs{@.
+  %   With \cs{nonfrenchspacing}, the inserted \cs{@} corrects the interword spacing after the capital letters.
+  %   \item
+  %   Option \key{=none} omits the am/pm.
+  % \end{itemize}
+\end{variable}
+
+\begin{variable}{clock/ampm-omit-first}
+  \begin{syntax}
+    \key{clock/ampm-omit-first=\choices{true,false}}
+  \end{syntax}
+  Boolean key that sets whether \meta{clock_1} prints the am/pm in a time of day range if \meta{clock_1} and \meta{clock_2} would either both display am or both display pm.
+  The initial value is \key{=true}.
+\end{variable}
+
+\begin{variable}
+  {
+    clock/hour-minute-separator,
+    clock/minute-second-separator,
+    clock/clock-separator
+  }
+  \begin{syntax}
+    \key{clock/hour-minute-separator=\meta{token list}}
+    \key{clock/minute-second-separator=\meta{token list}}
+    \key{clock/clock-separator=\meta{token list}}
+  \end{syntax}
+  The key \key{clock/hour-minute-separator} sets the separator between \meta{hour} and \meta{minute} to \meta{token list}.
+  The initial value is \key{=:}.
+  The key \key{clock/minute-second-separator} sets the separator between \meta{minute} and \meta{second} to \meta{token list}.
+  The initial value is \key{=:}.
+  The meta key \key{clock/clock-separator} sets the aforementioned keys to \meta{token list}.
+\end{variable}
+
+% \begin{variable}{clock/ampm-separator}
+%   \begin{syntax}
+%     clock/ampm-separator=\meta{token list}
+%   \end{syntax}
+%   Sets the separator before the am/pm.
+%   % With option \key{=space}, the inserted space is non-breaking if only a single-digit hour is printed.
+%   % When printing a time of day range, the space before the second am/pm is non-breaking if the second clock contains only a single digit hour and the first am/pm is printed.
+% \end{variable}
+
+% \begin{variable}{clock/ampm-separator}
+%   \begin{syntax}
+%     clock/ampm-separator=\choices{space,thinspace,none}
+%   \end{syntax}
+%   Choice key that sets the space before the am/pm.
+%   % With option \key{=space}, the inserted space is non-breaking if only a single-digit hour is printed.
+%   % When printing a time of day range, the space before the second am/pm is non-breaking if the second clock contains only a single digit hour and the first am/pm is printed.
+% \end{variable}
+
+\begin{variable}{clock/ampm-separator}
+  \begin{syntax}
+    \key{clock/ampm-separator=\meta{token list}}
+  \end{syntax}
+  Sets the separator before the am/pm to \meta{token list}.
+  The initial value is \key{=\textvisiblespace}.
+\end{variable}
+
+% \begin{variable}{clock/range-separator}
+%   \begin{syntax}
+%     clock/range-separator=\choices{to,endash}
+%   \end{syntax}
+%   Choice key that sets the separator between \meta{clock_1} and \meta{clock_2} in a time of day range.
+%   Option \key{=to} sets the separator to\key{=,\textvisiblespace to\textvisiblespace}}.
+%   Option \key{=endash} sets the separator to an en dash.
+
+%   A line break is always disallowed before the en dash.
+%   A line break is disallowed after the en dash in either case:
+%   \begin{itemize}
+%     \item
+%     \meta{clock_1} prints only a single-digit hour and omits the am/pm.
+%     \item
+%     \meta{clock_2} prints only the hour and either omits the am/pm or the value of the key \key{clock/ampm-separator} is \key{=space}.
+%   \end{itemize}
+% \end{variable}
+\begin{variable}{clock/range-separator}
+  \begin{syntax}
+    \key{clock/range-separator=\meta{token list}}
+  \end{syntax}
+  Sets the separator between \meta{clock_1} and \meta{clock_2} in a time of day range to \meta{token list}.
+  The initial value is \key{=\textvisiblespace to\textvisiblespace}.
+\end{variable}
+
+
+\subsection{\cs{calendardate}}
+\label{subsec:date}
+
+This subsection documents the keys that modify the behavior of \cs{calendardate}.
+
+\begin{variable}{date}
+  \begin{syntax}
+    \key{date=\meta{key-value list}}
+  \end{syntax}
+  Meta key that sets the keys in \meta{key-value list} in path \key{date/}.
+\end{variable}
+
+\begin{variable}{date/star}
+  \begin{syntax}
+    \key{date/star=\meta{key-value list}}
+  \end{syntax}
+  When adding the optional star in \cs{calendardate}, the keys in \meta{key-value list} in path \key{date/} will be set for only that particular usage of \cs{calendardate}.
+  This key is initially not set.
+\end{variable}
+
+\begin{variable}{date/order}
+  \begin{syntax}
+    \key{date/order=\choices{month-day-year,day-month-year,year-month-day}}
+  \end{syntax}
+  Choice key that sets the order in which the year, month, and day are printed.
+  The initial value is \key{=month-day-year}.
+\end{variable}
+
+\begin{variable}
+    {
+      date/month/year-month-day,
+      date/month/year-month,
+      date/month/month-day,
+      date/month
+    }
+  \begin{syntax}
+    \key{date/month/year-month-day=\meta{choice}}
+    \key{date/month/year-month=\meta{choice}}
+    \key{date/month/month-day=\meta{choice}}
+    \key{date/month=\meta{choice}}
+  \end{syntax}
+  \listheading{\meta{choice} must match any of the following:}
+  \begin{itemize}
+    \item \key{=long}
+    \item \key{=abbreviated} (Jan., Feb., Aug., Sept., Oct., Nov., Dec.)
+    \item \key{=three-letter}
+    \item \key{=number}
+    \item \key{=zero-padded-number}
+  \end{itemize}
+  The choice key \key{date/month/year-month-day} sets the month format when printing the year, month, and day.
+  The initial value is \key{=abbreviated}.
+  The choice key \key{date/month/year-month} sets the month format when printing only the year and month.
+  The initial value is \key{=long}.
+  The choice key \key{date/month/month-day} sets the month format when printing only the month and day.
+  The initial value is \key{=abbreviated}.
+  The meta key \key{date/month} sets the aforementioned keys to \meta{choice}.
+
+  If the next token after \cs{calendardate} is a period, the abbreviated month will not print an extra period.
+  When the abbreviated month prints the period, it is followed by \cs{@} because the sentence does not end here.
+\end{variable}
+
+%   % With option \key{=long}, the name of each month is fully spelled out.
+%   % With option \key{=abbreviated}, some months are abbreviated: Jan., Feb., Aug., Sept., Oct., Nov., Dec.
+%   % The period in each abbreviation is printed only if the next token is not a period.
+%   % This prevents two consecutive periods from being mistakenly printed.
+%   % When printing the period, the period is followed by \cs{@}.
+%   % With \cs{nonfrenchspacing}, this corrects the interword spacing because this period would not mark the end of a sentence.
+%   % With option \key{=three-letter}, each month is shortened to its first three letters.
+
+\begin{variable}
+    {
+      date/year-month-separator,
+      date/month-day-separator,
+      date/year-day-separator,
+      date/date-separator
+    }
+  \begin{syntax}
+    \key{date/year-month-separator=\meta{token list}}
+    \key{date/month-day-separator=\meta{token list}}
+    \key{date/year-day-separator=\meta{token list}}
+    \key{date/date-separator=\meta{token list}}
+  \end{syntax}
+  The key \key{date/year-month-separator} sets the separator between \meta{year} and \meta{month} to \meta{token list}.
+  The initial value is \key{=\textvisiblespace}.
+  The key \key{date/month-day-separator} sets the separator between \meta{month} and \meta{day} to \meta{token list}.
+  The initial value is \key{=\textvisiblespace}.
+  The key \key{date/year-day-separator} sets the separator between \meta{year} and \meta{day} to \meta{token list}.
+  The initial value is \key{=,\textvisiblespace}.
+  The meta key \key{date/date-separator} sets the aforementioned keys to \meta{token list}.
+\end{variable}
+
+\begin{variable}
+  {
+    date/days-separator,
+    date/days-pair-separator,
+    date/days-final-separator
+  }
+  \begin{syntax}
+    \key{date/days-separator=\meta{token list}}
+    \key{date/days-pair-separator=\meta{token list}}
+    \key{date/days-final-separator=\meta{token list}}
+  \end{syntax}
+  The key \key{date/days-separator} sets the separator between each item in \meta{day(s)} to \meta{token list}.
+  The initial value is \key{=,\textvisiblespace}.
+  The key \key{date/days-pair-separator} sets the separator between each item in \meta{day(s)} to \meta{token list} when \meta{day(s)} contains exactly two items.
+  The initial value is \key{=\textvisiblespace and\textvisiblespace}.
+  The key \key{date/days-final-separator} sets the separator between the last two items in \meta{day(s)} to \meta{token list} when \meta{day(s)} contains three or more items.
+  The initial value is \key{=,\textvisiblespace and\textvisiblespace}.
+\end{variable}
+
+\begin{variable}{date/days-range-separator}
+  \begin{syntax}
+    \key{date/days-range-separator=\meta{token list}}
+  \end{syntax}
+  Sets the separator between \meta{day_1} and \meta{day_2} in a day range to \meta{token list}.
+  The initial value is \key{=\textvisiblespace to\textvisiblespace}.
+\end{variable}
+
+\begin{variable}
+  {
+    date/months-separator,
+    date/months-pair-separator,
+    date/months-final-separator
+  }
+  \begin{syntax}
+    \key{date/months-separator=\meta{token list}}
+    \key{date/months-pair-separator=\meta{token list}}
+    \key{date/months-final-separator=\meta{token list}}
+  \end{syntax}
+  The key \key{date/months-separator} sets the separator between each item in \meta{month(s)} to \meta{token list}.
+  The initial value is \key{=,\textvisiblespace}.
+  The key \key{date/months-pair-separator} sets the separator between each item in \meta{month(s)} to \meta{token list} when \meta{month(s)} contains exactly two items.
+  The initial value is \key{=\textvisiblespace and\textvisiblespace}.
+  The key \key{date/months-final-separator} sets the separator between the last two items in \meta{month(s)} to \meta{token list} when \meta{month(s)} contains three or more items.
+  The initial value is \key{=,\textvisiblespace and\textvisiblespace}.
+\end{variable}
+
+\begin{variable}{date/months-range-separator}
+  \begin{syntax}
+    \key{date/months-range-separator=\meta{token list}}
+  \end{syntax}
+  Sets the separator between \meta{month_1} and \meta{month_2} in a month range to \meta{token list}.
+  The initial value is \key{=\textvisiblespace to\textvisiblespace}.
+\end{variable}
+
+
+\section{References}
+\label{sec:references}
+
+This package uses some ideas from the \pkg{datetime2} and \pkg{siunitx} packages.
+The \pkg{clockdate} package keys
+\begin{itemize}
+  \item \key{clock/hour-minute-separator}
+  \item \key{clock/minute-hour-separator}
+  \item \key{clock/clock-separator}
+\end{itemize}
+resemble the following \pkg{datetime2} package options:
+\begin{itemize}
+  \item \key{hourminsep}
+  \item \key{minsecsep}
+  \item \key{timesep}
+\end{itemize}
+
+The \pkg{clockdate} package keys
+\begin{itemize}
+  \item \key{date/year-month-separator}
+  \item \key{date/month-day-separator}
+  \item \key{date/year-day-separator}
+  \item \key{date/date-separator}
+\end{itemize}
+resemble the following \pkg{datetime2} package options:
+\begin{itemize}
+  \item \key{yearmonthsep}
+  \item \key{monthdaysep}
+  \item \key{dayyearsep}
+  \item \key{datesep}
+\end{itemize}
+
+The \pkg{clockdate} package keys
+\begin{itemize}
+  \item \key{date/days-final-separator}
+  \item \key{date/days-pair-separator}
+  \item \key{date/days-separator}
+  \item \key{date/months-final-separator}
+  \item \key{date/months-pair-separator}
+  \item \key{date/months-separator}
+\end{itemize}
+use a similar naming convention to the following \pkg{siunitx} package control options:
+\begin{itemize}
+  \item \key{list-final-separator}
+  \item \key{list-pair-separator}
+  \item \key{list-separator}
+\end{itemize}
+
+
+\end{document}

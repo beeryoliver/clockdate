@@ -1,0 +1,1250 @@
+%%% Package   : clockdate -- Provides \clock and \calendardate
+%%% Copyright : 2025 (c) Oliver Beery <beeryoliver@gmail.com>
+%%% CTAN      : <ADD CTAN LINK HERE>
+%%% Repository: <ADD GITHUB LINK HERE>
+%%% License   : The LaTeX Project Public License 1.3c
+
+%%> \section{Loading the package}
+
+% LaTeX2e version 2023-11-01 added \IfExplAtLeastTF.
+\NeedsTeXFormat{LaTeX2e}[2023-11-01]
+\ProvidesExplPackage{clockdate}{2025-09-22}{0.0.0}
+  {Provides \noexpand\clock and \string\calendardate.}
+
+\msg_new:nnn { clockdate } { l3kernel }
+  {
+    The~ clockdate~ package~ could~ not~ load. \\
+    This~ package~ requires~
+    L3~ programming~ layer~ version~ 2023-11-01~ or~ newer.
+  }
+\IfExplAtLeastTF { 2023-11-01 } { }
+  { \msg_critical:nn { clockdate } { l3kernel } }
+
+% Define package options.
+\keys_define:nn { clockdate }
+  {
+      overwrite-date .bool_gset:N = \g__clockdate_overwrite_date_bool
+    , overwrite-date .value_forbidden:n = true
+    , overwrite-date .default:n = true
+    , overwrite-date .usage:n = load
+  }
+\ProcessKeyOptions
+
+%%> \section{Messages}
+
+\msg_new:nnn { clockdate } { math-mode-invalid }
+  { '\iow_char:N \\#1'~ invalid~ in~ math~ mode~ \msg_line_context:. }
+\msg_new:nnn { clockdate } { invalid }
+  {
+    Invalid~ input~ '#1'~ \msg_line_context:. \\
+    \msg_see_documentation_text:n { clockdate }
+  }
+% \clock
+\msg_new:nnn { clockdate } { hour-invalid }
+  {
+    Invalid~ hour~ '#1'~ \msg_line_context:. \\
+    The~ hour~ must~ be~ an~ integer~ from~ 0~ to~ 24.
+  }
+\msg_new:nnn { clockdate } { minute-invalid }
+  {
+    Invalid~ minute~ '#1'~ \msg_line_context:. \\
+    The~ minute~ must~ be~ an~ integer~ from~ 0~ to~ 59.
+  }
+\msg_new:nnn { clockdate } { second-invalid }
+  {
+    Invalid~ second~ '#1'~ \msg_line_context:. \\
+    The~ second~ must~ be~ an~ integer~ from~ 0~ to~ 59.
+  }
+% \calendardate
+\msg_new:nnn { clockdate } { year-invalid }
+  {
+    Invalid~ year~ '#1'~ \msg_line_context:. \\
+    The~ year~ must~ be~ an~ integer~ from~ 1000~ to~ 9999.
+  }
+\msg_new:nnn { clockdate } { month-invalid }
+  {
+    Invalid~ month~ '#1'~ \msg_line_context:. \\
+    The~ month~ must~ be~ an~ integer~ from~ 1~ to~ 12.
+  }
+\msg_new:nnn { clockdate } { year-month-day-invalid }
+  { Invalid~ year-month-day~ '#1-#2-#3'~ \msg_line_context:. }
+\msg_new:nnn { clockdate } { month-day-invalid }
+  { Invalid~ month-day~ '#1-#2'~ \msg_line_context:. }
+
+%%> \section{Some variables}
+
+\tl_new:N \l__clockdate_clock_input_tl
+
+\seq_new:N \l__clockdate_clock_seq
+\int_new:N \l__clockdate_clock_hour_int
+\int_new:N \l__clockdate_clock_minute_int
+\int_new:N \l__clockdate_clock_second_int
+
+\seq_new:N \l__clockdate_clock_range_seq
+\int_new:N \l__clockdate_clock_hour_range_int
+\int_new:N \l__clockdate_clock_minute_range_int
+\int_new:N \l__clockdate_clock_second_range_int
+
+% Used to test whether the am/pm will be printed.
+\bool_new:N \l__clockdate_clock_print_ampm_bool
+\bool_set_true:N \l__clockdate_clock_print_ampm_bool
+
+\tl_new:N    \l__clockdate_date_input_tl
+\seq_new:N   \l__clockdate_date_seq
+\int_new:N   \l__clockdate_date_year_int
+\clist_new:N \l__clockdate_date_months_clist
+\int_new:N   \l__clockdate_date_month_int
+\int_new:N   \l__clockdate_date_month_range_int
+\clist_new:N \l__clockdate_date_days_clist
+\int_new:N   \l__clockdate_date_day_int
+\int_new:N   \l__clockdate_date_day_range_int
+
+\scan_new:N \s__clockdate_date_mark
+
+\tl_map_inline:nn
+  {
+    \l__clockdate_clock_hour_int
+    \l__clockdate_clock_minute_int
+    \l__clockdate_clock_second_int
+    \l__clockdate_clock_hour_range_int
+    \l__clockdate_clock_minute_range_int
+    \l__clockdate_clock_second_range_int
+
+    \l__clockdate_date_year_int
+    \l__clockdate_date_month_int
+    \l__clockdate_date_month_range_int
+    \l__clockdate_date_day_int
+    \l__clockdate_date_day_range_int
+  }
+  { \int_set:Nn #1 { -1 } }
+
+%%> \section{Some functions}
+
+% Variants of l3kernel functions
+\cs_generate_variant:Nn \msg_error:nnnnn { nnVVV }
+\cs_generate_variant:Nn \seq_use:Nn { NV }
+% Tests if two boolean expressions either both equal true or both equal false.
+\prg_new_conditional:Npnn \__clockdate_bool_if_eq:nn #1#2 { p }
+  {
+    \bool_if:nTF {#1}
+      { \bool_if:nTF {#2} { \prg_return_true:  } { \prg_return_false: } }
+      { \bool_if:nTF {#2} { \prg_return_false: } { \prg_return_true:  } }
+  }
+% Tests if the hour corresponds to am (true) or pm (false).
+\prg_new_conditional:Npnn \__clockdate_clock_hour_if_am:n #1 { p , TF }
+  {
+    \bool_lazy_or:nnTF
+      { \int_compare_p:nNn {#1} < { 12 } }
+      { \int_compare_p:nNn {#1} = { 24 } }
+      { \prg_return_true: } { \prg_return_false: }
+  }
+% Tests the validity of the year-month-day.
+\prg_new_conditional:Npnn \__clockdate_date_year_month_day_if_valid:nnn #1#2#3
+  { TF }
+  {
+    \bool_lazy_any:nTF
+      {
+        { \int_compare_p:n { 0 < #3 < 29 } }
+        {
+          \bool_lazy_and_p:nn
+            { \int_compare_p:nNn {#3} = { 31 } }
+            { \__clockdate_date_month_if_thirty_one_days_p:n {#2} }
+        }
+        {
+          \bool_lazy_and_p:nn
+            { \int_compare_p:nNn {#3} = { 30 } }
+            { ! \int_compare_p:nNn {#2} = 2 }
+        }
+        {
+          \bool_lazy_and_p:nn
+            { \int_compare_p:nNn {#3} = { 29 } }
+            {
+              \bool_lazy_or_p:nn
+                { ! \int_compare_p:nNn {#2} = 2 }
+                { \__clockdate_date_year_if_leap_p:n {#1} }
+            }
+        }
+      }
+      { \prg_return_true: } { \prg_return_false: }
+  }
+% Tests the validity of the month-day. Unlike
+% \__clockdate_date_year_month_day_if_valid:nnn, February 29 is always valid.
+\prg_new_conditional:Npnn \__clockdate_date_month_day_if_valid:nn #1#2 { TF }
+  {
+    \bool_lazy_any:nTF
+      {
+        { \int_compare_p:n { 0 < #2 < 30 } }
+        {
+          \bool_lazy_and_p:nn
+            { \int_compare_p:nNn {#2} = { 31 } }
+            { \__clockdate_date_month_if_thirty_one_days_p:n {#1} }
+        }
+        {
+          \bool_lazy_and_p:nn
+            { \int_compare_p:nNn {#2} = { 30 } }
+            { ! \int_compare_p:nNn {#1} = 2 }
+        }
+      }
+      { \prg_return_true: } { \prg_return_false: }
+  }
+% Tests if the year is a leap year.
+\prg_new_conditional:Npnn \__clockdate_date_year_if_leap:n #1 { p }
+  {
+    \int_case:nnF {#1}
+      {
+        { \int_div_truncate:nn {#1} {400} * 400 } { \prg_return_true:  }
+        { \int_div_truncate:nn {#1} {100} * 100 } { \prg_return_false: }
+        { \int_div_truncate:nn {#1} {  4} *   4 } { \prg_return_true:  }
+      }
+      { \prg_return_false: }
+  }
+% Tests if the month has 31 days.
+\prg_new_conditional:Npnn \__clockdate_date_month_if_thirty_one_days:n #1 { p }
+  {
+    \int_case:nn {#1}
+      {
+        {  1 } { \prg_return_true:  }
+        {  2 } { \prg_return_false: }
+        {  3 } { \prg_return_true:  }
+        {  4 } { \prg_return_false: }
+        {  5 } { \prg_return_true:  }
+        {  6 } { \prg_return_false: }
+        {  7 } { \prg_return_true:  }
+        {  8 } { \prg_return_true:  }
+        {  9 } { \prg_return_false: }
+        { 10 } { \prg_return_true:  }
+        { 11 } { \prg_return_false: }
+        { 12 } { \prg_return_true:  }
+      }
+  }
+
+%%> \section{Document commands}
+
+\NewDocumentCommand \clock { s o m }
+  {
+    \mode_if_math:TF
+      { \msg_error:nnn { clockdate } { math-mode-invalid } { clock } }
+      {
+        \IfBooleanTF #1
+          {
+            \IfNoValueTF {#2}
+              { \__clockdate_clock:Vn \l__clockdate_clock_star_tl {#3} }
+              {
+                \__clockdate_clock:on { \l__clockdate_clock_star_tl , #2 } {#3}
+              }
+          }
+          {
+            \IfNoValueTF {#2}
+              { \__clockdate_clock:n {#3} }
+              { \__clockdate_clock:nn {#2} {#3} }
+          }
+      }
+  }
+% Both \__clockdate_clock:nn and \__clockdate_clock:n must end in the same way
+% so that \__clockdate_clock_ampm_period: works correctly.
+\cs_new_protected:Npn \__clockdate_clock:nn #1#2
+  {
+    \group_begin:
+      \keys_set:nn { clockdate / clock } {#1}
+      \__clockdate_keys_process_clock:
+      \__clockdate_clock_aux:n {#2}
+    \group_end:
+  }
+\cs_generate_variant:Nn \__clockdate_clock:nn { V , o }
+\cs_new_protected:Npn \__clockdate_clock:n #1
+  {
+    \group_begin:
+      \__clockdate_clock_aux:n {#1}
+    \group_end:
+  }
+\cs_new_protected:Npn \__clockdate_clock_aux:n #1
+  {
+    \tl_set:Nn \l__clockdate_clock_input_tl {#1}
+    \tl_replace_all:NnV \l__clockdate_clock_input_tl { : } \c_colon_str
+    \tl_if_in:NnTF \l__clockdate_clock_input_tl { -- }
+      { \exp_args:NV \__clockdate_clock_print_range:n }
+      { \exp_args:NV \__clockdate_clock_print:n }
+    \l__clockdate_clock_input_tl
+    \prg_break_point:
+  }
+\cs_new_protected:Npn \__clockdate_clock_print_range:n #1
+  { \__clockdate_clock_print_range:w #1 \q_stop }
+\cs_new_protected:Npn \__clockdate_clock_print_range:w #1 -- #2 \q_stop
+  {
+    \seq_set_split:NVn \l__clockdate_clock_seq \c_colon_str {#1}
+    \int_case:nnF { \seq_count:N \l__clockdate_clock_seq }
+      {
+        { 1 }
+        {
+          \__clockdate_clock_set_hour:Nn \l__clockdate_clock_hour_int
+            { \seq_item:Nn \l__clockdate_clock_seq {1} }
+        }
+        { 2 }
+        {
+          \__clockdate_clock_set_hour:Nn \l__clockdate_clock_hour_int
+            { \seq_item:Nn \l__clockdate_clock_seq {1} }
+          \__clockdate_clock_set_minute:Nn \l__clockdate_clock_minute_int
+            { \seq_item:Nn \l__clockdate_clock_seq {2} }
+        }
+        { 3 }
+        {
+          \__clockdate_clock_set_hour:Nn \l__clockdate_clock_hour_int
+            { \seq_item:Nn \l__clockdate_clock_seq {1} }
+          \__clockdate_clock_set_minute:Nn \l__clockdate_clock_minute_int
+            { \seq_item:Nn \l__clockdate_clock_seq {2} }
+          \__clockdate_clock_set_minute:Nn \l__clockdate_clock_second_int
+            { \seq_item:Nn \l__clockdate_clock_seq {3} }
+        }
+      }
+      {
+        \msg_error:nne { clockdate } { invalid }
+          { \seq_use:NV \l__clockdate_clock_seq \c_colon_str }
+        \prg_break:
+      }
+    \seq_set_split:NVn \l__clockdate_clock_range_seq \c_colon_str {#2}
+    \int_case:nnF { \seq_count:N \l__clockdate_clock_range_seq }
+      {
+        { 1 }
+        {
+          \__clockdate_clock_set_hour:Nn \l__clockdate_clock_hour_range_int
+            { \seq_item:Nn \l__clockdate_clock_range_seq {1} }
+        }
+        { 2 }
+        {
+          \__clockdate_clock_set_hour:Nn \l__clockdate_clock_hour_range_int
+            { \seq_item:Nn \l__clockdate_clock_range_seq {1} }
+          \__clockdate_clock_set_minute:Nn \l__clockdate_clock_minute_range_int
+            { \seq_item:Nn \l__clockdate_clock_range_seq {2} }
+        }
+        { 3 }
+        {
+          \__clockdate_clock_set_hour:Nn \l__clockdate_clock_hour_range_int
+            { \seq_item:Nn \l__clockdate_clock_range_seq {1} }
+          \__clockdate_clock_set_minute:Nn \l__clockdate_clock_minute_range_int
+            { \seq_item:Nn \l__clockdate_clock_range_seq {2} }
+          \__clockdate_clock_set_minute:Nn \l__clockdate_clock_second_range_int
+            { \seq_item:Nn \l__clockdate_clock_range_seq {3} }
+        }
+      }
+      {
+        \msg_error:nne { clockdate } { invalid }
+          { \seq_use:NV \l__clockdate_clock_range_seq \c_colon_str }
+        \prg_break:
+      }
+    \__clockdate_clock_print_hour:n { \l__clockdate_clock_hour_int }
+    \int_compare:nNnF \l__clockdate_clock_minute_int = { -1 }
+      {
+        \l__clockdate_clock_hour_minute_separator_tl
+        \__clockdate_clock_print_minute:n { \l__clockdate_clock_minute_int }
+        \int_compare:nNnF \l__clockdate_clock_second_int = { -1 }
+          {
+            \l__clockdate_clock_minute_second_separator_tl
+            \__clockdate_clock_print_second:n
+              { \l__clockdate_clock_second_int }
+          }
+      }
+    \bool_lazy_and:nnT
+      { \l__clockdate_clock_print_ampm_bool }
+      {
+        ! \bool_lazy_and_p:nn
+          { \l__clockdate_clock_ampm_omit_first_bool }
+          {
+            \__clockdate_bool_if_eq_p:nn
+              {
+                \__clockdate_clock_hour_if_am_p:n
+                  { \l__clockdate_clock_hour_int }
+              }
+              {
+                \__clockdate_clock_hour_if_am_p:n
+                  { \l__clockdate_clock_hour_range_int }
+              }
+          }
+      }
+      { \__clockdate_clock_print_ampm:n { \l__clockdate_clock_hour_int } }
+    \l__clockdate_clock_range_separator_tl
+    \__clockdate_clock_print_hour:n { \l__clockdate_clock_hour_range_int }
+    \int_compare:nNnF \l__clockdate_clock_minute_range_int = { -1 }
+      {
+        \l__clockdate_clock_hour_minute_separator_tl
+        \__clockdate_clock_print_minute:n
+          { \l__clockdate_clock_minute_range_int }
+        \int_compare:nNnF \l__clockdate_clock_second_range_int = { -1 }
+          {
+            \l__clockdate_clock_minute_second_separator_tl
+            \__clockdate_clock_print_second:n
+              { \l__clockdate_clock_second_range_int }
+          }
+      }
+    \__clockdate_clock_print_ampm:n { \l__clockdate_clock_hour_range_int }
+  }
+
+\cs_new_protected:Npn \__clockdate_clock_print:n #1
+  {
+    \seq_set_split:NVn \l__clockdate_clock_seq \c_colon_str {#1}
+    \int_case:nnF { \seq_count:N \l__clockdate_clock_seq }
+      {
+        { 1 }
+        {
+          \__clockdate_clock_set_hour:Nn \l__clockdate_clock_hour_int
+            { \seq_item:Nn \l__clockdate_clock_seq {1} }
+        }
+        { 2 }
+        {
+          \__clockdate_clock_set_hour:Nn \l__clockdate_clock_hour_int
+            { \seq_item:Nn \l__clockdate_clock_seq {1} }
+          \__clockdate_clock_set_minute:Nn \l__clockdate_clock_minute_int
+            { \seq_item:Nn \l__clockdate_clock_seq {2} }
+        }
+        { 3 }
+        {
+          \__clockdate_clock_set_hour:Nn \l__clockdate_clock_hour_int
+            { \seq_item:Nn \l__clockdate_clock_seq {1} }
+          \__clockdate_clock_set_minute:Nn \l__clockdate_clock_minute_int
+            { \seq_item:Nn \l__clockdate_clock_seq {2} }
+          \__clockdate_clock_set_second:Nn \l__clockdate_clock_second_int
+            { \seq_item:Nn \l__clockdate_clock_seq {3} }
+        }
+      }
+      {
+        \msg_error:nne { clockdate } { invalid }
+          { \seq_use:NV \l__clockdate_clock_seq \c_colon_str }
+        \prg_break:
+      }
+    \__clockdate_clock_print_hour:n { \l__clockdate_clock_hour_int }
+    \int_compare:nNnF \l__clockdate_clock_minute_int = { -1 }
+      {
+        \l__clockdate_clock_hour_minute_separator_tl
+        \__clockdate_clock_print_minute:n { \l__clockdate_clock_minute_int }
+        \int_compare:nNnF \l__clockdate_clock_second_int = { -1 }
+          {
+            \l__clockdate_clock_minute_second_separator_tl
+            \__clockdate_clock_print_second:n
+              { \l__clockdate_clock_second_int }
+          }
+      }
+    \__clockdate_clock_print_ampm:n { \l__clockdate_clock_hour_int }
+  }
+
+\cs_new_protected:Npn \__clockdate_clock_set_hour:Nn #1#2
+  {
+    \int_set:Nn #1 {#2}
+    \int_compare:nF { 0 <= #1 < 25 }
+      {
+        \msg_error:nnV { clockdate } { hour-invalid } #1
+        \prg_break:
+      }
+  }
+\cs_new_protected:Npn \__clockdate_clock_set_minute:Nn #1#2
+  {
+    \int_set:Nn #1 {#2}
+    \int_compare:nF { 0 <= #1 < 60 }
+      {
+        \msg_error:nnV { clockdate } { minute-invalid } #1
+        \prg_break:
+      }
+  }
+\cs_new_protected:Npn \__clockdate_clock_set_second:Nn #1#2
+  {
+    \int_set:Nn #1 {#2}
+    \int_compare:nF { 0 <= #1 < 60 }
+      {
+        \msg_error:nnV { clockdate } { second-invalid } #1
+        \prg_break:
+      }
+  }
+
+\cs_new_protected:Npn \__clockdate_clock_print_hour:n #1
+  {
+    \bool_if:NT \l__clockdate_clock_hour_leading_zero_bool
+      {
+        \bool_if:NTF \l__clockdate_clock_military_bool
+          { \int_compare:nT { 0 <= #1 < 10 } }
+          {
+            \bool_lazy_or:nnT
+              { \int_compare_p:n {  0 < #1 < 10 } }
+              { \int_compare_p:n { 12 < #1 < 22 } }
+          }
+          { 0 }
+      }
+    \bool_if:NTF \l__clockdate_clock_military_bool
+      { \int_eval:n {#1} }
+      {
+        \int_if_zero:nTF {#1}
+          { 12 }
+          {
+            \int_compare:nNnTF {#1} < { 13 }
+              { \int_eval:n {#1} }
+              { \int_eval:n { (#1) - 12 } }
+          }
+      }
+  }
+\cs_new_protected:Npn \__clockdate_clock_print_minute:n #1
+  {
+    \int_compare:nNnT {#1} < { 10 } { 0 }
+    \int_eval:n {#1}
+  }
+\cs_new_eq:NN \__clockdate_clock_print_second:n
+  \__clockdate_clock_print_minute:n
+\cs_new_protected:Npn \__clockdate_clock_print_ampm:n #1
+  {
+    \bool_if:NT \l__clockdate_clock_print_ampm_bool
+      {
+        \l__clockdate_clock_ampm_separator_tl
+        \__clockdate_clock_hour_if_am:nTF {#1}
+          { \__clockdate_clock_print_am: }
+          { \__clockdate_clock_print_pm: }
+      }
+  }
+
+\NewDocumentCommand \calendardate { s o m }
+  {
+    \mode_if_math:TF
+      { \msg_error:nnn { clockdate } { math-mode-invalid } { calendardate } }
+      {
+        \IfBooleanTF #1
+          {
+            \IfNoValueTF {#2}
+              { \__clockdate_date:Vn \l__clockdate_date_star_tl {#3} }
+              { \__clockdate_date:on { \l__clockdate_date_star_tl , #2 } {#3} }
+          }
+          {
+            \IfNoValueTF {#2}
+              { \__clockdate_date:n {#3} }
+              { \__clockdate_date:nn {#2} {#3} }
+          }
+      }
+  }
+\bool_if:NT \g__clockdate_overwrite_date_bool
+  { \DeclareCommandCopy \date \calendardate }
+\cs_new_protected:Npn \__clockdate_date:nn #1#2
+  {
+    \group_begin:
+      \keys_set:nn { clockdate / date } {#1}
+      \__clockdate_date_aux:n {#2}
+    \group_end:
+  }
+\cs_generate_variant:Nn \__clockdate_date:nn { V , o }
+\cs_new_protected:Npn \__clockdate_date:n #1
+  {
+    \group_begin:
+      \__clockdate_date_aux:n {#1}
+    \group_end:
+  }
+\cs_new_protected:Npn \__clockdate_date_aux:n #1
+  {
+    \tl_set:Nn \l__clockdate_date_input_tl {#1}
+    \tl_replace_all:Nnn \l__clockdate_date_input_tl { -- }
+      { \s__clockdate_date_mark }
+    \seq_set_split:NnV \l__clockdate_date_seq { - } \l__clockdate_date_input_tl
+    \exp_args:Ne \__clockdate_date_order_choice:n
+      { \seq_use:Nn \l__clockdate_date_seq { - } }
+    \prg_break_point:
+  }
+
+\cs_new_protected:Npn \__clockdate_date_month_day_year:n #1
+  {
+    \int_case:nnF { \seq_count:N \l__clockdate_date_seq }
+      {
+        { 2 } { \__clockdate_date_month_day_year:ww  #1 \q_stop }
+        { 3 } { \__clockdate_date_month_day_year:www #1 \q_stop }
+      }
+      {
+        \msg_error:nne { clockdate } { invalid }
+          { \seq_use:Nn \l__clockdate_date_seq { - } }
+        \prg_break:
+      }
+  }
+\cs_new_protected:Npn \__clockdate_date_month_day_year:ww #1 - #2 \q_stop
+  {
+    \int_compare:nNnTF {#1} > { 999 }
+      {
+        \__clockdate_date_set_year:Nn \l__clockdate_date_year_int {#1}
+        \__clockdate_date_set_months:Nn \l__clockdate_date_months_clist {#2}
+        \__clockdate_date_print_months:V \l__clockdate_date_months_clist
+        \l__clockdate_date_year_month_separator_tl
+        \__clockdate_date_print_year:n { \l__clockdate_date_year_int }
+      }
+      {
+        \__clockdate_date_set_month:Nn \l__clockdate_date_month_int {#1}
+        \__clockdate_date_set_days:NNn \l__clockdate_date_days_clist
+          \l__clockdate_date_month_int {#2}
+        \__clockdate_date_print_month:n { \l__clockdate_date_month_int }
+        \l__clockdate_date_month_day_separator_tl
+        \__clockdate_date_print_days:V \l__clockdate_date_days_clist
+      }
+  }
+\cs_new_protected:Npn \__clockdate_date_month_day_year:www
+  #1 - #2 - #3 \q_stop
+  {
+    \__clockdate_date_set_year:Nn \l__clockdate_date_year_int {#1}
+    \__clockdate_date_set_month:Nn \l__clockdate_date_month_int {#2}
+    \__clockdate_date_set_days:NNNn \l__clockdate_date_days_clist
+      \l__clockdate_date_year_int \l__clockdate_date_month_int {#3}
+    \__clockdate_date_print_month:n { \l__clockdate_date_month_int }
+    \l__clockdate_date_month_day_separator_tl
+    \__clockdate_date_print_days:V \l__clockdate_date_days_clist
+    \l__clockdate_date_year_day_separator_tl
+    \__clockdate_date_print_year:n { \l__clockdate_date_year_int }
+  }
+
+\cs_new_protected:Npn \__clockdate_date_day_month_year:n #1
+  {
+    \int_case:nnF { \seq_count:N \l__clockdate_date_seq }
+      {
+        { 2 } { \__clockdate_date_day_month_year:ww  #1 \q_stop }
+        { 3 } { \__clockdate_date_day_month_year:www #1 \q_stop }
+      }
+      {
+        \msg_error:nne { clockdate } { invalid }
+          { \seq_use:Nn \l__clockdate_date_seq { - } }
+        \prg_break:
+      }
+  }
+\cs_new_protected:Npn \__clockdate_date_day_month_year:ww #1 - #2 \q_stop
+  {
+    \int_compare:nNnTF {#1} > { 999 }
+      {
+        \__clockdate_date_set_year:Nn \l__clockdate_date_year_int {#1}
+        \__clockdate_date_set_months:Nn \l__clockdate_date_months_clist {#2}
+        \__clockdate_date_print_months:V \l__clockdate_date_months_clist
+        \l__clockdate_date_year_month_separator_tl
+        \__clockdate_date_print_year:n { \l__clockdate_date_year_int }
+      }
+      {
+        \__clockdate_date_set_month:Nn \l__clockdate_date_month_int {#1}
+        \__clockdate_date_set_days:NNn \l__clockdate_date_days_clist
+          \l__clockdate_date_month_int {#2}
+        \__clockdate_date_print_days:V \l__clockdate_date_days_clist
+        \l__clockdate_date_month_day_separator_tl
+        \__clockdate_date_print_month:n { \l__clockdate_date_month_int }
+      }
+  }
+\cs_new_protected:Npn \__clockdate_date_day_month_year:www
+  #1 - #2 - #3 \q_stop
+  {
+    \__clockdate_date_set_year:Nn \l__clockdate_date_year_int {#1}
+    \__clockdate_date_set_month:Nn \l__clockdate_date_month_int {#2}
+    \__clockdate_date_set_days:NNNn \l__clockdate_date_days_clist
+      \l__clockdate_date_year_int \l__clockdate_date_month_int {#3}
+    \__clockdate_date_print_days:V \l__clockdate_date_days_clist
+    \l__clockdate_date_month_day_separator_tl
+    \__clockdate_date_print_month:n { \l__clockdate_date_month_int }
+    \l__clockdate_date_year_month_separator_tl
+    \__clockdate_date_print_year:n { \l__clockdate_date_year_int }
+  }
+
+\cs_new_protected:Npn \__clockdate_date_year_month_day:n #1
+  {
+    \int_case:nnF { \seq_count:N \l__clockdate_date_seq }
+      {
+        { 2 } { \__clockdate_date_year_month_day:ww  #1 \q_stop }
+        { 3 } { \__clockdate_date_year_month_day:www #1 \q_stop }
+      }
+      {
+        \msg_error:nne { clockdate } { invalid }
+          { \seq_use:Nn \l__clockdate_date_seq { - } }
+        \prg_break:
+      }
+  }
+\cs_new_protected:Npn \__clockdate_date_year_month_day:ww #1 - #2 \q_stop
+  {
+    \int_compare:nNnTF {#1} > { 999 }
+      {
+        \__clockdate_date_set_year:Nn \l__clockdate_date_year_int {#1}
+        \__clockdate_date_set_months:Nn \l__clockdate_date_months_clist {#2}
+        \__clockdate_date_print_year:n { \l__clockdate_date_year_int }
+        \l__clockdate_date_year_month_separator_tl
+        \__clockdate_date_print_months:V \l__clockdate_date_months_clist
+      }
+      {
+        \__clockdate_date_set_month:Nn \l__clockdate_date_month_int {#1}
+        \__clockdate_date_set_days:NNn \l__clockdate_date_days_clist
+          \l__clockdate_date_month_int {#2}
+        \__clockdate_date_print_month:n { \l__clockdate_date_month_int }
+        \l__clockdate_date_month_day_separator_tl
+        \__clockdate_date_print_days:V \l__clockdate_date_days_clist
+      }
+  }
+\cs_new_protected:Npn \__clockdate_date_year_month_day:www
+  #1 - #2 - #3 \q_stop
+  {
+    \__clockdate_date_set_year:Nn \l__clockdate_date_year_int {#1}
+    \__clockdate_date_set_month:Nn \l__clockdate_date_month_int {#2}
+    \__clockdate_date_set_days:NNNn \l__clockdate_date_days_clist
+      \l__clockdate_date_year_int \l__clockdate_date_month_int {#3}
+    \__clockdate_date_print_year:n { \l__clockdate_date_year_int }
+    \l__clockdate_date_year_month_separator_tl
+    \__clockdate_date_print_month:n { \l__clockdate_date_month_int }
+    \l__clockdate_date_month_day_separator_tl
+    \__clockdate_date_print_days:V \l__clockdate_date_days_clist
+  }
+
+\cs_new_protected:Npn \__clockdate_date_set_year:Nn #1#2
+  {
+    \int_set:Nn #1 {#2}
+    \int_compare:nF { 999 < #1 < 10 000 }
+      {
+        \msg_error:nnV { clockdate } { year-invalid } #1
+        \prg_break:
+      }
+  }
+\cs_new_protected:Npn \__clockdate_date_set_months:Nn #1#2
+  {
+    \clist_map_inline:nn {#2}
+      {
+        \tl_if_in:nnTF {##1} { \s__clockdate_date_mark }
+          { \__clockdate_date_set_months:Nw #1 ##1 \q_stop }
+          {
+            \int_set:Nn \l__clockdate_date_month_int {##1}
+            \int_compare:nTF { 0 < \l__clockdate_date_month_int < 13 }
+              {
+                \clist_put_right:Ne #1
+                  {
+                    \__clockdate_date_print_month:n
+                      { \int_use:N \l__clockdate_date_month_int }
+                  }
+              }
+              {
+                \clist_map_break:n
+                  {
+                    \msg_error:nnV { clockdate } { month-invalid }
+                      \l__clockdate_date_month_int
+                    \prg_break:
+                  }
+              }
+          }
+      }
+  }
+\cs_new_protected:Npn \__clockdate_date_set_months:Nw
+  #1#2 \s__clockdate_date_mark #3 \q_stop
+  {
+    \int_set:Nn \l__clockdate_date_month_int {#2}
+    \int_compare:nTF { 0 < \l__clockdate_date_month_int < 13 }
+      {
+        \int_set:Nn \l__clockdate_date_month_range_int {#3}
+        \int_compare:nTF { 0 < \l__clockdate_date_month_range_int < 13 }
+          {
+            \clist_put_right:Ne #1
+              {
+                \__clockdate_date_print_month:n
+                  { \int_use:N \l__clockdate_date_month_int }
+                \exp_not:N \l__clockdate_date_months_range_separator_tl
+                \__clockdate_date_print_month:n
+                  { \int_use:N \l__clockdate_date_month_range_int }
+              }
+          }
+          {
+            \clist_map_break:n
+              {
+                \msg_error:nnV { clockdate } { month-invalid }
+                  \l__clockdate_date_month_range_int
+                \prg_break:
+              }
+          }
+      }
+      {
+        \clist_map_break:n
+          {
+            \msg_error:nnV { clockdate } { month-invalid }
+              \l__clockdate_date_month_int
+            \prg_break:
+          }
+      }
+  }
+\cs_new_protected:Npn \__clockdate_date_set_month:Nn #1#2
+  {
+    \int_set:Nn #1 {#2}
+    \int_compare:nF { 0 < #1 < 13 }
+      {
+        \msg_error:nnV { clockdate } { month-invalid } #1
+        \prg_break:
+      }
+  }
+\cs_new_protected:Npn \__clockdate_date_set_days:NNNn #1#2#3#4
+  {
+    \clist_map_inline:nn {#4}
+      {
+        \tl_if_in:nnTF {##1} { \s__clockdate_date_mark }
+          { \__clockdate_date_set_days:NNNw #1#2#3 ##1 \q_stop }
+          {
+            \int_set:Nn \l__clockdate_date_day_int {##1}
+            \__clockdate_date_year_month_day_if_valid:nnnTF {#2} {#3}
+              { \l__clockdate_date_day_int }
+              {
+                \clist_put_right:Ne #1
+                  {
+                    \__clockdate_date_print_day:n
+                      { \int_use:N \l__clockdate_date_day_int }
+                  }
+              }
+              {
+                \clist_map_break:n
+                  {
+                    \msg_error:nnVVV { clockdate } { year-month-day-invalid }
+                      #2 #3 \l__clockdate_date_day_int
+                    \prg_break:
+                  }
+              }
+          }
+      }
+  }
+\cs_new_protected:Npn \__clockdate_date_set_days:NNNw
+  #1#2#3#4 \s__clockdate_date_mark #5 \q_stop
+  {
+    \int_set:Nn \l__clockdate_date_day_int {#4}
+    \__clockdate_date_year_month_day_if_valid:nnnTF {#2} {#3}
+      { \l__clockdate_date_day_int }
+      {
+        \int_set:Nn \l__clockdate_date_day_range_int {#5}
+        \__clockdate_date_year_month_day_if_valid:nnnTF {#2} {#3}
+          { \l__clockdate_date_day_range_int }
+          {
+            \clist_put_right:Ne #1
+              {
+                \__clockdate_date_print_day:n
+                  { \int_use:N \l__clockdate_date_day_int }
+                \exp_not:N \l__clockdate_date_days_range_separator_tl
+                \__clockdate_date_print_day:n
+                  { \int_use:N \l__clockdate_date_day_range_int }
+              }
+          }
+          {
+            \clist_map_break:n
+              {
+                \msg_error:nnVVV { clockdate } { year-month-day-invalid } #2 #3
+                  \l__clockdate_date_day_range_int
+                \prg_break:
+              }
+          }
+      }
+      {
+        \clist_map_break:n
+          {
+            \msg_error:nnVVV { clockdate } { year-month-day-invalid } #2 #3
+              \l__clockdate_date_day_int
+            \prg_break:
+          }
+      }
+  }
+\cs_new_protected:Npn \__clockdate_date_set_days:NNn #1#2#3
+  {
+    \clist_map_inline:nn {#3}
+      {
+        \tl_if_in:nnTF {##1} { \s__clockdate_date_mark }
+          { \__clockdate_date_set_days:NNw #1#2 ##1 \q_stop }
+          {
+            \int_set:Nn \l__clockdate_date_day_int {##1}
+            \__clockdate_date_month_day_if_valid:nnTF {#2}
+              { \l__clockdate_date_day_int }
+              {
+                \clist_put_right:Ne #1
+                  {
+                    \__clockdate_date_print_day:n
+                      { \int_use:N \l__clockdate_date_day_int }
+                  }
+              }
+              {
+                \clist_map_break:n
+                  {
+                    \msg_error:nnVV { clockdate } { month-day-invalid } #2
+                      \l__clockdate_date_day_int
+                    \prg_break:
+                  }
+              }
+          }
+      }
+  }
+\cs_new_protected:Npn \__clockdate_date_set_days:NNw
+  #1#2#3 \s__clockdate_date_mark #4 \q_stop
+  {
+    \int_set:Nn \l__clockdate_date_day_int {#3}
+    \__clockdate_date_month_day_if_valid:nnTF {#2}
+      { \l__clockdate_date_day_int }
+      {
+        \int_set:Nn \l__clockdate_date_day_range_int {#4}
+        \__clockdate_date_month_day_if_valid:nnTF {#2}
+          { \l__clockdate_date_day_range_int }
+          {
+            \clist_put_right:Ne #1
+              {
+                \__clockdate_date_print_day:n
+                  { \int_use:N \l__clockdate_date_day_int }
+                \exp_not:N \l__clockdate_date_days_range_separator_tl
+                \__clockdate_date_print_day:n
+                  { \int_use:N \l__clockdate_date_day_range_int }
+              }
+          }
+          {
+            \clist_map_break:n
+              {
+                \msg_error:nnVV { clockdate } { month-day-invalid } #2
+                  \l__clockdate_date_day_range_int
+                \prg_break:
+              }
+          }
+      }
+      {
+        \clist_map_break:n
+          {
+            \msg_error:nnVV { clockdate } { month-day-invalid } #2
+              \l__clockdate_date_day_int
+            \prg_break:
+          }
+      }
+  }
+
+\cs_new_protected:Npn \__clockdate_date_print_year:n { \int_eval:n }
+\cs_new_protected:Npn \__clockdate_date_print_months:n #1
+  {
+    \clist_use:nnnn {#1} { \l__clockdate_date_months_pair_separator_tl }
+      { \l__clockdate_date_months_separator_tl }
+      { \l__clockdate_date_months_final_separator_tl }
+  }
+\cs_generate_variant:Nn \__clockdate_date_print_months:n { V }
+\cs_new_protected:Npn \__clockdate_date_print_month:n
+  {
+    \int_compare:nNnTF \l__clockdate_date_year_int = { -1 }
+      { \__clockdate_date_print_month_month_day:n }
+      {
+        \clist_if_empty:NTF \l__clockdate_date_days_clist
+          { \__clockdate_date_print_month_year_month:n }
+          { \__clockdate_date_print_month_year_month_day:n }
+      }
+  }
+\cs_new_protected:Npn \__clockdate_date_print_days:n #1
+  {
+    \clist_use:nnnn {#1} { \l__clockdate_date_days_pair_separator_tl }
+      { \l__clockdate_date_days_separator_tl }
+      { \l__clockdate_date_days_final_separator_tl }
+  }
+\cs_generate_variant:Nn \__clockdate_date_print_days:n { V }
+\cs_new_protected:Npn \__clockdate_date_print_day:n { \int_eval:n }
+
+%%> \section{Define keys}
+
+\keys_define:nn { clockdate }
+  {
+      clock .meta:nn = { clockdate / clock } {#1}
+    , clock .value_required:n = true
+
+    , date .meta:nn = { clockdate / date } {#1}
+    , date .value_required:n = true
+  }
+\bool_new:N \l__clockdate_clock_military_bool
+\keys_define:nn { clockdate / clock }
+  {
+      star .tl_set:N = \l__clockdate_clock_star_tl
+    , star .value_required:n = true
+
+    , hour .choices:nn = { 12 , 24 }
+        {
+          \int_case:nn { \l_keys_choice_int }
+            {
+              { 1 } { \bool_set_false:N \l__clockdate_clock_military_bool }
+              { 2 } { \bool_set_true:N  \l__clockdate_clock_military_bool }
+            }
+        }
+    , hour .value_required:n = true
+
+    , hour-leading-zero .bool_set:N =
+        \l__clockdate_clock_hour_leading_zero_bool
+    , hour-leading-zero .value_required:n = true
+
+    , ampm .choices:nn =
+        {
+            lowercase-with-periods  , lowercase
+          , uppercase-with-periods  , uppercase
+          , small-caps-with-periods , small-caps , none
+        }
+        {
+          \cs_set_eq:Nc \__clockdate_clock_print_am:
+            { __clockdate_clock_print_am_ \l_keys_choice_tl : }
+          \cs_set_eq:Nc \__clockdate_clock_print_pm:
+            { __clockdate_clock_print_pm_ \l_keys_choice_tl : }
+        }
+    , ampm .value_required:n = true
+  }
+\cs_new_protected:cpn { __clockdate_clock_print_am_lowercase-with-periods: }
+  { a.m \__clockdate_clock_ampm_period: }
+\cs_new_protected:cpn { __clockdate_clock_print_pm_lowercase-with-periods: }
+  { p.m \__clockdate_clock_ampm_period: }
+\cs_new_protected:cpn { __clockdate_clock_print_am_uppercase-with-periods: }
+  { A.M \@ \__clockdate_clock_ampm_period: }
+\cs_new_protected:cpn { __clockdate_clock_print_pm_uppercase-with-periods: }
+  { P.M \@ \__clockdate_clock_ampm_period: }
+\cs_new_protected:cpn { __clockdate_clock_print_am_small-caps-with-periods: }
+  { \textsc {a} . \textsc {m} \__clockdate_clock_ampm_period: }
+\cs_new_protected:cpn { __clockdate_clock_print_pm_small-caps-with-periods: }
+  { \textsc {p} . \textsc {m} \__clockdate_clock_ampm_period: }
+\cs_new_protected:Npn \__clockdate_clock_ampm_period:
+  {
+    \peek_meaning:NTF \prg_break_point:
+      { \__clockdate_clock_ampm_period:w } { . \@ }
+  }
+\cs_new_protected:Npn \__clockdate_clock_ampm_period:w
+  \prg_break_point: \group_end:
+  { \peek_meaning_remove:NTF . { . \group_end: } { . \@ \group_end: } }
+\cs_new_protected:Npn \__clockdate_clock_print_am_lowercase: { am }
+\cs_new_protected:Npn \__clockdate_clock_print_pm_lowercase: { pm }
+\cs_new_protected:Npn \__clockdate_clock_print_am_uppercase: { AM \@ }
+\cs_new_protected:Npn \__clockdate_clock_print_pm_uppercase: { PM \@ }
+\cs_new_protected:cpn { __clockdate_clock_print_am_small-caps: }
+  { \textsc { am } }
+\cs_new_protected:cpn { __clockdate_clock_print_pm_small-caps: }
+  { \textsc { pm } }
+\cs_new_protected:Npn \__clockdate_clock_print_am_none: { }
+\cs_new_protected:Npn \__clockdate_clock_print_pm_none: { }
+\keys_define:nn { clockdate / clock }
+  {
+      ampm-omit-first .bool_set:N = \l__clockdate_clock_ampm_omit_first_bool
+    , ampm-omit-first .value_required:n = true
+
+    , hour-minute-separator .tl_set:N =
+        \l__clockdate_clock_hour_minute_separator_tl
+    , hour-minute-separator .value_required:n = true
+
+    , minute-second-separator .tl_set:N =
+        \l__clockdate_clock_minute_second_separator_tl
+    , minute-second-separator .value_required:n = true
+
+    , clock-separator .meta:nn = { clockdate / clock }
+        { hour-minute-separator = {#1} , minute-second-separator = {#1} }
+    , clock-separator .value_required:n = true
+
+    , ampm-separator .tl_set:N = \l__clockdate_clock_ampm_separator_tl
+    , ampm-separator .value_required:n = true
+
+    , range-separator .tl_set:N = \l__clockdate_clock_range_separator_tl
+    , range-separator .value_required:n = true
+  }
+\keys_define:nn { clockdate / date }
+  {
+      star .tl_set:N = \l__clockdate_date_star_tl
+    , star .value_required:n = true
+
+    , order .choices:nn = { month-day-year , day-month-year , year-month-day }
+        {
+          \cs_set_eq:Nc \__clockdate_date_order_choice:n
+            {
+              \if_case:w \l_keys_choice_int
+                \or: __clockdate_date_month_day_year:n
+                \or: __clockdate_date_day_month_year:n
+                \or: __clockdate_date_year_month_day:n
+              \fi:
+            }
+        }
+    , order .value_required:n = true
+  }
+\keys_define:nn { clockdate / date / month }
+  {
+      year-month-day .choices:nn =
+        { long , abbreviated , three-letter , number, zero-padded-number }
+        {
+          \cs_set_eq:Nc \__clockdate_date_print_month_year_month_day:n
+            { __clockdate_date_print_month_ \l_keys_choice_tl :n }
+        }
+    , year-month-day .value_required:n = true
+
+    , year-month .choices:nn =
+        { long , abbreviated , three-letter , number, zero-padded-number }
+        {
+          \cs_set_eq:Nc \__clockdate_date_print_month_year_month:n
+            { __clockdate_date_print_month_ \l_keys_choice_tl :n }
+        }
+    , year-month .value_required:n = true
+
+    , month-day .choices:nn =
+        { long , abbreviated , three-letter , number, zero-padded-number }
+        {
+          \cs_set_eq:Nc \__clockdate_date_print_month_month_day:n
+            { __clockdate_date_print_month_ \l_keys_choice_tl :n }
+        }
+    , month-day .value_required:n = true
+  }
+\cs_new_protected:Npn \__clockdate_date_print_month_long:n #1
+  {
+    \int_case:nn {#1}
+      {
+        {  1 } { January   }
+        {  2 } { February  }
+        {  3 } { March     }
+        {  4 } { April     }
+        {  5 } { May       }
+        {  6 } { June      }
+        {  7 } { July      }
+        {  8 } { August    }
+        {  9 } { September }
+        { 10 } { October   }
+        { 11 } { November  }
+        { 12 } { December  }
+      }
+  }
+\cs_new_protected:Npn \__clockdate_date_print_month_abbreviated:n #1
+  {
+    \int_case:nn {#1}
+      {
+        {  1 } { Jan \__clockdate_date_month_period:  }
+        {  2 } { Feb \__clockdate_date_month_period:  }
+        {  3 } { March                                }
+        {  4 } { April                                }
+        {  5 } { May                                  }
+        {  6 } { June                                 }
+        {  7 } { July                                 }
+        {  8 } { Aug \__clockdate_date_month_period:  }
+        {  9 } { Sept \__clockdate_date_month_period: }
+        { 10 } { Oct \__clockdate_date_month_period:  }
+        { 11 } { Nov \__clockdate_date_month_period:  }
+        { 12 } { Dec \__clockdate_date_month_period:  }
+      }
+  }
+\cs_new_protected:Npn \__clockdate_date_month_period:
+  {
+    \peek_meaning:NTF \prg_break_point:
+      { \__clockdate_date_month_period:w } { . \@ }
+  }
+\cs_new_protected:Npn \__clockdate_date_month_period:w
+  \prg_break_point: \group_end:
+  { \peek_meaning_remove:NTF . { . \group_end: } { . \@ \group_end: } }
+\cs_new_protected:cpn { __clockdate_date_print_month_three-letter:n } #1
+  {
+    \int_case:nn {#1}
+      {
+        {  1 } { Jan }
+        {  2 } { Feb }
+        {  3 } { Mar }
+        {  4 } { Apr }
+        {  5 } { May }
+        {  6 } { Jun }
+        {  7 } { Jul }
+        {  8 } { Aug }
+        {  9 } { Sep }
+        { 10 } { Oct }
+        { 11 } { Nov }
+        { 12 } { Dec }
+      }
+  }
+\cs_new_protected:Npn \__clockdate_date_print_month_number:n { \int_eval:n }
+\cs_new_protected:cpn { __clockdate_date_print_month_zero-padded-number:n } #1
+  {
+    \int_compare:nNnT {#1} < { 10 } { 0 }
+    \int_eval:n {#1}
+  }
+\keys_define:nn { clockdate / date }
+  {
+      month .meta:nn = { clockdate / date / month }
+        { year-month-day = {#1} , year-month = {#1} , month-day = {#1} }
+    , month .value_required:n = true
+
+    , year-month-separator .tl_set:N =
+        \l__clockdate_date_year_month_separator_tl
+    , year-month-separator .value_required:n = true
+
+    , month-day-separator .tl_set:N = \l__clockdate_date_month_day_separator_tl
+    , month-day-separator .value_required:n = true
+
+    , year-day-separator .tl_set:N = \l__clockdate_date_year_day_separator_tl
+    , year-day-separator .value_required:n = true
+
+    , date-separator .meta:nn = { clockdate / date }
+        {
+            year-month-separator = {#1}
+          , month-day-separator  = {#1}
+          , year-day-separator   = {#1}
+        }
+    , date-separator .value_required:n = true
+
+    , days-separator .tl_set:N = \l__clockdate_date_days_separator_tl
+    , days-separator .value_required:n = true
+
+    , days-pair-separator .tl_set:N = \l__clockdate_date_days_pair_separator_tl
+    , days-pair-separator .value_required:n = true
+
+    , days-final-separator .tl_set:N =
+        \l__clockdate_date_days_final_separator_tl
+    , days-final-separator .value_required:n = true
+
+    , days-range-separator .tl_set:N =
+        \l__clockdate_date_days_range_separator_tl
+    , days-range-separator .value_required:n = true
+
+    , months-separator .tl_set:N = \l__clockdate_date_months_separator_tl
+    , months-separator .value_required:n = true
+
+    , months-pair-separator .tl_set:N =
+        \l__clockdate_date_months_pair_separator_tl
+    , months-pair-separator .value_required:n = true
+
+    , months-final-separator .tl_set:N =
+        \l__clockdate_date_months_final_separator_tl
+    , months-final-separator .value_required:n = true
+
+    , months-range-separator .tl_set:N =
+        \l__clockdate_date_months_range_separator_tl
+    , months-range-separator .value_required:n = true
+  }
+
+\cs_new_protected:Npn \__clockdate_keys_set_initial:
+  {
+    \tl_clear:N \l__clockdate_clock_star_tl
+    \tl_clear:N \l__clockdate_date_star_tl
+    \bool_set_false:N \l__clockdate_clock_military_bool
+    \bool_set_false:N \l__clockdate_clock_hour_leading_zero_bool
+    \cs_set_eq:Nc \__clockdate_clock_print_am:
+      { __clockdate_clock_print_am_lowercase-with-periods: }
+    \cs_set_eq:Nc \__clockdate_clock_print_pm:
+      { __clockdate_clock_print_pm_lowercase-with-periods: }
+    \bool_set_true:N \l__clockdate_clock_ampm_omit_first_bool
+    \tl_set:NV \l__clockdate_clock_hour_minute_separator_tl \c_colon_str
+    \tl_set:NV \l__clockdate_clock_minute_second_separator_tl \c_colon_str
+    \tl_set_eq:NN \l__clockdate_clock_ampm_separator_tl \c_space_tl
+    \tl_set:Nn \l__clockdate_clock_range_separator_tl { ~to~ }
+    \cs_set_eq:NN \__clockdate_date_order_choice:n
+      \__clockdate_date_month_day_year:n
+    \cs_set_eq:NN \__clockdate_date_print_month_year_month_day:n
+      \__clockdate_date_print_month_abbreviated:n
+    \cs_set_eq:NN \__clockdate_date_print_month_year_month:n
+      \__clockdate_date_print_month_long:n
+    \cs_set_eq:NN \__clockdate_date_print_month_month_day:n
+      \__clockdate_date_print_month_abbreviated:n
+    \tl_set_eq:NN \l__clockdate_date_year_month_separator_tl \c_space_tl
+    \tl_set_eq:NN \l__clockdate_date_month_day_separator_tl \c_space_tl
+    \tl_set:Nn \l__clockdate_date_year_day_separator_tl { ,~ }
+    \tl_set:Nn \l__clockdate_date_days_separator_tl { ,~ }
+    \tl_set:Nn \l__clockdate_date_days_pair_separator_tl { ~and~ }
+    \tl_set:Nn \l__clockdate_date_days_final_separator_tl { ,~and~ }
+    \tl_set:Nn \l__clockdate_date_days_range_separator_tl { ~to~ }
+    \tl_set:Nn \l__clockdate_date_months_separator_tl { ,~ }
+    \tl_set:Nn \l__clockdate_date_months_pair_separator_tl { ~and~ }
+    \tl_set:Nn \l__clockdate_date_months_final_separator_tl { ,~and~ }
+    \tl_set:Nn \l__clockdate_date_months_range_separator_tl { ~to~ }
+  }
+\__clockdate_keys_set_initial:
+
+\NewDocumentCommand \clockdatesetup { s m }
+  {
+    \mode_if_math:TF
+      { \msg_error:nnn { clockdate } { math-mode-invalid } { clockdatesetup } }
+      {
+        \IfBooleanTF #1
+          { \__clockdate_keys_reset:n {#2} }
+          { \__clockdate_keys_set:n {#2} }
+      }
+  }
+\cs_new_protected:Npn \__clockdate_keys_reset:n
+  { \__clockdate_keys_set_initial: \__clockdate_keys_set:n }
+\cs_new_protected:Npn \__clockdate_keys_set:n #1
+  {
+    \keys_set:nn { clockdate } {#1}
+    \__clockdate_keys_process_clock:
+  }
+\cs_new_protected:Npn \__clockdate_keys_process_clock:
+  {
+    \bool_lazy_or:nnTF
+      { \l__clockdate_clock_military_bool }
+      {
+        \cs_if_eq_p:NN \__clockdate_clock_print_am:
+          \__clockdate_clock_print_am_none:
+      }
+      { \bool_set_false:N \l__clockdate_clock_print_ampm_bool }
+      { \bool_set_true:N  \l__clockdate_clock_print_ampm_bool }
+  }
