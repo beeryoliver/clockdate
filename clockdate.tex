@@ -3,16 +3,18 @@
 
 \ExplSyntaxOn
 % \debug_on:n { all }
-\usepackage[overwrite-date]{clockdate}
+\usepackage{clockdate}
 \clockdatesetup
   {
-    date / star =
-      {
-          days-final-separator   = { ,~or~ }
-        , days-pair-separator    = {  ~or~ }
-        , months-final-separator = { ,~or~ }
-        , months-pair-separator  = {  ~or~ }
-      }
+      date / star =
+        {
+            days-final-separator   = { ,~or~ }
+          , days-pair-separator    = {  ~or~ }
+          , months-final-separator = { ,~or~ }
+          , months-pair-separator  = {  ~or~ }
+        }
+    , date / month = long
+    , date / order = day-month-year
   }
 \ExplSyntaxOff
 
@@ -20,13 +22,13 @@
 \begin{document}
 
 
-\section*{\stepfontsize{1}The \pkg{clockdate} package}
+\section*{\Large The \pkg{clockdate} package}
 
 Provides \cs{clock} and \cs{calendardate}.
 
 Oliver Beery
 
-Version 0.0.0\quad\date{2025-9-22}
+Version 0.0.0\quad\calendardate{2025-11-5}
 
 
 \section{Introduction}
@@ -43,23 +45,19 @@ This package provides \cs{clock} and \cs{calendardate}.
 
 \listheading{Requirements:}
 \begin{itemize}
-  \item \LaTeXe{} version 2023-11-01 or newer
-  \item \pkg{l3kernel} version 2023-11-01 or newer
+  \item \LaTeXe{} version 2025-11-01 or newer
+  \item \pkg{l3kernel} version 2025-10-09 or newer
 \end{itemize}
-
-\pkg{clockdate} does not load or require any other packages.
 
 \subsection{Syntax}
 \label{subsec:syntax}
 
-This documentation uses the syntax \meta{int expr}.
-This syntax has the same meaning as the argument to \cs{inteval}, which is documented in \pkg{usrguide}.
+This documentation uses the syntax \meta{integer}.
+This syntax means any integer as understood by \TeX{} such as an explicit integer, a count register, or a macro that expands to an integer.
 
 
-\section{Package options}
-\label{sec:packageoptions}
-
-This section documents the package options provided by the \pkg{clockdate} package.
+\section{Package option}
+\label{sec:packageoption}
 
 \begin{variable}{overwrite-date}
   \begin{syntax}
@@ -75,22 +73,19 @@ This section documents the package options provided by the \pkg{clockdate} packa
 \section{Commands}
 \label{sec:commands}
 
-% This package defines some commands that take an \meta{int expr}.
-% This syntax has the same meaning as the argument to \cs{inteval}, which is documented in \pkg{usrguide}.
-
 \begin{function}{\clockdatesetup}
   \begin{syntax}
-    \cs{clockdatesetup} \sarg{} \marg{key-value list}
+    \cs{clockdatesetup}\sarg\marg{key-value list}
   \end{syntax}
   Sets and processes the \pkg{clockdate} package keys (\S\ref{sec:keys}) in \meta{key-value list}.
-  Adding the optional star first resets the \pkg{clockdate} package keys to their initial values.
+  Adding the optional star first resets all the \pkg{clockdate} package keys to their initial values.
   Can be used mid-document.
   The scope of the effect is local to the current group.
 \end{function}
 
 \begin{function}{\clock}
   \begin{syntax}
-    \cs{clock} \sarg{} \oarg{key-value list} \marg{token list}
+    \cs{clock}\sarg\oarg{key-value list}\marg{token list}
   \end{syntax}
   Prints the time of day or a time of day range.
   \meta{token list} must take either of the following forms:
@@ -106,17 +101,17 @@ This section documents the package options provided by the \pkg{clockdate} packa
     \item \meta{hour}
   \end{itemize}
 
-  \meta{hour}, \meta{minute}, and \meta{second} are evaluated as an \meta{int expr}.
-  \meta{hour} must evaluate to an integer from \num{0} to \num{24}.
-  \meta{minute} and \meta{second} must evaluate to an integer from \num{0} to \num{59}.
+  \meta{hour}, \meta{minute}, and \meta{second} must be an \meta{integer}.
+  \meta{hour} must be an \meta{integer} from \num{0} to \num{24}.
+  \meta{minute} and \meta{second} must be an \meta{integer} from \num{0} to \num{59}.
 
-  If the optional argument is used, \meta{key-value list} sets the keys in path \key{clock/} for only that particular usage of \cs{clock}.
+  If the optional argument is used, \meta{key-value list} sets the keys in path \key{clock} for only that particular usage of \cs{clock}.
   For details on adding the optional star, see the key \key{clock/star} (\S\ref{subsec:clock}).
 \end{function}
 
 \begin{function}{\calendardate}
   \begin{syntax}
-    \cs{calendardate} \sarg{} \oarg{key-value list} \marg{token list}
+    \cs{calendardate}\sarg\oarg{key-value list}\marg{token list}
   \end{syntax}
   \listheading
     {
@@ -129,9 +124,9 @@ This section documents the package options provided by the \pkg{clockdate} packa
     \item \meta{year}|-|\meta{month(s)}
   \end{itemize}
 
-  \meta{year} and \meta{month} are evaluated as an \meta{int expr}.
-  \meta{year} must evaluate to an integer from \num{1000} to \num{9999}.
-  \meta{month} must evaluate to an integer from \num{1} to \num{12}.
+  \meta{year} and \meta{month} must be an \meta{integer}.
+  \meta{year} must be an \meta{integer} from \num{1000} to \num{9999}.
+  \meta{month} must be an \meta{integer} from \num{1} to \num{12}.
 
   \listheading{\meta{day(s)} must take any of the following forms:}
   \begin{itemize}
@@ -139,8 +134,9 @@ This section documents the package options provided by the \pkg{clockdate} packa
     \item a day range \meta{day_1}|--|\meta{day_2}
     \item a comma-separated list of items where each item must be either a single day \meta{day} or a day range \meta{day_1}|--|\meta{day_2}
   \end{itemize}
-  Each \meta{day} is evaluated as an \meta{int expr} and must evaluate to a valid calendar date.
-  The calendar date \calendardate{2-29} is always valid if \meta{year} is omitted.
+  \meta{day} must be an \meta{integer}.
+  The calendar date must be valid.
+  \calendardate{2-29} is always valid if \meta{year} is omitted.
 
   \listheading{\meta{month(s)} must take any of the following forms:}
   \begin{itemize}
@@ -149,7 +145,7 @@ This section documents the package options provided by the \pkg{clockdate} packa
     \item a comma-separated list of items where each item must be either a single month \meta{month} or a month range \meta{month_1}|--|\meta{month_2}
   \end{itemize}
 
-  If the optional argument is used, \meta{key-value list} sets the keys in path \key{date/} for only that particular usage of \cs{calendardate}.
+  If the optional argument is used, \meta{key-value list} sets the keys in path \key{date} for only that particular usage of \cs{calendardate}.
   For details on adding the optional star, see the key \key{date/star} (\S\ref{subsec:date}).
 \end{function}
 
@@ -170,15 +166,15 @@ This subsection documents the keys that modify the behavior of \cs{clock}.
   \begin{syntax}
     \key{clock=\meta{key-value list}}
   \end{syntax}
-  Meta key that sets the keys in \meta{key-value list} in path \key{clock/}.
+  Meta key that sets the keys in \meta{key-value list} in path \key{clock}.
 \end{variable}
 
 \begin{variable}{clock/star}
   \begin{syntax}
     \key{clock/star=\meta{key-value list}}
   \end{syntax}
-  When adding the optional star in \cs{clock}, the keys in \meta{key-value list} in path \key{clock/} will be set for only that particular usage of \cs{clock}.
-  This key is initially not set.
+  When adding the optional star in \cs{clock}, the keys in \meta{key-value list} in path \key{clock} will be set for only that particular usage of \cs{clock}.
+  The initial value is \meta{empty}.
 \end{variable}
 
 \begin{variable}{clock/hour}
@@ -323,15 +319,15 @@ This subsection documents the keys that modify the behavior of \cs{calendardate}
   \begin{syntax}
     \key{date=\meta{key-value list}}
   \end{syntax}
-  Meta key that sets the keys in \meta{key-value list} in path \key{date/}.
+  Meta key that sets the keys in \meta{key-value list} in path \key{date}.
 \end{variable}
 
 \begin{variable}{date/star}
   \begin{syntax}
     \key{date/star=\meta{key-value list}}
   \end{syntax}
-  When adding the optional star in \cs{calendardate}, the keys in \meta{key-value list} in path \key{date/} will be set for only that particular usage of \cs{calendardate}.
-  This key is initially not set.
+  When adding the optional star in \cs{calendardate}, the keys in \meta{key-value list} in path \key{date} will be set for only that particular usage of \cs{calendardate}.
+  The initial value is \meta{empty}.
 \end{variable}
 
 \begin{variable}{date/order}
