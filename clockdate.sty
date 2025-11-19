@@ -7,7 +7,7 @@
 %%> \section{Loading the package}
 
 \NeedsTeXFormat{LaTeX2e}[2025-11-01]
-\ProvidesExplPackage{clockdate}{2025-11-11}{0.0.0}
+\ProvidesExplPackage{clockdate}{2025-11-19}{0.0.0}
   {Provides \noexpand\clock and \string\calendardate.}
 
 \msg_new:nnn { clockdate } { l3kernel }
@@ -1039,18 +1039,18 @@
   {
     \int_case:nn {#1}
       {
-        {  1 } { Jan \__clockdate_date_month_period:  }
-        {  2 } { Feb \__clockdate_date_month_period:  }
-        {  3 } { March                                }
-        {  4 } { April                                }
-        {  5 } { May                                  }
-        {  6 } { June                                 }
-        {  7 } { July                                 }
-        {  8 } { Aug \__clockdate_date_month_period:  }
+        {  1 } { Jan \__clockdate_date_month_period: }
+        {  2 } { Feb \__clockdate_date_month_period: }
+        {  3 } { March }
+        {  4 } { April }
+        {  5 } { May }
+        {  6 } { June }
+        {  7 } { July }
+        {  8 } { Aug \__clockdate_date_month_period: }
         {  9 } { Sept \__clockdate_date_month_period: }
-        { 10 } { Oct \__clockdate_date_month_period:  }
-        { 11 } { Nov \__clockdate_date_month_period:  }
-        { 12 } { Dec \__clockdate_date_month_period:  }
+        { 10 } { Oct \__clockdate_date_month_period: }
+        { 11 } { Nov \__clockdate_date_month_period: }
+        { 12 } { Dec \__clockdate_date_month_period: }
       }
   }
 \cs_new_protected:Npn \__clockdate_date_month_period:
