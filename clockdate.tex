@@ -1,4 +1,4 @@
-\documentclass{beery}
+\documentclass{beerydoc}
 
 
 \ExplSyntaxOn
@@ -28,7 +28,7 @@ Provides \cs{clock} and \cs{calendardate}.
 
 Oliver Beery
 
-Version 0.0.0\quad\calendardate{2025-11-11}
+Version 0.0.0\quad\calendardate{2025-11-19}
 
 
 \section{Introduction}
@@ -79,8 +79,8 @@ This syntax means any integer as understood by \TeX{} such as an explicit intege
   \end{syntax}
   Sets and processes the \pkg{clockdate} package keys (\S\ref{sec:keys}) in \meta{key-value list}.
   Adding the optional star first resets all the \pkg{clockdate} package keys to their initial values.
+  All assignments made by \cs{clockdatesetup} are local to the current group.
   Can be used mid-document.
-  The scope of the effect is local to the current group.
 \end{function}
 
 \begin{function}{\clock}
@@ -194,6 +194,32 @@ This subsection documents the keys that modify the behavior of \cs{clock}.
   The initial value is \key{=false}.
 \end{variable}
 
+\begin{variable}{clock/range-separator}
+  \begin{syntax}
+    \key{clock/range-separator=\meta{token list}}
+  \end{syntax}
+  Sets the separator between \meta{clock_1} and \meta{clock_2} in a time of day range to \meta{token list}.
+  The initial value is \key{=\ to\ }.
+\end{variable}
+
+\subsubsection{Formatting the am/pm}
+
+\begin{variable}{clock/ampm-omit-first}
+  \begin{syntax}
+    \key{clock/ampm-omit-first=\choices{true,false}}
+  \end{syntax}
+  Boolean key that sets whether \meta{clock_1} prints the am/pm in a time of day range if \meta{clock_1} and \meta{clock_2} would either both display am or both display pm.
+  The initial value is \key{=true}.
+\end{variable}
+
+\begin{variable}{clock/ampm-separator}
+  \begin{syntax}
+    \key{clock/ampm-separator=\meta{token list}}
+  \end{syntax}
+  Sets the separator before the am/pm to \meta{token list}.
+  The initial value is \key{=\ }.
+\end{variable}
+
 \begin{variable}{clock/ampm}
   \begin{syntax}
     \key{clock/ampm=\meta{choice}}
@@ -232,30 +258,30 @@ This subsection documents the keys that modify the behavior of \cs{clock}.
   % \end{itemize}
 \end{variable}
 
-\begin{variable}{clock/ampm-omit-first}
-  \begin{syntax}
-    \key{clock/ampm-omit-first=\choices{true,false}}
-  \end{syntax}
-  Boolean key that sets whether \meta{clock_1} prints the am/pm in a time of day range if \meta{clock_1} and \meta{clock_2} would either both display am or both display pm.
-  The initial value is \key{=true}.
-\end{variable}
 
-\begin{variable}
-  {
-    clock/hour-minute-separator,
-    clock/minute-second-separator,
-    clock/clock-separator
-  }
+\subsubsection{Separating the hour, minute, and second}
+
+\begin{variable}{clock/hour-minute-separator}
   \begin{syntax}
     \key{clock/hour-minute-separator=\meta{token list}}
+  \end{syntax}
+  Sets the separator between \meta{hour} and \meta{minute} to \meta{token list}.
+  The initial value is \key{=:}.
+\end{variable}
+
+\begin{variable}{clock/minute-second-separator}
+  \begin{syntax}
     \key{clock/minute-second-separator=\meta{token list}}
+  \end{syntax}
+  Sets the separator between \meta{minute} and \meta{second} to \meta{token list}.
+  The initial value is \key{=:}.
+\end{variable}
+
+\begin{variable}{clock/clock-separator}
+  \begin{syntax}
     \key{clock/clock-separator=\meta{token list}}
   \end{syntax}
-  The key \key{clock/hour-minute-separator} sets the separator between \meta{hour} and \meta{minute} to \meta{token list}.
-  The initial value is \key{=:}.
-  The key \key{clock/minute-second-separator} sets the separator between \meta{minute} and \meta{second} to \meta{token list}.
-  The initial value is \key{=:}.
-  The meta key \key{clock/clock-separator} sets the aforementioned keys to \meta{token list}.
+  Meta key that sets the keys \key{clock/hour-minute-separator} and \key{clock/minute-second-separator} to \meta{token list}.
 \end{variable}
 
 % \begin{variable}{clock/ampm-separator}
@@ -276,20 +302,12 @@ This subsection documents the keys that modify the behavior of \cs{clock}.
 %   % When printing a time of day range, the space before the second am/pm is non-breaking if the second clock contains only a single digit hour and the first am/pm is printed.
 % \end{variable}
 
-\begin{variable}{clock/ampm-separator}
-  \begin{syntax}
-    \key{clock/ampm-separator=\meta{token list}}
-  \end{syntax}
-  Sets the separator before the am/pm to \meta{token list}.
-  The initial value is \key{=\textvisiblespace}.
-\end{variable}
-
 % \begin{variable}{clock/range-separator}
 %   \begin{syntax}
 %     clock/range-separator=\choices{to,endash}
 %   \end{syntax}
 %   Choice key that sets the separator between \meta{clock_1} and \meta{clock_2} in a time of day range.
-%   Option \key{=to} sets the separator to\key{=,\textvisiblespace to\textvisiblespace}}.
+%   Option \key{=to} sets the separator to\key{=,\ to\ }}.
 %   Option \key{=endash} sets the separator to an en dash.
 
 %   A line break is always disallowed before the en dash.
@@ -301,13 +319,6 @@ This subsection documents the keys that modify the behavior of \cs{clock}.
 %     \meta{clock_2} prints only the hour and either omits the am/pm or the value of the key \key{clock/ampm-separator} is \key{=space}.
 %   \end{itemize}
 % \end{variable}
-\begin{variable}{clock/range-separator}
-  \begin{syntax}
-    \key{clock/range-separator=\meta{token list}}
-  \end{syntax}
-  Sets the separator between \meta{clock_1} and \meta{clock_2} in a time of day range to \meta{token list}.
-  The initial value is \key{=\textvisiblespace to\textvisiblespace}.
-\end{variable}
 
 
 \subsection{\cs{calendardate}}
@@ -379,45 +390,63 @@ This subsection documents the keys that modify the behavior of \cs{calendardate}
 %   % With \cs{nonfrenchspacing}, this corrects the interword spacing because this period would not mark the end of a sentence.
 %   % With option \key{=three-letter}, each month is shortened to its first three letters.
 
-\begin{variable}
-    {
-      date/year-month-separator,
-      date/month-day-separator,
-      date/year-day-separator,
-      date/date-separator
-    }
+\subsubsection{Separating the year, month, and day}
+
+\begin{variable}{date/year-month-separator}
   \begin{syntax}
     \key{date/year-month-separator=\meta{token list}}
-    \key{date/month-day-separator=\meta{token list}}
-    \key{date/year-day-separator=\meta{token list}}
-    \key{date/date-separator=\meta{token list}}
   \end{syntax}
-  The key \key{date/year-month-separator} sets the separator between \meta{year} and \meta{month} to \meta{token list}.
-  The initial value is \key{=\textvisiblespace}.
-  The key \key{date/month-day-separator} sets the separator between \meta{month} and \meta{day} to \meta{token list}.
-  The initial value is \key{=\textvisiblespace}.
-  The key \key{date/year-day-separator} sets the separator between \meta{year} and \meta{day} to \meta{token list}.
-  The initial value is \key{=,\textvisiblespace}.
-  The meta key \key{date/date-separator} sets the aforementioned keys to \meta{token list}.
+  Sets the separator between \meta{year} and \meta{month} to \meta{token list}.
+  The initial value is \key{=\ }.
 \end{variable}
 
-\begin{variable}
-  {
-    date/days-separator,
-    date/days-pair-separator,
-    date/days-final-separator
-  }
+\begin{variable}{date/month-day-separator}
+  \begin{syntax}
+    \key{date/month-day-separator=\meta{token list}}
+  \end{syntax}
+  Sets the separator between \meta{month} and \meta{day} to \meta{token list}.
+  The initial value is \key{=\ }.
+\end{variable}
+
+\begin{variable}{date/year-day-separator}
+  \begin{syntax}
+    \key{date/year-day-separator=\meta{token list}}
+  \end{syntax}
+  Sets the separator between \meta{year} and \meta{day} to \meta{token list}.
+  The initial value is \key{=,\ }.
+\end{variable}
+
+\begin{variable}{date/date-separator}
+  \begin{syntax}
+    \key{date/date-separator=\meta{token list}}
+  \end{syntax}
+  Meta key that sets the keys \key{date/year-month-separator}, \key{date/month-day-separator}, and \key{date/year-day-separator} to \meta{token list}.
+\end{variable}
+
+\subsubsection{Printing the days}
+
+\begin{variable}{date/days-separator}
   \begin{syntax}
     \key{date/days-separator=\meta{token list}}
+  \end{syntax}
+  Sets the separator between each item in \meta{day(s)} to \meta{token list}.
+  The initial value is \key{=,\ }.
+\end{variable}
+
+\begin{variable}{date/days-pair-separator}
+  \begin{syntax}
     \key{date/days-pair-separator=\meta{token list}}
+  \end{syntax}
+  Sets the separator between each item in \meta{day(s)} to \meta{token list} when \meta{day(s)} contains exactly two items.
+  The initial value is \key{=\ and\ }.
+\end{variable}
+
+\begin{variable}{days/days-final-separator}
+  \begin{syntax}
     \key{date/days-final-separator=\meta{token list}}
   \end{syntax}
-  The key \key{date/days-separator} sets the separator between each item in \meta{day(s)} to \meta{token list}.
-  The initial value is \key{=,\textvisiblespace}.
-  The key \key{date/days-pair-separator} sets the separator between each item in \meta{day(s)} to \meta{token list} when \meta{day(s)} contains exactly two items.
-  The initial value is \key{=\textvisiblespace and\textvisiblespace}.
-  The key \key{date/days-final-separator} sets the separator between the last two items in \meta{day(s)} to \meta{token list} when \meta{day(s)} contains three or more items.
-  The initial value is \key{=,\textvisiblespace and\textvisiblespace}.
+    Sets the separator between the last two items in \meta{day(s)} to \meta{token list} when \meta{day(s)} contains three or more items.
+  The initial value is \key{=,\ and\ }.
 \end{variable}
 
 \begin{variable}{date/days-range-separator}
@@ -425,26 +454,33 @@ This subsection documents the keys that modify the behavior of \cs{calendardate}
     \key{date/days-range-separator=\meta{token list}}
   \end{syntax}
   Sets the separator between \meta{day_1} and \meta{day_2} in a day range to \meta{token list}.
-  The initial value is \key{=\textvisiblespace to\textvisiblespace}.
+  The initial value is \key{=\ to\ }.
 \end{variable}
 
-\begin{variable}
-  {
-    date/months-separator,
-    date/months-pair-separator,
-    date/months-final-separator
-  }
+\subsubsection{Printing the months}
+
+\begin{variable}{date/months-separator}
   \begin{syntax}
     \key{date/months-separator=\meta{token list}}
+  \end{syntax}
+  Sets the separator between each item in \meta{month(s)} to \meta{token list}.
+  The initial value is \key{=,\ }.
+\end{variable}
+
+\begin{variable}{date/months-pair-separator}
+  \begin{syntax}
     \key{date/months-pair-separator=\meta{token list}}
+  \end{syntax}
+  Sets the separator between each item in \meta{month(s)} to \meta{token list} when \meta{month(s)} contains exactly two items.
+  The initial value is \key{=\ and\ }.
+\end{variable}
+
+\begin{variable}{date/months-final-separator}
+  \begin{syntax}
     \key{date/months-final-separator=\meta{token list}}
   \end{syntax}
-  The key \key{date/months-separator} sets the separator between each item in \meta{month(s)} to \meta{token list}.
-  The initial value is \key{=,\textvisiblespace}.
-  The key \key{date/months-pair-separator} sets the separator between each item in \meta{month(s)} to \meta{token list} when \meta{month(s)} contains exactly two items.
-  The initial value is \key{=\textvisiblespace and\textvisiblespace}.
-  The key \key{date/months-final-separator} sets the separator between the last two items in \meta{month(s)} to \meta{token list} when \meta{month(s)} contains three or more items.
-  The initial value is \key{=,\textvisiblespace and\textvisiblespace}.
+  Sets the separator between the last two items in \meta{month(s)} to \meta{token list} when \meta{month(s)} contains three or more items.
+  The initial value is \key{=,\ and\ }.
 \end{variable}
 
 \begin{variable}{date/months-range-separator}
@@ -452,7 +488,7 @@ This subsection documents the keys that modify the behavior of \cs{calendardate}
     \key{date/months-range-separator=\meta{token list}}
   \end{syntax}
   Sets the separator between \meta{month_1} and \meta{month_2} in a month range to \meta{token list}.
-  The initial value is \key{=\textvisiblespace to\textvisiblespace}.
+  The initial value is \key{=\ to\ }.
 \end{variable}
 
 
