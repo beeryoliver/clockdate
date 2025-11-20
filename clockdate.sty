@@ -7,7 +7,7 @@
 %%> \section{Loading the package}
 
 \NeedsTeXFormat{LaTeX2e}[2025-11-01]
-\ProvidesExplPackage{clockdate}{2025-11-19}{0.0.0}
+\ProvidesExplPackage{clockdate}{2025-11-20}{0.0.0}
   {Provides \noexpand\clock and \string\calendardate.}
 
 \msg_new:nnn { clockdate } { l3kernel }
@@ -222,7 +222,7 @@
 \cs_new_protected:Npn \__clockdate_clock_aux:n #1
   {
     \tl_set:Nn \l__clockdate_clock_input_tl {#1}
-    \tl_replace_all:NnV \l__clockdate_clock_input_tl { : } \c_colon_str
+    \tl_replace_all:NVn \l__clockdate_clock_input_tl \c_colon_str { : }
     \tl_if_in:NnTF \l__clockdate_clock_input_tl { -- }
       { \exp_args:NV \__clockdate_clock_print_range:n }
       { \exp_args:NV \__clockdate_clock_print:n }
@@ -233,7 +233,7 @@
   { \__clockdate_clock_print_range:w #1 \q_stop }
 \cs_new_protected:Npn \__clockdate_clock_print_range:w #1 -- #2 \q_stop
   {
-    \seq_set_split:NVn \l__clockdate_clock_seq \c_colon_str {#1}
+    \seq_set_split:Nnn \l__clockdate_clock_seq { : } {#1}
     \int_case:nnF { \seq_count:N \l__clockdate_clock_seq }
       {
         { 1 }
@@ -262,7 +262,7 @@
         \msg_error:nnn { clockdate } { invalid } { #1 -- #2 }
         \prg_break:
       }
-    \seq_set_split:NVn \l__clockdate_clock_range_seq \c_colon_str {#2}
+    \seq_set_split:Nnn \l__clockdate_clock_range_seq { : } {#2}
     \int_case:nnF { \seq_count:N \l__clockdate_clock_range_seq }
       {
         { 1 }
@@ -347,7 +347,7 @@
 
 \cs_new_protected:Npn \__clockdate_clock_print:n #1
   {
-    \seq_set_split:NVn \l__clockdate_clock_seq \c_colon_str {#1}
+    \seq_set_split:Nnn \l__clockdate_clock_seq { : } {#1}
     \int_case:nnF { \seq_count:N \l__clockdate_clock_seq }
       {
         { 1 }
@@ -1087,6 +1087,21 @@
   }
 \keys_define:nn { clockdate / date }
   {
+      day .choices:nn = { number, zero-padded-number }
+        {
+          \cs_set_eq:Nc \__clockdate_date_print_day:n
+            { __clockdate_date_print_day_ \l_keys_choice_str :n }
+        }
+    , day .value_required:n = true
+  }
+\cs_new_protected:Npn \__clockdate_date_print_day_number:n { \int_eval:n }
+\cs_new_protected:cpn { __clockdate_date_print_day_zero-padded-number:n } #1
+  {
+    \int_compare:nNnT {#1} < { 10 } { 0 }
+    \int_eval:n {#1}
+  }
+\keys_define:nn { clockdate / date }
+  {
       month .meta:nn = { clockdate / date / month }
         { year-month-day = {#1} , year-month = {#1} , month-day = {#1} }
     , month .value_required:n = true
@@ -1162,6 +1177,8 @@
       \__clockdate_date_print_month_long:n
     \cs_set_eq:NN \__clockdate_date_print_month_month_day:n
       \__clockdate_date_print_month_abbreviated:n
+    \cs_set_eq:NN \__clockdate_date_print_day:n
+      \__clockdate_date_print_day_number:n
     \tl_set_eq:NN \l__clockdate_date_year_month_separator_tl \c_space_tl
     \tl_set_eq:NN \l__clockdate_date_month_day_separator_tl \c_space_tl
     \tl_set:Nn \l__clockdate_date_year_day_separator_tl { ,~ }

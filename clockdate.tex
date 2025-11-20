@@ -28,7 +28,7 @@ Provides \cs{clock} and \cs{calendardate}.
 
 Oliver Beery
 
-Version 0.0.0\quad\calendardate{2025-11-19}
+Version 0.0.0\quad\calendardate{2025-11-20}
 
 
 \section{Introduction}
@@ -105,7 +105,7 @@ This syntax means any integer as understood by \TeX{} such as an explicit intege
   \meta{hour} must be an \meta{integer} from \num{0} to \num{24}.
   \meta{minute} and \meta{second} must be an \meta{integer} from \num{0} to \num{59}.
 
-  If the optional argument is used, \meta{key-value list} sets the keys in path \key{clock} for only that particular usage of \cs{clock}.
+  If the optional argument is used, the keys in \meta{key-value list} are set in path \key{clock} for only that particular usage of \cs{clock}.
   For details on adding the optional star, see the key \key{clock/star} (\S\ref{subsec:clock}).
 \end{function}
 
@@ -145,7 +145,7 @@ This syntax means any integer as understood by \TeX{} such as an explicit intege
     \item a comma-separated list of items where each item must be either a single month \meta{month} or a month range \meta{month_1}|--|\meta{month_2}
   \end{itemize}
 
-  If the optional argument is used, \meta{key-value list} sets the keys in path \key{date} for only that particular usage of \cs{calendardate}.
+  If the optional argument is used, the keys in \meta{key-value list} are set in path \key{date} for only that particular usage of \cs{calendardate}.
   For details on adding the optional star, see the key \key{date/star} (\S\ref{subsec:date}).
 \end{function}
 
@@ -202,7 +202,7 @@ This subsection documents the keys that modify the behavior of \cs{clock}.
   The initial value is \key{=\ to\ }.
 \end{variable}
 
-\subsubsection{Formatting the am/pm}
+\subsubsection{Printing the am/pm}
 
 \begin{variable}{clock/ampm-omit-first}
   \begin{syntax}
@@ -389,6 +389,14 @@ This subsection documents the keys that modify the behavior of \cs{calendardate}
 %   % When printing the period, the period is followed by \cs{@}.
 %   % With \cs{nonfrenchspacing}, this corrects the interword spacing because this period would not mark the end of a sentence.
 %   % With option \key{=three-letter}, each month is shortened to its first three letters.
+
+\begin{variable}{date/day}
+  \begin{syntax}
+    \key{date/day=\choices{number,zero-padded-number}}
+  \end{syntax}
+  Choice key that sets the format in which the day is printed.
+  The initial value is \key{=number}.
+\end{variable}
 
 \subsubsection{Separating the year, month, and day}
 
