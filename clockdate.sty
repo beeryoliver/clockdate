@@ -7,7 +7,7 @@
 %%> \section{Loading the package}
 
 \NeedsTeXFormat{LaTeX2e}[2025-11-01]
-\ProvidesExplPackage{clockdate}{2025-11-20}{0.0.0}
+\ProvidesExplPackage{clockdate}{2025-12-10}{0.0.0}
   {Provides \noexpand\clock and \string\calendardate.}
 
 \msg_new:nnn { clockdate } { l3kernel }
@@ -180,7 +180,7 @@
       }
   }
 
-%%> \section{Document commands}
+%%> \section{\cs{clock}}
 
 \NewDocumentCommand \clock { s o m }
   {
@@ -461,6 +461,8 @@
       { \__clockdate_clock_print_am: }
       { \__clockdate_clock_print_pm: }
   }
+
+%%> \section{\cs{calendardate}}
 
 \cs_set_protected:Npn \__clockdate_tmp:Nn #1#2
   {
@@ -1169,6 +1171,7 @@
     \tl_set:NV \l__clockdate_clock_minute_second_separator_tl \c_colon_str
     \tl_set_eq:NN \l__clockdate_clock_ampm_separator_tl \c_space_tl
     \tl_set:Nn \l__clockdate_clock_range_separator_tl { ~to~ }
+
     \cs_set_eq:NN \__clockdate_date:ww  \__clockdate_date_month_day_year:ww
     \cs_set_eq:NN \__clockdate_date:www \__clockdate_date_month_day_year:www
     \cs_set_eq:NN \__clockdate_date_print_month_year_month_day:n
