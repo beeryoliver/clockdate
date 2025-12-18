@@ -27,7 +27,7 @@ Provides \cs{clock} and \cs{calendardate}.
 
 Oliver Beery
 
-Version 0.0.0\quad\calendardate{2025-12-10}
+Version 0.0.0\quad\calendardate{2025-12-18}
 
 
 \section{Introduction}
@@ -78,7 +78,7 @@ integer, a count register, or a macro that expands to an integer.
 
 \begin{function}{\clockdatesetup}
   \begin{syntax}
-    \cs{clockdatesetup}\sarg\marg{key-value list}
+    \cs{clockdatesetup} \sarg{} \marg{key-value list}
   \end{syntax}
   Sets and processes the \pkg{clockdate} package keys (\S\ref{sec:keys}) in
   \meta{key-value list}.
@@ -90,7 +90,7 @@ integer, a count register, or a macro that expands to an integer.
 
 \begin{function}{\clock}
   \begin{syntax}
-    \cs{clock}\sarg\oarg{key-value list}\marg{token list}
+    \cs{clock} \sarg{} \oarg{key-value list} \marg{token list}
   \end{syntax}
   Prints the time of day or a time of day range.
   \meta{token list} must take either of the following forms:
@@ -119,7 +119,7 @@ integer, a count register, or a macro that expands to an integer.
 
 \begin{function}{\calendardate}
   \begin{syntax}
-    \cs{calendardate}\sarg\oarg{key-value list}\marg{token list}
+    \cs{calendardate} \sarg{} \oarg{key-value list} \marg{token list}
   \end{syntax}
   \listheading
     {
@@ -215,7 +215,7 @@ This subsection documents the keys that modify the behavior of \cs{clock}.
   \end{syntax}
   Sets the separator between \meta{clock_1} and \meta{clock_2} in a time of
   day range to \meta{token list}.
-  The initial value is \key{=\ to\ }.
+  The initial value is \key{= to }.
 \end{variable}
 
 \subsubsection{Printing the am/pm}
@@ -235,7 +235,7 @@ This subsection documents the keys that modify the behavior of \cs{clock}.
     \key{clock/ampm-separator=\meta{token list}}
   \end{syntax}
   Sets the separator before the am/pm to \meta{token list}.
-  The initial value is \key{=\ }.
+  The initial value is \key{= }.
 \end{variable}
 
 \begin{variable}{clock/ampm}
@@ -379,7 +379,7 @@ This subsection documents the keys that modify the behavior of
     \key{date/year-month-separator=\meta{token list}}
   \end{syntax}
   Sets the separator between \meta{year} and \meta{month} to \meta{token list}.
-  The initial value is \key{=\ }.
+  The initial value is \key{= }.
 \end{variable}
 
 \begin{variable}{date/month-day-separator}
@@ -387,7 +387,7 @@ This subsection documents the keys that modify the behavior of
     \key{date/month-day-separator=\meta{token list}}
   \end{syntax}
   Sets the separator between \meta{month} and \meta{day} to \meta{token list}.
-  The initial value is \key{=\ }.
+  The initial value is \key{= }.
 \end{variable}
 
 \begin{variable}{date/year-day-separator}
@@ -395,7 +395,7 @@ This subsection documents the keys that modify the behavior of
     \key{date/year-day-separator=\meta{token list}}
   \end{syntax}
   Sets the separator between \meta{year} and \meta{day} to \meta{token list}.
-  The initial value is \key{=,\ }.
+  The initial value is \key{=, }.
 \end{variable}
 
 \begin{variable}{date/date-separator}
@@ -414,7 +414,7 @@ This subsection documents the keys that modify the behavior of
     \key{date/days-separator=\meta{token list}}
   \end{syntax}
   Sets the separator between each item in \meta{day(s)} to \meta{token list}.
-  The initial value is \key{=,\ }.
+  The initial value is \key{=, }.
 \end{variable}
 
 \begin{variable}{date/days-pair-separator}
@@ -423,7 +423,7 @@ This subsection documents the keys that modify the behavior of
   \end{syntax}
   Sets the separator between each item in \meta{day(s)} to \meta{token list}
   when \meta{day(s)} contains exactly two items.
-  The initial value is \key{=\ and\ }.
+  The initial value is \key{= and }.
 \end{variable}
 
 \begin{variable}{days/days-final-separator}
@@ -432,7 +432,7 @@ This subsection documents the keys that modify the behavior of
   \end{syntax}
     Sets the separator between the last two items in \meta{day(s)} to
     \meta{token list} when \meta{day(s)} contains three or more items.
-  The initial value is \key{=,\ and\ }.
+  The initial value is \key{=, and }.
 \end{variable}
 
 \begin{variable}{date/days-range-separator}
@@ -441,7 +441,7 @@ This subsection documents the keys that modify the behavior of
   \end{syntax}
   Sets the separator between \meta{day_1} and \meta{day_2} in a day range to
   \meta{token list}.
-  The initial value is \key{=\ to\ }.
+  The initial value is \key{= to }.
 \end{variable}
 
 \subsubsection{Printing the months}
@@ -451,7 +451,7 @@ This subsection documents the keys that modify the behavior of
     \key{date/months-separator=\meta{token list}}
   \end{syntax}
   Sets the separator between each item in \meta{month(s)} to \meta{token list}.
-  The initial value is \key{=,\ }.
+  The initial value is \key{=, }.
 \end{variable}
 
 \begin{variable}{date/months-pair-separator}
@@ -460,7 +460,7 @@ This subsection documents the keys that modify the behavior of
   \end{syntax}
   Sets the separator between each item in \meta{month(s)} to \meta{token list}
   when \meta{month(s)} contains exactly two items.
-  The initial value is \key{=\ and\ }.
+  The initial value is \key{= and }.
 \end{variable}
 
 \begin{variable}{date/months-final-separator}
@@ -469,7 +469,7 @@ This subsection documents the keys that modify the behavior of
   \end{syntax}
   Sets the separator between the last two items in \meta{month(s)} to
   \meta{token list} when \meta{month(s)} contains three or more items.
-  The initial value is \key{=,\ and\ }.
+  The initial value is \key{=, and }.
 \end{variable}
 
 \begin{variable}{date/months-range-separator}
@@ -478,7 +478,7 @@ This subsection documents the keys that modify the behavior of
   \end{syntax}
   Sets the separator between \meta{month_1} and \meta{month_2} in a month
   range to \meta{token list}.
-  The initial value is \key{=\ to\ }.
+  The initial value is \key{= to }.
 \end{variable}
 
 
