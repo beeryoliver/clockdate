@@ -2,7 +2,7 @@
 
 
 \ExplSyntaxOn
-\usepackage{clockdate}
+\usepackage[overwrite-date]{clockdate}
 \clockdatesetup
   {
       date / star =
@@ -27,7 +27,7 @@ Print the time of day and the calendar date.
 
 Oliver Beery
 
-Version 0.0.0\quad\calendardate{2025-12-24}
+Version 0.0.0\quad\date{2025-12-26}
 
 
 \section{Introduction}
@@ -63,13 +63,11 @@ integer, a count register, or a macro that expands to an integer.
   \begin{syntax}
     \key{overwrite-date}
   \end{syntax}
-  Declares a new document command \cs{date} that is equivalent to
-  \cs{calendardate}.
-  This new definition of \cs{date} overwrites its previous definition.
+  Makes \cs{date} equivalent to \cs{calendardate}, overwriting its previous
+  definition.
+  This is done at the \hook{begindocument} hook.
   By default, \cs{date} sets the document\rq s date which is used in
   \cs{maketitle}.
-  Use this package option only if your document does not rely on the old
-  definition of \cs{date}.
 \end{variable}
 
 
@@ -145,7 +143,7 @@ integer, a count register, or a macro that expands to an integer.
   \end{itemize}
   \meta{day} must be an \meta{integer}.
   The calendar date must be valid.
-  \calendardate{2-29} is always valid if \meta{year} is omitted.
+  \date{2-29} is always valid if \meta{year} is omitted.
 
   \listheading{\meta{month(s)} must take any of the following forms:}
   \begin{itemize}
