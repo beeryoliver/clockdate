@@ -7,7 +7,7 @@
 %%> \section{Loading the package}
 
 \NeedsTeXFormat{LaTeX2e}[2025-11-01]
-\ProvidesExplPackage{clockdate}{2025-12-24}{0.0.0}
+\ProvidesExplPackage{clockdate}{2025-12-26}{0.0.0}
   {Provides \noexpand\clock and \string\calendardate.}
 
 \msg_new:nnn { clockdate } { l3kernel }
@@ -21,9 +21,12 @@
 % Define package options.
 \keys_define:nn { clockdate }
   {
-      overwrite-date .bool_gset:N = \g__clockdate_overwrite_date_bool
+      overwrite-date .code:n =
+        {
+          \hook_gput_code:nnn { begindocument } { clockdate }
+            { \__clockdate_date_new:Nn \DeclareDocumentCommand { date } }
+        }
     , overwrite-date .value_forbidden:n = true
-    , overwrite-date .default:n = true
     , overwrite-date .usage:n = load
   }
 \ProcessKeyOptions
@@ -464,7 +467,7 @@
 
 %%> \section{\cs{calendardate}}
 
-\cs_set_protected:Npn \__clockdate_tmp:Nn #1#2
+\cs_set_protected:Npn \__clockdate_date_new:Nn #1#2
   {
     \exp_args:Nc #1 {#2} { s o m }
       {
@@ -488,9 +491,7 @@
           }
       }
   }
-\__clockdate_tmp:Nn \NewDocumentCommand { calendardate }
-\bool_if:NT \g__clockdate_overwrite_date_bool
-  { \__clockdate_tmp:Nn \DeclareDocumentCommand { date } }
+\__clockdate_date_new:Nn \NewDocumentCommand { calendardate }
 % Both \__clockdate_date:nn and \__clockdate_date:n must end in the same way so
 % that \__clockdate_date_month_period: works correctly.
 \cs_new_protected:Npn \__clockdate_date:nn #1#2
