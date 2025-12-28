@@ -1,10 +1,10 @@
-%%% Package   : clockdate -- Print the time of day and the calendar date
-%%% Copyright : 2025 (c) Oliver Beery <beeryoliver@gmail.com>
-%%% CTAN      : <ADD CTAN LINK HERE>
-%%% Repository: <https://github.com/beeryoliver/clockdate>
-%%% License   : The LaTeX Project Public License 1.3c
+% Package   : clockdate -- Print the time of day and the calendar date
+% Copyright : 2025 (c) Oliver Beery <beeryoliver@gmail.com>
+% CTAN      : <ADD CTAN LINK HERE>
+% Repository: <https://github.com/beeryoliver/clockdate>
+% License   : The LaTeX Project Public License 1.3c
 
-%%> \section{Loading the package}
+% Loading the package
 
 \NeedsTeXFormat{LaTeX2e}[2025-11-01]
 \ProvidesExplPackage{clockdate}{2025-12-26}{0.0.0}
@@ -31,7 +31,7 @@
   }
 \ProcessKeyOptions
 
-%%> \section{Some variables}
+% Some variables
 
 \tl_new:N \l__clockdate_clock_input_tl
 
@@ -78,7 +78,7 @@
   }
   { \int_set:Nn #1 { -1 } }
 
-%%> \section{Some functions}
+% Some functions
 
 % Variants of l3kernel functions
 \cs_generate_variant:Nn \msg_error:nnnnn { nnVVV }
@@ -183,7 +183,7 @@
       }
   }
 
-%%> \section{\cs{clock}}
+% \clock
 
 \NewDocumentCommand \clock { s o m }
   {
@@ -465,7 +465,7 @@
       { \__clockdate_clock_print_pm: }
   }
 
-%%> \section{\cs{calendardate}}
+% \calendardate
 
 \cs_set_protected:Npn \__clockdate_date_new:Nn #1#2
   {
@@ -870,7 +870,7 @@
   }
 \cs_new_protected:Npn \__clockdate_date_print_day:n { \int_eval:n }
 
-%%> \section{Define keys}
+% Define keys
 
 \bool_new:N \l__clockdate_clock_military_bool
 
@@ -1219,7 +1219,7 @@
       { \bool_set_true:N  \l__clockdate_clock_print_ampm_bool }
   }
 
-%%> \section{Messages}
+% Messages
 
 \msg_new:nnn { clockdate } { math-mode-invalid }
   { '\iow_char:N \\ #1'~ invalid~ in~ math~ mode~ \msg_line_context:. }
