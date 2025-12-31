@@ -27,7 +27,7 @@ Print the time of day and the calendar date.
 
 Oliver Beery
 
-Version 0.0.0\quad\date{2025-12-27}
+Version 0.0.0\quad\date{2025-12-31}
 
 
 \section{Introduction}
@@ -59,7 +59,7 @@ integer, a count register, or a macro that expands to an integer.
 \section{Package option}
 \label{sec:packageoption}
 
-\begin{variable}{overwrite-date}
+\begin{code}{overwrite-date}
   \begin{syntax}
     \key{overwrite-date}
   \end{syntax}
@@ -68,13 +68,13 @@ integer, a count register, or a macro that expands to an integer.
   This is done at the \hook{begindocument} hook.
   By default, \cs{date} sets the document\rq s date which is used in
   \cs{maketitle}.
-\end{variable}
+\end{code}
 
 
 \section{Commands}
 \label{sec:commands}
 
-\begin{function}{\clockdatesetup}
+\begin{code}{\clockdatesetup}
   \begin{syntax}
     \cs{clockdatesetup} \sarg{} \marg{key-value list}
   \end{syntax}
@@ -84,9 +84,9 @@ integer, a count register, or a macro that expands to an integer.
   their initial values.
   All assignments made by \cs{clockdatesetup} are local to the current group.
   Can be used mid-document.
-\end{function}
+\end{code}
 
-\begin{function}{\clock}
+\begin{code}{\clock}
   \begin{syntax}
     \cs{clock} \sarg{} \oarg{key-value list} \marg{token list}
   \end{syntax}
@@ -113,9 +113,9 @@ integer, a count register, or a macro that expands to an integer.
   in path \key{clock} for only that particular usage of \cs{clock}.
   For details on adding the optional star, see the key \key{clock/star}
   (\S\ref{subsec:clock}).
-\end{function}
+\end{code}
 
-\begin{function}{\calendardate}
+\begin{code}{\calendardate}
   \begin{syntax}
     \cs{calendardate} \sarg{} \oarg{key-value list} \marg{token list}
   \end{syntax}
@@ -157,7 +157,7 @@ integer, a count register, or a macro that expands to an integer.
   in path \key{date} for only that particular usage of \cs{calendardate}.
   For details on adding the optional star, see the key \key{date/star}
   (\S\ref{subsec:date}).
-\end{function}
+\end{code}
 
 
 \section{Keys}
@@ -173,14 +173,14 @@ Set the package keys using \cs{clockdatesetup}\marg{key-value list}
 
 This subsection documents the keys that modify the behavior of \cs{clock}.
 
-\begin{variable}{clock}
+\begin{code}{clock}
   \begin{syntax}
     \key{clock=\meta{key-value list}}
   \end{syntax}
   Meta key that sets the keys in \meta{key-value list} in path \key{clock}.
-\end{variable}
+\end{code}
 
-\begin{variable}{clock/star}
+\begin{code}{clock/star}
   \begin{syntax}
     \key{clock/star=\meta{key-value list}}
   \end{syntax}
@@ -188,37 +188,37 @@ This subsection documents the keys that modify the behavior of \cs{clock}.
   list} in path \key{clock} will be set for only that particular usage of
   \cs{clock}.
   The initial value is \meta{empty}.
-\end{variable}
+\end{code}
 
-\begin{variable}{clock/hour}
+\begin{code}{clock/hour}
   \begin{syntax}
     \key{clock/hour=\choices{12,24}}
   \end{syntax}
   Choice key that sets whether to print the hour in 12-hour or 24-hour format.
   In 24-hour format, the am/pm is always omitted.
   The initial value is \key{=12}.
-\end{variable}
+\end{code}
 
-\begin{variable}{clock/hour-leading-zero}
+\begin{code}{clock/hour-leading-zero}
   \begin{syntax}
     \key{clock/hour-leading-zero=\choices{true,false}}
   \end{syntax}
   Boolean key that sets whether to print the hour with a leading zero.
   The initial value is \key{=false}.
-\end{variable}
+\end{code}
 
-\begin{variable}{clock/range-separator}
+\begin{code}{clock/range-separator}
   \begin{syntax}
     \key{clock/range-separator=\meta{token list}}
   \end{syntax}
   Sets the separator between \meta{clock_1} and \meta{clock_2} in a time of
   day range to \meta{token list}.
   The initial value is \key{= to }.
-\end{variable}
+\end{code}
 
 \subsubsection{Printing the am/pm}
 
-\begin{variable}{clock/ampm-omit-first}
+\begin{code}{clock/ampm-omit-first}
   \begin{syntax}
     \key{clock/ampm-omit-first=\choices{true,false}}
   \end{syntax}
@@ -226,17 +226,17 @@ This subsection documents the keys that modify the behavior of \cs{clock}.
   day range if \meta{clock_1} and \meta{clock_2} would either both display am
   or both display pm.
   The initial value is \key{=true}.
-\end{variable}
+\end{code}
 
-\begin{variable}{clock/ampm-separator}
+\begin{code}{clock/ampm-separator}
   \begin{syntax}
     \key{clock/ampm-separator=\meta{token list}}
   \end{syntax}
   Sets the separator before the am/pm to \meta{token list}.
   The initial value is \key{= }.
-\end{variable}
+\end{code}
 
-\begin{variable}{clock/ampm}
+\begin{code}{clock/ampm}
   \begin{syntax}
     \key{clock/ampm=\meta{choice}}
   \end{syntax}
@@ -262,36 +262,36 @@ This subsection documents the keys that modify the behavior of \cs{clock}.
   extra period.
   When the am/pm prints the period, it is followed by \cs{@} because the
   sentence does not end here.
-\end{variable}
+\end{code}
 
 
 \subsubsection{Separating the hour, minute, and second}
 
-\begin{variable}{clock/hour-minute-separator}
+\begin{code}{clock/hour-minute-separator}
   \begin{syntax}
     \key{clock/hour-minute-separator=\meta{token list}}
   \end{syntax}
   Sets the separator between \meta{hour} and \meta{minute} to
   \meta{token list}.
   The initial value is \key{=:}.
-\end{variable}
+\end{code}
 
-\begin{variable}{clock/minute-second-separator}
+\begin{code}{clock/minute-second-separator}
   \begin{syntax}
     \key{clock/minute-second-separator=\meta{token list}}
   \end{syntax}
   Sets the separator between \meta{minute} and \meta{second} to
   \meta{token list}.
   The initial value is \key{=:}.
-\end{variable}
+\end{code}
 
-\begin{variable}{clock/clock-separator}
+\begin{code}{clock/clock-separator}
   \begin{syntax}
     \key{clock/clock-separator=\meta{token list}}
   \end{syntax}
   Meta key that sets the keys \key{clock/hour-minute-separator} and
   \key{clock/minute-second-separator} to \meta{token list}.
-\end{variable}
+\end{code}
 
 \subsection{\cs{calendardate}}
 \label{subsec:date}
@@ -299,14 +299,14 @@ This subsection documents the keys that modify the behavior of \cs{clock}.
 This subsection documents the keys that modify the behavior of
 \cs{calendardate}.
 
-\begin{variable}{date}
+\begin{code}{date}
   \begin{syntax}
     \key{date=\meta{key-value list}}
   \end{syntax}
   Meta key that sets the keys in \meta{key-value list} in path \key{date}.
-\end{variable}
+\end{code}
 
-\begin{variable}{date/star}
+\begin{code}{date/star}
   \begin{syntax}
     \key{date/star=\meta{key-value list}}
   \end{syntax}
@@ -314,17 +314,17 @@ This subsection documents the keys that modify the behavior of
   \meta{key-value list} in path \key{date} will be set for only that
   particular usage of \cs{calendardate}.
   The initial value is \meta{empty}.
-\end{variable}
+\end{code}
 
-\begin{variable}{date/order}
+\begin{code}{date/order}
   \begin{syntax}
     \key{date/order=\choices{month-day-year,day-month-year,year-month-day}}
   \end{syntax}
   Choice key that sets the order in which the year, month, and day are printed.
   The initial value is \key{=month-day-year}.
-\end{variable}
+\end{code}
 
-\begin{variable}
+\begin{code}
     {
       date/month/year-month-day,
       date/month/year-month,
@@ -360,124 +360,124 @@ This subsection documents the keys that modify the behavior of
   will not print an extra period.
   When the abbreviated month prints the period, it is followed by \cs{@}
   because the sentence does not end here.
-\end{variable}
+\end{code}
 
-\begin{variable}{date/day}
+\begin{code}{date/day}
   \begin{syntax}
     \key{date/day=\choices{number,zero-padded-number}}
   \end{syntax}
   Choice key that sets the format in which the day is printed.
   The initial value is \key{=number}.
-\end{variable}
+\end{code}
 
 \subsubsection{Separating the year, month, and day}
 
-\begin{variable}{date/year-month-separator}
+\begin{code}{date/year-month-separator}
   \begin{syntax}
     \key{date/year-month-separator=\meta{token list}}
   \end{syntax}
   Sets the separator between \meta{year} and \meta{month} to \meta{token list}.
   The initial value is \key{= }.
-\end{variable}
+\end{code}
 
-\begin{variable}{date/month-day-separator}
+\begin{code}{date/month-day-separator}
   \begin{syntax}
     \key{date/month-day-separator=\meta{token list}}
   \end{syntax}
   Sets the separator between \meta{month} and \meta{day} to \meta{token list}.
   The initial value is \key{= }.
-\end{variable}
+\end{code}
 
-\begin{variable}{date/year-day-separator}
+\begin{code}{date/year-day-separator}
   \begin{syntax}
     \key{date/year-day-separator=\meta{token list}}
   \end{syntax}
   Sets the separator between \meta{year} and \meta{day} to \meta{token list}.
   The initial value is \key{=, }.
-\end{variable}
+\end{code}
 
-\begin{variable}{date/date-separator}
+\begin{code}{date/date-separator}
   \begin{syntax}
     \key{date/date-separator=\meta{token list}}
   \end{syntax}
   Meta key that sets the keys \key{date/year-month-separator},
   \key{date/month-day-separator}, and \key{date/year-day-separator} to
   \meta{token list}.
-\end{variable}
+\end{code}
 
 \subsubsection{Printing the days}
 
-\begin{variable}{date/days-separator}
+\begin{code}{date/days-separator}
   \begin{syntax}
     \key{date/days-separator=\meta{token list}}
   \end{syntax}
   Sets the separator between each item in \meta{day(s)} to \meta{token list}.
   The initial value is \key{=, }.
-\end{variable}
+\end{code}
 
-\begin{variable}{date/days-pair-separator}
+\begin{code}{date/days-pair-separator}
   \begin{syntax}
     \key{date/days-pair-separator=\meta{token list}}
   \end{syntax}
   Sets the separator between each item in \meta{day(s)} to \meta{token list}
   when \meta{day(s)} contains exactly two items.
   The initial value is \key{= and }.
-\end{variable}
+\end{code}
 
-\begin{variable}{days/days-final-separator}
+\begin{code}{days/days-final-separator}
   \begin{syntax}
     \key{date/days-final-separator=\meta{token list}}
   \end{syntax}
     Sets the separator between the last two items in \meta{day(s)} to
     \meta{token list} when \meta{day(s)} contains three or more items.
   The initial value is \key{=, and }.
-\end{variable}
+\end{code}
 
-\begin{variable}{date/days-range-separator}
+\begin{code}{date/days-range-separator}
   \begin{syntax}
     \key{date/days-range-separator=\meta{token list}}
   \end{syntax}
   Sets the separator between \meta{day_1} and \meta{day_2} in a day range to
   \meta{token list}.
   The initial value is \key{= to }.
-\end{variable}
+\end{code}
 
 \subsubsection{Printing the months}
 
-\begin{variable}{date/months-separator}
+\begin{code}{date/months-separator}
   \begin{syntax}
     \key{date/months-separator=\meta{token list}}
   \end{syntax}
   Sets the separator between each item in \meta{month(s)} to \meta{token list}.
   The initial value is \key{=, }.
-\end{variable}
+\end{code}
 
-\begin{variable}{date/months-pair-separator}
+\begin{code}{date/months-pair-separator}
   \begin{syntax}
     \key{date/months-pair-separator=\meta{token list}}
   \end{syntax}
   Sets the separator between each item in \meta{month(s)} to \meta{token list}
   when \meta{month(s)} contains exactly two items.
   The initial value is \key{= and }.
-\end{variable}
+\end{code}
 
-\begin{variable}{date/months-final-separator}
+\begin{code}{date/months-final-separator}
   \begin{syntax}
     \key{date/months-final-separator=\meta{token list}}
   \end{syntax}
   Sets the separator between the last two items in \meta{month(s)} to
   \meta{token list} when \meta{month(s)} contains three or more items.
   The initial value is \key{=, and }.
-\end{variable}
+\end{code}
 
-\begin{variable}{date/months-range-separator}
+\begin{code}{date/months-range-separator}
   \begin{syntax}
     \key{date/months-range-separator=\meta{token list}}
   \end{syntax}
   Sets the separator between \meta{month_1} and \meta{month_2} in a month
   range to \meta{token list}.
   The initial value is \key{= to }.
-\end{variable}
+\end{code}
 
 
 \section{References}
