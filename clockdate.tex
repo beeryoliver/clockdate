@@ -27,7 +27,7 @@ Print the time of day and the calendar date.
 
 Oliver Beery
 
-Version 0.0.0\quad\date{2025-12-31}
+Version 0.0.0\quad\date{2026-01-06}
 
 
 \section{Introduction}
@@ -110,7 +110,7 @@ integer, a count register, or a macro that expands to an integer.
   \num{59}.
 
   If the optional argument is used, the keys in \meta{key-value list} are set
-  in path \key{clock} for only that particular usage of \cs{clock}.
+  in path |clock| for only that particular usage of \cs{clock}.
   For details on adding the optional star, see the key \key{clock/star}
   (\S\ref{subsec:clock}).
 \end{code}
@@ -154,7 +154,7 @@ integer, a count register, or a macro that expands to an integer.
   \end{itemize}
 
   If the optional argument is used, the keys in \meta{key-value list} are set
-  in path \key{date} for only that particular usage of \cs{calendardate}.
+  in path |date| for only that particular usage of \cs{calendardate}.
   For details on adding the optional star, see the key \key{date/star}
   (\S\ref{subsec:date}).
 \end{code}
@@ -177,7 +177,7 @@ This subsection documents the keys that modify the behavior of \cs{clock}.
   \begin{syntax}
     \key{clock=\meta{key-value list}}
   \end{syntax}
-  Meta key that sets the keys in \meta{key-value list} in path \key{clock}.
+  Meta key that sets the keys in \meta{key-value list} in path |clock|.
 \end{code}
 
 \begin{code}{clock/star}
@@ -185,7 +185,7 @@ This subsection documents the keys that modify the behavior of \cs{clock}.
     \key{clock/star=\meta{key-value list}}
   \end{syntax}
   When adding the optional star in \cs{clock}, the keys in \meta{key-value
-  list} in path \key{clock} will be set for only that particular usage of
+  list} in path |clock| will be set for only that particular usage of
   \cs{clock}.
   The initial value is \meta{empty}.
 \end{code}
@@ -303,7 +303,7 @@ This subsection documents the keys that modify the behavior of
   \begin{syntax}
     \key{date=\meta{key-value list}}
   \end{syntax}
-  Meta key that sets the keys in \meta{key-value list} in path \key{date}.
+  Meta key that sets the keys in \meta{key-value list} in path |date|.
 \end{code}
 
 \begin{code}{date/star}
@@ -311,7 +311,7 @@ This subsection documents the keys that modify the behavior of
     \key{date/star=\meta{key-value list}}
   \end{syntax}
   When adding the optional star in \cs{calendardate}, the keys in
-  \meta{key-value list} in path \key{date} will be set for only that
+  \meta{key-value list} in path |date| will be set for only that
   particular usage of \cs{calendardate}.
   The initial value is \meta{empty}.
 \end{code}
@@ -424,7 +424,7 @@ This subsection documents the keys that modify the behavior of
   The initial value is \key{= and }.
 \end{code}
 
-\begin{code}{days/days-final-separator}
+\begin{code}{date/days-final-separator}
   \begin{syntax}
     \key{date/days-final-separator=\meta{token list}}
   \end{syntax}
@@ -488,7 +488,7 @@ packages.
 The \pkg{clockdate} package keys
 \begin{itemize}
   \item \key{clock/hour-minute-separator}
-  \item \key{clock/minute-hour-separator}
+  \item \key{clock/minute-second-separator}
   \item \key{clock/clock-separator}
 \end{itemize}
 resemble the following \pkg{datetime2} package options:
