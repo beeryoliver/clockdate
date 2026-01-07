@@ -1,7 +1,7 @@
 % Loading the class
 
 \NeedsTeXFormat{LaTeX2e}[2025-11-01]
-\ProvidesExplClass{beerydoc}{2025-12-31}{0.0.0}{}
+\ProvidesExplClass{beerydoc}{2026-01-06}{0.0.0}{}
 \prop_gput:Nnn \g_msg_module_type_prop { beerydoc } { Class }
 
 \msg_new:nnn { beerydoc } { l3kernel }
@@ -81,6 +81,9 @@
   \char_set_active_eq:NN _ \scan_stop:
   \tl_const:Ne \c__beerydoc_active_underscore_tl
     { \char_generate:nn { `_ } { 13 } }
+  \char_set_active_eq:nN { `\^^I } \scan_stop:
+  \tl_const:Ne \c__beerydoc_active_tab_tl
+    { \char_generate:nn { `\^^I } { 13 } }
 \group_end:
 
 \tl_new:N \l__beerydoc_key_tl
@@ -95,8 +98,6 @@
 
 \cs_generate_variant:Nn \tl_replace_once:Nnn { No }
 \cs_generate_variant:Nn \tl_replace_all:Nnn { No }
-\prg_generate_conditional_variant:Nnn \str_if_eq:nn { ne , e }
-  { p , T , F , TF }
 
 \cs_new_protected:Npn \__beerydoc_langle: { \ensuremath { \langle } }
 \cs_new_protected:Npn \__beerydoc_rangle: { \ensuremath { \rangle } }
@@ -206,7 +207,7 @@
           \c__beerydoc_cs_hyphenation_regex { \1 \c{-} \2 }
       }
   }
-\regex_const:Nn \c__beerydoc_cs_hyphenation_regex { ([^\\\_]\_+) ([^\_]) }
+\regex_const:Nn \c__beerydoc_cs_hyphenation_regex { ([^\_]\_+) ([^\_]) }
 \cs_new_protected:Npn \__beerydoc_cs:N #1
   { \exp_args:Ne \__beerydoc_cs:n { \cs_to_str:N #1 } }
 
@@ -623,7 +624,6 @@
   }
 \cs_new_protected:Npn \__beerydoc_list_heading:n #1
   {
-    \par
     #1
     \par
     \__beerydoc_keep_next_par_if_single_line:
@@ -688,23 +688,38 @@
 \RequirePackage { hyperref }
 \hypersetup { bookmarksnumbered , hidelinks , linktoc = page }
 
+% The argument to \tl_to_str:n must be braced.
+\cs_new:Npn \__beerydoc_pdfstring_tl_to_str:n #1 { \tl_to_str:n {#1} }
+\cs_new:Npn \__beerydoc_pdfstring_meta:n #1 { < \tl_to_str:n {#1} > }
+\cs_new:Npn \__beerydoc_pdfstring_cs:n
+  { \textbackslash \__beerydoc_pdfstring_cs_aux:n }
+% Replaces \meta with \__beerydoc_pdfstring_meta:n.
+\cs_new:Npn \__beerydoc_pdfstring_cs_aux:n #1
+  { \__beerydoc_pdfstring_cs:wn #1 \meta \q_recursion_tail \q_recursion_stop }
+\cs_new:Npn \__beerydoc_pdfstring_cs:wn #1 \meta #2
+  {
+    \tl_to_str:n {#1}
+    \quark_if_recursion_tail_stop:n {#2}
+    \__beerydoc_pdfstring_meta:n {#2}
+    \__beerydoc_pdfstring_cs:wn
+  }
 \cs_new:Npn \__beerydoc_pdfstring_key_value:n #1
   {
-    \str_if_eq:enTF { \str_head:n {#1} } { = }
-      { \str_range:nnn {#1} { 2 } { -1 } }
-      { \tl_to_str:n {#1} }
+    \str_if_eq:eeTF { \str_head:n {#1} } { = }
+      { \__beerydoc_pdfstring_value:n {#1} }
+      { \__beerydoc_pdfstring_key:n {#1} }
   }
-\cs_new:Npn \__beerydoc_pdfstring_cs:n #1 { \textbackslash \tl_to_str:n {#1} }
-\cs_new:Npn \__beerydoc_pdfstring_meta:n #1 { < \tl_to_str:n {#1} > }
-% \tl_to_str:n works only when its argument is given in braces.
-\cs_new:Npn \__beerydoc_pdfstring_tl_to_str:n #1 { \tl_to_str:n {#1} }
+\cs_new:Npn \__beerydoc_pdfstring_value:n #1
+  { \str_range:nnn {#1} { 2 } { -1 } }
+\cs_new_eq:NN \__beerydoc_pdfstring_key:n \__beerydoc_pdfstring_cs_aux:n
+
 \pdfstringdefDisableCommands
   {
-    \cs_set_eq:NN \key  \__beerydoc_pdfstring_key_value:n
-    \cs_set_eq:NN \cs   \__beerydoc_pdfstring_cs:n
-    \cs_set_eq:NN \meta \__beerydoc_pdfstring_meta:n
     \tl_map_inline:nn { \cls \pkg \env \hook \socket \plug }
       { \cs_set_eq:NN #1 \__beerydoc_pdfstring_tl_to_str:n }
+    \cs_set_eq:NN \meta \__beerydoc_pdfstring_meta:n
+    \cs_set_eq:NN \cs   \__beerydoc_pdfstring_cs:n
+    \cs_set_eq:NN \key  \__beerydoc_pdfstring_key_value:n
   }
 
 % Messages
