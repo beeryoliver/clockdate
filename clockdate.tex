@@ -27,7 +27,7 @@ Print the time of day and the calendar date.
 
 Oliver Beery
 
-Version 0.0.0\quad\date{2026-02-11}
+Version 0.0.0\quad\date{2026-02-17}
 
 
 \section{Introduction}
@@ -87,7 +87,7 @@ integer, a count register, or a macro that expands to an integer.
   \begin{syntax}
     \cs{clock} \sarg{} \oarg{key-value list} \marg{token list}
   \end{syntax}
-  Prints the time of day or a time of day range.
+  Prints the time of day or a time-of-day range.
   \meta{token list} must take either of the following forms:
   \begin{itemize}
     \item \meta{clock}
@@ -207,7 +207,7 @@ This subsection documents the keys that modify the behavior of \cs{clock}.
   \begin{syntax}
     \key{clock/range-separator=\meta{token list}}
   \end{syntax}
-  Sets the separator between \meta{clock_1} and \meta{clock_2} in a time of day
+  Sets the separator between \meta{clock_1} and \meta{clock_2} in a time-of-day
   range to \meta{token list}.
   The initial value is \key{= to }.
 \end{code}
@@ -218,9 +218,9 @@ This subsection documents the keys that modify the behavior of \cs{clock}.
   \begin{syntax}
     \key{clock/ampm-omit-first=\choices{true,false}}
   \end{syntax}
-  Boolean key that sets whether \meta{clock_1} prints the am/pm in a time of
-  day range if \meta{clock_1} and \meta{clock_2} would either both display am
-  or both display pm.
+  Boolean key that sets whether \meta{clock_1} prints the am/pm in a
+  time-of-day range if \meta{clock_1} and \meta{clock_2} would either both
+  display am or both display pm.
   The initial value is \key{=true}.
 \end{code}
 
@@ -288,6 +288,83 @@ This subsection documents the keys that modify the behavior of \cs{clock}.
   Meta key that sets the keys \key{clock/hour-minute-separator} and
   \key{clock/minute-second-separator} to \meta{token list}.
 \end{code}
+
+\subsubsection{Short minute and second ranges}
+
+\begin{code}{clock/short-second-range}
+  \begin{syntax}
+    \key{clock/short-second-range=\choices{true,false}}
+  \end{syntax}
+  Boolean key that sets whether to omit \meta{hour_2} and \meta{minute_2} in a
+  time-of-day range if $\meta{hour_1}=\meta{hour_2}$ and
+  $\meta{minute_1}=\meta{minute_2}$.
+  In this case, the range separator is set by the key
+  \key{clock/second-range-separator} instead of \key{clock/range-separator}.
+  The initial value is \key{=true}.
+\end{code}
+
+\begin{code}{clock/second-range-separator}
+  \begin{syntax}
+    \key{clock/second-range-separator=\meta{token list}}
+  \end{syntax}
+  \listheading
+    {
+      Sets the separator between \meta{second_1} and \meta{second_2} if the
+      conditions below are met:
+    }
+  \begin{itemize}
+    \item The value of the key \key{clock/short-second-range} is \key{=true}.
+    \item $\meta{hour_1}=\meta{hour_2}$
+    \item $\meta{minute_1}=\meta{minute_2}$
+  \end{itemize}
+  The intiial value is \cs{textendash}.
+\end{code}
+
+\begin{code}{clock/short-minute-range}
+  \begin{syntax}
+    \key{clock/short-minute-range=\choices{true,false}}
+  \end{syntax}
+  Boolean key that sets whether to omit \meta{hour_2} in a time-of-day range
+  if $\meta{hour_1}=\meta{hour_2}$ and \meta{second_1} and \meta{second_2} are
+  omitted.
+  In this case, the range separator is set by the key
+  \key{clock/minute-range-separator} instead of \key{clock/range-separator}.
+  The initial value is \key{=true}.
+\end{code}
+
+\begin{code}{clock/minute-range-separator}
+  \begin{syntax}
+    \key{clock/minute-range-separator=\meta{token list}}
+  \end{syntax}
+  \listheading
+    {
+      Sets the separator between \meta{minute_1} and \meta{minute_2} if the
+      conditions below are met:
+    }
+  \begin{itemize}
+    \item The value of the key \key{clock/short-minute-range} is \key{=true}.
+    \item $\meta{hour_1}=\meta{hour_2}$
+    \item \meta{second_1} and \meta{second_2} are omitted.
+  \end{itemize}
+  The intiial value is \cs{textendash}.
+\end{code}
+
+\begin{code}{clock/short-range}
+  \begin{syntax}
+    \key{clock/short-range=\choices{true,false}}
+  \end{syntax}
+  Meta key that sets the keys \key{clock/short-second-range} and
+  \key{clock/short-minute-range}.
+\end{code}
+
+\begin{code}{clock/short-range-separator}
+  \begin{syntax}
+    \key{clock/short-range-separator=\meta{token list}}
+  \end{syntax}
+  Meta key that sets the keys \key{clock/second-range-separator} and
+  \key{clock/minute-range-separator} to \meta{token list}.
+\end{code}
+
 
 \subsection{\cs{calendardate}}
 \label{subsec:date}
