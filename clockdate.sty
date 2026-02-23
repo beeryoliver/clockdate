@@ -7,7 +7,7 @@
 % Loading the package
 
 \NeedsTeXFormat{LaTeX2e}[2025-11-01]
-\ProvidesExplPackage{clockdate}{2026-02-17}{0.0.0}
+\ProvidesExplPackage{clockdate}{2026-02-23}{0.0.0}
   {Provides \noexpand\clock and \string\calendardate.}
 
 \msg_new:nnn { clockdate } { l3kernel }
@@ -95,42 +95,6 @@
     \bool_lazy_or:nnTF
       { \int_compare_p:nNn {#1} < { 12 } }
       { \int_compare_p:nNn {#1} = { 24 } }
-      { \prg_return_true: } { \prg_return_false: }
-  }
-\prg_new_conditional:Npnn \__clockdate_clock_if_short_second_range: { TF }
-  {
-    \bool_lazy_all:nTF
-      {
-        { \l__clockdate_clock_short_second_range_bool }
-        {
-          \int_compare_p:nNn \l__clockdate_clock_hour_int =
-            \l__clockdate_clock_hour_range_int
-        }
-        { ! \int_compare_p:nNn \l__clockdate_clock_minute_int = { -1 } }
-        { ! \int_compare_p:nNn \l__clockdate_clock_minute_range_int = { -1 } }
-        {
-          \int_compare_p:nNn \l__clockdate_clock_minute_int =
-            \l__clockdate_clock_minute_range_int
-        }
-        { ! \int_compare_p:nNn \l__clockdate_clock_second_int = { -1 } }
-        { ! \int_compare_p:nNn \l__clockdate_clock_second_range_int = { -1 } }
-      }
-      { \prg_return_true: } { \prg_return_false: }
-  }
-\prg_new_conditional:Npnn \__clockdate_clock_if_short_minute_range: { TF }
-  {
-    \bool_lazy_all:nTF
-      {
-        { \l__clockdate_clock_short_minute_range_bool }
-        {
-          \int_compare_p:nNn \l__clockdate_clock_hour_int =
-            \l__clockdate_clock_hour_range_int
-        }
-        { ! \int_compare_p:nNn \l__clockdate_clock_minute_int = { -1 } }
-        { ! \int_compare_p:nNn \l__clockdate_clock_minute_range_int = { -1 } }
-        { \int_compare_p:nNn \l__clockdate_clock_second_int = { -1 } }
-        { \int_compare_p:nNn \l__clockdate_clock_second_range_int = { -1 } }
-      }
       { \prg_return_true: } { \prg_return_false: }
   }
 % Tests the validity of the month.
@@ -330,48 +294,6 @@
         \msg_error:nnn { clockdate } { invalid } { #1 -- #2 }
         \prg_break:
       }
-    \__clockdate_clock_print_range:
-  }
-\cs_new_protected:Npn \__clockdate_clock_print_range:
-  {
-    \__clockdate_clock_if_short_second_range:TF
-      { \__clockdate_clock_print_range_short_second: }
-      {
-        \__clockdate_clock_if_short_minute_range:TF
-          { \__clockdate_clock_print_range_short_minute: }
-          { \__clockdate_clock_print_range_aux: }
-      }
-  }
-\cs_new_protected:Npn \__clockdate_clock_print_range_short_second:
-  {
-    \__clockdate_clock_print_hour:n { \l__clockdate_clock_hour_int }
-    \l__clockdate_clock_hour_minute_separator_tl
-    \__clockdate_clock_print_minute:n { \l__clockdate_clock_minute_int }
-    \l__clockdate_clock_minute_second_separator_tl
-    \__clockdate_clock_print_second:n { \l__clockdate_clock_second_int }
-    \l__clockdate_clock_second_range_separator_tl
-    \__clockdate_clock_print_second:n { \l__clockdate_clock_second_range_int }
-    \bool_if:NT \l__clockdate_clock_print_ampm_bool
-      {
-        \l__clockdate_clock_ampm_separator_tl
-        \__clockdate_clock_print_ampm:n { \l__clockdate_clock_hour_range_int }
-      }
-  }
-\cs_new_protected:Npn \__clockdate_clock_print_range_short_minute:
-  {
-    \__clockdate_clock_print_hour:n { \l__clockdate_clock_hour_int }
-    \l__clockdate_clock_hour_minute_separator_tl
-    \__clockdate_clock_print_minute:n { \l__clockdate_clock_minute_int }
-    \l__clockdate_clock_minute_range_separator_tl
-    \__clockdate_clock_print_minute:n { \l__clockdate_clock_minute_range_int }
-    \bool_if:NT \l__clockdate_clock_print_ampm_bool
-      {
-        \l__clockdate_clock_ampm_separator_tl
-        \__clockdate_clock_print_ampm:n { \l__clockdate_clock_hour_range_int }
-      }
-  }
-\cs_new_protected:Npn \__clockdate_clock_print_range_aux:
-  {
     \__clockdate_clock_print_hour:n { \l__clockdate_clock_hour_int }
     \int_compare:nNnF \l__clockdate_clock_minute_int = { -1 }
       {
@@ -1045,30 +967,6 @@
 
     , range-separator .tl_set:N = \l__clockdate_clock_range_separator_tl
     , range-separator .value_required:n = true
-
-    , short-second-range .bool_set:N =
-        \l__clockdate_clock_short_second_range_bool
-    , short-second-range .value_required:n = true
-
-    , second-range-separator .tl_set:N =
-        \l__clockdate_clock_second_range_separator_tl
-    , second-range-separator .value_required:n = true
-
-    , short-minute-range .bool_set:N =
-        \l__clockdate_clock_short_minute_range_bool
-    , short-minute-range .value_required:n = true
-
-    , minute-range-separator .tl_set:N =
-        \l__clockdate_clock_minute_range_separator_tl
-    , minute-range-separator .value_required:n = true
-
-    , short-range .meta:n =
-        { short-second-range = {#1} , short-minute-range = {#1} }
-    , short-range .value_required:n = true
-
-    , short-range-separator .meta:n =
-        { second-range-separator = {#1} , minute-range-separator = {#1} }
-    , short-range-separator .value_required:n = true
   }
 \keys_define:nn { clockdate / date }
   {
@@ -1274,10 +1172,6 @@
     \tl_set:NV \l__clockdate_clock_minute_second_separator_tl \c_colon_str
     \tl_set_eq:NN \l__clockdate_clock_ampm_separator_tl \c_space_tl
     \tl_set:Nn \l__clockdate_clock_range_separator_tl { ~to~ }
-    \bool_set_true:N \l__clockdate_clock_short_second_range_bool
-    \tl_set:Nn \l__clockdate_clock_second_range_separator_tl { \textendash }
-    \bool_set_true:N \l__clockdate_clock_short_minute_range_bool
-    \tl_set:Nn \l__clockdate_clock_minute_range_separator_tl { \textendash }
 
     \cs_set_eq:NN \__clockdate_date:ww  \__clockdate_date_month_day_year:ww
     \cs_set_eq:NN \__clockdate_date:www \__clockdate_date_month_day_year:www
