@@ -1,0 +1,25 @@
+\ProvidesFile{clockdate-ampm-choices.tex}[2026-02-26]
+
+\vspace{\skipeval{\medskipamount-\parskip}}
+\begingroup
+  \centering
+  \begin{tblr}
+    {
+        colspec = { lll }
+      , cell{2-Z}{1}={cmd=\key}
+    }
+    \toprule
+      \meta{choice} & am & pm \\
+    \midrule
+      =lowercase-with-periods  & a.m. & p.m. \\
+      =lowercase               & am   & pm   \\
+      =uppercase-with-periods  & A.M. & P.M. \\
+      =uppercase               & AM   & PM   \\
+      =small-caps-with-periods & \textsc{a}.\textsc{m}.
+        & \textsc{p}.\textsc{m}. \\
+      =small-caps & \textsc{am} & \textsc{pm} \\
+      =none & & \\
+    \bottomrule
+  \end{tblr}
+  \par
+\endgroup

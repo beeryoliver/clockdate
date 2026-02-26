@@ -7,7 +7,7 @@
 % Loading the package
 
 \NeedsTeXFormat{LaTeX2e}[2025-11-01]
-\ProvidesExplPackage{clockdate}{2026-02-23}{0.0.0}
+\ProvidesExplPackage{clockdate}{2026-02-26}{0.0.0}
   {Provides \noexpand\clock and \string\calendardate.}
 
 \msg_new:nnn { clockdate } { l3kernel }
@@ -77,6 +77,12 @@
     \l__clockdate_date_day_range_int
   }
   { \int_set:Nn #1 { -1 } }
+
+\group_begin:
+  \char_set_active_eq:NN : \scan_stop:
+  \tl_const:Ne \c__clockdate_active_colon_tl
+    { \char_generate:nn { `: } { 13 } }
+\group_end:
 
 % Some functions
 
@@ -193,10 +199,8 @@
         \IfBooleanTF #1
           {
             \IfNoValueTF {#2}
-              { \__clockdate_clock:on \l__clockdate_clock_star_tl {#3} }
-              {
-                \__clockdate_clock:on { \l__clockdate_clock_star_tl , #2 } {#3}
-              }
+              { \__clockdate_clock_star:n {#3} }
+              { \__clockdate_clock_star:nn {#2} {#3} }
           }
           {
             \IfNoValueTF {#2}
@@ -215,10 +219,25 @@
       \__clockdate_clock_aux:n {#2}
     \group_end:
   }
-\cs_generate_variant:Nn \__clockdate_clock:nn { o }
 \cs_new_protected:Npn \__clockdate_clock:n #1
   {
     \group_begin:
+      \__clockdate_clock_aux:n {#1}
+    \group_end:
+  }
+\cs_new_protected:Npn \__clockdate_clock_star:nn #1#2
+  {
+    \group_begin:
+      \l__clockdate_clock_star_tl
+      \keys_set:nn { clockdate / clock } {#1}
+      \__clockdate_clock_keys_process:
+      \__clockdate_clock_aux:n {#2}
+    \group_end:
+  }
+\cs_new_protected:Npn \__clockdate_clock_star:n #1
+  {
+    \group_begin:
+      \l__clockdate_clock_star_tl
       \__clockdate_clock_aux:n {#1}
     \group_end:
   }
@@ -226,6 +245,8 @@
   {
     \tl_set:Nn \l__clockdate_clock_input_tl {#1}
     \tl_replace_all:NVn \l__clockdate_clock_input_tl \c_colon_str { : }
+    \tl_replace_all:NVn \l__clockdate_clock_input_tl
+      \c__clockdate_active_colon_tl { : }
     \tl_if_in:NnTF \l__clockdate_clock_input_tl { -- }
       { \exp_args:NV \__clockdate_clock_print_range:n }
       { \exp_args:NV \__clockdate_clock_print:n }
@@ -477,11 +498,8 @@
             \IfBooleanTF ##1
               {
                 \IfNoValueTF {##2}
-                  { \__clockdate_date:on \l__clockdate_date_star_tl {##3} }
-                  {
-                    \__clockdate_date:on { \l__clockdate_date_star_tl , ##2 }
-                      {##3}
-                  }
+                  { \__clockdate_date_star:n {##3} }
+                  { \__clockdate_date_star:nn {##2} {##3} }
               }
               {
                 \IfNoValueTF {##2}
@@ -501,10 +519,24 @@
       \__clockdate_date_auxi:n {#2}
     \group_end:
   }
-\cs_generate_variant:Nn \__clockdate_date:nn { o }
 \cs_new_protected:Npn \__clockdate_date:n #1
   {
     \group_begin:
+      \__clockdate_date_auxi:n {#1}
+    \group_end:
+  }
+\cs_new_protected:Npn \__clockdate_date_star:nn #1#2
+  {
+    \group_begin:
+      \l__clockdate_date_star_tl
+      \keys_set:nn { clockdate / date } {#1}
+      \__clockdate_date_auxi:n {#2}
+    \group_end:
+  }
+\cs_new_protected:Npn \__clockdate_date_star:n #1
+  {
+    \group_begin:
+      \l__clockdate_date_star_tl
       \__clockdate_date_auxi:n {#1}
     \group_end:
   }
@@ -872,7 +904,9 @@
 
 % Define keys
 
+\tl_new:N \l__clockdate_clock_star_tl
 \bool_new:N \l__clockdate_clock_military_bool
+\tl_new:N \l__clockdate_date_star_tl
 
 \keys_define:nn { clockdate }
   {
@@ -884,7 +918,11 @@
   }
 \keys_define:nn { clockdate / clock }
   {
-      star .tl_set:N = \l__clockdate_clock_star_tl
+      star .code:n =
+        {
+          \keys_precompile:nnN { clockdate / clock } {#1}
+            \l__clockdate_clock_star_tl
+        }
     , star .value_required:n = true
 
     , hour .choices:nn = { 12 , 24 }
@@ -970,7 +1008,11 @@
   }
 \keys_define:nn { clockdate / date }
   {
-      star .tl_set:N = \l__clockdate_date_star_tl
+      star .code:n =
+        {
+          \keys_precompile:nnN { clockdate / date } {#1}
+            \l__clockdate_date_star_tl
+        }
     , star .value_required:n = true
 
     , order .choices:nn = { month-day-year , day-month-year , year-month-day }
@@ -1160,7 +1202,6 @@
 \cs_new_protected:Npn \__clockdate_keys_set_initial:
   {
     \tl_clear:N \l__clockdate_clock_star_tl
-    \tl_clear:N \l__clockdate_date_star_tl
     \bool_set_false:N \l__clockdate_clock_military_bool
     \bool_set_false:N \l__clockdate_clock_hour_leading_zero_bool
     \cs_set_eq:Nc \__clockdate_clock_print_am:
@@ -1173,6 +1214,7 @@
     \tl_set_eq:NN \l__clockdate_clock_ampm_separator_tl \c_space_tl
     \tl_set:Nn \l__clockdate_clock_range_separator_tl { ~to~ }
 
+    \tl_clear:N \l__clockdate_date_star_tl
     \cs_set_eq:NN \__clockdate_date:ww  \__clockdate_date_month_day_year:ww
     \cs_set_eq:NN \__clockdate_date:www \__clockdate_date_month_day_year:www
     \cs_set_eq:NN \__clockdate_date_print_month_year_month_day:n

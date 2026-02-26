@@ -21,13 +21,13 @@
 \begin{document}
 
 
-\section*{\Large The \pkg{clockdate} package}
+\section*{\stepfontsize{1}The \pkg{clockdate} package}
 
 Print the time of day and the calendar date.
 
 Oliver Beery
 
-Version 0.0.0\quad\date{2026-02-23}
+Version 0.0.0\quad\date{2026-02-26}
 
 
 \section{Introduction}
@@ -48,13 +48,6 @@ This package provides \cs{clock} and \cs{calendardate}.
   \item \pkg{l3kernel} version 2025-10-09 or newer
 \end{itemize}
 
-\subsection{Syntax}
-\label{subsec:syntax}
-
-This documentation uses the syntax \meta{integer}.
-This syntax means any integer as understood by \TeX{} such as an explicit
-integer, a count register, or a macro that expands to an integer.
-
 
 \section{Package option}
 \label{sec:packageoption}
@@ -63,8 +56,6 @@ integer, a count register, or a macro that expands to an integer.
   Makes \cs{date} equivalent to \cs{calendardate}, overwriting its previous
   definition.
   This is done at the \hook{begindocument} hook.
-  By default, \cs{date} sets the document\rq s date which is used in
-  \cs{maketitle}.
 \end{code}
 
 
@@ -101,13 +92,12 @@ integer, a count register, or a macro that expands to an integer.
     \item \meta{hour}
   \end{itemize}
 
-  \meta{hour}, \meta{minute}, and \meta{second} must be an \meta{integer}.
   \meta{hour} must be an \meta{integer} from \num{0} to \num{24}.
   \meta{minute} and \meta{second} must be an \meta{integer} from \num{0} to
-  \num{59}.
+  \num{59} and are printed as zero-padded numbers.
 
-  If the optional argument is used, the keys in \meta{key-value list} are set
-  in path |clock| for only that particular usage of \cs{clock}.
+  Adding the optional argument sets the keys in \meta{key-value list} in path
+  |clock| for only that particular usage of \cs{clock}.
   For details on adding the optional star, see the key \key{clock/star}
   (\S\ref{subsec:clock}).
 \end{code}
@@ -127,7 +117,6 @@ integer, a count register, or a macro that expands to an integer.
     \item \meta{year}|-|\meta{month(s)}
   \end{itemize}
 
-  \meta{year} and \meta{month} must be an \meta{integer}.
   \meta{year} must be an \meta{integer} from \num{1000} to \num{9999}.
   \meta{month} must be an \meta{integer} from \num{1} to \num{12}.
 
@@ -150,8 +139,8 @@ integer, a count register, or a macro that expands to an integer.
     single month \meta{month} or a month range \meta{month_1}|--|\meta{month_2}
   \end{itemize}
 
-  If the optional argument is used, the keys in \meta{key-value list} are set
-  in path |date| for only that particular usage of \cs{calendardate}.
+  Adding the optional argument sets the keys in \meta{key-value list} in path
+  |date| for only that particular usage of \cs{calendardate}.
   For details on adding the optional star, see the key \key{date/star}
   (\S\ref{subsec:date}).
 \end{code}
@@ -171,14 +160,14 @@ This subsection documents the keys that modify the behavior of \cs{clock}.
 
 \begin{code}{clock}
   \begin{syntax}
-    \key{clock=\meta{key-value list}}
+    \key{clock=\marg{key-value list}}
   \end{syntax}
   Meta key that sets the keys in \meta{key-value list} in path |clock|.
 \end{code}
 
 \begin{code}{clock/star}
   \begin{syntax}
-    \key{clock/star=\meta{key-value list}}
+    \key{clock/star=\marg{key-value list}}
   \end{syntax}
   When adding the optional star in \cs{clock}, the keys in \meta{key-value
   list} in path |clock| will be set for only that particular usage of
@@ -236,22 +225,10 @@ This subsection documents the keys that modify the behavior of \cs{clock}.
   \begin{syntax}
     \key{clock/ampm=\meta{choice}}
   \end{syntax}
-  \listheading
-    {
-      Choice key that sets the am/pm format.
-      \meta{choice} must match any of the following:
-    }
-  \begin{itemize}
-    \item \key{=lowercase-with-periods} (a.m./p.m.)
-    \item \key{=lowercase} (am/pm)
-    \item \key{=uppercase-with-periods} (A.M./P.M.)
-    \item \key{=uppercase} (AM/PM)
-    \item
-    \key{=small-caps-with-periods}
-    (\textsc{a}.\textsc{m}./\textsc{p}.\textsc{m}.)
-    \item \key{=small-caps} (\textsc{am}/\textsc{pm})
-    \item \key{=none}
-  \end{itemize}
+  Choice key that sets the am/pm format.
+  \meta{choice} must match any of the following:
+
+  \input{clockdate-ampm-choices.tex}
   The initial value is \key{=lowercase-with-periods}.
 
   If the next token after \cs{clock} is a period, the am/pm will not print an
@@ -298,14 +275,14 @@ This subsection documents the keys that modify the behavior of
 
 \begin{code}{date}
   \begin{syntax}
-    \key{date=\meta{key-value list}}
+    \key{date=\marg{key-value list}}
   \end{syntax}
   Meta key that sets the keys in \meta{key-value list} in path |date|.
 \end{code}
 
 \begin{code}{date/star}
   \begin{syntax}
-    \key{date/star=\meta{key-value list}}
+    \key{date/star=\marg{key-value list}}
   \end{syntax}
   When adding the optional star in \cs{calendardate}, the keys in
   \meta{key-value list} in path |date| will be set for only that particular
@@ -397,9 +374,12 @@ This subsection documents the keys that modify the behavior of
   \begin{syntax}
     \key{date/date-separator=\meta{token list}}
   \end{syntax}
-  Meta key that sets the keys \key{date/year-month-separator},
-  \key{date/month-day-separator}, and \key{date/year-day-separator} to
-  \meta{token list}.
+  \listheading{Meta key that sets the following keys to \meta{token list}:}
+  \begin{itemize}
+    \item \key{date/year-month-separator}
+    \item \key{date/month-day-separator}
+    \item \key{date/year-day-separator}
+  \end{itemize}
 \end{code}
 
 \subsubsection{Printing the days}
@@ -502,7 +482,7 @@ The \pkg{clockdate} package keys
   \item \key{date/year-day-separator}
   \item \key{date/date-separator}
 \end{itemize}
-resemble the following \pkg{datetime2} package options:
+resemble the following \pkg{datetime2} options:
 \begin{itemize}
   \item \key{yearmonthsep}
   \item \key{monthdaysep}
@@ -519,8 +499,7 @@ The \pkg{clockdate} package keys
   \item \key{date/months-pair-separator}
   \item \key{date/months-separator}
 \end{itemize}
-use a similar naming convention to the following \pkg{siunitx} package control
-options:
+use a similar naming convention to the following \pkg{siunitx} options:
 \begin{itemize}
   \item \key{list-final-separator}
   \item \key{list-pair-separator}

@@ -1,7 +1,7 @@
 % Loading the class
 
 \NeedsTeXFormat{LaTeX2e}[2025-11-01]
-\ProvidesExplClass{beerydoc}{2026-02-17}{0.0.0}{}
+\ProvidesExplClass{beerydoc}{2026-02-26}{0.0.0}{}
 \prop_gput:Nnn \g_msg_module_type_prop { beerydoc } { Class }
 
 \msg_new:nnn { beerydoc } { l3kernel }
@@ -27,7 +27,6 @@
 \ProcessKeyOptions
 
 \RequirePackage { fontscale }
-\fontscalesetup { musical }
 \RenewDocumentCommand \printfontsizecommand { }
   {
     \mode_if_math:TF
@@ -506,6 +505,10 @@
     \clist_set:NV \l__beerydoc_code_names_clist \l__beerydoc_code_names_tl
     \clist_if_empty:NT \l__beerydoc_code_names_clist
       { \msg_error:nn { beerydoc } { code-env-no-items } }
+    \tl_set:Ne \l__beerydoc_code_names_tl
+      { \clist_use:Nn \l__beerydoc_code_names_clist { , } }
+    \tl_replace_all:Nnn \l__beerydoc_code_names_tl { ~ } { \textvisiblespace }
+    \clist_set:NV \l__beerydoc_code_names_clist \l__beerydoc_code_names_tl
     \hcoffin_set:Nn \l__beerydoc_code_names_coffin
       {
         \small
@@ -712,7 +715,7 @@
   {
     \skip_eval:n
       {
-        \c_beerydoc_big_dim
+        \dim_eval:n { \c_beerydoc_big_dim * 4 / 3 }
         plus  \dim_eval:n { \c_beerydoc_big_dim / 2 * 4 }
         minus \dim_eval:n { \c_beerydoc_big_dim / 3 / 4 }
       }
@@ -722,9 +725,9 @@
   {
     \skip_eval:n
       {
-        \dim_eval:n { \c_beerydoc_med_dim * 4 / 3 }
-        plus  \dim_eval:n { \c_beerydoc_med_dim / 2 * 4 }
-        minus \dim_eval:n { \c_beerydoc_med_dim / 3 / 4 }
+        \c_beerydoc_big_dim
+        plus  \dim_eval:n { \c_beerydoc_big_dim / 2 * 4 }
+        minus \dim_eval:n { \c_beerydoc_big_dim / 3 / 4 }
       }
   }
   { \skip_use:N \c_beerydoc_med_skip }
@@ -740,11 +743,11 @@
   { \skip_use:N \c_beerydoc_med_skip }
 
 \titleformat \section [ block ] % section , shape
-  { \raggedright \large \bfseries } % format
+  { \raggedright \Large \bfseries } % format
   { \thesection } { 1em } % label , length between label and title body
   { } { } % before code , after code
 \titleformat \subsection [ block ]
-  { \raggedright \normalsize \bfseries }
+  { \raggedright \large \bfseries }
   { \thesubsection } { 1em }
   { } { }
 \titleformat \subsubsection [ block ]
