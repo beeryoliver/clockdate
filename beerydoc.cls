@@ -1,6 +1,6 @@
 % Loading the class
 
-\NeedsTeXFormat{LaTeX2e}[2025-11-01]
+\NeedsTeXFormat{LaTeX2e}[2023-11-01]
 \ProvidesExplClass{beerydoc}{2026-02-26}{0.0.0}{}
 \prop_gput:Nnn \g_msg_module_type_prop { beerydoc } { Class }
 
@@ -8,12 +8,13 @@
   {
     The~ beerydoc~ class~ could~ not~ load. \\
     This~ class~ requires~
-    L3~ programming~ layer~ version~ 2024-12-09~ or~ newer.
+    L3~ programming~ layer~ version~ 2023-11-01~ or~ newer.
   }
 \msg_new:nnn { beerydoc } { luatex }
   { The~ beerydoc~ class~ could~ not~ load. \\ This~ class~ requires~ LuaTeX. }
 
-\IfExplAtLeastF { 2024-12-09 } { \msg_critical:nn { beerydoc } { l3kernel } }
+\IfExplAtLeastTF { 2023-11-01 } { }
+  { \msg_critical:nn { beerydoc } { l3kernel } }
 \sys_if_engine_luatex:F { \msg_critical:nn { beerydoc } { luatex } }
 
 \LoadClass { article }
@@ -256,8 +257,8 @@
       {
         \tl_if_in:NnT \l__beerydoc_cs_tl { _ }
           {
-            \tl_regex_replace_all:NNn \l__beerydoc_cs_tl
-              \c__beerydoc_cs_hyphenation_regex { \1 \c{-} \2 }
+            \regex_replace_all:NnN \c__beerydoc_cs_hyphenation_regex
+              { \1 \c{-} \2 } \l__beerydoc_cs_tl
           }
       }
   }
@@ -514,13 +515,7 @@
         \small
         \ttfamily
         \begin{tblr}[expand=\expanded]
-          {
-              colspec = { l }
-            , abovesep = 0pt
-            , belowsep = 0pt
-            , leftsep  = 0pt
-            , rightsep = 0pt
-          }
+          { colspec = { l } , rowsep = 0pt , colsep = 0pt }
           \toprule
           \addlinespace[2pt]
             \expanded { \clist_use:Nn \l__beerydoc_code_names_clist { \\ } }

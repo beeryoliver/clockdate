@@ -6,7 +6,7 @@
 
 % Loading the package
 
-\NeedsTeXFormat{LaTeX2e}[2025-11-01]
+\NeedsTeXFormat{LaTeX2e}[2023-11-01]
 \ProvidesExplPackage{clockdate}{2026-02-26}{0.0.0}
   {Provides \noexpand\clock and \string\calendardate.}
 
@@ -14,9 +14,10 @@
   {
     The~ clockdate~ package~ could~ not~ load. \\
     This~ package~ requires~
-    L3~ programming~ layer~ version~ 2025-10-09~ or~ newer.
+    L3~ programming~ layer~ version~ 2023-11-01~ or~ newer.
   }
-\IfExplAtLeastF { 2025-10-09 } { \msg_critical:nn { clockdate } { l3kernel } }
+\IfExplAtLeastTF { 2023-11-01 } { }
+  { \msg_critical:nn { clockdate } { l3kernel } }
 
 % Define package options.
 \keys_define:nn { clockdate }
@@ -947,9 +948,9 @@
         }
         {
           \cs_set_eq:Nc \__clockdate_clock_print_am:
-            { __clockdate_clock_print_am_ \l_keys_choice_str : }
+            { __clockdate_clock_print_am_#1: }
           \cs_set_eq:Nc \__clockdate_clock_print_pm:
-            { __clockdate_clock_print_pm_ \l_keys_choice_str : }
+            { __clockdate_clock_print_pm_#1: }
         }
     , ampm .value_required:n = true
   }
@@ -1042,7 +1043,7 @@
         { long , abbreviated , three-letter , number, zero-padded-number }
         {
           \cs_set_eq:Nc \__clockdate_date_print_month_year_month_day:n
-            { __clockdate_date_print_month_ \l_keys_choice_str :n }
+            { __clockdate_date_print_month_#1:n }
         }
     , year-month-day .value_required:n = true
 
@@ -1050,7 +1051,7 @@
         { long , abbreviated , three-letter , number, zero-padded-number }
         {
           \cs_set_eq:Nc \__clockdate_date_print_month_year_month:n
-            { __clockdate_date_print_month_ \l_keys_choice_str :n }
+            { __clockdate_date_print_month_#1:n }
         }
     , year-month .value_required:n = true
 
@@ -1058,7 +1059,7 @@
         { long , abbreviated , three-letter , number, zero-padded-number }
         {
           \cs_set_eq:Nc \__clockdate_date_print_month_month_day:n
-            { __clockdate_date_print_month_ \l_keys_choice_str :n }
+            { __clockdate_date_print_month_#1:n }
         }
     , month-day .value_required:n = true
   }
@@ -1135,7 +1136,7 @@
       day .choices:nn = { number, zero-padded-number }
         {
           \cs_set_eq:Nc \__clockdate_date_print_day:n
-            { __clockdate_date_print_day_ \l_keys_choice_str :n }
+            { __clockdate_date_print_day_#1:n }
         }
     , day .value_required:n = true
   }
