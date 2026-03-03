@@ -1,0 +1,30 @@
+\ProvidesFile{clockdate-input-mmmm.tex}[2026-03-02]
+
+\vspace{\skipeval{\medskipamount-\parskip}}
+\begingroup
+  \centering
+  \begin{tblr}
+      {
+          colspec = { Q[si={table-format=3.2},c] l }
+        , cell{1}{1}={guard}
+      }
+    \toprule
+      index & value \\
+    \midrule
+       1 & January   \\
+       2 & February  \\
+       3 & March     \\
+       4 & April     \\
+       5 & May       \\
+       6 & June      \\
+       7 & July      \\
+       8 & August    \\
+       9 & September \\
+      10 & October   \\
+      11 & November  \\
+      12 & December  \\
+    \bottomrule
+  \end{tblr}
+  \par
+  \vspace{\skipeval{\medskipamount-\parskip}}
+\endgroup

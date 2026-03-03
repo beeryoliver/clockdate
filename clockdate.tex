@@ -5,15 +5,13 @@
 \usepackage[overwrite-date]{clockdate}
 \clockdatesetup
   {
-      date / star =
-        {
-            days-final-separator   = { ,~or~ }
-          , days-pair-separator    = {  ~or~ }
-          , months-final-separator = { ,~or~ }
-          , months-pair-separator  = {  ~or~ }
-        }
-    , date / month = long
-    , date / order = day-month-year
+    date / star =
+      {
+          days-final-separator   = { ,~or~ }
+        , days-pair-separator    = {  ~or~ }
+        , months-final-separator = { ,~or~ }
+        , months-pair-separator  = {  ~or~ }
+      }
   }
 \ExplSyntaxOff
 
@@ -27,7 +25,7 @@ Print the time of day and the calendar date.
 
 Oliver Beery
 
-Version 0.0.0\quad\date{2026-02-26}
+Version 0.0.0\quad\date{2026-03-02}
 
 
 \section{Introduction}
@@ -62,6 +60,8 @@ This package provides \cs{clock} and \cs{calendardate}.
 \section{Commands}
 \label{sec:commands}
 
+This section documents the commands provided by the \pkg{clockdate} package.
+
 \begin{code}{\clockdatesetup}
   \begin{syntax}
     \cs{clockdatesetup} \sarg{} \marg{key-value list}
@@ -87,14 +87,15 @@ This package provides \cs{clock} and \cs{calendardate}.
 
   \meta{clock} must take any of the following forms:
   \begin{itemize}
-    \item \meta{hour}|:|\meta{minute}|:|\meta{second}
-    \item \meta{hour}|:|\meta{minute}
     \item \meta{hour}
+    \item \meta{hour}|:|\meta{minute}
+    \item \meta{hour}|:|\meta{minute}|:|\meta{second}
   \end{itemize}
 
   \meta{hour} must be an \meta{integer} from \num{0} to \num{24}.
-  \meta{minute} and \meta{second} must be an \meta{integer} from \num{0} to
-  \num{59} and are printed as zero-padded numbers.
+  \meta{minute} must be an \meta{integer} from \num{0} to \num{59}.
+  \meta{second} must be an \meta{integer} from \num{0} to \num{60}.
+  (The value of \num{60} allows for leap seconds.)
 
   Adding the optional argument sets the keys in \meta{key-value list} in path
   |clock| for only that particular usage of \cs{clock}.
@@ -175,21 +176,13 @@ This subsection documents the keys that modify the behavior of \cs{clock}.
   The initial value is \meta{empty}.
 \end{code}
 
-\begin{code}{clock/hour}
+\begin{code}{clock/format}
   \begin{syntax}
-    \key{clock/hour=\choices{12,24}}
+    \key{clock/format=\choices{12-hour,24-hour}}
   \end{syntax}
   Choice key that sets whether to print the hour in 12-hour or 24-hour format.
   In 24-hour format, the am/pm is always omitted.
-  The initial value is \key{=12}.
-\end{code}
-
-\begin{code}{clock/hour-leading-zero}
-  \begin{syntax}
-    \key{clock/hour-leading-zero=\choices{true,false}}
-  \end{syntax}
-  Boolean key that sets whether to print the hour with a leading zero.
-  The initial value is \key{=false}.
+  The initial value is \key{=12-hour}.
 \end{code}
 
 \begin{code}{clock/range-separator}
@@ -201,42 +194,37 @@ This subsection documents the keys that modify the behavior of \cs{clock}.
   The initial value is \key{= to }.
 \end{code}
 
-\subsubsection{Printing the am/pm}
+\subsubsection{Printing the hour, minute, and second}
 
-\begin{code}{clock/ampm-omit-first}
+\begin{code}{clock/hour}
   \begin{syntax}
-    \key{clock/ampm-omit-first=\choices{true,false}}
+    \key{clock/hour=\choices{h,hh}}
   \end{syntax}
-  Boolean key that sets whether \meta{clock_1} prints the am/pm in a
-  time-of-day range if \meta{clock_1} and \meta{clock_2} would either both
-  display am or both display pm.
-  The initial value is \key{=true}.
+  Choice key that sets the format in which the hour is printed.
+  |h| prints the hour with the minimum number of digits.
+  |hh| prints the hour with two digits, adding a leading zero if necessary.
+  The initial value is \key{=h}.
 \end{code}
 
-\begin{code}{clock/ampm-separator}
+\begin{code}{clock/minute}
   \begin{syntax}
-    \key{clock/ampm-separator=\meta{token list}}
+    \key{clock/minute=\choices{m,mm}}
   \end{syntax}
-  Sets the separator before the am/pm to \meta{token list}.
-  The initial value is \key{= }.
+  Choice key that sets the format in which the minute is printed.
+  |m| prints the minute with the minimum number of digits.
+  |mm| prints the minute with two digits, adding a leading zero if necessary.
+  The initial value is \key{=mm}.
 \end{code}
 
-\begin{code}{clock/ampm}
+\begin{code}{clock/second}
   \begin{syntax}
-    \key{clock/ampm=\meta{choice}}
+    \key{clock/second=\choices{s,ss}}
   \end{syntax}
-  Choice key that sets the am/pm format.
-  \meta{choice} must match any of the following:
-
-  \input{clockdate-ampm-choices.tex}
-  The initial value is \key{=lowercase-with-periods}.
-
-  If the next token after \cs{clock} is a period, the am/pm will not print an
-  extra period.
-  When the am/pm prints the period, it is followed by \cs{@} because the
-  sentence does not end here.
+  Choice key that sets the format in which the second is printed.
+  |s| prints the second with the minimum number of digits.
+  |ss| prints the second with two digits, adding a leading zero if necessary.
+  The initial value is \key{=ss}.
 \end{code}
-
 
 \subsubsection{Separating the hour, minute, and second}
 
@@ -266,6 +254,42 @@ This subsection documents the keys that modify the behavior of \cs{clock}.
   \key{clock/minute-second-separator} to \meta{token list}.
 \end{code}
 
+\subsubsection{Printing the am/pm}
+
+\begin{code}{clock/ampm}
+  \begin{syntax}
+    \key{clock/ampm=\meta{choice}}
+  \end{syntax}
+  Choice key that sets the am/pm format.
+  \meta{choice} must match any of the following:
+
+  \input{clockdate-input-ampm.tex}
+  The initial value is \key{=lowercase-with-periods}.
+
+  If the next token after \cs{clock} is a period, the am/pm will not print an
+  extra period.
+  When the am/pm prints the period, it is followed by \cs{@} because the
+  sentence does not end here.
+\end{code}
+
+\begin{code}{clock/ampm-separator}
+  \begin{syntax}
+    \key{clock/ampm-separator=\meta{token list}}
+  \end{syntax}
+  Sets the separator before the am/pm to \meta{token list}.
+  The initial value is \key{= }.
+\end{code}
+
+\begin{code}{clock/ampm-omit-first}
+  \begin{syntax}
+    \key{clock/ampm-omit-first=\choices{true,false}}
+  \end{syntax}
+  Boolean key that sets whether \meta{clock_1} prints the am/pm in a
+  time-of-day range if \meta{clock_1} and \meta{clock_2} would either both
+  display am or both display pm.
+  The initial value is \key{=true}.
+\end{code}
+
 
 \subsection{\cs{calendardate}}
 \label{subsec:date}
@@ -290,58 +314,53 @@ This subsection documents the keys that modify the behavior of
   The initial value is \meta{empty}.
 \end{code}
 
-\begin{code}{date/order}
+\begin{code}{date/format}
   \begin{syntax}
-    \key{date/order=\choices{month-day-year,day-month-year,year-month-day}}
+    \key{date/format=\choices{day-month-year,year-month-day,month-day-year}}
   \end{syntax}
   Choice key that sets the order in which the year, month, and day are printed.
-  The initial value is \key{=month-day-year}.
+  The initial value is \key{=day-month-year}.
 \end{code}
 
-\begin{code}
-    {
-      date/month/year-month-day,
-      date/month/year-month,
-      date/month/month-day,
-      date/month
-    }
-  \begin{syntax}
-    \key{date/month/year-month-day=\meta{choice}}
-    \key{date/month/year-month=\meta{choice}}
-    \key{date/month/month-day=\meta{choice}}
-    \key{date/month=\meta{choice}}
-  \end{syntax}
-  \listheading{\meta{choice} must match any of the following:}
-  \begin{itemize}
-    \item \key{=long}
-    \item \key{=abbreviated} (Jan., Feb., Aug., Sept., Oct., Nov., Dec.)
-    \item \key{=three-letter}
-    \item \key{=number}
-    \item \key{=zero-padded-number}
-  \end{itemize}
-  The choice key \key{date/month/year-month-day} sets the month format when
-  printing the year, month, and day.
-  The initial value is \key{=abbreviated}.
-  The choice key \key{date/month/year-month} sets the month format when
-  printing only the year and month.
-  The initial value is \key{=long}.
-  The choice key \key{date/month/month-day} sets the month format when
-  printing only the month and day.
-  The initial value is \key{=abbreviated}.
-  The meta key \key{date/month} sets the aforementioned keys to \meta{choice}.
+\subsubsection{Printing the year, month, and day}
 
-  If the next token after \cs{calendardate} is a period, the abbreviated month
-  will not print an extra period.
-  When the abbreviated month prints the period, it is followed by \cs{@}
-  because the sentence does not end here.
+\begin{code}{date/year}
+  \begin{syntax}
+    \key{date/year=\choices{yy,yyyy}}
+  \end{syntax}
+  Choice key that sets the format in which the year is printed.
+  |yy| prints the year with only the last two digits.
+  |yyyy| prints the 4-digit year.
+  The initial value is \key{=yyyy}.
+\end{code}
+
+\begin{code}{date/month}
+  \begin{syntax}
+    \key{date/month=\choices{m,mm,mmm,mmmm}}
+  \end{syntax}
+  Choice key that sets the format in which the month is printed.
+  |m| prints the month with the minimum number of digits.
+  |mm| prints the month with two digits, adding a leading zero if necessary.
+  |mmm| prints the month in short form.
+  |mmmm| prints the month with the name of the month fully spelled out.
+  By default, |mmm| prints the month in the same form as |mmmm|, except that
+  some months are abbreviated: Jan., Feb., Aug., Sept., Oct., Nov., Dec.
+  The initial value is \key{=mmmm}.
+
+  % If the next token after \cs{calendardate} is a period, the abbreviated month
+  % will not print an extra period.
+  % When the abbreviated month prints the period, it is followed by \cs{@}
+  % because the sentence does not end here.
 \end{code}
 
 \begin{code}{date/day}
   \begin{syntax}
-    \key{date/day=\choices{number,zero-padded-number}}
+    \key{date/day=\choices{d,dd}}
   \end{syntax}
   Choice key that sets the format in which the day is printed.
-  The initial value is \key{=number}.
+  |d| prints the day with the minimum number of digits.
+  |dd| prints the day with two digits, adding a leading zero if necessary.
+  The initial value is \key{=d}.
 \end{code}
 
 \subsubsection{Separating the year, month, and day}
@@ -457,38 +476,222 @@ This subsection documents the keys that modify the behavior of
 \end{code}
 
 
+\section{Programming}
+\label{sec:programming}
+
+This section documents the \pkg{expl3} programming support provided by the
+\pkg{clockdate} package.
+
+% \subsection{Variables set by \cs{clockdatesetup}}
+
+% \subsubsection{\cs{clock}}
+
+% \begin{code}{\l_clockdate_clock_format_str}
+%   Stores the value of the key \key{clock/format}.
+% \end{code}
+
+% \begin{code}{\l_clockdate_clock_hour_str}
+%   Stores the value of the key \key{clock/hour}.
+% \end{code}
+
+% \begin{code}{\l_clockdate_clock_minute_str}
+%   Stores the value of the key \key{clock/minute}.
+% \end{code}
+
+% \begin{code}{\l_clockdate_clock_second_str}
+%   Stores the value of the key \key{clock/second}.
+% \end{code}
+
+% \begin{code}{\l_clockdate_clock_ampm_str}
+%   Stores the value of the key \key{clock/ampm}.
+% \end{code}
+
+% \begin{code}{\l_clockdate_clock_ampm_omit_first_bool}
+%   Stores the value of the key \key{clock/ampm-omit-first}.
+% \end{code}
+
+% \begin{code}{\l_clockdate_clock_hour_minute_separator_tl}
+%   Stores the value of the key \key{clock/hour-minute-separator}.
+% \end{code}
+
+% \begin{code}{\l_clockdate_clock_minute_second_separator_tl}
+%   Stores the value of the key \key{clock/minute-second-separator}.
+% \end{code}
+
+% \begin{code}{\l_clockdate_clock_ampm_separator_tl}
+%   Stores the value of the key \key{clock/ampm-separator}.
+% \end{code}
+
+% \begin{code}{\l_clockdate_clock_range_separator_tl}
+%   Stores the value of the key \key{clock/range-separator}.
+% \end{code}
+
+% \subsubsection{\cs{calendardate}}
+
+% \begin{code}{\l_clockdate_date_format_str}
+%   Stores the value of the key \key{date/format}.
+% \end{code}
+
+% \begin{code}{\l_clockdate_date_year_str}
+%   Stores the value of the key \key{date/year}.
+% \end{code}
+
+% \begin{code}{\l_clockdate_date_month_str}
+%   Stores the value of the key \key{date/month}.
+% \end{code}
+
+% \begin{code}{\l_clockdate_date_day_str}
+%   Stores the value of the key \key{date/day}.
+% \end{code}
+
+% \begin{code}{\l_clockdate_date_year_month_separator_tl}
+%   Stores the value of the key \key{date/year-month-separator}.
+% \end{code}
+
+% \begin{code}{\l_clockdate_date_month_day_separator_tl}
+%   Stores the value of the key \key{date/month-day-separator}.
+% \end{code}
+
+% \begin{code}{\l_clockdate_date_year_day_separator_tl}
+%   Stores the value of the key \key{date/year-day-separator}.
+% \end{code}
+
+% \begin{code}{\l_clockdate_date_days_separator_tl}
+%   Stores the value of the key \key{date/days-separator}.
+% \end{code}
+
+% \begin{code}{\l_clockdate_date_days_pair_separator_tl}
+%   Stores the value of the key \key{date/days-pair-separator}.
+% \end{code}
+
+% \begin{code}{\l_clockdate_date_days_final_separator_tl}
+%   Stores the value of the key \key{date/days-final-separator}.
+% \end{code}
+
+% \begin{code}{\l_clockdate_date_days_range_separator_tl}
+%   Stores the value of the key \key{date/days-range-separator}.
+% \end{code}
+
+% \begin{code}{\l_clockdate_date_months_separator_tl}
+%   Stores the value of the key \key{date/months-separator}.
+% \end{code}
+
+% \begin{code}{\l_clockdate_date_months_pair_separator_tl}
+%   Stores the value of the key \key{date/months-pair-separator}.
+% \end{code}
+
+% \begin{code}{\l_clockdate_date_months_final_separator_tl}
+%   Stores the value of the key \key{date/months-final-separator}.
+% \end{code}
+
+% \begin{code}{\l_clockdate_date_months_range_separator_tl}
+%   Stores the value of the key \key{date/months-range-separator}.
+% \end{code}
+
+% \subsection{Other variables}
+
+% \begin{code}{\l_clockdate_clock_print_ampm_bool}
+%   Boolean that tests if the am/pm will be printed.
+%   % read only?
+% \end{code}
+
+% \begin{code}{\l_clockdate_date_months_long_seq}
+%   Stores the months to be printed when \key{date/month=long}.
+% \end{code}
+
+% \begin{code}{\l_clockdate_date_months_abbreviated_seq}
+%   Stores the months to be printed when \key{date/month=abbreviated}.
+% \end{code}
+
+% \begin{code}{\l_clockdate_date_months_three_letter_seq}
+%   Stores the months to be printed when \key{date/month=three-letter}.
+% \end{code}
+
+% \begin{code}{\l_clockdate_date_months_number_seq}
+%   Stores the months to be printed when \key{date/month=number}.
+% \end{code}
+
+% \begin{code}{\l_clockdate_date_months_zero_padded_number_seq}
+%   Stores the months to be printed when \key{date/month=zero-padded-number}.
+% \end{code}
+
+\subsection{Variables set in \cs{clock}}
+
+NOT YET IMPLEMENTED
+
+\begin{code}
+  {
+    \l_clockdate_clock_hour_int,
+    \l_clockdate_clock_minute_int,
+    \l_clockdate_clock_second_int
+  }
+  Stores the value of \meta{hour}, \meta{minute}, and \meta{second}.
+  If not set, the value is \num{-1}.
+\end{code}
+
+\begin{code}
+  {
+    \l_clockdate_clock_hour_range_int,
+    \l_clockdate_clock_minute_range_int,
+    \l_clockdate_clock_second_range_int
+  }
+  Stores the value of \meta{hour_2}, \meta{minute_2}, and \meta{second_2} in a
+  time-of-day range.
+  If not set, the value is \num{-1}.
+\end{code}
+
+\subsection{Variables set in \cs{calendardate}}
+
+NOT YET IMPLEMENTED
+
+\begin{code}
+  {
+    \l_clockdate_date_year_int,
+    \l_clockdate_date_month_int,
+    \l_clockdate_date_month_tl,
+    \l_clockdate_date_day_tl
+  }
+  Stores \meta{year}, \meta{month(s)}
+\end{code}
+
+\subsection{Changing the months}
+
+\begin{code}{\l_clockdate_date_months_mmmm_seq}
+  Stores the months used when the value of the key \key{date/month} is
+  \key{=mmmm}.
+  The initial values are given in the table below:
+  \input{clockdate-input-mmmm.tex}
+\end{code}
+
+\begin{code}{\l_clockdate_date_months_mmm_seq}
+  Stores the months used when the value of the key \key{date/month} is
+  \key{=mmm}.
+  The initial values are given in the table below:
+  \input{clockdate-input-mmm.tex}
+\end{code}
+
+\begin{code}{\clockdate_date_month_period:}
+  % Used to avoid printing an extra period when the result of \cs{calendardate}
+  % ends with \cs{clockdate_date_month_period:} and the next token after
+  % \cs{calendardate} is a period.
+  Prints a period.
+  Does not print the extra period if the result of \cs{calendardate} ends with
+  \cs{clockdate_date_month_period:} and the next token after \cs{calendardate}
+  is a period.
+  When \cs{clockdate_date_month_period:} prints the period, it is followed by
+  \cs{@} because the sentence does not end here.
+\end{code}
+
+
 \section{References}
 \label{sec:references}
 
 This package uses some ideas from the \pkg{datetime2} and \pkg{siunitx}
 packages.
-The \pkg{clockdate} package keys
-\begin{itemize}
-  \item \key{clock/hour-minute-separator}
-  \item \key{clock/minute-second-separator}
-  \item \key{clock/clock-separator}
-\end{itemize}
-resemble the following \pkg{datetime2} package options:
-\begin{itemize}
-  \item \key{hourminsep}
-  \item \key{minsecsep}
-  \item \key{timesep}
-\end{itemize}
 
-The \pkg{clockdate} package keys
-\begin{itemize}
-  \item \key{date/year-month-separator}
-  \item \key{date/month-day-separator}
-  \item \key{date/year-day-separator}
-  \item \key{date/date-separator}
-\end{itemize}
-resemble the following \pkg{datetime2} options:
-\begin{itemize}
-  \item \key{yearmonthsep}
-  \item \key{monthdaysep}
-  \item \key{dayyearsep}
-  \item \key{datesep}
-\end{itemize}
+The \pkg{clockdate} keys on the left resemble the corresponding \pkg{datetime2}
+option on the right.
+\input{clockdate-input-datetime2.tex}
 
 The \pkg{clockdate} package keys
 \begin{itemize}
