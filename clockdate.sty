@@ -190,16 +190,12 @@
       }
       { \prg_return_true: } { \prg_return_false: }
   }
-% Tests if the year is a leap year.
+% Tests if the year is a leap year according to the Julian calendar.
+% The historic Julian calendar has more leap years than the Gregorian calendar.
 \prg_new_conditional:Npnn \__clockdate_date_year_if_leap:n #1 { p }
   {
-    \int_case:nnF {#1}
-      {
-        { \int_div_truncate:nn {#1} {400} * 400 } { \prg_return_true:  }
-        { \int_div_truncate:nn {#1} {100} * 100 } { \prg_return_false: }
-        { \int_div_truncate:nn {#1} {  4} *   4 } { \prg_return_true:  }
-      }
-      { \prg_return_false: }
+    \int_compare:nNnTF { \int_div_truncate:nn {#1} {4} * 4 } = {#1}
+      { \prg_return_true: } { \prg_return_false: }
   }
 % Tests if the month has 31 days.
 \prg_new_conditional:Npnn \__clockdate_date_month_if_thirty_one_days:n #1 { p }
