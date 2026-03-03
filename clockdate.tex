@@ -25,7 +25,7 @@ Print the time of day and the calendar date.
 
 Oliver Beery
 
-Version 0.0.0\quad\date{2026-03-02}
+Version 0.0.0\quad\date{2026-03-03}
 
 
 \section{Introduction}
@@ -201,8 +201,9 @@ This subsection documents the keys that modify the behavior of \cs{clock}.
     \key{clock/hour=\choices{h,hh}}
   \end{syntax}
   Choice key that sets the format in which the hour is printed.
-  |h| prints the hour with the minimum number of digits.
-  |hh| prints the hour with two digits, adding a leading zero if necessary.
+  \key{=h} prints the hour with the minimum number of digits.
+  \key{=hh} prints the hour with two digits, adding a leading zero if
+  necessary.
   The initial value is \key{=h}.
 \end{code}
 
@@ -211,8 +212,9 @@ This subsection documents the keys that modify the behavior of \cs{clock}.
     \key{clock/minute=\choices{m,mm}}
   \end{syntax}
   Choice key that sets the format in which the minute is printed.
-  |m| prints the minute with the minimum number of digits.
-  |mm| prints the minute with two digits, adding a leading zero if necessary.
+  \key{=m} prints the minute with the minimum number of digits.
+  \key{=mm} prints the minute with two digits, adding a leading zero if
+  necessary.
   The initial value is \key{=mm}.
 \end{code}
 
@@ -221,8 +223,9 @@ This subsection documents the keys that modify the behavior of \cs{clock}.
     \key{clock/second=\choices{s,ss}}
   \end{syntax}
   Choice key that sets the format in which the second is printed.
-  |s| prints the second with the minimum number of digits.
-  |ss| prints the second with two digits, adding a leading zero if necessary.
+  \key{=s} prints the second with the minimum number of digits.
+  \key{=ss} prints the second with two digits, adding a leading zero if
+  necessary.
   The initial value is \key{=ss}.
 \end{code}
 
@@ -329,8 +332,8 @@ This subsection documents the keys that modify the behavior of
     \key{date/year=\choices{yy,yyyy}}
   \end{syntax}
   Choice key that sets the format in which the year is printed.
-  |yy| prints the year with only the last two digits.
-  |yyyy| prints the 4-digit year.
+  \key{=yy} prints the year with only the last two digits.
+  \key{=yyyy} prints the 4-digit year.
   The initial value is \key{=yyyy}.
 \end{code}
 
@@ -339,12 +342,14 @@ This subsection documents the keys that modify the behavior of
     \key{date/month=\choices{m,mm,mmm,mmmm}}
   \end{syntax}
   Choice key that sets the format in which the month is printed.
-  |m| prints the month with the minimum number of digits.
-  |mm| prints the month with two digits, adding a leading zero if necessary.
-  |mmm| prints the month in short form.
-  |mmmm| prints the month with the name of the month fully spelled out.
-  By default, |mmm| prints the month in the same form as |mmmm|, except that
-  some months are abbreviated: Jan., Feb., Aug., Sept., Oct., Nov., Dec.
+  \key{=m} prints the month with the minimum number of digits.
+  \key{=mm} prints the month with two digits, adding a leading zero if
+  necessary.
+  \key{=mmm} prints the month in short form.
+  \key{=mmmm} prints the month with the name of the month fully spelled out.
+  By default, \key{=mmm} prints the month in the same form as \key{=mmmm},
+  except that some months are abbreviated: Jan., Feb., Aug., Sept., Oct.,
+  Nov., Dec.
   The initial value is \key{=mmmm}.
 
   % If the next token after \cs{calendardate} is a period, the abbreviated month
@@ -358,8 +363,8 @@ This subsection documents the keys that modify the behavior of
     \key{date/day=\choices{d,dd}}
   \end{syntax}
   Choice key that sets the format in which the day is printed.
-  |d| prints the day with the minimum number of digits.
-  |dd| prints the day with two digits, adding a leading zero if necessary.
+  \key{=d} prints the day with the minimum number of digits.
+  \key{=dd} prints the day with two digits, adding a leading zero if necessary.
   The initial value is \key{=d}.
 \end{code}
 
