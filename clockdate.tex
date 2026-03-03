@@ -659,30 +659,30 @@ NOT YET IMPLEMENTED
   Stores \meta{year}, \meta{month(s)}
 \end{code}
 
-\subsection{Changing the months}
+\subsection{Printing the months}
 
-\begin{code}{\l_clockdate_date_months_mmmm_seq}
+\begin{code}
+  {\l_clockdate_date_months_mmmm_seq, \l_clockdate_date_months_mmm_seq}
   Stores the months used when the value of the key \key{date/month} is
-  \key{=mmmm}.
-  The initial values are given in the table below:
-  \input{clockdate-input-mmmm.tex}
+  \key{=mmmm} and \key{=mmm}, respectively.
+  The initial values are displayed in in Table \ref{table:months-seq}.
 \end{code}
 
-\begin{code}{\l_clockdate_date_months_mmm_seq}
-  Stores the months used when the value of the key \key{date/month} is
-  \key{=mmm}.
-  The initial values are given in the table below:
-  \input{clockdate-input-mmm.tex}
-\end{code}
+\input{clockdate-input-months-seq.tex}
 
 \begin{code}{\clockdate_date_month_period:}
-  % Used to avoid printing an extra period when the result of \cs{calendardate}
-  % ends with \cs{clockdate_date_month_period:} and the next token after
-  % \cs{calendardate} is a period.
-  Prints a period.
-  Does not print the extra period if the result of \cs{calendardate} ends with
-  \cs{clockdate_date_month_period:} and the next token after \cs{calendardate}
-  is a period.
+  This command should be used only in \cs{l_clockdate_date_months_mmmm_seq} and
+  \cs{l_clockdate_date_months_mmm_seq}.
+  The purpose of this command is to avoid mistakenly printing two consecutive
+  periods when the month is abbreviated.
+  Prints a period unless all of the following is true:
+
+  \begin{itemize}
+    \item The display of \cs{calendardate} ends with the month.
+    \item The month ends with \cs{clockdate_date_month_period:}.
+    \item The next token after \cs{calendardate} is a period.
+  \end{itemize}
+
   When \cs{clockdate_date_month_period:} prints the period, it is followed by
   \cs{@} because the sentence does not end here.
 \end{code}

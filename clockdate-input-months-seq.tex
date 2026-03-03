@@ -1,0 +1,34 @@
+\ProvidesFile{clockdate-input-months-seq.tex}[2026-03-03]
+
+\begin{table}
+  \centering
+  \caption
+    {%
+      The initial values of \cs{l_clockdate_date_months_mmmm_seq} and
+      \cs{l_clockdate_date_months_mmm_seq}.%
+      \label{table:months-seq}%
+    }
+  \bigskip
+  \begin{tblr}
+      {
+          colspec = { Q[si={table-format=3.2},c] l l }
+        , cell{1}{1}={guard}
+      }
+    \toprule
+      index & \key{=mmmm} & \key{=mmm} \\
+    \midrule
+       1 & January   & Jan\cs{clockdate_date_month_period:}  \\
+       2 & February  & Feb\cs{clockdate_date_month_period:}  \\
+       3 & March     & March                                 \\
+       4 & April     & April                                 \\
+       5 & May       & May                                   \\
+       6 & June      & June                                  \\
+       7 & July      & July                                  \\
+       8 & August    & Aug\cs{clockdate_date_month_period:}  \\
+       9 & September & Sept\cs{clockdate_date_month_period:} \\
+      10 & October   & Oct\cs{clockdate_date_month_period:}  \\
+      11 & November  & Nov\cs{clockdate_date_month_period:}  \\
+      12 & December  & Dec\cs{clockdate_date_month_period:}  \\
+    \bottomrule
+  \end{tblr}
+\end{table}
