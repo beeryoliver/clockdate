@@ -25,7 +25,7 @@ Print the time of day and the calendar date.
 
 Oliver Beery
 
-Version 0.0.0\quad\date{2026-03-03}
+Version 0.0.0\quad\date{2026-03-04}
 
 
 \section{Introduction}
@@ -261,18 +261,11 @@ This subsection documents the keys that modify the behavior of \cs{clock}.
 
 \begin{code}{clock/ampm}
   \begin{syntax}
-    \key{clock/ampm=\meta{choice}}
+    \key{clock/ampm=\choices{a.m.,am,a,A.M.,AM,A,none}}
   \end{syntax}
-  Choice key that sets the am/pm format.
-  \meta{choice} must match any of the following:
-
+  Choice key that sets the format in which the am/pm is printed.
+  The initial value is \key{=a.m.}
   \input{clockdate-input-ampm.tex}
-  The initial value is \key{=lowercase-with-periods}.
-
-  If the next token after \cs{clock} is a period, the am/pm will not print an
-  extra period.
-  When the am/pm prints the period, it is followed by \cs{@} because the
-  sentence does not end here.
 \end{code}
 
 \begin{code}{clock/ampm-separator}
