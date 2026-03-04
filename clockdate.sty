@@ -7,7 +7,7 @@
 % Loading the package
 
 \NeedsTeXFormat{LaTeX2e}[2023-11-01]
-\ProvidesExplPackage{clockdate}{2026-03-03}{0.0.0}
+\ProvidesExplPackage{clockdate}{2026-03-04}{0.0.0}
   {Provides \noexpand\clock and \string\calendardate.}
 
 \msg_new:nnn { clockdate } { l3kernel }
@@ -108,7 +108,7 @@
   }
 \cs_new_protected:Npn \__clockdate_date_month_period:w
   \__clockdate_date_break_point: \group_end:
-  { \peek_meaning_remove:NTF . { . \group_end: } { . \@ \group_end: } }
+  { \peek_meaning_remove:NTF . { \@ . \group_end: } { . \@ \group_end: } }
 \cs_new:Npn \__clockdate_date_break: #1 \__clockdate_date_break_point: { }
 \cs_new:Npn \__clockdate_date_break_point:
   { \use_none:n { \q__clockdate_date } }
@@ -1017,9 +1017,9 @@
 \cs_new_protected:cpn { __clockdate_clock_print_pm_lowercase-with-periods: }
   { p.m \__clockdate_clock_ampm_period: }
 \cs_new_protected:cpn { __clockdate_clock_print_am_uppercase-with-periods: }
-  { A.M \@ \__clockdate_clock_ampm_period: }
+  { A.M \__clockdate_clock_ampm_period: }
 \cs_new_protected:cpn { __clockdate_clock_print_pm_uppercase-with-periods: }
-  { P.M \@ \__clockdate_clock_ampm_period: }
+  { P.M \__clockdate_clock_ampm_period: }
 \cs_new_protected:cpn { __clockdate_clock_print_am_small-caps-with-periods: }
   { \textsc {a} . \textsc {m} \__clockdate_clock_ampm_period: }
 \cs_new_protected:cpn { __clockdate_clock_print_pm_small-caps-with-periods: }
@@ -1031,7 +1031,7 @@
   }
 \cs_new_protected:Npn \__clockdate_clock_ampm_period:w
   \prg_break_point: \group_end:
-  { \peek_meaning_remove:NTF . { . \group_end: } { . \@ \group_end: } }
+  { \peek_meaning_remove:NTF . { \@ . \group_end: } { . \@ \group_end: } }
 \cs_new_protected:Npn \__clockdate_clock_print_am_lowercase: { am }
 \cs_new_protected:Npn \__clockdate_clock_print_pm_lowercase: { pm }
 \cs_new_protected:Npn \__clockdate_clock_print_am_uppercase: { AM \@ }
