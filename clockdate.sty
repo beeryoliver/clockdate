@@ -985,6 +985,9 @@
         { \str_set:Nn \l__clockdate_clock_format_str {#1} }
     , format .value_required:n = true
 
+    , range-separator .tl_set:N = \l__clockdate_clock_range_separator_tl
+    , range-separator .value_required:n = true
+
     , hour .choices:nn = { h , hh }
         { \str_set:Nn \l__clockdate_clock_hour_str {#1} }
     , hour .value_required:n = true
@@ -996,56 +999,6 @@
     , second .choices:nn = { s , ss }
         { \str_set:Nn \l__clockdate_clock_second_str {#1} }
     , second .value_required:n = true
-
-    , ampm .choices:nn =
-        {
-            lowercase-with-periods  , lowercase
-          , uppercase-with-periods  , uppercase
-          , small-caps-with-periods , small-caps , none
-        }
-        {
-          \str_set:Nn \l__clockdate_clock_ampm_str {#1}
-          \cs_set_eq:Nc \__clockdate_clock_print_am:
-            { __clockdate_clock_print_am_#1: }
-          \cs_set_eq:Nc \__clockdate_clock_print_pm:
-            { __clockdate_clock_print_pm_#1: }
-        }
-    , ampm .value_required:n = true
-  }
-\cs_new_protected:cpn { __clockdate_clock_print_am_lowercase-with-periods: }
-  { a.m \__clockdate_clock_ampm_period: }
-\cs_new_protected:cpn { __clockdate_clock_print_pm_lowercase-with-periods: }
-  { p.m \__clockdate_clock_ampm_period: }
-\cs_new_protected:cpn { __clockdate_clock_print_am_uppercase-with-periods: }
-  { A.M \__clockdate_clock_ampm_period: }
-\cs_new_protected:cpn { __clockdate_clock_print_pm_uppercase-with-periods: }
-  { P.M \__clockdate_clock_ampm_period: }
-\cs_new_protected:cpn { __clockdate_clock_print_am_small-caps-with-periods: }
-  { \textsc {a} . \textsc {m} \__clockdate_clock_ampm_period: }
-\cs_new_protected:cpn { __clockdate_clock_print_pm_small-caps-with-periods: }
-  { \textsc {p} . \textsc {m} \__clockdate_clock_ampm_period: }
-\cs_new_protected:Npn \__clockdate_clock_ampm_period:
-  {
-    \peek_meaning:NTF \prg_break_point:
-      { \__clockdate_clock_ampm_period:w } { . \@ }
-  }
-\cs_new_protected:Npn \__clockdate_clock_ampm_period:w
-  \prg_break_point: \group_end:
-  { \peek_meaning_remove:NTF . { \@ . \group_end: } { . \@ \group_end: } }
-\cs_new_protected:Npn \__clockdate_clock_print_am_lowercase: { am }
-\cs_new_protected:Npn \__clockdate_clock_print_pm_lowercase: { pm }
-\cs_new_protected:Npn \__clockdate_clock_print_am_uppercase: { AM \@ }
-\cs_new_protected:Npn \__clockdate_clock_print_pm_uppercase: { PM \@ }
-\cs_new_protected:cpn { __clockdate_clock_print_am_small-caps: }
-  { \textsc { am } }
-\cs_new_protected:cpn { __clockdate_clock_print_pm_small-caps: }
-  { \textsc { pm } }
-\cs_new_protected:Npn \__clockdate_clock_print_am_none: { }
-\cs_new_protected:Npn \__clockdate_clock_print_pm_none: { }
-\keys_define:nn { clockdate / clock }
-  {
-      ampm-omit-first .bool_set:N = \l__clockdate_clock_ampm_omit_first_bool
-    , ampm-omit-first .value_required:n = true
 
     , hour-minute-separator .tl_set:N =
         \l__clockdate_clock_hour_minute_separator_tl
@@ -1062,11 +1015,49 @@
         }
     , clock-separator .value_required:n = true
 
-    , ampm-separator .tl_set:N = \l__clockdate_clock_ampm_separator_tl
+    , ampm .choices:nn = { a.m. , am , a , A.M. , AM , A , none }
+        {
+          \str_set:Nn \l__clockdate_clock_ampm_str {#1}
+          \cs_set_eq:Nc \__clockdate_clock_print_am:
+            { __clockdate_clock_print_am_#1: }
+          \cs_set_eq:Nc \__clockdate_clock_print_pm:
+            { __clockdate_clock_print_pm_#1: }
+        }
+    , ampm .value_required:n = true
+  }
+\cs_new_protected:cpn { __clockdate_clock_print_am_a.m.:}
+  { a.m \__clockdate_clock_ampm_period: }
+\cs_new_protected:cpn { __clockdate_clock_print_pm_a.m.:}
+  { p.m \__clockdate_clock_ampm_period: }
+\cs_new_protected:Npn \__clockdate_clock_print_am_am: {am}
+\cs_new_protected:Npn \__clockdate_clock_print_pm_am: {pm}
+\cs_new_protected:Npn \__clockdate_clock_print_am_a: {a}
+\cs_new_protected:Npn \__clockdate_clock_print_pm_a: {p}
+\cs_new_protected:cpn { __clockdate_clock_print_am_A.M.:}
+  { A.M \__clockdate_clock_ampm_period: }
+\cs_new_protected:cpn { __clockdate_clock_print_pm_A.M.:}
+  { P.M \__clockdate_clock_ampm_period: }
+\cs_new_protected:Npn \__clockdate_clock_print_am_AM: { AM \@ }
+\cs_new_protected:Npn \__clockdate_clock_print_pm_AM: { PM \@ }
+\cs_new_protected:Npn \__clockdate_clock_print_am_A: { A \@ }
+\cs_new_protected:Npn \__clockdate_clock_print_pm_A: { P \@ }
+\cs_new_protected:Npn \__clockdate_clock_print_am_none: { }
+\cs_new_protected:Npn \__clockdate_clock_print_pm_none: { }
+\cs_new_protected:Npn \__clockdate_clock_ampm_period:
+  {
+    \peek_meaning:NTF \prg_break_point:
+      { \__clockdate_clock_ampm_period:w } { . \@ }
+  }
+\cs_new_protected:Npn \__clockdate_clock_ampm_period:w
+  \prg_break_point: \group_end:
+  { \peek_meaning_remove:NTF . { \@ . \group_end: } { . \@ \group_end: } }
+\keys_define:nn { clockdate / clock }
+  {
+      ampm-separator .tl_set:N = \l__clockdate_clock_ampm_separator_tl
     , ampm-separator .value_required:n = true
 
-    , range-separator .tl_set:N = \l__clockdate_clock_range_separator_tl
-    , range-separator .value_required:n = true
+    , ampm-omit-first .bool_set:N = \l__clockdate_clock_ampm_omit_first_bool
+    , ampm-omit-first .value_required:n = true
   }
 \keys_define:nn { clockdate / date }
   {
@@ -1179,19 +1170,19 @@
   {
     \tl_clear:N \l__clockdate_clock_star_tl
     \str_set:Nn \l__clockdate_clock_format_str { 12-hour }
+    \tl_set:Nn \l__clockdate_clock_range_separator_tl { ~to~ }
     \str_set:Nn \l__clockdate_clock_hour_str { h }
     \str_set:Nn \l__clockdate_clock_minute_str { mm }
     \str_set:Nn \l__clockdate_clock_second_str { ss }
-    \str_set:Nn \l__clockdate_clock_ampm_str { lowercase-with-periods }
-    \cs_set_eq:Nc \__clockdate_clock_print_am:
-      { __clockdate_clock_print_am_lowercase-with-periods: }
-    \cs_set_eq:Nc \__clockdate_clock_print_pm:
-      { __clockdate_clock_print_pm_lowercase-with-periods: }
-    \bool_set_true:N \l__clockdate_clock_ampm_omit_first_bool
     \tl_set:NV \l__clockdate_clock_hour_minute_separator_tl \c_colon_str
     \tl_set:NV \l__clockdate_clock_minute_second_separator_tl \c_colon_str
+    \str_set:Nn \l__clockdate_clock_ampm_str { a.m. }
+    \cs_set_eq:Nc \__clockdate_clock_print_am:
+      { __clockdate_clock_print_am_a.m.: }
+    \cs_set_eq:Nc \__clockdate_clock_print_pm:
+      { __clockdate_clock_print_pm_a.m.: }
     \tl_set_eq:NN \l__clockdate_clock_ampm_separator_tl \c_space_tl
-    \tl_set:Nn \l__clockdate_clock_range_separator_tl { ~to~ }
+    \bool_set_true:N \l__clockdate_clock_ampm_omit_first_bool
 
     \tl_clear:N \l__clockdate_date_star_tl
     \str_set:Nn \l__clockdate_date_format_str { day-month-year }
