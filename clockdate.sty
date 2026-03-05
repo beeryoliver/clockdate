@@ -124,14 +124,12 @@
 
 % Variants of l3kernel functions
 \cs_generate_variant:Nn \msg_error:nnnnn { nnVVV }
-% Tests if two boolean expressions either both equal true or both equal false.
 \prg_new_conditional:Npnn \__clockdate_bool_if_eq:nn #1#2 { p }
   {
     \bool_if:nTF {#1}
       { \bool_if:nTF {#2} { \prg_return_true:  } { \prg_return_false: } }
       { \bool_if:nTF {#2} { \prg_return_false: } { \prg_return_true:  } }
   }
-% Tests if the hour corresponds to am (true) or pm (false).
 \prg_new_conditional:Npnn \__clockdate_clock_hour_if_am:n #1 { p , TF }
   {
     \bool_lazy_or:nnTF
@@ -139,13 +137,11 @@
       { \int_compare_p:nNn {#1} = { 24 } }
       { \prg_return_true: } { \prg_return_false: }
   }
-% Tests the validity of the month.
 \prg_new_conditional:Npnn \__clockdate_date_month_if_valid:n #1 { F , TF }
   {
     \int_compare:nTF { 0 < #1 < 13 }
       { \prg_return_true: } { \prg_return_false: }
   }
-% Tests the validity of the year-month-day.
 \prg_new_conditional:Npnn \__clockdate_date_year_month_day_if_valid:nnn #1#2#3
   { TF }
   {
@@ -174,8 +170,6 @@
       }
       { \prg_return_true: } { \prg_return_false: }
   }
-% Tests the validity of the month-day. Unlike
-% \__clockdate_date_year_month_day_if_valid:nnn, February 29 is always valid.
 \prg_new_conditional:Npnn \__clockdate_date_month_day_if_valid:nn #1#2 { TF }
   {
     \bool_lazy_any:nTF
@@ -201,7 +195,6 @@
     \int_compare:nNnTF { \int_div_truncate:nn {#1} {4} * 4 } = {#1}
       { \prg_return_true: } { \prg_return_false: }
   }
-% Tests if the month has 31 days.
 \prg_new_conditional:Npnn \__clockdate_date_month_if_thirty_one_days:n #1 { p }
   {
     \int_case:nn {#1}
@@ -1025,17 +1018,17 @@
         }
     , ampm .value_required:n = true
   }
-\cs_new_protected:cpn { __clockdate_clock_print_am_a.m.:}
+\cs_new_protected:cpn { __clockdate_clock_print_am_a.m.: }
   { a.m \__clockdate_clock_ampm_period: }
-\cs_new_protected:cpn { __clockdate_clock_print_pm_a.m.:}
+\cs_new_protected:cpn { __clockdate_clock_print_pm_a.m.: }
   { p.m \__clockdate_clock_ampm_period: }
 \cs_new_protected:Npn \__clockdate_clock_print_am_am: {am}
 \cs_new_protected:Npn \__clockdate_clock_print_pm_am: {pm}
 \cs_new_protected:Npn \__clockdate_clock_print_am_a: {a}
 \cs_new_protected:Npn \__clockdate_clock_print_pm_a: {p}
-\cs_new_protected:cpn { __clockdate_clock_print_am_A.M.:}
+\cs_new_protected:cpn { __clockdate_clock_print_am_A.M.: }
   { A.M \__clockdate_clock_ampm_period: }
-\cs_new_protected:cpn { __clockdate_clock_print_pm_A.M.:}
+\cs_new_protected:cpn { __clockdate_clock_print_pm_A.M.: }
   { P.M \__clockdate_clock_ampm_period: }
 \cs_new_protected:Npn \__clockdate_clock_print_am_AM: { AM \@ }
 \cs_new_protected:Npn \__clockdate_clock_print_pm_AM: { PM \@ }
