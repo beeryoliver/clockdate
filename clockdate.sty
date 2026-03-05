@@ -7,7 +7,7 @@
 % Loading the package
 
 \NeedsTeXFormat{LaTeX2e}[2023-11-01]
-\ProvidesExplPackage{clockdate}{2026-03-04}{0.0.0}
+\ProvidesExplPackage{clockdate}{2026-03-05}{0.0.0}
   {Provides \noexpand\clock and \string\calendardate.}
 
 \msg_new:nnn { clockdate } { l3kernel }
@@ -500,7 +500,7 @@
   {
     \bool_lazy_and:nnT
       { \int_compare_p:nNn {#1} < { 10 } }
-      { \str_if_eq_p:ee \l__clockdate_clock_hour_str { hh } }
+      { \str_if_eq_p:ee \l__clockdate_clock_hour_format_str { hh } }
       { 0 }
     #1
   }
@@ -510,7 +510,7 @@
   {
     \bool_lazy_and:nnT
       { \int_compare_p:nNn {#1} < { 10 } }
-      { \str_if_eq_p:ee \l__clockdate_clock_minute_str { mm } }
+      { \str_if_eq_p:ee \l__clockdate_clock_minute_format_str { mm } }
       { 0 }
     #1
   }
@@ -520,7 +520,7 @@
   {
     \bool_lazy_and:nnT
       { \int_compare_p:nNn {#1} < { 10 } }
-      { \str_if_eq_p:ee \l__clockdate_clock_second_str { ss } }
+      { \str_if_eq_p:ee \l__clockdate_clock_second_format_str { ss } }
       { 0 }
     #1
   }
@@ -920,7 +920,7 @@
 
 \cs_new_protected:Npn \__clockdate_date_print_year:
   {
-    \str_if_eq:eeT \l__clockdate_date_year_str { yy }
+    \str_if_eq:eeT \l__clockdate_date_year_format_str { yy }
       { \exp_after:wN \use_none:nn }
     \int_use:N \l__clockdate_date_year_int
   }
@@ -944,7 +944,7 @@
   {
     \bool_lazy_and:nnT
       { \int_compare_p:nNn {#1} < { 10 } }
-      { \str_if_eq_p:ee \l__clockdate_date_day_str { dd } }
+      { \str_if_eq_p:ee \l__clockdate_date_day_format_str { dd } }
       { 0 }
     \int_eval:n {#1}
   }
@@ -953,16 +953,16 @@
 
 \tl_new:N  \l__clockdate_clock_star_tl
 \str_new:N \l__clockdate_clock_format_str
-\str_new:N \l__clockdate_clock_hour_str
-\str_new:N \l__clockdate_clock_minute_str
-\str_new:N \l__clockdate_clock_second_str
-\str_new:N \l__clockdate_clock_ampm_str
+\str_new:N \l__clockdate_clock_hour_format_str
+\str_new:N \l__clockdate_clock_minute_format_str
+\str_new:N \l__clockdate_clock_second_format_str
+\str_new:N \l__clockdate_clock_ampm_format_str
 
 \tl_new:N  \l__clockdate_date_star_tl
 \str_new:N \l__clockdate_date_format_str
-\str_new:N \l__clockdate_date_year_str
-\str_new:N \l__clockdate_date_month_str
-\str_new:N \l__clockdate_date_day_str
+\str_new:N \l__clockdate_date_year_format_str
+\str_new:N \l__clockdate_date_month_format_str
+\str_new:N \l__clockdate_date_day_format_str
 
 \keys_define:nn { clockdate }
   {
@@ -989,15 +989,15 @@
     , range-separator .value_required:n = true
 
     , hour .choices:nn = { h , hh }
-        { \str_set:Nn \l__clockdate_clock_hour_str {#1} }
+        { \str_set:Nn \l__clockdate_clock_hour_format_str {#1} }
     , hour .value_required:n = true
 
     , minute .choices:nn = { m , mm  }
-        { \str_set:Nn \l__clockdate_clock_minute_str {#1} }
+        { \str_set:Nn \l__clockdate_clock_minute_format_str {#1} }
     , minute .value_required:n = true
 
     , second .choices:nn = { s , ss }
-        { \str_set:Nn \l__clockdate_clock_second_str {#1} }
+        { \str_set:Nn \l__clockdate_clock_second_format_str {#1} }
     , second .value_required:n = true
 
     , hour-minute-separator .tl_set:N =
@@ -1017,7 +1017,7 @@
 
     , ampm .choices:nn = { a.m. , am , a , A.M. , AM , A , none }
         {
-          \str_set:Nn \l__clockdate_clock_ampm_str {#1}
+          \str_set:Nn \l__clockdate_clock_ampm_format_str {#1}
           \cs_set_eq:Nc \__clockdate_clock_print_am:
             { __clockdate_clock_print_am_#1: }
           \cs_set_eq:Nc \__clockdate_clock_print_pm:
@@ -1091,12 +1091,12 @@
     , format .value_required:n = true
 
     , year .choices:nn = { yy , yyyy }
-        { \str_set:Nn \l__clockdate_date_year_str {#1} }
+        { \str_set:Nn \l__clockdate_date_year_format_str {#1} }
     , year .value_required:n = true
 
     , month .choices:nn = { m , mm , mmm , mmmm }
         {
-          \str_set:Nn \l__clockdate_date_month_str {#1}
+          \str_set:Nn \l__clockdate_date_month_format_str {#1}
           \cs_set_eq:Nc \__clockdate_date_print_month:n
             { __clockdate_date_print_month_#1:n }
         }
@@ -1115,7 +1115,7 @@
 \keys_define:nn { clockdate / date }
   {
       day .choices:nn = { d , dd }
-        { \str_set:Nn \l__clockdate_date_day_str {#1} }
+        { \str_set:Nn \l__clockdate_date_day_format_str {#1} }
     , day .value_required:n = true
 
     , year-month-separator .tl_set:N =
@@ -1171,12 +1171,12 @@
     \tl_clear:N \l__clockdate_clock_star_tl
     \str_set:Nn \l__clockdate_clock_format_str { 12-hour }
     \tl_set:Nn \l__clockdate_clock_range_separator_tl { ~to~ }
-    \str_set:Nn \l__clockdate_clock_hour_str { h }
-    \str_set:Nn \l__clockdate_clock_minute_str { mm }
-    \str_set:Nn \l__clockdate_clock_second_str { ss }
+    \str_set:Nn \l__clockdate_clock_hour_format_str { h }
+    \str_set:Nn \l__clockdate_clock_minute_format_str { mm }
+    \str_set:Nn \l__clockdate_clock_second_format_str { ss }
     \tl_set:NV \l__clockdate_clock_hour_minute_separator_tl \c_colon_str
     \tl_set:NV \l__clockdate_clock_minute_second_separator_tl \c_colon_str
-    \str_set:Nn \l__clockdate_clock_ampm_str { a.m. }
+    \str_set:Nn \l__clockdate_clock_ampm_format_str { a.m. }
     \cs_set_eq:Nc \__clockdate_clock_print_am:
       { __clockdate_clock_print_am_a.m.: }
     \cs_set_eq:Nc \__clockdate_clock_print_pm:
@@ -1188,11 +1188,11 @@
     \str_set:Nn \l__clockdate_date_format_str { day-month-year }
     \cs_set_eq:NN \__clockdate_date:ww  \__clockdate_date_DMY:ww
     \cs_set_eq:NN \__clockdate_date:www \__clockdate_date_DMY:www
-    \str_set:Nn \l__clockdate_date_year_str { yyyy }
-    \str_set:Nn \l__clockdate_date_month_str { mmmm }
+    \str_set:Nn \l__clockdate_date_year_format_str { yyyy }
+    \str_set:Nn \l__clockdate_date_month_format_str { mmmm }
     \cs_set_eq:NN \__clockdate_date_print_month:n
       \__clockdate_date_print_month_mmmm:n
-    \str_set:Nn \l__clockdate_date_day_str { d }
+    \str_set:Nn \l__clockdate_date_day_format_str { d }
     \tl_set_eq:NN \l__clockdate_date_year_month_separator_tl \c_space_tl
     \tl_set_eq:NN \l__clockdate_date_month_day_separator_tl \c_space_tl
     \tl_set:Nn \l__clockdate_date_year_day_separator_tl { ,~ }
@@ -1223,7 +1223,7 @@
       {
         \bool_lazy_and_p:nn
           { \str_if_eq_p:ee \l__clockdate_clock_format_str { 12-hour } }
-          { ! \str_if_eq_p:ee \l__clockdate_clock_ampm_str { none } }
+          { ! \str_if_eq_p:ee \l__clockdate_clock_ampm_format_str { none } }
       }
   }
 
