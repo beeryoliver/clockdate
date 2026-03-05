@@ -51,9 +51,9 @@ This package provides \cs{clock} and \cs{calendardate}.
 \label{sec:packageoption}
 
 \begin{code}{overwrite-date, \date}
-  Makes \cs{date} equivalent to \cs{calendardate}, overwriting its previous
-  definition.
-  This is done at the \hook{begindocument} hook.
+  Redefines \cs{date} as equivalent to \cs{calendardate}.
+  This is done at the \hook{begindocumnt} hook so that the original definition
+  remains usuable in the preamble.
 \end{code}
 
 
@@ -282,7 +282,7 @@ This subsection documents the keys that modify the behavior of \cs{clock}.
   \end{syntax}
   Boolean key that sets whether \meta{clock_1} prints the am/pm in a
   time-of-day range if \meta{clock_1} and \meta{clock_2} would either both
-  display am or both display pm.
+  print am or both print pm.
   The initial value is \key{=true}.
 \end{code}
 
@@ -405,7 +405,7 @@ This subsection documents the keys that modify the behavior of
   \begin{syntax}
     \key{date/days-separator=\meta{token list}}
   \end{syntax}
-  Sets the separator between each item in \meta{day(s)} to \meta{token list}.
+  Sets the separator between each item in \meta{days} to \meta{token list}.
   The initial value is \key{=, }.
 \end{code}
 
@@ -413,8 +413,8 @@ This subsection documents the keys that modify the behavior of
   \begin{syntax}
     \key{date/days-pair-separator=\meta{token list}}
   \end{syntax}
-  Sets the separator between each item in \meta{day(s)} to \meta{token list}
-  when \meta{day(s)} contains exactly two items.
+  Sets the separator between each item in \meta{days} to \meta{token list} if
+  \meta{days} contains exactly two items.
   The initial value is \key{= and }.
 \end{code}
 
@@ -422,8 +422,8 @@ This subsection documents the keys that modify the behavior of
   \begin{syntax}
     \key{date/days-final-separator=\meta{token list}}
   \end{syntax}
-  Sets the separator between the last two items in \meta{day(s)} to
-  \meta{token list} when \meta{day(s)} contains three or more items.
+  Sets the separator between the last two items in \meta{days} to
+  \meta{token list} if \meta{days} contains three or more items.
   The initial value is \key{=, and }.
 \end{code}
 
@@ -442,7 +442,7 @@ This subsection documents the keys that modify the behavior of
   \begin{syntax}
     \key{date/months-separator=\meta{token list}}
   \end{syntax}
-  Sets the separator between each item in \meta{month(s)} to \meta{token list}.
+  Sets the separator between each item in \meta{months} to \meta{token list}.
   The initial value is \key{=, }.
 \end{code}
 
@@ -450,8 +450,8 @@ This subsection documents the keys that modify the behavior of
   \begin{syntax}
     \key{date/months-pair-separator=\meta{token list}}
   \end{syntax}
-  Sets the separator between each item in \meta{month(s)} to \meta{token list}
-  when \meta{month(s)} contains exactly two items.
+  Sets the separator between each item in \meta{months} to \meta{token list} if
+  \meta{months} contains exactly two items.
   The initial value is \key{= and }.
 \end{code}
 
@@ -459,8 +459,8 @@ This subsection documents the keys that modify the behavior of
   \begin{syntax}
     \key{date/months-final-separator=\meta{token list}}
   \end{syntax}
-  Sets the separator between the last two items in \meta{month(s)} to
-  \meta{token list} when \meta{month(s)} contains three or more items.
+  Sets the separator between the last two items in \meta{months} to
+  \meta{token list} if \meta{months} contains three or more items.
   The initial value is \key{=, and }.
 \end{code}
 
@@ -642,21 +642,43 @@ NOT YET IMPLEMENTED
 
 NOT YET IMPLEMENTED
 
-\begin{code}
-  {
-    \l_clockdate_date_year_int,
-    \l_clockdate_date_month_int,
-    \l_clockdate_date_month_tl,
-    \l_clockdate_date_day_tl
-  }
-  Stores \meta{year}, \meta{month(s)}
+\begin{code}{\l_clockdate_date_year_int}
+  Stores the value of \meta{year}.
+  The value is \num{-1} if \meta{year} is omitted.
+\end{code}
+
+\begin{code}{\l_clockdate_date_month_int}
+  Stores the value of \meta{month} if only a single month is printed.
+  The value is \num{-1} if two or more months are printed.
+\end{code}
+
+\begin{code}{\l_clockdate_date_months_str}
+  Stores the value of \meta{months} if two or more months are printed.
+  The value takes the same form as the \meta{months} as explained for
+  \cs{calendardate}, except that each \meta{month} is evaluated using
+  \cs{inteval}.
+  The value is \meta{empty} if only a single month is printed.
+\end{code}
+
+\begin{code}{\l_clockdate_date_day_int}
+  Stores the value of \meta{day} if only a single day is printed.
+  The value is \num{-1} if \meta{day} is omitted or if two or more days are
+  printed.
+\end{code}
+
+\begin{code}{\l_clockdate_date_days_str}
+  Stores the value of \meta{days} if two or more days are printed.
+  The value takes the same form as the \meta{days} as explained for
+  \cs{calendardate}, except that each \meta{day} is evaluated using
+  \cs{inteval}.
+  The value is \meta{empty} if exactly \num{0} or \num{1} days are printed.
 \end{code}
 
 \subsection{Printing the months}
 
 \begin{code}
   {\l_clockdate_date_months_mmmm_seq, \l_clockdate_date_months_mmm_seq}
-  Stores the months used when the value of the key \key{date/month} is
+  Stores the months used if the value of the key \key{date/month} is
   \key{=mmmm} and \key{=mmm}, respectively.
   The initial values are displayed in in Table \ref{table:months-seq}.
 \end{code}
@@ -664,10 +686,10 @@ NOT YET IMPLEMENTED
 \input{clockdate-input-months-seq.tex}
 
 \begin{code}{\clockdate_date_month_period:}
-  This command should be used only in \cs{l_clockdate_date_months_mmmm_seq} and
-  \cs{l_clockdate_date_months_mmm_seq}.
+  % This command should be used only in \cs{l_clockdate_date_months_mmmm_seq} and
+  % \cs{l_clockdate_date_months_mmm_seq}.
   The purpose of this command is to avoid mistakenly printing two consecutive
-  periods when the month is abbreviated.
+  periods if the month is abbreviated.
   Prints a period unless all of the following is true:
 
   \begin{itemize}
