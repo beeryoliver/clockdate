@@ -640,8 +640,6 @@ NOT YET IMPLEMENTED
 
 \subsection{Variables set in \cs{calendardate}}
 
-NOT YET IMPLEMENTED
-
 \begin{code}{\l_clockdate_date_year_int}
   Stores the value of \meta{year}.
   The value is \num{-1} if \meta{year} is omitted.
@@ -656,7 +654,7 @@ NOT YET IMPLEMENTED
   Stores the value of \meta{months} if two or more months are printed.
   The value takes the same form as the \meta{months} as explained for
   \cs{calendardate}, except that each \meta{month} is evaluated using
-  \cs{inteval}.
+  \cs{int_eval:n}.
   The value is \meta{empty} if only a single month is printed.
 \end{code}
 
@@ -670,7 +668,7 @@ NOT YET IMPLEMENTED
   Stores the value of \meta{days} if two or more days are printed.
   The value takes the same form as the \meta{days} as explained for
   \cs{calendardate}, except that each \meta{day} is evaluated using
-  \cs{inteval}.
+  \cs{int_eval:n}.
   The value is \meta{empty} if exactly \num{0} or \num{1} days are printed.
 \end{code}
 
