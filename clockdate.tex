@@ -615,8 +615,6 @@ This section documents the \pkg{expl3} programming support provided by the
 
 \subsection{Variables set in \cs{clock}}
 
-NOT YET IMPLEMENTED
-
 \begin{code}
   {
     \l_clockdate_clock_hour_int,
@@ -684,10 +682,8 @@ NOT YET IMPLEMENTED
 \input{clockdate-input-months-seq.tex}
 
 \begin{code}{\clockdate_date_month_period:}
-  % This command should be used only in \cs{l_clockdate_date_months_mmmm_seq} and
-  % \cs{l_clockdate_date_months_mmm_seq}.
   The purpose of this command is to avoid mistakenly printing two consecutive
-  periods if the month is abbreviated.
+  periods if the month is abbreviated and ends with a period.
   Prints a period unless all of the following is true:
 
   \begin{itemize}
