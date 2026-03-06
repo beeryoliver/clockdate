@@ -36,13 +36,13 @@
 
 \tl_new:N  \l__clockdate_clock_input_tl
 \seq_new:N \l__clockdate_clock_seq
-\int_new:N \l__clockdate_clock_hour_int
-\int_new:N \l__clockdate_clock_minute_int
-\int_new:N \l__clockdate_clock_second_int
+\int_new:N \l_clockdate_clock_hour_int
+\int_new:N \l_clockdate_clock_minute_int
+\int_new:N \l_clockdate_clock_second_int
 \seq_new:N \l__clockdate_clock_range_seq
-\int_new:N \l__clockdate_clock_hour_range_int
-\int_new:N \l__clockdate_clock_minute_range_int
-\int_new:N \l__clockdate_clock_second_range_int
+\int_new:N \l_clockdate_clock_hour_range_int
+\int_new:N \l_clockdate_clock_minute_range_int
+\int_new:N \l_clockdate_clock_second_range_int
 
 % Used to test whether the am/pm will be printed.
 \bool_new:N \l__clockdate_clock_print_ampm_bool
@@ -60,12 +60,12 @@
 
 \tl_map_inline:nn
   {
-    \l__clockdate_clock_hour_int
-    \l__clockdate_clock_minute_int
-    \l__clockdate_clock_second_int
-    \l__clockdate_clock_hour_range_int
-    \l__clockdate_clock_minute_range_int
-    \l__clockdate_clock_second_range_int
+    \l_clockdate_clock_hour_int
+    \l_clockdate_clock_minute_int
+    \l_clockdate_clock_second_int
+    \l_clockdate_clock_hour_range_int
+    \l_clockdate_clock_minute_range_int
+    \l_clockdate_clock_second_range_int
 
     \l_clockdate_date_year_int
     \l_clockdate_date_month_int
@@ -287,23 +287,23 @@
       {
         { 1 }
         {
-          \__clockdate_clock_set_hour:Nn \l__clockdate_clock_hour_int
+          \__clockdate_clock_set_hour:Nn \l_clockdate_clock_hour_int
             { \seq_item:Nn \l__clockdate_clock_seq {1} }
         }
         { 2 }
         {
-          \__clockdate_clock_set_hour:Nn \l__clockdate_clock_hour_int
+          \__clockdate_clock_set_hour:Nn \l_clockdate_clock_hour_int
             { \seq_item:Nn \l__clockdate_clock_seq {1} }
-          \__clockdate_clock_set_minute:Nn \l__clockdate_clock_minute_int
+          \__clockdate_clock_set_minute:Nn \l_clockdate_clock_minute_int
             { \seq_item:Nn \l__clockdate_clock_seq {2} }
         }
         { 3 }
         {
-          \__clockdate_clock_set_hour:Nn \l__clockdate_clock_hour_int
+          \__clockdate_clock_set_hour:Nn \l_clockdate_clock_hour_int
             { \seq_item:Nn \l__clockdate_clock_seq {1} }
-          \__clockdate_clock_set_minute:Nn \l__clockdate_clock_minute_int
+          \__clockdate_clock_set_minute:Nn \l_clockdate_clock_minute_int
             { \seq_item:Nn \l__clockdate_clock_seq {2} }
-          \__clockdate_clock_set_minute:Nn \l__clockdate_clock_second_int
+          \__clockdate_clock_set_minute:Nn \l_clockdate_clock_second_int
             { \seq_item:Nn \l__clockdate_clock_seq {3} }
         }
       }
@@ -316,23 +316,23 @@
       {
         { 1 }
         {
-          \__clockdate_clock_set_hour:Nn \l__clockdate_clock_hour_range_int
+          \__clockdate_clock_set_hour:Nn \l_clockdate_clock_hour_range_int
             { \seq_item:Nn \l__clockdate_clock_range_seq {1} }
         }
         { 2 }
         {
-          \__clockdate_clock_set_hour:Nn \l__clockdate_clock_hour_range_int
+          \__clockdate_clock_set_hour:Nn \l_clockdate_clock_hour_range_int
             { \seq_item:Nn \l__clockdate_clock_range_seq {1} }
-          \__clockdate_clock_set_minute:Nn \l__clockdate_clock_minute_range_int
+          \__clockdate_clock_set_minute:Nn \l_clockdate_clock_minute_range_int
             { \seq_item:Nn \l__clockdate_clock_range_seq {2} }
         }
         { 3 }
         {
-          \__clockdate_clock_set_hour:Nn \l__clockdate_clock_hour_range_int
+          \__clockdate_clock_set_hour:Nn \l_clockdate_clock_hour_range_int
             { \seq_item:Nn \l__clockdate_clock_range_seq {1} }
-          \__clockdate_clock_set_minute:Nn \l__clockdate_clock_minute_range_int
+          \__clockdate_clock_set_minute:Nn \l_clockdate_clock_minute_range_int
             { \seq_item:Nn \l__clockdate_clock_range_seq {2} }
-          \__clockdate_clock_set_minute:Nn \l__clockdate_clock_second_range_int
+          \__clockdate_clock_set_minute:Nn \l_clockdate_clock_second_range_int
             { \seq_item:Nn \l__clockdate_clock_range_seq {3} }
         }
       }
@@ -340,16 +340,15 @@
         \msg_error:nnn { clockdate } { invalid } { #1 -- #2 }
         \prg_break:
       }
-    \__clockdate_clock_print_hour:n { \l__clockdate_clock_hour_int }
-    \int_compare:nNnF \l__clockdate_clock_minute_int = { -1 }
+    \__clockdate_clock_print_hour:n { \l_clockdate_clock_hour_int }
+    \int_compare:nNnF \l_clockdate_clock_minute_int = { -1 }
       {
         \l__clockdate_clock_hour_minute_separator_tl
-        \__clockdate_clock_print_minute:n { \l__clockdate_clock_minute_int }
-        \int_compare:nNnF \l__clockdate_clock_second_int = { -1 }
+        \__clockdate_clock_print_minute:n { \l_clockdate_clock_minute_int }
+        \int_compare:nNnF \l_clockdate_clock_second_int = { -1 }
           {
             \l__clockdate_clock_minute_second_separator_tl
-            \__clockdate_clock_print_second:n
-              { \l__clockdate_clock_second_int }
+            \__clockdate_clock_print_second:n { \l_clockdate_clock_second_int }
           }
       }
     \bool_lazy_and:nnT
@@ -361,36 +360,36 @@
             \__clockdate_bool_if_eq_p:nn
               {
                 \__clockdate_clock_hour_if_am_p:n
-                  { \l__clockdate_clock_hour_int }
+                  { \l_clockdate_clock_hour_int }
               }
               {
                 \__clockdate_clock_hour_if_am_p:n
-                  { \l__clockdate_clock_hour_range_int }
+                  { \l_clockdate_clock_hour_range_int }
               }
           }
       }
       {
         \l__clockdate_clock_ampm_separator_tl
-        \__clockdate_clock_print_ampm:n { \l__clockdate_clock_hour_int }
+        \__clockdate_clock_print_ampm:n { \l_clockdate_clock_hour_int }
       }
     \l__clockdate_clock_range_separator_tl
-    \__clockdate_clock_print_hour:n { \l__clockdate_clock_hour_range_int }
-    \int_compare:nNnF \l__clockdate_clock_minute_range_int = { -1 }
+    \__clockdate_clock_print_hour:n { \l_clockdate_clock_hour_range_int }
+    \int_compare:nNnF \l_clockdate_clock_minute_range_int = { -1 }
       {
         \l__clockdate_clock_hour_minute_separator_tl
         \__clockdate_clock_print_minute:n
-          { \l__clockdate_clock_minute_range_int }
-        \int_compare:nNnF \l__clockdate_clock_second_range_int = { -1 }
+          { \l_clockdate_clock_minute_range_int }
+        \int_compare:nNnF \l_clockdate_clock_second_range_int = { -1 }
           {
             \l__clockdate_clock_minute_second_separator_tl
             \__clockdate_clock_print_second:n
-              { \l__clockdate_clock_second_range_int }
+              { \l_clockdate_clock_second_range_int }
           }
       }
     \bool_if:NT \l__clockdate_clock_print_ampm_bool
       {
         \l__clockdate_clock_ampm_separator_tl
-        \__clockdate_clock_print_ampm:n { \l__clockdate_clock_hour_range_int }
+        \__clockdate_clock_print_ampm:n { \l_clockdate_clock_hour_range_int }
       }
   }
 
@@ -401,23 +400,23 @@
       {
         { 1 }
         {
-          \__clockdate_clock_set_hour:Nn \l__clockdate_clock_hour_int
+          \__clockdate_clock_set_hour:Nn \l_clockdate_clock_hour_int
             { \seq_item:Nn \l__clockdate_clock_seq {1} }
         }
         { 2 }
         {
-          \__clockdate_clock_set_hour:Nn \l__clockdate_clock_hour_int
+          \__clockdate_clock_set_hour:Nn \l_clockdate_clock_hour_int
             { \seq_item:Nn \l__clockdate_clock_seq {1} }
-          \__clockdate_clock_set_minute:Nn \l__clockdate_clock_minute_int
+          \__clockdate_clock_set_minute:Nn \l_clockdate_clock_minute_int
             { \seq_item:Nn \l__clockdate_clock_seq {2} }
         }
         { 3 }
         {
-          \__clockdate_clock_set_hour:Nn \l__clockdate_clock_hour_int
+          \__clockdate_clock_set_hour:Nn \l_clockdate_clock_hour_int
             { \seq_item:Nn \l__clockdate_clock_seq {1} }
-          \__clockdate_clock_set_minute:Nn \l__clockdate_clock_minute_int
+          \__clockdate_clock_set_minute:Nn \l_clockdate_clock_minute_int
             { \seq_item:Nn \l__clockdate_clock_seq {2} }
-          \__clockdate_clock_set_second:Nn \l__clockdate_clock_second_int
+          \__clockdate_clock_set_second:Nn \l_clockdate_clock_second_int
             { \seq_item:Nn \l__clockdate_clock_seq {3} }
         }
       }
@@ -425,22 +424,21 @@
         \msg_error:nnn { clockdate } { invalid } {#1}
         \prg_break:
       }
-    \__clockdate_clock_print_hour:n { \l__clockdate_clock_hour_int }
-    \int_compare:nNnF \l__clockdate_clock_minute_int = { -1 }
+    \__clockdate_clock_print_hour:n { \l_clockdate_clock_hour_int }
+    \int_compare:nNnF \l_clockdate_clock_minute_int = { -1 }
       {
         \l__clockdate_clock_hour_minute_separator_tl
-        \__clockdate_clock_print_minute:n { \l__clockdate_clock_minute_int }
-        \int_compare:nNnF \l__clockdate_clock_second_int = { -1 }
+        \__clockdate_clock_print_minute:n { \l_clockdate_clock_minute_int }
+        \int_compare:nNnF \l_clockdate_clock_second_int = { -1 }
           {
             \l__clockdate_clock_minute_second_separator_tl
-            \__clockdate_clock_print_second:n
-              { \l__clockdate_clock_second_int }
+            \__clockdate_clock_print_second:n { \l_clockdate_clock_second_int }
           }
       }
     \bool_if:NT \l__clockdate_clock_print_ampm_bool
       {
         \l__clockdate_clock_ampm_separator_tl
-        \__clockdate_clock_print_ampm:n { \l__clockdate_clock_hour_int }
+        \__clockdate_clock_print_ampm:n { \l_clockdate_clock_hour_int }
       }
   }
 
