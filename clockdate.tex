@@ -25,13 +25,14 @@ Print the time of day and the calendar date.
 
 Oliver Beery
 
-Version 0.0.0\quad\date{2026-03-05}
+Version 0.0.0\quad\date{2026-03-06}
 
 
 \section{Introduction}
-\label{sec:introduction}
+\label{sec:intro}
 
 \subsection{About}
+\label{subsec:about}
 
 This package provides \cs{clock} and \cs{calendardate}.
 \cs{clock} prints the time of day.
@@ -195,6 +196,7 @@ This subsection documents the keys that modify the behavior of \cs{clock}.
 \end{code}
 
 \subsubsection{Printing the hour, minute, and second}
+\label{subsubsec:printhourminutesecond}
 
 \begin{code}{clock/hour}
   \begin{syntax}
@@ -230,6 +232,7 @@ This subsection documents the keys that modify the behavior of \cs{clock}.
 \end{code}
 
 \subsubsection{Separating the hour, minute, and second}
+\label{subsubsec:sephourminutesecond}
 
 \begin{code}{clock/hour-minute-separator}
   \begin{syntax}
@@ -258,6 +261,7 @@ This subsection documents the keys that modify the behavior of \cs{clock}.
 \end{code}
 
 \subsubsection{Printing the am/pm}
+\label{subsubsec:printampm}
 
 \begin{code}{clock/ampm}
   \begin{syntax}
@@ -319,6 +323,7 @@ This subsection documents the keys that modify the behavior of
 \end{code}
 
 \subsubsection{Printing the year, month, and day}
+\label{subsubsec:printyearmonthday}
 
 \begin{code}{date/year}
   \begin{syntax}
@@ -362,6 +367,7 @@ This subsection documents the keys that modify the behavior of
 \end{code}
 
 \subsubsection{Separating the year, month, and day}
+\label{subsubsec:sepyearmonthday}
 
 \begin{code}{date/year-month-separator}
   \begin{syntax}
@@ -400,6 +406,7 @@ This subsection documents the keys that modify the behavior of
 \end{code}
 
 \subsubsection{Printing the days}
+\label{subsubsec:printdays}
 
 \begin{code}{date/days-separator}
   \begin{syntax}
@@ -437,6 +444,7 @@ This subsection documents the keys that modify the behavior of
 \end{code}
 
 \subsubsection{Printing the months}
+\label{subsubsec:printmonths}
 
 \begin{code}{date/months-separator}
   \begin{syntax}
@@ -480,111 +488,92 @@ This subsection documents the keys that modify the behavior of
 This section documents the \pkg{expl3} programming support provided by the
 \pkg{clockdate} package.
 
-% \subsection{Variables set by \cs{clockdatesetup}}
+\subsection{Variables set by \cs{clockdatesetup}}
 
-% \subsubsection{\cs{clock}}
+\subsubsection{\cs{clock}}
 
-% \begin{code}{\l_clockdate_clock_format_str}
-%   Stores the value of the key \key{clock/format}.
-% \end{code}
+\begin{code}{\l_clockdate_clock_format_str}
+  Stores the value of the key \key{clock/format} (\S\ref{subsec:clock}).
+\end{code}
 
-% \begin{code}{\l_clockdate_clock_hour_str}
-%   Stores the value of the key \key{clock/hour}.
-% \end{code}
+\begin{code}{\l_clockdate_clock_range_separator_tl}
+  Stores the value of the key \key{clock/range-separator}
+  (\S\ref{subsec:clock}).
+\end{code}
 
-% \begin{code}{\l_clockdate_clock_minute_str}
-%   Stores the value of the key \key{clock/minute}.
-% \end{code}
+\begin{code}
+    {
+      \l_clockdate_clock_hour_format_str,
+      \l_clockdate_clock_minute_format_str,
+      \l_clockdate_clock_second_format_str
+    }
+  Stores the values of the keys \key{clock/hour}, \key{clock/minute}, and
+  \key{clock/second}, respectively (\S\ref{subsubsec:printhourminutesecond}).
+\end{code}
 
-% \begin{code}{\l_clockdate_clock_second_str}
-%   Stores the value of the key \key{clock/second}.
-% \end{code}
+\begin{code}
+  {
+    \l_clockdate_clock_hour_minute_separator_tl,
+    \l_clockdate_clock_minute_second_separator_tl
+  }
+  Stores the values of the keys documented in
+  \S\ref{subsubsec:sephourminutesecond}.
+\end{code}
 
-% \begin{code}{\l_clockdate_clock_ampm_str}
-%   Stores the value of the key \key{clock/ampm}.
-% \end{code}
+\begin{code}
+  {
+    \l_clockdate_clock_ampm_format_str,
+    \l_clockdate_clock_ampm_separator_tl,
+    \l_clockdate_clock_ampm_omit_first_bool
+  }
+  Stores the values of the keys documented in \S\ref{subsubsec:printampm}.
+\end{code}
 
-% \begin{code}{\l_clockdate_clock_ampm_omit_first_bool}
-%   Stores the value of the key \key{clock/ampm-omit-first}.
-% \end{code}
+\subsubsection{\cs{calendardate}}
 
-% \begin{code}{\l_clockdate_clock_hour_minute_separator_tl}
-%   Stores the value of the key \key{clock/hour-minute-separator}.
-% \end{code}
+\begin{code}{\l_clockdate_date_format_str}
+  Stores the value of the key \key{date/format} (\S\ref{subsec:date}).
+\end{code}
 
-% \begin{code}{\l_clockdate_clock_minute_second_separator_tl}
-%   Stores the value of the key \key{clock/minute-second-separator}.
-% \end{code}
+\begin{code}
+  {
+    \l_clockdate_date_year_format_str,
+    \l_clockdate_date_month_format_str,
+    \l_clockdate_date_day_format_str
+  }
+  Stores the values of the keys \key{date/year}, \key{date/month}, and
+  \key{date/day}, respectively (\S\ref{subsubsec:printyearmonthday}).
+\end{code}
 
-% \begin{code}{\l_clockdate_clock_ampm_separator_tl}
-%   Stores the value of the key \key{clock/ampm-separator}.
-% \end{code}
+\begin{code}
+  {
+    \l_clockdate_date_year_month_separator_tl,
+    \l_clockdate_date_month_day_separator_tl,
+    \l_clockdate_date_year_day_separator_tl
+  }
+  Stores the values of the keys documented in
+  \S\ref{subsubsec:sepyearmonthday}.
+\end{code}
 
-% \begin{code}{\l_clockdate_clock_range_separator_tl}
-%   Stores the value of the key \key{clock/range-separator}.
-% \end{code}
+\begin{code}
+  {
+    \l_clockdate_date_days_separator_tl,
+    \l_clockdate_date_days_pair_separator_tl,
+    \l_clockdate_date_days_final_separator_tl,
+    \l_clockdate_date_days_range_separator_tl
+  }
+  Stores the values of the keys documented in \S\ref{subsubsec:printdays}.
+\end{code}
 
-% \subsubsection{\cs{calendardate}}
-
-% \begin{code}{\l_clockdate_date_format_str}
-%   Stores the value of the key \key{date/format}.
-% \end{code}
-
-% \begin{code}{\l_clockdate_date_year_str}
-%   Stores the value of the key \key{date/year}.
-% \end{code}
-
-% \begin{code}{\l_clockdate_date_month_str}
-%   Stores the value of the key \key{date/month}.
-% \end{code}
-
-% \begin{code}{\l_clockdate_date_day_str}
-%   Stores the value of the key \key{date/day}.
-% \end{code}
-
-% \begin{code}{\l_clockdate_date_year_month_separator_tl}
-%   Stores the value of the key \key{date/year-month-separator}.
-% \end{code}
-
-% \begin{code}{\l_clockdate_date_month_day_separator_tl}
-%   Stores the value of the key \key{date/month-day-separator}.
-% \end{code}
-
-% \begin{code}{\l_clockdate_date_year_day_separator_tl}
-%   Stores the value of the key \key{date/year-day-separator}.
-% \end{code}
-
-% \begin{code}{\l_clockdate_date_days_separator_tl}
-%   Stores the value of the key \key{date/days-separator}.
-% \end{code}
-
-% \begin{code}{\l_clockdate_date_days_pair_separator_tl}
-%   Stores the value of the key \key{date/days-pair-separator}.
-% \end{code}
-
-% \begin{code}{\l_clockdate_date_days_final_separator_tl}
-%   Stores the value of the key \key{date/days-final-separator}.
-% \end{code}
-
-% \begin{code}{\l_clockdate_date_days_range_separator_tl}
-%   Stores the value of the key \key{date/days-range-separator}.
-% \end{code}
-
-% \begin{code}{\l_clockdate_date_months_separator_tl}
-%   Stores the value of the key \key{date/months-separator}.
-% \end{code}
-
-% \begin{code}{\l_clockdate_date_months_pair_separator_tl}
-%   Stores the value of the key \key{date/months-pair-separator}.
-% \end{code}
-
-% \begin{code}{\l_clockdate_date_months_final_separator_tl}
-%   Stores the value of the key \key{date/months-final-separator}.
-% \end{code}
-
-% \begin{code}{\l_clockdate_date_months_range_separator_tl}
-%   Stores the value of the key \key{date/months-range-separator}.
-% \end{code}
+\begin{code}
+  {
+    \l_clockdate_date_months_separator_tl,
+    \l_clockdate_date_months_pair_separator_tl,
+    \l_clockdate_date_months_final_separator_tl,
+    \l_clockdate_date_months_range_separator_tl
+  }
+  Stores the values of the keys documented in \S\ref{subsubsec:printmonths}.
+\end{code}
 
 % \subsection{Other variables}
 
@@ -593,27 +582,10 @@ This section documents the \pkg{expl3} programming support provided by the
 %   % read only?
 % \end{code}
 
-% \begin{code}{\l_clockdate_date_months_long_seq}
-%   Stores the months to be printed when \key{date/month=long}.
-% \end{code}
-
-% \begin{code}{\l_clockdate_date_months_abbreviated_seq}
-%   Stores the months to be printed when \key{date/month=abbreviated}.
-% \end{code}
-
-% \begin{code}{\l_clockdate_date_months_three_letter_seq}
-%   Stores the months to be printed when \key{date/month=three-letter}.
-% \end{code}
-
-% \begin{code}{\l_clockdate_date_months_number_seq}
-%   Stores the months to be printed when \key{date/month=number}.
-% \end{code}
-
-% \begin{code}{\l_clockdate_date_months_zero_padded_number_seq}
-%   Stores the months to be printed when \key{date/month=zero-padded-number}.
-% \end{code}
-
 \subsection{Variables set in \cs{clock}}
+
+This subsection documents the variables that are set within \cs{clock}.
+Outside of \cs{clock}, they do not have defined behavior.
 
 \begin{code}
   {
@@ -637,6 +609,9 @@ This section documents the \pkg{expl3} programming support provided by the
 \end{code}
 
 \subsection{Variables set in \cs{calendardate}}
+
+This subsection documents the variables that are set within \cs{calendardate}.
+Outside of \cs{calendardate}, they do not have defined behavior.
 
 \begin{code}{\l_clockdate_date_year_int}
   Stores the value of \meta{year}.
