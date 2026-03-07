@@ -490,6 +490,10 @@ This section documents the \pkg{expl3} programming support provided by the
 
 \subsection{Variables set by \cs{clockdatesetup}}
 
+This subsection documents the variables that are set by \cs{clockdatesetup}
+(\S\ref{sec:commands}).
+They are read-only and should not be modified directly.
+
 \subsubsection{\cs{clock}}
 
 \begin{code}{\l_clockdate_clock_format_str}
@@ -507,8 +511,8 @@ This section documents the \pkg{expl3} programming support provided by the
       \l_clockdate_clock_minute_format_str,
       \l_clockdate_clock_second_format_str
     }
-  Stores the values of the keys \key{clock/hour}, \key{clock/minute}, and
-  \key{clock/second}, respectively (\S\ref{subsubsec:printhourminutesecond}).
+  Stores the values of the keys documented in
+  \S\ref{subsubsec:printhourminutesecond}.
 \end{code}
 
 \begin{code}
@@ -541,8 +545,8 @@ This section documents the \pkg{expl3} programming support provided by the
     \l_clockdate_date_month_format_str,
     \l_clockdate_date_day_format_str
   }
-  Stores the values of the keys \key{date/year}, \key{date/month}, and
-  \key{date/day}, respectively (\S\ref{subsubsec:printyearmonthday}).
+  Stores the values of the keys documented in
+  \S\ref{subsubsec:printyearmonthday}.
 \end{code}
 
 \begin{code}
@@ -579,7 +583,6 @@ This section documents the \pkg{expl3} programming support provided by the
 
 % \begin{code}{\l_clockdate_clock_print_ampm_bool}
 %   Boolean that tests if the am/pm will be printed.
-%   % read only?
 % \end{code}
 
 \subsection{Variables set in \cs{clock}}
