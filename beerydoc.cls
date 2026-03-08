@@ -1,7 +1,7 @@
 % Loading the class
 
 \NeedsTeXFormat{LaTeX2e}[2023-11-01]
-\ProvidesExplClass{beerydoc}{2026-02-26}{0.0.0}{}
+\ProvidesExplClass{beerydoc}{2026-03-08}{0.0.0}{}
 \prop_gput:Nnn \g_msg_module_type_prop { beerydoc } { Class }
 
 \msg_new:nnn { beerydoc } { l3kernel }
@@ -145,6 +145,8 @@
 \box_new:N    \l__beerydoc_footnote_box
 \coffin_new:N \l__beerydoc_footnote_coffin
 
+\quark_new:N \q__beerydoc_stop
+
 % Custom macros
 
 \cs_generate_variant:Nn \tl_replace_once:Nnn { No }
@@ -168,10 +170,10 @@
 \cs_new_protected:Npn \__beerydoc_key_value:n #1
   {
     \tl_if_in:nnTF {#1} { = }
-      { \__beerydoc_key_value:w #1 \q_stop }
+      { \__beerydoc_key_value:w #1 \q__beerydoc_stop }
       { \__beerydoc_key:n {#1} }
   }
-\cs_new_protected:Npn \__beerydoc_key_value:w #1 = #2 \q_stop
+\cs_new_protected:Npn \__beerydoc_key_value:w #1 = #2 \q__beerydoc_stop
   {
     \tl_if_blank:nTF {#1}
       { \__beerydoc_value:n {#2} }
