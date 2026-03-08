@@ -25,7 +25,7 @@ Print the time of day and the calendar date.
 
 Oliver Beery
 
-Version 0.0.0\quad\date{2026-03-07}
+Version 0.0.0\quad\date{2026-03-08}
 
 
 \section{Introduction}
@@ -491,12 +491,19 @@ package.
 \subsection{Hooks}
 \label{subsec:hooks}
 
-\begin{code}{clockdate/clock, clockdate/date}
-  Hooks that are used in \cs{clock} and \cs{calendardate}, respectively.
-  They are used after all the user input has been parsed and after all the
-  variables in \S\ref{subsec:varclock} and \S\ref{subsec:vardate} have been
-  set.
-  These hooks should be preferred over the generic command hooks.
+\begin{code}{clockdate/clock}
+  Hook used in \cs{clock} after all the user input has been parsed and
+  after all the variables in \S\ref{subsec:varclock} and
+  \S\ref{subsec:varprintampm} have been set.
+  This hook should be preferred over the generic command hook
+  \hook{cmd/clock/before}.
+\end{code}
+
+\begin{code}{clockdate/date}
+  Hook used in \cs{calendardate} after all the user input has been parsed
+  and after all the variables in \S\ref{subsec:vardate} and have been set.
+  This hook should be preferred over the generic command hook
+  \hook{cmd/calendardate/before}.
 \end{code}
 
 \subsection{Variables set by \cs{clockdatesetup}}
@@ -657,6 +664,7 @@ Outside of \cs{calendardate}, they do not have defined behavior.
 \end{code}
 
 \subsection{Printing the am/pm}
+\label{subsec:varprintampm}
 
 The following two variables are read-only and should not be modified directly.
 
