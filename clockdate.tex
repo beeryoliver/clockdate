@@ -485,10 +485,21 @@ This subsection documents the keys that modify the behavior of
 \section{Programming}
 \label{sec:programming}
 
-This section documents the \pkg{expl3} programming support provided by the
-\pkg{clockdate} package.
+This section documents the programming support provided by the \pkg{clockdate}
+package.
+
+\subsection{Hooks}
+\label{subsec:hooks}
+
+\begin{code}{clockdate/clock, clockdate/date}
+  Hooks that are used in \cs{clock} and \cs{calendardate}, respectively.
+  They are used after all the user input has been parsed and after all the
+  variables in \S\ref{subsec:varclock} and \S\ref{subsec:vardate} have been
+  set.
+\end{code}
 
 \subsection{Variables set by \cs{clockdatesetup}}
+\label{subsec:clockdatesetup}
 
 This subsection documents the variables that are set by \cs{clockdatesetup}
 (\S\ref{sec:commands}).
@@ -580,6 +591,7 @@ They are read-only and should not be modified directly.
 \end{code}
 
 \subsection{Variables set in \cs{clock}}
+\label{subsec:varclock}
 
 This subsection documents the variables that are set within \cs{clock}.
 Outside of \cs{clock}, they do not have defined behavior.
@@ -606,6 +618,7 @@ Outside of \cs{clock}, they do not have defined behavior.
 \end{code}
 
 \subsection{Variables set in \cs{calendardate}}
+\label{subsec:vardate}
 
 This subsection documents the variables that are set within \cs{calendardate}.
 Outside of \cs{calendardate}, they do not have defined behavior.

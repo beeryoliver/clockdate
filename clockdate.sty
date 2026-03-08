@@ -110,6 +110,9 @@
 \quark_new:N \q__clockdate_stop
 \scan_new:N \s__clockdate_mark
 
+\hook_new:n { clockdate / clock }
+\hook_new:n { clockdate / date }
+
 % Scratch variables
 \tl_new:N \l__clockdate_tmp_tl
 \int_new:N \l__clockdate_tmpa_int
@@ -357,6 +360,7 @@
           }
       }
       { \bool_set_true:N \l_clockdate_clock_print_ampm_first_bool }
+    \hook_use:n { clockdate / clock }
     \__clockdate_clock_print_hour:n { \l_clockdate_clock_hour_int }
     \int_compare:nNnF \l_clockdate_clock_minute_int = { -1 }
       {
@@ -425,6 +429,7 @@
         \msg_error:nnn { clockdate } { invalid } {#1}
         \prg_break:
       }
+    \hook_use:n { clockdate / clock }
     \__clockdate_clock_print_hour:n { \l_clockdate_clock_hour_int }
     \int_compare:nNnF \l_clockdate_clock_minute_int = { -1 }
       {
@@ -604,6 +609,7 @@
       {
         \__clockdate_date_set_year:n {#1}
         \__clockdate_date_set_months:n {#2}
+        \hook_use:n { clockdate / date }
         \__clockdate_date_print_months:
         \l_clockdate_date_year_month_separator_tl
         \__clockdate_date_print_year:
@@ -611,6 +617,7 @@
       {
         \__clockdate_date_set_month:n {#1}
         \__clockdate_date_set_month_days:n {#2}
+        \hook_use:n { clockdate / date }
         \__clockdate_date_print_days:
         \l_clockdate_date_month_day_separator_tl
         \__clockdate_date_print_month:
@@ -621,6 +628,7 @@
     \__clockdate_date_set_year:n {#1}
     \__clockdate_date_set_month:n {#2}
     \__clockdate_date_set_year_month_days:n {#3}
+    \hook_use:n { clockdate / date }
     \__clockdate_date_print_days:
     \l_clockdate_date_month_day_separator_tl
     \__clockdate_date_print_month:
@@ -633,6 +641,7 @@
       {
         \__clockdate_date_set_year:n {#1}
         \__clockdate_date_set_months:n {#2}
+        \hook_use:n { clockdate / date }
         \__clockdate_date_print_year:
         \l_clockdate_date_year_month_separator_tl
         \__clockdate_date_print_months:
@@ -640,6 +649,7 @@
       {
         \__clockdate_date_set_month:n {#1}
         \__clockdate_date_set_month_days:n {#2}
+        \hook_use:n { clockdate / date }
         \__clockdate_date_print_month:
         \l_clockdate_date_month_day_separator_tl
         \__clockdate_date_print_days:
@@ -650,6 +660,7 @@
     \__clockdate_date_set_year:n {#1}
     \__clockdate_date_set_month:n {#2}
     \__clockdate_date_set_year_month_days:n {#3}
+    \hook_use:n { clockdate / date }
     \__clockdate_date_print_year:
     \l_clockdate_date_year_month_separator_tl
     \__clockdate_date_print_month:
@@ -662,6 +673,7 @@
       {
         \__clockdate_date_set_year:n {#1}
         \__clockdate_date_set_months:n {#2}
+        \hook_use:n { clockdate / date }
         \__clockdate_date_print_months:
         \l_clockdate_date_year_month_separator_tl
         \__clockdate_date_print_year:
@@ -669,6 +681,7 @@
       {
         \__clockdate_date_set_month:n {#1}
         \__clockdate_date_set_month_days:n {#2}
+        \hook_use:n { clockdate / date }
         \__clockdate_date_print_month:
         \l_clockdate_date_month_day_separator_tl
         \__clockdate_date_print_days:
@@ -679,6 +692,7 @@
     \__clockdate_date_set_year:n {#1}
     \__clockdate_date_set_month:n {#2}
     \__clockdate_date_set_year_month_days:n {#3}
+    \hook_use:n { clockdate / date }
     \__clockdate_date_print_month:
     \l_clockdate_date_month_day_separator_tl
     \__clockdate_date_print_days:
