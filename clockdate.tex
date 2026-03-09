@@ -204,8 +204,7 @@ This subsection documents the keys that modify the behavior of \cs{clock}.
   \end{syntax}
   Choice key that sets the format in which the hour is printed.
   |h| prints the hour with the minimum number of digits.
-  |hh| prints the hour with two digits, adding a leading zero if
-  necessary.
+  |hh| prints the hour with two digits, adding a leading zero if necessary.
   The initial value is |h|.
 \end{code}
 
@@ -215,8 +214,7 @@ This subsection documents the keys that modify the behavior of \cs{clock}.
   \end{syntax}
   Choice key that sets the format in which the minute is printed.
   |m| prints the minute with the minimum number of digits.
-  |mm| prints the minute with two digits, adding a leading zero if
-  necessary.
+  |mm| prints the minute with two digits, adding a leading zero if necessary.
   The initial value is |mm|.
 \end{code}
 
@@ -226,8 +224,7 @@ This subsection documents the keys that modify the behavior of \cs{clock}.
   \end{syntax}
   Choice key that sets the format in which the second is printed.
   |s| prints the second with the minimum number of digits.
-  |ss| prints the second with two digits, adding a leading zero if
-  necessary.
+  |ss| prints the second with two digits, adding a leading zero if necessary.
   The initial value is |ss|.
 \end{code}
 
@@ -341,13 +338,11 @@ This subsection documents the keys that modify the behavior of
   \end{syntax}
   Choice key that sets the format in which the month is printed.
   |m| prints the month with the minimum number of digits.
-  |mm| prints the month with two digits, adding a leading zero if
-  necessary.
+  |mm| prints the month with two digits, adding a leading zero if necessary.
   |mmm| prints the month in short form.
   |mmmm| prints the month with the name of the month fully spelled out.
-  By default, |mmm| prints the month in the same form as |mmmm|,
-  except that some months are abbreviated: Jan., Feb., Aug., Sept., Oct.,
-  Nov., Dec.
+  By default, |mmm| prints the month in the same form as |mmmm|, except that
+  some months are abbreviated: Jan., Feb., Aug., Sept., Oct., Nov., Dec.
   The initial value is |mmmm|.
 
   % If the next token after \cs{calendardate} is a period, the abbreviated month
@@ -690,8 +685,8 @@ The following two variables are read-only and should not be modified directly.
 
 \begin{code}
   {\l_clockdate_date_months_mmmm_seq, \l_clockdate_date_months_mmm_seq}
-  Stores the months used if the value of the key \key{date/month} is
-  |mmmm| and |mmm|, respectively.
+  Stores the months used if the value of the key \key{date/month} is |mmmm| and
+  |mmm|, respectively.
   The initial values are displayed in in Table \ref{table:months-seq}.
 \end{code}
 
