@@ -47,12 +47,12 @@ This package provides \cs{clock} and \cs{calendardate}.
   \item \pkg{l3kernel} version 2023-11-01 or newer
 \end{itemize}
 
-
-\section{Package option}
-\label{sec:packageoption}
+\subsection{Package option}
+\label{subsec:packageoption}
 
 \begin{code}{overwrite-date, \date}
-  Redefines \cs{date} as equivalent to \cs{calendardate}.
+  Redefines \cs{date} as equivalent to \cs{calendardate}
+  (\S\ref{sec:commands}).
   This is done at the \hook{begindocument} hook so that the original definition
   remains usuable in the preamble.
 \end{code}
