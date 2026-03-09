@@ -1,7 +1,7 @@
 % Loading the class
 
 \NeedsTeXFormat{LaTeX2e}[2023-11-01]
-\ProvidesExplClass{beerydoc}{2026-03-08}{0.0.0}{}
+\ProvidesExplClass{beerydoc}{2026-03-09}{0.0.0}{}
 \prop_gput:Nnn \g_msg_module_type_prop { beerydoc } { Class }
 
 \msg_new:nnn { beerydoc } { l3kernel }
@@ -814,8 +814,20 @@
 
 % Verbatim
 
-\RequirePackage { fancyvrb }
-\hook_gput_code:nnn { begindocument } { beerydoc } { \DefineShortVerb { \| } }
+\cs_new_protected:Npn \__beerydoc_active_vert:w
+  {
+    \group_begin:
+    \char_set_active_eq:nN { `\  } \textvisiblespace
+    \char_set_active_eq:nN { `\^^I } \textvisiblespace
+    \ttfamily
+    \__beerydoc_active_vert_aux:w |
+  }
+\NewDocumentCommand \__beerydoc_active_vert_aux:w { v } { #1 \@ \group_end:  }
+\hook_gput_code:nnn { begindocument } { beerydoc }
+  {
+    \char_set_active_eq:NN | \__beerydoc_active_vert:w
+    \char_set_catcode_active:N |
+  }
 
 % Quotes
 
