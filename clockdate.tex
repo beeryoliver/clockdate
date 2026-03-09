@@ -25,7 +25,7 @@ Print the time of day and the calendar date.
 
 Oliver Beery
 
-Version 0.0.0\quad\date{2026-03-08}
+Version 0.0.0\quad\date{2026-03-09}
 
 
 \section{Introduction}
@@ -183,7 +183,7 @@ This subsection documents the keys that modify the behavior of \cs{clock}.
   \end{syntax}
   Choice key that sets whether to print the hour in 12-hour or 24-hour format.
   In 24-hour format, the am/pm is always omitted.
-  The initial value is \key{=12-hour}.
+  The initial value is |12-hour|.
 \end{code}
 
 \begin{code}{clock/range-separator}
@@ -192,7 +192,7 @@ This subsection documents the keys that modify the behavior of \cs{clock}.
   \end{syntax}
   Sets the separator between \meta{clock_1} and \meta{clock_2} in a time-of-day
   range to \meta{token list}.
-  The initial value is \key{= to }.
+  The initial value is | to |.
 \end{code}
 
 \subsubsection{Printing the hour, minute, and second}
@@ -203,10 +203,10 @@ This subsection documents the keys that modify the behavior of \cs{clock}.
     \key{clock/hour=\choices{h,hh}}
   \end{syntax}
   Choice key that sets the format in which the hour is printed.
-  \key{=h} prints the hour with the minimum number of digits.
-  \key{=hh} prints the hour with two digits, adding a leading zero if
+  |h| prints the hour with the minimum number of digits.
+  |hh| prints the hour with two digits, adding a leading zero if
   necessary.
-  The initial value is \key{=h}.
+  The initial value is |h|.
 \end{code}
 
 \begin{code}{clock/minute}
@@ -214,10 +214,10 @@ This subsection documents the keys that modify the behavior of \cs{clock}.
     \key{clock/minute=\choices{m,mm}}
   \end{syntax}
   Choice key that sets the format in which the minute is printed.
-  \key{=m} prints the minute with the minimum number of digits.
-  \key{=mm} prints the minute with two digits, adding a leading zero if
+  |m| prints the minute with the minimum number of digits.
+  |mm| prints the minute with two digits, adding a leading zero if
   necessary.
-  The initial value is \key{=mm}.
+  The initial value is |mm|.
 \end{code}
 
 \begin{code}{clock/second}
@@ -225,10 +225,10 @@ This subsection documents the keys that modify the behavior of \cs{clock}.
     \key{clock/second=\choices{s,ss}}
   \end{syntax}
   Choice key that sets the format in which the second is printed.
-  \key{=s} prints the second with the minimum number of digits.
-  \key{=ss} prints the second with two digits, adding a leading zero if
+  |s| prints the second with the minimum number of digits.
+  |ss| prints the second with two digits, adding a leading zero if
   necessary.
-  The initial value is \key{=ss}.
+  The initial value is |ss|.
 \end{code}
 
 \subsubsection{Separating the hour, minute, and second}
@@ -240,7 +240,7 @@ This subsection documents the keys that modify the behavior of \cs{clock}.
   \end{syntax}
   Sets the separator between \meta{hour} and \meta{minute} to
   \meta{token list}.
-  The initial value is \key{=:}.
+  The initial value is |:|.
 \end{code}
 
 \begin{code}{clock/minute-second-separator}
@@ -249,7 +249,7 @@ This subsection documents the keys that modify the behavior of \cs{clock}.
   \end{syntax}
   Sets the separator between \meta{minute} and \meta{second} to
   \meta{token list}.
-  The initial value is \key{=:}.
+  The initial value is |:|.
 \end{code}
 
 \begin{code}{clock/clock-separator}
@@ -268,7 +268,7 @@ This subsection documents the keys that modify the behavior of \cs{clock}.
     \key{clock/ampm=\choices{a.m.,am,a,A.M.,AM,A,none}}
   \end{syntax}
   Choice key that sets the format in which the am/pm is printed.
-  The initial value is \key{=a.m.}
+  The initial value is |a.m.|
   \input{clockdate-input-ampm.tex}
 \end{code}
 
@@ -277,7 +277,7 @@ This subsection documents the keys that modify the behavior of \cs{clock}.
     \key{clock/ampm-separator=\meta{token list}}
   \end{syntax}
   Sets the separator before the am/pm to \meta{token list}.
-  The initial value is \key{= }.
+  The initial value is | |.
 \end{code}
 
 \begin{code}{clock/ampm-omit-first}
@@ -287,7 +287,7 @@ This subsection documents the keys that modify the behavior of \cs{clock}.
   Boolean key that sets whether \meta{clock_1} prints the am/pm in a
   time-of-day range if \meta{clock_1} and \meta{clock_2} would either both
   print am or both print pm.
-  The initial value is \key{=true}.
+  The initial value is |true|.
 \end{code}
 
 
@@ -319,7 +319,7 @@ This subsection documents the keys that modify the behavior of
     \key{date/format=\choices{day-month-year,year-month-day,month-day-year}}
   \end{syntax}
   Choice key that sets the order in which the year, month, and day are printed.
-  The initial value is \key{=day-month-year}.
+  The initial value is |day-month-year|.
 \end{code}
 
 \subsubsection{Printing the year, month, and day}
@@ -330,9 +330,9 @@ This subsection documents the keys that modify the behavior of
     \key{date/year=\choices{yy,yyyy}}
   \end{syntax}
   Choice key that sets the format in which the year is printed.
-  \key{=yy} prints the year with only the last two digits.
-  \key{=yyyy} prints the 4-digit year.
-  The initial value is \key{=yyyy}.
+  |yy| prints the year with only the last two digits.
+  |yyyy| prints the 4-digit year.
+  The initial value is |yyyy|.
 \end{code}
 
 \begin{code}{date/month}
@@ -340,15 +340,15 @@ This subsection documents the keys that modify the behavior of
     \key{date/month=\choices{m,mm,mmm,mmmm}}
   \end{syntax}
   Choice key that sets the format in which the month is printed.
-  \key{=m} prints the month with the minimum number of digits.
-  \key{=mm} prints the month with two digits, adding a leading zero if
+  |m| prints the month with the minimum number of digits.
+  |mm| prints the month with two digits, adding a leading zero if
   necessary.
-  \key{=mmm} prints the month in short form.
-  \key{=mmmm} prints the month with the name of the month fully spelled out.
-  By default, \key{=mmm} prints the month in the same form as \key{=mmmm},
+  |mmm| prints the month in short form.
+  |mmmm| prints the month with the name of the month fully spelled out.
+  By default, |mmm| prints the month in the same form as |mmmm|,
   except that some months are abbreviated: Jan., Feb., Aug., Sept., Oct.,
   Nov., Dec.
-  The initial value is \key{=mmmm}.
+  The initial value is |mmmm|.
 
   % If the next token after \cs{calendardate} is a period, the abbreviated month
   % will not print an extra period.
@@ -361,9 +361,9 @@ This subsection documents the keys that modify the behavior of
     \key{date/day=\choices{d,dd}}
   \end{syntax}
   Choice key that sets the format in which the day is printed.
-  \key{=d} prints the day with the minimum number of digits.
-  \key{=dd} prints the day with two digits, adding a leading zero if necessary.
-  The initial value is \key{=d}.
+  |d| prints the day with the minimum number of digits.
+  |dd| prints the day with two digits, adding a leading zero if necessary.
+  The initial value is |d|.
 \end{code}
 
 \subsubsection{Separating the year, month, and day}
@@ -374,7 +374,7 @@ This subsection documents the keys that modify the behavior of
     \key{date/year-month-separator=\meta{token list}}
   \end{syntax}
   Sets the separator between \meta{year} and \meta{month} to \meta{token list}.
-  The initial value is \key{= }.
+  The initial value is | |.
 \end{code}
 
 \begin{code}{date/month-day-separator}
@@ -382,7 +382,7 @@ This subsection documents the keys that modify the behavior of
     \key{date/month-day-separator=\meta{token list}}
   \end{syntax}
   Sets the separator between \meta{month} and \meta{day} to \meta{token list}.
-  The initial value is \key{= }.
+  The initial value is | |.
 \end{code}
 
 \begin{code}{date/year-day-separator}
@@ -390,7 +390,7 @@ This subsection documents the keys that modify the behavior of
     \key{date/year-day-separator=\meta{token list}}
   \end{syntax}
   Sets the separator between \meta{year} and \meta{day} to \meta{token list}.
-  The initial value is \key{=, }.
+  The initial value is |, |.
 \end{code}
 
 \begin{code}{date/date-separator}
@@ -413,7 +413,7 @@ This subsection documents the keys that modify the behavior of
     \key{date/days-separator=\meta{token list}}
   \end{syntax}
   Sets the separator between each item in \meta{days} to \meta{token list}.
-  The initial value is \key{=, }.
+  The initial value is |, |.
 \end{code}
 
 \begin{code}{date/days-pair-separator}
@@ -422,7 +422,7 @@ This subsection documents the keys that modify the behavior of
   \end{syntax}
   Sets the separator between each item in \meta{days} to \meta{token list} if
   \meta{days} contains exactly two items.
-  The initial value is \key{= and }.
+  The initial value is | and |.
 \end{code}
 
 \begin{code}{date/days-final-separator}
@@ -431,7 +431,7 @@ This subsection documents the keys that modify the behavior of
   \end{syntax}
   Sets the separator between the last two items in \meta{days} to
   \meta{token list} if \meta{days} contains three or more items.
-  The initial value is \key{=, and }.
+  The initial value is |, and |.
 \end{code}
 
 \begin{code}{date/days-range-separator}
@@ -440,7 +440,7 @@ This subsection documents the keys that modify the behavior of
   \end{syntax}
   Sets the separator between \meta{day_1} and \meta{day_2} in a day range to
   \meta{token list}.
-  The initial value is \key{= to }.
+  The initial value is | to |.
 \end{code}
 
 \subsubsection{Printing the months}
@@ -451,7 +451,7 @@ This subsection documents the keys that modify the behavior of
     \key{date/months-separator=\meta{token list}}
   \end{syntax}
   Sets the separator between each item in \meta{months} to \meta{token list}.
-  The initial value is \key{=, }.
+  The initial value is |, |.
 \end{code}
 
 \begin{code}{date/months-pair-separator}
@@ -460,7 +460,7 @@ This subsection documents the keys that modify the behavior of
   \end{syntax}
   Sets the separator between each item in \meta{months} to \meta{token list} if
   \meta{months} contains exactly two items.
-  The initial value is \key{= and }.
+  The initial value is | and |.
 \end{code}
 
 \begin{code}{date/months-final-separator}
@@ -469,7 +469,7 @@ This subsection documents the keys that modify the behavior of
   \end{syntax}
   Sets the separator between the last two items in \meta{months} to
   \meta{token list} if \meta{months} contains three or more items.
-  The initial value is \key{=, and }.
+  The initial value is |, and |.
 \end{code}
 
 \begin{code}{date/months-range-separator}
@@ -478,7 +478,7 @@ This subsection documents the keys that modify the behavior of
   \end{syntax}
   Sets the separator between \meta{month_1} and \meta{month_2} in a month range
   to \meta{token list}.
-  The initial value is \key{= to }.
+  The initial value is | to |.
 \end{code}
 
 
@@ -691,7 +691,7 @@ The following two variables are read-only and should not be modified directly.
 \begin{code}
   {\l_clockdate_date_months_mmmm_seq, \l_clockdate_date_months_mmm_seq}
   Stores the months used if the value of the key \key{date/month} is
-  \key{=mmmm} and \key{=mmm}, respectively.
+  |mmmm| and |mmm|, respectively.
   The initial values are displayed in in Table \ref{table:months-seq}.
 \end{code}
 
