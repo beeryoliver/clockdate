@@ -25,7 +25,7 @@ Print the time of day and the calendar date.
 
 Oliver Beery
 
-Version 0.0.0\quad\date{2026-03-09}
+Version 0.0.0\quad\date{2026-03-10}
 
 
 \section{Introduction}
@@ -37,6 +37,14 @@ Version 0.0.0\quad\date{2026-03-09}
 This package provides \cs{clock} and \cs{calendardate}.
 \cs{clock} prints the time of day.
 \cs{calendardate} prints the calendar date.
+These commands are ideal for text markup because the syntax is short,
+easy-to-understand, and unambiguous.
+The syntax of this package extends the familiar ISO 8601 with more flexible
+parsing grammar.
+The printed time of day and calendar date are highly customizable through a
+variety of key-value options.
+For advanced users, this package also provides robust \LaTeX3 programming
+support.
 
 \subsection{Loading the package}
 \label{subsec:loading}
@@ -158,7 +166,8 @@ Set the package keys using \cs{clockdatesetup} (\S\ref{sec:commands}).
 \subsection{\cs{clock}}
 \label{subsec:clock}
 
-This subsection documents the keys that modify the behavior of \cs{clock}.
+This subsection documents the keys that modify the behavior of \cs{clock}
+(\S\ref{sec:commands}).
 
 \begin{code}{clock}
   \begin{syntax}
@@ -267,6 +276,11 @@ This subsection documents the keys that modify the behavior of \cs{clock}.
   Choice key that sets the format in which the am/pm is printed.
   The initial value is |a.m.|
   \input{clockdate-input-ampm.tex}
+
+  If the value is |a.m.| or |A.M.|, the am/pm will not print an extra period
+  if the next token after \cs{clock} is a period.
+  If the am/pm prints the period, it is followed by \cs{@} because the
+  sentence does not end here.
 \end{code}
 
 \begin{code}{clock/ampm-separator}
@@ -292,7 +306,7 @@ This subsection documents the keys that modify the behavior of \cs{clock}.
 \label{subsec:date}
 
 This subsection documents the keys that modify the behavior of
-\cs{calendardate}.
+\cs{calendardate} (\S\ref{sec:commands}).
 
 \begin{code}{date}
   \begin{syntax}
@@ -341,14 +355,15 @@ This subsection documents the keys that modify the behavior of
   |mm| prints the month with two digits, adding a leading zero if necessary.
   |mmm| prints the month in short form.
   |mmmm| prints the month with the name of the month fully spelled out.
-  By default, |mmm| prints the month in the same form as |mmmm|, except that
-  some months are abbreviated: Jan., Feb., Aug., Sept., Oct., Nov., Dec.
   The initial value is |mmmm|.
 
-  % If the next token after \cs{calendardate} is a period, the abbreviated month
-  % will not print an extra period.
-  % When the abbreviated month prints the period, it is followed by \cs{@}
-  % because the sentence does not end here.
+  By default, |mmm| prints the month in the same form as |mmmm|, except that
+  some months are abbreviated: Jan., Feb., Aug., Sept., Oct., Nov., Dec.
+  The abbreviated month will not print an extra period if the next token after
+  \cs{calendardate} is a period and \cs{calendardate} ends with an abbreviated
+  month that ends in a period.
+  If the abbreviated month prints the period, it is followed by \cs{@} because
+  the sentence does not end here.
 \end{code}
 
 \begin{code}{date/day}
@@ -703,7 +718,7 @@ The following two variables are read-only and should not be modified directly.
     \item The next token after \cs{calendardate} is a period.
   \end{itemize}
 
-  When \cs{clockdate_date_month_period:} prints the period, it is followed by
+  If \cs{clockdate_date_month_period:} prints the period, it is followed by
   \cs{@} because the sentence does not end here.
 \end{code}
 
