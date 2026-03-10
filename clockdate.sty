@@ -7,7 +7,7 @@
 % Loading the package
 
 \NeedsTeXFormat{LaTeX2e}[2023-11-01]
-\ProvidesExplPackage{clockdate}{2026-03-07}{0.0.0}
+\ProvidesExplPackage{clockdate}{2026-03-10}{0.0.0}
   {Provides \noexpand\clock and \string\calendardate.}
 
 \msg_new:nnn { clockdate } { l3kernel }
@@ -480,7 +480,7 @@
   {
     \exp_args:Ne \__clockdate_clock_print_hour_aux:n
       {
-        \str_if_eq:eeTF \l_clockdate_clock_format_str { 24-hour }
+        \str_if_eq:eeTF { \l_clockdate_clock_format_str } { 24-hour }
           { \int_eval:n {#1} }
           {
             \int_if_zero:nTF {#1}
@@ -495,31 +495,21 @@
   }
 \cs_new_protected:Npn \__clockdate_clock_print_hour_aux:n #1
   {
-    \bool_lazy_and:nnT
-      { \int_compare_p:nNn {#1} < { 10 } }
-      { \str_if_eq_p:ee \l_clockdate_clock_hour_format_str { hh } }
-      { 0 }
+    \int_compare:nNnT {#1} < { 10 }
+      { \str_if_eq:eeT { \l_clockdate_clock_hour_format_str } { hh } { 0 } }
     #1
   }
 \cs_new_protected:Npn \__clockdate_clock_print_minute:n #1
-  { \exp_args:Ne \__clockdate_clock_print_minute_aux:n { \int_eval:n {#1} } }
-\cs_new_protected:Npn \__clockdate_clock_print_minute_aux:n #1
   {
-    \bool_lazy_and:nnT
-      { \int_compare_p:nNn {#1} < { 10 } }
-      { \str_if_eq_p:ee \l_clockdate_clock_minute_format_str { mm } }
-      { 0 }
-    #1
+    \int_compare:nNnT {#1} < { 10 }
+      { \str_if_eq:eeT { \l_clockdate_clock_minute_format_str } { mm } { 0 } }
+    \int_eval:n {#1}
   }
 \cs_new_protected:Npn \__clockdate_clock_print_second:n #1
-  { \exp_args:Ne \__clockdate_clock_print_second_aux:n { \int_eval:n {#1} } }
-\cs_new_protected:Npn \__clockdate_clock_print_second_aux:n #1
   {
-    \bool_lazy_and:nnT
-      { \int_compare_p:nNn {#1} < { 10 } }
-      { \str_if_eq_p:ee \l_clockdate_clock_second_format_str { ss } }
-      { 0 }
-    #1
+    \int_compare:nNnT {#1} < { 10 }
+      { \str_if_eq:eeT { \l_clockdate_clock_second_format_str } { ss } { 0 } }
+    \int_eval:n {#1}
   }
 \cs_new_protected:Npn \__clockdate_clock_print_ampm:n #1
   {
@@ -737,12 +727,10 @@
         \msg_error:nn { clockdate } { months-empty }
         \__clockdate_date_break:
       }
-    \str_set:Ne \l_clockdate_date_months_str
-      { \exp_after:wN \use_none:n \l_clockdate_date_months_str }
-    \int_compare:nNnT { \str_count:N \l_clockdate_date_months_str } < 3
+    \int_compare:nNnT { \str_count:N \l_clockdate_date_months_str } < 4
       {
         \int_set:Nn \l_clockdate_date_month_int
-          { \l_clockdate_date_months_str }
+          { \exp_after:wN \use_none:n \l_clockdate_date_months_str }
         \str_clear:N \l_clockdate_date_months_str
       }
   }
@@ -818,11 +806,10 @@
         \msg_error:nn { clockdate } { days-empty }
         \__clockdate_date_break:
       }
-    \str_set:Ne \l_clockdate_date_days_str
-      { \exp_after:wN \use_none:n \l_clockdate_date_days_str }
-    \int_compare:nNnT { \str_count:N \l_clockdate_date_days_str } < 3
+    \int_compare:nNnT { \str_count:N \l_clockdate_date_days_str } < 4
       {
-        \int_set:Nn \l_clockdate_date_day_int { \l_clockdate_date_days_str }
+        \int_set:Nn \l_clockdate_date_day_int
+          { \exp_after:wN \use_none:n \l_clockdate_date_days_str }
         \str_clear:N \l_clockdate_date_days_str
       }
   }
@@ -888,11 +875,10 @@
         \msg_error:nn { clockdate } { days-empty }
         \__clockdate_date_break:
       }
-    \str_set:Ne \l_clockdate_date_days_str
-      { \exp_after:wN \use_none:n \l_clockdate_date_days_str }
-    \int_compare:nNnT { \str_count:N \l_clockdate_date_days_str } < 3
+    \int_compare:nNnT { \str_count:N \l_clockdate_date_days_str } < 4
       {
-        \int_set:Nn \l_clockdate_date_day_int { \l_clockdate_date_days_str }
+        \int_set:Nn \l_clockdate_date_day_int
+          { \exp_after:wN \use_none:n \l_clockdate_date_days_str }
         \str_clear:N \l_clockdate_date_days_str
       }
   }
@@ -932,7 +918,7 @@
 
 \cs_new_protected:Npn \__clockdate_date_print_year:
   {
-    \str_if_eq:eeT \l_clockdate_date_year_format_str { yy }
+    \str_if_eq:eeT { \l_clockdate_date_year_format_str } { yy }
       { \exp_after:wN \use_none:nn }
     \int_use:N \l_clockdate_date_year_int
   }
@@ -1000,10 +986,8 @@
   }
 \cs_new_protected:Npn \__clockdate_date_print_day:n #1
   {
-    \bool_lazy_and:nnT
-      { \int_compare_p:nNn {#1} < { 10 } }
-      { \str_if_eq_p:ee \l_clockdate_date_day_format_str { dd } }
-      { 0 }
+    \int_compare:nNnT {#1} < { 10 }
+      { \str_if_eq:eeT { \l_clockdate_date_day_format_str } { dd } { 0 } }
     \int_eval:n {#1}
   }
 
@@ -1280,8 +1264,8 @@
     \bool_set:Nn \l_clockdate_clock_print_ampm_bool
       {
         \bool_lazy_and_p:nn
-          { \str_if_eq_p:ee \l_clockdate_clock_format_str { 12-hour } }
-          { ! \str_if_eq_p:ee \l_clockdate_clock_ampm_format_str { none } }
+          { \str_if_eq_p:ee { \l_clockdate_clock_format_str } { 12-hour } }
+          { ! \str_if_eq_p:ee { \l_clockdate_clock_ampm_format_str } { none } }
       }
   }
 
