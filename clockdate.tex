@@ -161,18 +161,25 @@ This section documents the commands provided by the \pkg{clockdate} package.
 This section documents the keys provided by the \pkg{clockdate} package.
 Set the package keys using \cs{clockdatesetup} (\S\ref{sec:commands}).
 
-\subsection{\cs{clock}}
-\label{subsec:clock}
-
-This subsection documents the keys that modify the behavior of \cs{clock}
-(\S\ref{sec:commands}).
-
 \begin{code}{clock}
   \begin{syntax}
     \key{clock=\marg{key-value list}}
   \end{syntax}
   Meta key that sets the keys in \meta{key-value list} in path |clock|.
 \end{code}
+
+\begin{code}{date}
+  \begin{syntax}
+    \key{date=\marg{key-value list}}
+  \end{syntax}
+  Meta key that sets the keys in \meta{key-value list} in path |date|.
+\end{code}
+
+\subsection{\cs{clock}}
+\label{subsec:clock}
+
+This subsection documents the keys in path |clock|.
+These keys modify the behavior of \cs{clock} (\S\ref{sec:commands}).
 
 \begin{code}{clock/star}
   \begin{syntax}
@@ -302,15 +309,8 @@ This subsection documents the keys that modify the behavior of \cs{clock}
 \subsection{\cs{calendardate}}
 \label{subsec:date}
 
-This subsection documents the keys that modify the behavior of
-\cs{calendardate} (\S\ref{sec:commands}).
-
-\begin{code}{date}
-  \begin{syntax}
-    \key{date=\marg{key-value list}}
-  \end{syntax}
-  Meta key that sets the keys in \meta{key-value list} in path |date|.
-\end{code}
+This subsection documents the keys in path |date|.
+These keys modify the behavior of \cs{calendardate} (\S\ref{sec:commands}).
 
 \begin{code}{date/star}
   \begin{syntax}
