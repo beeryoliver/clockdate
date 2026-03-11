@@ -7,7 +7,7 @@
 % Loading the package
 
 \NeedsTeXFormat{LaTeX2e}[2023-11-01]
-\ProvidesExplPackage{clockdate}{2026-03-10}{0.0.0}
+\ProvidesExplPackage{clockdate}{2026-03-11}{0.0.0}
   {Provides \noexpand\clock and \string\calendardate.}
 
 \msg_new:nnn { clockdate } { l3kernel }
@@ -722,11 +722,6 @@
               }
           }
       }
-    \str_if_empty:NT \l_clockdate_date_months_str
-      {
-        \msg_error:nn { clockdate } { months-empty }
-        \__clockdate_date_break:
-      }
     \int_compare:nNnT { \str_count:N \l_clockdate_date_months_str } < 4
       {
         \int_set:Nn \l_clockdate_date_month_int
@@ -815,11 +810,6 @@
               }
           }
       }
-    \str_if_empty:NT \l_clockdate_date_days_str
-      {
-        \msg_error:nn { clockdate } { days-empty }
-        \__clockdate_date_break:
-      }
     \int_compare:nNnT { \str_count:N \l_clockdate_date_days_str } < 4
       {
         \int_set:Nn \l_clockdate_date_day_int
@@ -897,11 +887,6 @@
                   }
               }
           }
-      }
-    \str_if_empty:NT \l_clockdate_date_days_str
-      {
-        \msg_error:nn { clockdate } { days-empty }
-        \__clockdate_date_break:
       }
     \int_compare:nNnT { \str_count:N \l_clockdate_date_days_str } < 4
       {
@@ -1306,7 +1291,3 @@
     Invalid~ month-day~ ' \int_use:N \l_clockdate_date_month_int -#1'~
     \msg_line_context:.
   }
-\msg_new:nnn { clockdate } { days-empty }
-  { The~ <day(s)>~ field~ cannot~ be~ empty~ \msg_line_context:. }
-\msg_new:nnn { clockdate } { months-empty }
-  { The~ <month(s)>~ field~ cannot~ be~ empty~ \msg_line_context:. }
