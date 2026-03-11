@@ -25,7 +25,7 @@ Print the time of day and the calendar date.
 
 Oliver Beery
 
-Version 0.0.0\quad\date{2026-03-10}
+Version 0.0.0\quad\date{2026-03-11}
 
 
 \section{Introduction}
@@ -522,8 +522,6 @@ This subsection documents the variables that are set by \cs{clockdatesetup}
 (\S\ref{sec:commands}).
 They are read-only and should not be modified directly.
 
-\subsubsection{\cs{clock}}
-
 \begin{code}{\l_clockdate_clock_format_str}
   Stores the value of the key \key{clock/format} (\S\ref{subsec:clock}).
 \end{code}
@@ -534,11 +532,11 @@ They are read-only and should not be modified directly.
 \end{code}
 
 \begin{code}
-    {
-      \l_clockdate_clock_hour_format_str,
-      \l_clockdate_clock_minute_format_str,
-      \l_clockdate_clock_second_format_str
-    }
+  {
+    \l_clockdate_clock_hour_format_str,
+    \l_clockdate_clock_minute_format_str,
+    \l_clockdate_clock_second_format_str
+  }
   Stores the values of the keys documented in
   \S\ref{subsubsec:printhourminutesecond}.
 \end{code}
@@ -560,8 +558,6 @@ They are read-only and should not be modified directly.
   }
   Stores the values of the keys documented in \S\ref{subsubsec:printampm}.
 \end{code}
-
-\subsubsection{\cs{calendardate}}
 
 \begin{code}{\l_clockdate_date_format_str}
   Stores the value of the key \key{date/format} (\S\ref{subsec:date}).
