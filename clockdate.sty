@@ -960,27 +960,19 @@
   }
 \cs_new_protected:Npn \__clockdate_date_print_months:
   {
-    \str_if_empty:NTF \l_clockdate_date_months_str
-      { \__clockdate_date_print_month: }
-      {
-        \seq_use:Nnnn \l__clockdate_date_months_seq
-          { \l_clockdate_date_months_pair_separator_tl }
-          { \l_clockdate_date_months_separator_tl }
-          { \l_clockdate_date_months_final_separator_tl }
-      }
+    \seq_use:Nnnn \l__clockdate_date_months_seq
+      { \l_clockdate_date_months_pair_separator_tl }
+      { \l_clockdate_date_months_separator_tl }
+      { \l_clockdate_date_months_final_separator_tl }
   }
 \cs_new_protected:Npn \__clockdate_date_print_month:
   { \__clockdate_date_print_month:n { \l_clockdate_date_month_int } }
 \cs_new_protected:Npn \__clockdate_date_print_days:
   {
-    \str_if_empty:NTF \l_clockdate_date_days_str
-      { \__clockdate_date_print_day:n { \l_clockdate_date_day_int } }
-      {
-        \seq_use:Nnnn \l__clockdate_date_days_seq
-          { \l_clockdate_date_days_pair_separator_tl }
-          { \l_clockdate_date_days_separator_tl }
-          { \l_clockdate_date_days_final_separator_tl }
-      }
+    \seq_use:Nnnn \l__clockdate_date_days_seq
+      { \l_clockdate_date_days_pair_separator_tl }
+      { \l_clockdate_date_days_separator_tl }
+      { \l_clockdate_date_days_final_separator_tl }
   }
 \cs_new_protected:Npn \__clockdate_date_print_day:n #1
   {
