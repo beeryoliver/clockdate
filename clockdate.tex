@@ -115,11 +115,8 @@ This section documents the commands provided by the \pkg{clockdate} package.
   \begin{syntax}
     \cs{calendardate} \sarg{} \oarg{key-value list} \marg{token list}
   \end{syntax}
-  \listheading
-    {
-      Prints the calendar date.
-      \meta{token list} must take any of the following forms:
-    }
+  Prints the calendar date.
+  \meta{token list} must take any of the following forms:
   \begin{itemize}
     \item \meta{year}|-|\meta{month}|-|\meta{day(s)}
     \item \meta{month}|-|\meta{day(s)}
@@ -129,7 +126,7 @@ This section documents the commands provided by the \pkg{clockdate} package.
   \meta{year} must be an \meta{integer} from \num{1000} to \num{9999}.
   \meta{month} must be an \meta{integer} from \num{1} to \num{12}.
 
-  \listheading{\meta{day(s)} must take any of the following forms:}
+  \meta{day(s)} must take any of the following forms:
   \begin{itemize}
     \item a single day \meta{day}
     \item a day range \meta{day_1}|--|\meta{day_2}
@@ -140,7 +137,7 @@ This section documents the commands provided by the \pkg{clockdate} package.
   The calendar date must be valid.
   \date{2-29} is always valid if \meta{year} is omitted.
 
-  \listheading{\meta{month(s)} must take any of the following forms:}
+  \meta{month(s)} must take any of the following forms:
   \begin{itemize}
     \item a single month \meta{month}
     \item a month range \meta{month_1}|--|\meta{month_2}
@@ -390,7 +387,7 @@ These keys modify the behavior of \cs{calendardate} (\S\ref{sec:commands}).
   \begin{syntax}
     \key{date/date-separator=\meta{token list}}
   \end{syntax}
-  \listheading{Meta key that sets the following keys to \meta{token list}:}
+  Meta key that sets the following keys to \meta{token list}:
   \begin{itemize}
     \item \key{date/year-month-separator}
     \item \key{date/month-day-separator}
