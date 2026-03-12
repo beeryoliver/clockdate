@@ -7,7 +7,7 @@
 % Loading the package
 
 \NeedsTeXFormat{LaTeX2e}[2023-11-01]
-\ProvidesExplPackage{clockdate}{2026-03-11}{0.0.0}
+\ProvidesExplPackage{clockdate}{2026-03-12}{0.0.0}
   {Provides \noexpand\clock and \string\calendardate.}
 
 \msg_new:nnn { clockdate } { l3kernel }
@@ -981,14 +981,6 @@
 \str_new:N \l_clockdate_date_month_format_str
 \str_new:N \l_clockdate_date_day_format_str
 
-\keys_define:nn { clockdate }
-  {
-      clock .meta:nn = { clockdate / clock } {#1}
-    , clock .value_required:n = true
-
-    , date .meta:nn = { clockdate / date } {#1}
-    , date .value_required:n = true
-  }
 \keys_define:nn { clockdate / clock }
   {
       star .code:n =
