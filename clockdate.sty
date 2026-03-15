@@ -108,6 +108,8 @@
     { \char_generate:nn { `: } { 13 } }
   \char_set_catcode_active:N -
   \tl_const:Nn \c__clockdate_active_hyphen_tl { - }
+  \char_set_catcode_active:N ,
+  \tl_const:Nn \c__clockdate_active_comma_tl { , }
 \group_end:
 
 % Scratch variables
@@ -587,6 +589,8 @@
     \tl_set:Nn \l__clockdate_tmp_tl {#1}
     \tl_replace_all:NVn \l__clockdate_tmp_tl \c__clockdate_active_hyphen_tl
       { - }
+    \tl_replace_all:NVn \l__clockdate_tmp_tl \c__clockdate_active_comma_tl
+      { , }
     \tl_replace_all:Nnn \l__clockdate_tmp_tl { -- } { \s__clockdate_mark }
     \seq_set_split:NnV \l__clockdate_tmp_seq { - } \l__clockdate_tmp_tl
     \int_case:nnF { \seq_count:N \l__clockdate_tmp_seq }
