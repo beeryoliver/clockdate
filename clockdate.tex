@@ -25,7 +25,7 @@ Print the time of day and the calendar date.
 
 Oliver Beery
 
-Version 0.0.0\quad\date{2026-03-12}
+Version 0.0.0\quad\date{2026-03-15}
 
 
 \section{Introduction}
@@ -483,8 +483,7 @@ package.
 
 \begin{code}{clockdate/clock}
   Hook used in \cs{clock} after all the user input has been parsed and
-  after all the variables in \S\ref{subsec:varclock} and
-  \S\ref{subsec:varprintampm} have been set.
+  after all the variables in \S\ref{subsec:varclock} have been set.
   This hook should be preferred over the generic command hook
   \hook{cmd/clock/before}.
 \end{code}
@@ -611,6 +610,22 @@ Outside of \cs{clock}, they do not have defined behavior.
   The value is \num{-1} if omitted.
 \end{code}
 
+\begin{code}{\l_clockdate_clock_print_ampm_bool}
+  Boolean that stores whether the am/pm will be printed.
+  The value is |true| if \key{clock/format=12-hour} (\S\ref{subsec:clock}) and
+  the value of the key \key{clock/ampm} is not |none|
+  (\S\ref{subsubsec:printampm}).
+\end{code}
+
+\begin{code}{\l_clockdate_clock_print_ampm_first_bool}
+  Boolean that stores whether \meta{clock_1} prints the am/pm in a
+  time-of-day range.
+  Equivalent to \cs{l_clockdate_clock_print_ampm_bool} if printing only a
+  single \meta{clock}.
+  This variable should not be confused with
+  \cs{l_clockdate_clock_ampm_omit_first_bool} (\S\ref{subsubsec:printampm}).
+\end{code}
+
 \subsection{Variables set in \cs{calendardate}}
 \label{subsec:vardate}
 
@@ -647,30 +662,6 @@ Outside of \cs{calendardate}, they do not have defined behavior.
   \cs{calendardate}, except that each \meta{day} is evaluated using
   \cs{int_eval:n}.
   The value is \meta{empty} if exactly \num{0} or \num{1} days are printed.
-\end{code}
-
-\subsection{Printing the am/pm}
-\label{subsec:varprintampm}
-
-The following two variables are read-only and should not be modified directly.
-
-\begin{code}{\l_clockdate_clock_print_ampm_bool}
-  Boolean that stores whether the am/pm will be printed.
-  The value is |true| if \key{clock/format=12-hour} (\S\ref{subsec:clock}) and
-  the value of the key \key{clock/ampm} is not |none|
-  (\S\ref{subsubsec:printampm}).
-  This variable is set by \cs{clockdatesetup}.
-  It is also set in \cs{clock} after processing its \meta{key-value list} if
-  the optional argument is used.
-\end{code}
-
-\begin{code}{\l_clockdate_clock_print_ampm_first_bool}
-  Boolean that stores whether \meta{clock_1} prints the am/pm in a
-  time-of-day range.
-  This variable is set only within \cs{clock} if printing a time-of-day range.
-  Outside of this context, it does not have defined behavior.
-  This variable should not be confused with
-  \cs{l_clockdate_clock_ampm_omit_first_bool} (\S\ref{subsubsec:printampm}).
 \end{code}
 
 \subsection{Printing the months}

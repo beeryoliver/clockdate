@@ -7,7 +7,7 @@
 % Loading the package
 
 \NeedsTeXFormat{LaTeX2e}[2023-11-01]
-\ProvidesExplPackage{clockdate}{2026-03-12}{0.0.0}
+\ProvidesExplPackage{clockdate}{2026-03-15}{0.0.0}
   {Provides \noexpand\clock and \string\calendardate.}
 
 \msg_new:nnn { clockdate } { l3kernel }
@@ -46,9 +46,7 @@
 \int_set:Nn \l_clockdate_clock_minute_range_int { -1 }
 \int_new:N \l_clockdate_clock_second_range_int
 \int_set:Nn \l_clockdate_clock_second_range_int { -1 }
-
 \bool_new:N \l_clockdate_clock_print_ampm_bool
-\bool_set_true:N \l_clockdate_clock_print_ampm_bool
 \bool_new:N \l_clockdate_clock_print_ampm_first_bool
 
 \int_new:N \l_clockdate_date_year_int
@@ -235,7 +233,6 @@
   {
     \group_begin:
       \keys_set:nn { clockdate / clock } {#1}
-      \__clockdate_clock_keys_process:
       \__clockdate_clock_aux:n {#2}
     \group_end:
   }
@@ -250,7 +247,6 @@
     \group_begin:
       \l__clockdate_clock_star_tl
       \keys_set:nn { clockdate / clock } {#1}
-      \__clockdate_clock_keys_process:
       \__clockdate_clock_aux:n {#2}
     \group_end:
   }
@@ -336,24 +332,32 @@
         \msg_error:nnn { clockdate } { invalid } { #1 -- #2 }
         \prg_break:
       }
-    \bool_lazy_and:nnT
-      { \l_clockdate_clock_print_ampm_bool }
+    \bool_set:Nn \l_clockdate_clock_print_ampm_bool
       {
-        ! \bool_lazy_and_p:nn
-          { \l_clockdate_clock_ampm_omit_first_bool }
+        \bool_lazy_and_p:nn
+          { \str_if_eq_p:ee { \l_clockdate_clock_format_str } { 12-hour } }
+          { ! \str_if_eq_p:ee { \l_clockdate_clock_ampm_format_str } { none } }
+      }
+    \bool_set:Nn \l_clockdate_clock_print_ampm_first_bool
+      {
+        \bool_lazy_and_p:nn
+          { \l_clockdate_clock_print_ampm_bool }
           {
-            \__clockdate_bool_if_eq_p:nn
+            ! \bool_lazy_and_p:nn
+              { \l_clockdate_clock_ampm_omit_first_bool }
               {
-                \__clockdate_clock_hour_if_am_p:n
-                  { \l_clockdate_clock_hour_int }
-              }
-              {
-                \__clockdate_clock_hour_if_am_p:n
-                  { \l_clockdate_clock_hour_range_int }
+                \__clockdate_bool_if_eq_p:nn
+                  {
+                    \__clockdate_clock_hour_if_am_p:n
+                      { \l_clockdate_clock_hour_int }
+                  }
+                  {
+                    \__clockdate_clock_hour_if_am_p:n
+                      { \l_clockdate_clock_hour_range_int }
+                  }
               }
           }
-      }
-      { \bool_set_true:N \l_clockdate_clock_print_ampm_first_bool }
+        }
     \hook_use:n { clockdate / clock }
     \__clockdate_clock_print_hour:n { \l_clockdate_clock_hour_int }
     \int_compare:nNnF \l_clockdate_clock_minute_int = { -1 }
@@ -423,6 +427,14 @@
         \msg_error:nnn { clockdate } { invalid } {#1}
         \prg_break:
       }
+    \bool_set:Nn \l_clockdate_clock_print_ampm_bool
+      {
+        \bool_lazy_and_p:nn
+          { \str_if_eq_p:ee { \l_clockdate_clock_format_str } { 12-hour } }
+          { ! \str_if_eq_p:ee { \l_clockdate_clock_ampm_format_str } { none } }
+      }
+    \bool_set_eq:NN \l_clockdate_clock_print_ampm_first_bool
+      \l_clockdate_clock_print_ampm_bool
     \hook_use:n { clockdate / clock }
     \__clockdate_clock_print_hour:n { \l_clockdate_clock_hour_int }
     \int_compare:nNnF \l_clockdate_clock_minute_int = { -1 }
@@ -1223,16 +1235,6 @@
       {
         \IfBooleanT #1 { \__clockdate_keys_set_initial: }
         \keys_set:nn { clockdate } {#2}
-        \__clockdate_clock_keys_process:
-      }
-  }
-\cs_new_protected:Npn \__clockdate_clock_keys_process:
-  {
-    \bool_set:Nn \l_clockdate_clock_print_ampm_bool
-      {
-        \bool_lazy_and_p:nn
-          { \str_if_eq_p:ee { \l_clockdate_clock_format_str } { 12-hour } }
-          { ! \str_if_eq_p:ee { \l_clockdate_clock_ampm_format_str } { none } }
       }
   }
 
