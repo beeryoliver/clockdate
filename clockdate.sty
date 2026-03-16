@@ -7,7 +7,7 @@
 % Loading the package
 
 \NeedsTeXFormat{LaTeX2e}[2023-11-01]
-\ProvidesExplPackage{clockdate}{2026-03-15}{0.0.0}
+\ProvidesExplPackage{clockdate}{2026-03-16}{0.0.0}
   {Print the time of day and the calendar date}
 
 \msg_new:nnn { clockdate } { l3kernel }
@@ -1039,12 +1039,12 @@
         \l_clockdate_clock_minute_second_separator_tl
     , minute-second-separator .value_required:n = true
 
-    , clock-separator .code:n =
+    , time-separator .code:n =
         {
           \tl_set:Nn \l_clockdate_clock_hour_minute_separator_tl {#1}
           \tl_set:Nn \l_clockdate_clock_minute_second_separator_tl {#1}
         }
-    , clock-separator .value_required:n = true
+    , time-separator .value_required:n = true
 
     , ampm .choices:nn = { a.m. , am , a , A.M. , AM , A , none }
         {
