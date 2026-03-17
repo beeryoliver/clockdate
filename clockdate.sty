@@ -120,7 +120,6 @@
 
 % Some functions
 
-\cs_generate_variant:Nn \msg_error:nnnnn { nnVVV }
 \cs_new:Npn \__clockdate_int_two_digits:n #1
   {
     \int_compare:nNnT {#1} < { 10 } { 0 }
@@ -304,8 +303,8 @@
             {
               \int_if_zero:nF { \l_clockdate_clock_minute_int }
                 {
-                  \msg_error:nnVV { clockdate } { hour-minute-invalid }
-                    \l_clockdate_clock_hour_int \l_clockdate_clock_minute_int
+                  \msg_error:nnV { clockdate } { hour-minute-invalid }
+                    \l_clockdate_clock_minute_int
                   \prg_break:
                 }
             }
@@ -324,9 +323,8 @@
                 { \int_if_zero_p:n { \l_clockdate_clock_minute_int } }
                 { \int_if_zero_p:n { \l_clockdate_clock_second_int } }
                 {
-                  \msg_error:nnVVV { clockdate } { hour-minute-second-invalid }
-                    \l_clockdate_clock_hour_int \l_clockdate_clock_minute_int
-                    \l_clockdate_clock_second_int
+                  \msg_error:nnVV { clockdate } { hour-minute-second-invalid }
+                    \l_clockdate_clock_minute_int \l_clockdate_clock_second_int
                   \prg_break:
                 }
             }
@@ -354,8 +352,7 @@
             {
               \int_if_zero:nF { \l_clockdate_clock_minute_range_int }
                 {
-                  \msg_error:nnVV { clockdate } { hour-minute-invalid }
-                    \l_clockdate_clock_hour_range_int
+                  \msg_error:nnV { clockdate } { hour-minute-invalid }
                     \l_clockdate_clock_minute_range_int
                   \prg_break:
                 }
@@ -375,8 +372,7 @@
                 { \int_if_zero_p:n { \l_clockdate_clock_minute_range_int } }
                 { \int_if_zero_p:n { \l_clockdate_clock_second_range_int } }
                 {
-                  \msg_error:nnVVV { clockdate } { hour-minute-second-invalid }
-                    \l_clockdate_clock_hour_range_int
+                  \msg_error:nnVV { clockdate } { hour-minute-second-invalid }
                     \l_clockdate_clock_minute_range_int
                     \l_clockdate_clock_second_range_int
                   \prg_break:
@@ -492,9 +488,8 @@
                 { \int_if_zero_p:n { \l_clockdate_clock_minute_int } }
                 { \int_if_zero_p:n { \l_clockdate_clock_second_int } }
                 {
-                  \msg_error:nnVVV { clockdate } { hour-minute-second-invalid }
-                    \l_clockdate_clock_hour_int \l_clockdate_clock_minute_int
-                    \l_clockdate_clock_second_int
+                  \msg_error:nnVV { clockdate } { hour-minute-second-invalid }
+                    \l_clockdate_clock_minute_int \l_clockdate_clock_second_int
                   \prg_break:
                 }
             }
@@ -1346,17 +1341,13 @@
   }
 \msg_new:nnn { clockdate } { hour-minute-second-invalid }
   {
-    Invalid~ hour-minute-second~
-    '
-      \__clockdate_int_two_digits:n {#1} :
-      \__clockdate_int_two_digits:n {#2} :
-      \__clockdate_int_two_digits:n {#3}
-    '~ \msg_line_context:.
+    Invalid~ hour-minute-second~ '24: \__clockdate_int_two_digits:n {#1} :
+    \__clockdate_int_two_digits:n {#2} '~ \msg_line_context:.
   }
 \msg_new:nnn { clockdate } { hour-minute-invalid }
   {
-    Invalid~ hour-minute~ '\__clockdate_int_two_digits:n {#1} :
-    \__clockdate_int_two_digits:n {#2}'~ \msg_line_context:.
+    Invalid~ hour-minute~ '24: \__clockdate_int_two_digits:n {#1}'~
+    \msg_line_context:.
   }
 % Messages used in \calendardate.
 \msg_new:nnn { clockdate } { year-invalid }
