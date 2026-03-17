@@ -386,10 +386,7 @@
           }
       }
     \bool_if:NT \l_clockdate_clock_print_ampm_first_bool
-      {
-        \l_clockdate_clock_ampm_separator_tl
-        \__clockdate_clock_print_ampm:n { \l_clockdate_clock_hour_int }
-      }
+      { \__clockdate_clock_print_ampm:n { \l_clockdate_clock_hour_int } }
     \l_clockdate_clock_range_separator_tl
     \__clockdate_clock_print_hour:n { \l_clockdate_clock_hour_range_int }
     \int_compare:nNnF \l_clockdate_clock_minute_range_int = { -1 }
@@ -405,10 +402,7 @@
           }
       }
     \bool_if:NT \l_clockdate_clock_print_ampm_bool
-      {
-        \l_clockdate_clock_ampm_separator_tl
-        \__clockdate_clock_print_ampm:n { \l_clockdate_clock_hour_range_int }
-      }
+      { \__clockdate_clock_print_ampm:n { \l_clockdate_clock_hour_range_int } }
   }
 
 \cs_new_protected:Npn \__clockdate_clock_print:n #1
@@ -465,10 +459,7 @@
           }
       }
     \bool_if:NT \l_clockdate_clock_print_ampm_bool
-      {
-        \l_clockdate_clock_ampm_separator_tl
-        \__clockdate_clock_print_ampm:n { \l_clockdate_clock_hour_int }
-      }
+      { \__clockdate_clock_print_ampm:n { \l_clockdate_clock_hour_int } }
   }
 
 \cs_new_protected:Npn \__clockdate_clock_set_hour:Nn #1#2
@@ -570,6 +561,7 @@
   }
 \cs_new_protected:Npn \__clockdate_clock_print_ampm:n #1
   {
+    \l_clockdate_clock_ampm_separator_tl
     \__clockdate_clock_hour_if_am:nTF {#1}
       { \__clockdate_clock_print_am: }
       { \__clockdate_clock_print_pm: }
