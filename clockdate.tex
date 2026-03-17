@@ -104,8 +104,7 @@ This section documents the commands provided by the \pkg{clockdate} package.
   \meta{minute} must be an \meta{integer} from \num{0} to \num{59}.
   \meta{second} must be an \meta{integer} from \num{0} to \num{60}.
   (The value of \num{60} allows for leap seconds.)
-  If $\meta{hour}=\num{24}$, then \meta{minute} and \meta{second} must equal
-  zero if provided.
+  If $\meta{hour}=\num{24}$, then \meta{minute} and \meta{second} must be zero.
 
   Adding the optional argument sets the keys in \meta{key-value list} in path
   |clock| for only that particular usage of \cs{clock}.
