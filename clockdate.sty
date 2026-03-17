@@ -7,7 +7,7 @@
 % Loading the package
 
 \NeedsTeXFormat{LaTeX2e}[2023-11-01]
-\ProvidesExplPackage{clockdate}{2026-03-16}{0.0.0}
+\ProvidesExplPackage{clockdate}{2026-03-17}{0.0.0}
   {Print the time of day and the calendar date}
 
 \msg_new:nnn { clockdate } { l3kernel }
@@ -120,6 +120,12 @@
 
 % Some functions
 
+\cs_generate_variant:Nn \msg_error:nnnnn { nnVVV }
+\cs_new:Npn \__clockdate_int_two_digits:n #1
+  {
+    \int_compare:nNnT {#1} < { 10 } { 0 }
+    \int_eval:n {#1}
+  }
 \prg_new_conditional:Npnn \__clockdate_bool_if_eq:nn #1#2 { p }
   {
     \bool_if:nTF {#1}
@@ -294,6 +300,15 @@
             { \seq_item:Nn \l__clockdate_tmp_seq {1} }
           \__clockdate_clock_set_minute:Nn \l_clockdate_clock_minute_int
             { \seq_item:Nn \l__clockdate_tmp_seq {2} }
+          \int_compare:nNnT \l_clockdate_clock_hour_int = { 24 }
+            {
+              \int_if_zero:nF { \l_clockdate_clock_minute_int }
+                {
+                  \msg_error:nnVV { clockdate } { hour-minute-invalid }
+                    \l_clockdate_clock_hour_int \l_clockdate_clock_minute_int
+                  \prg_break:
+                }
+            }
         }
         { 3 }
         {
@@ -303,6 +318,18 @@
             { \seq_item:Nn \l__clockdate_tmp_seq {2} }
           \__clockdate_clock_set_minute:Nn \l_clockdate_clock_second_int
             { \seq_item:Nn \l__clockdate_tmp_seq {3} }
+          \int_compare:nNnT \l_clockdate_clock_hour_int = { 24 }
+            {
+              \bool_lazy_and:nnF
+                { \int_if_zero_p:n { \l_clockdate_clock_minute_int } }
+                { \int_if_zero_p:n { \l_clockdate_clock_second_int } }
+                {
+                  \msg_error:nnVVV { clockdate } { hour-minute-second-invalid }
+                    \l_clockdate_clock_hour_int \l_clockdate_clock_minute_int
+                    \l_clockdate_clock_second_int
+                  \prg_break:
+                }
+            }
         }
       }
       {
@@ -323,6 +350,16 @@
             { \seq_item:Nn \l__clockdate_tmp_seq {1} }
           \__clockdate_clock_set_minute:Nn \l_clockdate_clock_minute_range_int
             { \seq_item:Nn \l__clockdate_tmp_seq {2} }
+          \int_compare:nNnT \l_clockdate_clock_hour_range_int = { 24 }
+            {
+              \int_if_zero:nF { \l_clockdate_clock_minute_range_int }
+                {
+                  \msg_error:nnVV { clockdate } { hour-minute-invalid }
+                    \l_clockdate_clock_hour_range_int
+                    \l_clockdate_clock_minute_range_int
+                  \prg_break:
+                }
+            }
         }
         { 3 }
         {
@@ -332,6 +369,19 @@
             { \seq_item:Nn \l__clockdate_tmp_seq {2} }
           \__clockdate_clock_set_minute:Nn \l_clockdate_clock_second_range_int
             { \seq_item:Nn \l__clockdate_tmp_seq {3} }
+          \int_compare:nNnT \l_clockdate_clock_hour_range_int = { 24 }
+            {
+              \bool_lazy_and:nnF
+                { \int_if_zero_p:n { \l_clockdate_clock_minute_range_int } }
+                { \int_if_zero_p:n { \l_clockdate_clock_second_range_int } }
+                {
+                  \msg_error:nnVVV { clockdate } { hour-minute-second-invalid }
+                    \l_clockdate_clock_hour_range_int
+                    \l_clockdate_clock_minute_range_int
+                    \l_clockdate_clock_second_range_int
+                  \prg_break:
+                }
+            }
         }
       }
       {
@@ -418,6 +468,15 @@
             { \seq_item:Nn \l__clockdate_tmp_seq {1} }
           \__clockdate_clock_set_minute:Nn \l_clockdate_clock_minute_int
             { \seq_item:Nn \l__clockdate_tmp_seq {2} }
+          \int_compare:nNnT \l_clockdate_clock_hour_int = { 24 }
+            {
+              \int_if_zero:nF { \l_clockdate_clock_minute_int }
+                {
+                  \msg_error:nnVV { clockdate } { hour-minute-invalid }
+                    \l_clockdate_clock_hour_int \l_clockdate_clock_minute_int
+                  \prg_break:
+                }
+            }
         }
         { 3 }
         {
@@ -427,6 +486,18 @@
             { \seq_item:Nn \l__clockdate_tmp_seq {2} }
           \__clockdate_clock_set_second:Nn \l_clockdate_clock_second_int
             { \seq_item:Nn \l__clockdate_tmp_seq {3} }
+          \int_compare:nNnT \l_clockdate_clock_hour_int = { 24 }
+            {
+              \bool_lazy_and:nnF
+                { \int_if_zero_p:n { \l_clockdate_clock_minute_int } }
+                { \int_if_zero_p:n { \l_clockdate_clock_second_int } }
+                {
+                  \msg_error:nnVVV { clockdate } { hour-minute-second-invalid }
+                    \l_clockdate_clock_hour_int \l_clockdate_clock_minute_int
+                    \l_clockdate_clock_second_int
+                  \prg_break:
+                }
+            }
         }
       }
       {
@@ -1272,6 +1343,20 @@
   {
     Invalid~ second~ '#1'~ \msg_line_context:. \\
     The~ second~ must~ be~ an~ integer~ from~ 0~ to~ 60.
+  }
+\msg_new:nnn { clockdate } { hour-minute-second-invalid }
+  {
+    Invalid~ hour-minute-second~
+    '
+      \__clockdate_int_two_digits:n {#1} :
+      \__clockdate_int_two_digits:n {#2} :
+      \__clockdate_int_two_digits:n {#3}
+    '~ \msg_line_context:.
+  }
+\msg_new:nnn { clockdate } { hour-minute-invalid }
+  {
+    Invalid~ hour-minute~ '\__clockdate_int_two_digits:n {#1} :
+    \__clockdate_int_two_digits:n {#2}'~ \msg_line_context:.
   }
 % Messages used in \calendardate.
 \msg_new:nnn { clockdate } { year-invalid }
