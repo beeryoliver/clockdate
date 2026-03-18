@@ -35,27 +35,18 @@
 % Some variables
 
 \int_new:N \l_clockdate_clock_hour_int
-\int_set:Nn \l_clockdate_clock_hour_int { -1 }
 \int_new:N \l_clockdate_clock_minute_int
-\int_set:Nn \l_clockdate_clock_minute_int { -1 }
 \int_new:N \l_clockdate_clock_second_int
-\int_set:Nn \l_clockdate_clock_second_int { -1 }
 \int_new:N \l_clockdate_clock_hour_range_int
-\int_set:Nn \l_clockdate_clock_hour_range_int { -1 }
 \int_new:N \l_clockdate_clock_minute_range_int
-\int_set:Nn \l_clockdate_clock_minute_range_int { -1 }
 \int_new:N \l_clockdate_clock_second_range_int
-\int_set:Nn \l_clockdate_clock_second_range_int { -1 }
 \bool_new:N \l_clockdate_clock_print_ampm_bool
 \bool_new:N \l_clockdate_clock_print_ampm_first_bool
 
 \int_new:N \l_clockdate_date_year_int
-\int_set:Nn \l_clockdate_date_year_int { -1 }
 \int_new:N \l_clockdate_date_month_int
-\int_set:Nn \l_clockdate_date_month_int { -1 }
 \str_new:N \l_clockdate_date_months_str
 \int_new:N \l_clockdate_date_day_int
-\int_set:Nn \l_clockdate_date_day_int { -1 }
 \str_new:N \l_clockdate_date_days_str
 
 \seq_new:N \l__clockdate_date_months_seq
@@ -268,6 +259,7 @@
   }
 \cs_new_protected:Npn \__clockdate_clock_aux:n #1
   {
+    \__clockdate_clock_init:
     \tl_set:Nn \l__clockdate_tmp_tl {#1}
     \tl_replace_all:NVn \l__clockdate_tmp_tl \c_colon_str { : }
     \tl_replace_all:NVn \l__clockdate_tmp_tl \c__clockdate_active_colon_tl
@@ -281,6 +273,15 @@
       }
       { \exp_args:NV \__clockdate_clock_print:n \l__clockdate_tmp_tl }
     \prg_break_point:
+  }
+\cs_new_protected:Npn \__clockdate_clock_init:
+  {
+    \int_set:Nn \l_clockdate_clock_hour_int { -1 }
+    \int_set:Nn \l_clockdate_clock_minute_int { -1 }
+    \int_set:Nn \l_clockdate_clock_second_int { -1 }
+    \int_set:Nn \l_clockdate_clock_hour_range_int { -1 }
+    \int_set:Nn \l_clockdate_clock_minute_range_int { -1 }
+    \int_set:Nn \l_clockdate_clock_second_range_int { -1 }
   }
 \cs_new_protected:Npn \__clockdate_clock_print_range:w
   #1 -- #2 \q__clockdate_stop
@@ -573,6 +574,7 @@
   }
 \cs_new_protected:Npn \__clockdate_date_aux:n #1
   {
+    \__clockdate_date_init:
     \tl_set:Nn \l__clockdate_tmp_tl {#1}
     \tl_replace_all:NVn \l__clockdate_tmp_tl \c__clockdate_active_hyphen_tl
       { - }
@@ -595,6 +597,14 @@
       }
       { \msg_error:nnV { clockdate } { invalid } \l__clockdate_tmp_tl }
     \__clockdate_date_break_point:
+  }
+\cs_new_protected:Npn \__clockdate_date_init:
+  {
+    \int_set:Nn \l_clockdate_date_year_int { -1 }
+    \int_set:Nn \l_clockdate_date_month_int { -1 }
+    \str_clear:N \l_clockdate_date_months_str
+    \int_set:Nn \l_clockdate_date_day_int { -1 }
+    \str_clear:N \l_clockdate_date_days_str
   }
 \cs_new_protected:Npn \__clockdate_date_DMY:ww #1 - #2 \q__clockdate_stop
   {
