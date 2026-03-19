@@ -25,7 +25,7 @@ Print the time of day and the calendar date
 
 Oliver Beery
 
-Version 0.0.0\quad\date{2026-03-17}
+Version 0.0.0\quad\date{2026-03-19}
 
 
 \section{Introduction}
@@ -504,12 +504,11 @@ This subsection documents the variables that are set by \cs{clockdatesetup}
 They are read-only and should not be modified directly.
 
 \begin{code}{\l_clockdate_clock_format_str}
-  Stores the value of the key \key{clock/format} (\S\ref{subsec:clock}).
+  The value of the key \key{clock/format} (\S\ref{subsec:clock}).
 \end{code}
 
 \begin{code}{\l_clockdate_clock_range_separator_tl}
-  Stores the value of the key \key{clock/range-separator}
-  (\S\ref{subsec:clock}).
+  The value of the key \key{clock/range-separator} (\S\ref{subsec:clock}).
 \end{code}
 
 \begin{code}
@@ -518,8 +517,7 @@ They are read-only and should not be modified directly.
     \l_clockdate_clock_minute_format_str,
     \l_clockdate_clock_second_format_str
   }
-  Stores the values of the keys documented in
-  \S\ref{subsubsec:printhourminutesecond}.
+  The values of the keys documented in \S\ref{subsubsec:printhourminutesecond}.
 \end{code}
 
 \begin{code}
@@ -527,8 +525,7 @@ They are read-only and should not be modified directly.
     \l_clockdate_clock_hour_minute_separator_tl,
     \l_clockdate_clock_minute_second_separator_tl
   }
-  Stores the values of the keys documented in
-  \S\ref{subsubsec:sephourminutesecond}.
+  The values of the keys documented in \S\ref{subsubsec:sephourminutesecond}.
 \end{code}
 
 \begin{code}
@@ -537,11 +534,11 @@ They are read-only and should not be modified directly.
     \l_clockdate_clock_ampm_separator_tl,
     \l_clockdate_clock_ampm_omit_first_bool
   }
-  Stores the values of the keys documented in \S\ref{subsubsec:printampm}.
+  The values of the keys documented in \S\ref{subsubsec:printampm}.
 \end{code}
 
 \begin{code}{\l_clockdate_date_format_str}
-  Stores the value of the key \key{date/format} (\S\ref{subsec:date}).
+  The value of the key \key{date/format} (\S\ref{subsec:date}).
 \end{code}
 
 \begin{code}
@@ -550,8 +547,7 @@ They are read-only and should not be modified directly.
     \l_clockdate_date_month_format_str,
     \l_clockdate_date_day_format_str
   }
-  Stores the values of the keys documented in
-  \S\ref{subsubsec:printyearmonthday}.
+  The values of the keys documented in \S\ref{subsubsec:printyearmonthday}.
 \end{code}
 
 \begin{code}
@@ -560,8 +556,7 @@ They are read-only and should not be modified directly.
     \l_clockdate_date_month_day_separator_tl,
     \l_clockdate_date_year_day_separator_tl
   }
-  Stores the values of the keys documented in
-  \S\ref{subsubsec:sepyearmonthday}.
+  The values of the keys documented in \S\ref{subsubsec:sepyearmonthday}.
 \end{code}
 
 \begin{code}
@@ -571,7 +566,7 @@ They are read-only and should not be modified directly.
     \l_clockdate_date_days_final_separator_tl,
     \l_clockdate_date_days_range_separator_tl
   }
-  Stores the values of the keys documented in \S\ref{subsubsec:sepdays}.
+  The values of the keys documented in \S\ref{subsubsec:sepdays}.
 \end{code}
 
 \begin{code}
@@ -581,7 +576,7 @@ They are read-only and should not be modified directly.
     \l_clockdate_date_months_final_separator_tl,
     \l_clockdate_date_months_range_separator_tl
   }
-  Stores the values of the keys documented in \S\ref{subsubsec:sepmonths}.
+  The values of the keys documented in \S\ref{subsubsec:sepmonths}.
 \end{code}
 
 \subsection{Variables set in \cs{clock}}
@@ -596,7 +591,7 @@ Outside of \cs{clock}, they do not have defined behavior.
     \l_clockdate_clock_minute_int,
     \l_clockdate_clock_second_int
   }
-  Stores the value of \meta{hour}, \meta{minute}, and \meta{second}.
+  The value of \meta{hour}, \meta{minute}, and \meta{second}.
   The value is \num{-1} if omitted.
 \end{code}
 
@@ -606,7 +601,7 @@ Outside of \cs{clock}, they do not have defined behavior.
     \l_clockdate_clock_minute_range_int,
     \l_clockdate_clock_second_range_int
   }
-  Stores the value of \meta{hour_2}, \meta{minute_2}, and \meta{second_2} in a
+  The value of \meta{hour_2}, \meta{minute_2}, and \meta{second_2} in a
   time-of-day range.
   The value is \num{-1} if omitted.
 \end{code}
@@ -634,17 +629,17 @@ This subsection documents the variables that are set within \cs{calendardate}.
 Outside of \cs{calendardate}, they do not have defined behavior.
 
 \begin{code}{\l_clockdate_date_year_int}
-  Stores the value of \meta{year}.
+  The value of \meta{year}.
   The value is \num{-1} if \meta{year} is omitted.
 \end{code}
 
 \begin{code}{\l_clockdate_date_month_int}
-  Stores the value of \meta{month} if only a single month is printed.
+  The value of \meta{month} if only a single month is printed.
   The value is \num{-1} if two or more months are printed.
 \end{code}
 
 \begin{code}{\l_clockdate_date_months_str}
-  Stores the value of \meta{months} if two or more months are printed.
+  The value of \meta{months} if two or more months are printed.
   The value takes the same form as the \meta{months} as explained for
   \cs{calendardate}, except that each \meta{month} is evaluated using
   \cs{int_eval:n}.
@@ -652,13 +647,13 @@ Outside of \cs{calendardate}, they do not have defined behavior.
 \end{code}
 
 \begin{code}{\l_clockdate_date_day_int}
-  Stores the value of \meta{day} if only a single day is printed.
+  The value of \meta{day} if only a single day is printed.
   The value is \num{-1} if \meta{day} is omitted or if two or more days are
   printed.
 \end{code}
 
 \begin{code}{\l_clockdate_date_days_str}
-  Stores the value of \meta{days} if two or more days are printed.
+  The value of \meta{days} if two or more days are printed.
   The value takes the same form as the \meta{days} as explained for
   \cs{calendardate}, except that each \meta{day} is evaluated using
   \cs{int_eval:n}.
