@@ -7,7 +7,7 @@
 % Loading the package
 
 \NeedsTeXFormat{LaTeX2e}[2023-11-01]
-\ProvidesExplPackage{clockdate}{2026-03-21}{0.0.0}
+\ProvidesExplPackage{clockdate}{2026-03-22}{0.0.0}
   {Print the time of day and the calendar date}
 
 \msg_new:nnn { clockdate } { l3kernel }
@@ -18,19 +18,6 @@
   }
 \IfExplAtLeastTF { 2023-11-01 } { }
   { \msg_critical:nn { clockdate } { l3kernel } }
-
-% Define package options.
-\keys_define:nn { clockdate }
-  {
-      overwrite-date .code:n =
-        {
-          \hook_gput_code:nnn { begindocument } { clockdate }
-            { \__clockdate_date_new:Nn \DeclareDocumentCommand { date } }
-        }
-    , overwrite-date .value_forbidden:n = true
-    , overwrite-date .usage:n = load
-  }
-\ProcessKeyOptions
 
 % Some variables
 
@@ -536,6 +523,11 @@
       }
   }
 \__clockdate_date_new:Nn \NewDocumentCommand { calendardate }
+\hook_gput_code:nnn { begindocument } { clockdate }
+  {
+    \bool_if:NT \g__clockdate_overwrite_date_bool
+      { \__clockdate_date_new:Nn \DeclareDocumentCommand { date } }
+  }
 % Both \__clockdate_date:nn and \__clockdate_date:n must end in the same way so
 % that \clockdate_date_month_period: works correctly.
 \cs_new_protected:Npn \__clockdate_date:nn #1#2
@@ -994,9 +986,26 @@
 \str_new:N \l_clockdate_date_month_format_str
 \str_new:N \l_clockdate_date_day_format_str
 
+\keys_define:nn { clockdate }
+  {
+      overwrite-date .bool_gset:N  = \g__clockdate_overwrite_date_bool
+    , overwrite-date .value_forbidden:n = true
+    , overwrite-date .default:n = true
+    , overwrite-date .usage:n = preamble
+
+    , reset .code:n =
+        {
+          \__clockdate_clock_keys_set_initial:
+          \__clockdate_date_keys_set_initial:
+        }
+    , reset .value_forbidden:n = true
+  }
 \keys_define:nn { clockdate / clock }
   {
-      star .code:n =
+      reset .code:n = { \__clockdate_clock_keys_set_initial: }
+    , reset .value_forbidden:n = true
+
+    , star .code:n =
         {
           \keys_precompile:nnN { clockdate / clock } {#1}
             \l__clockdate_clock_star_tl
@@ -1083,7 +1092,10 @@
   }
 \keys_define:nn { clockdate / date }
   {
-      star .code:n =
+      reset .code:n = { \__clockdate_date_keys_set_initial: }
+    , reset .value_forbidden:n = true
+
+    , star .code:n =
         {
           \keys_precompile:nnN { clockdate / date } {#1}
             \l__clockdate_date_star_tl
@@ -1188,7 +1200,7 @@
     , months-range-separator .value_required:n = true
   }
 
-\cs_new_protected:Npn \__clockdate_keys_set_initial:
+\cs_new_protected:Npn \__clockdate_clock_keys_set_initial:
   {
     \tl_clear:N \l__clockdate_clock_star_tl
     \str_set:Nn \l_clockdate_clock_format_str { 12-hour }
@@ -1205,7 +1217,10 @@
       { __clockdate_clock_print_pm_a.m.: }
     \tl_set_eq:NN \l_clockdate_clock_ampm_separator_tl \c_space_tl
     \bool_set_true:N \l_clockdate_clock_ampm_omit_first_bool
-
+  }
+\__clockdate_clock_keys_set_initial:
+\cs_new_protected:Npn \__clockdate_date_keys_set_initial:
+  {
     \tl_clear:N \l__clockdate_date_star_tl
     \str_set:Nn \l_clockdate_date_format_str { day-month-year }
     \cs_set_eq:NN \__clockdate_date:ww  \__clockdate_date_DMY:ww
@@ -1227,16 +1242,13 @@
     \tl_set:Nn \l_clockdate_date_months_final_separator_tl { ,~and~ }
     \tl_set:Nn \l_clockdate_date_months_range_separator_tl { ~to~ }
   }
-\__clockdate_keys_set_initial:
+\__clockdate_date_keys_set_initial:
 
-\NewDocumentCommand \clockdatesetup { s m }
+\NewDocumentCommand \clockdatesetup { m }
   {
     \mode_if_math:TF
       { \msg_error:nnn { clockdate } { math-mode-invalid } { clockdatesetup } }
-      {
-        \IfBooleanT #1 { \__clockdate_keys_set_initial: }
-        \keys_set:nn { clockdate } {#2}
-      }
+      { \keys_set:nn { clockdate } {#1} }
   }
 
 % Messages

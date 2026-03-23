@@ -2,16 +2,17 @@
 
 
 \ExplSyntaxOn
-\usepackage[overwrite-date]{clockdate}
+\usepackage{clockdate}
 \clockdatesetup
   {
-    date / star =
-      {
-          days-final-separator   = { ,~or~ }
-        , days-pair-separator    = {  ~or~ }
-        , months-final-separator = { ,~or~ }
-        , months-pair-separator  = {  ~or~ }
-      }
+      overwrite-date
+    , date / star =
+        {
+            days-final-separator   = { ,~or~ }
+          , days-pair-separator    = {  ~or~ }
+          , months-final-separator = { ,~or~ }
+          , months-pair-separator  = {  ~or~ }
+        }
   }
 \ExplSyntaxOff
 
@@ -25,7 +26,7 @@ Print the time of day and the calendar date
 
 Oliver Beery
 
-Version 0.0.0\quad\date{2026-03-19}
+Version 0.0.0\quad\date{2026-03-22}
 
 
 \section{Introduction}
@@ -54,16 +55,6 @@ support.
   \item \pkg{l3kernel} version 2023-11-01 or newer
 \end{itemize}
 
-\subsection{Package option}
-\label{subsec:packageoption}
-
-\begin{code}{overwrite-date, \date}
-  Redefines \cs{date} as equivalent to \cs{calendardate}
-  (\S\ref{sec:commands}).
-  This is done at the \hook{begindocument} hook so that the original definition
-  remains usuable in the preamble.
-\end{code}
-
 
 \section{Commands}
 \label{sec:commands}
@@ -72,12 +63,10 @@ This section documents the commands provided by the \pkg{clockdate} package.
 
 \begin{code}{\clockdatesetup}
   \begin{syntax}
-    \cs{clockdatesetup} \sarg{} \marg{key-value list}
+    \cs{clockdatesetup} \marg{key-value list}
   \end{syntax}
   Sets and processes the \pkg{clockdate} package keys (\S\ref{sec:keys}) in
   \meta{key-value list}.
-  Adding the optional star first sets all the \pkg{clockdate} package keys to
-  their initial values.
   All assignments made by \cs{clockdatesetup} are local to the current group.
   Can be used mid-document.
 \end{code}
@@ -159,11 +148,27 @@ This section documents the commands provided by the \pkg{clockdate} package.
 This section documents the keys provided by the \pkg{clockdate} package.
 Set the package keys using \cs{clockdatesetup} (\S\ref{sec:commands}).
 
+\begin{code}{overwrite-date, \date}
+  Redefines \cs{date} as equivalent to \cs{calendardate}
+  (\S\ref{sec:commands}).
+  This is done at the \hook{begindocument} hook so that the original definition
+  remains usuable in the preamble.
+  This key must be used in the preamble.
+\end{code}
+
+\begin{code}{reset}
+  Meta key that sets the keys \key{clock/reset} and \key{date/reset}.
+\end{code}
+
 \subsection{\cs{clock}}
 \label{subsec:clock}
 
 This subsection documents the keys in path |clock|.
 These keys modify the behavior of \cs{clock} (\S\ref{sec:commands}).
+
+\begin{code}{clock/reset}
+  Meta key that sets all the keys in path |clock| to their initial values.
+\end{code}
 
 \begin{code}{clock/star}
   \begin{syntax}
@@ -295,6 +300,10 @@ These keys modify the behavior of \cs{clock} (\S\ref{sec:commands}).
 
 This subsection documents the keys in path |date|.
 These keys modify the behavior of \cs{calendardate} (\S\ref{sec:commands}).
+
+\begin{code}{date/reset}
+  Meta key that sets all the keys in path |date| to their initial values.
+\end{code}
 
 \begin{code}{date/star}
   \begin{syntax}
