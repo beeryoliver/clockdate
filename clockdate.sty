@@ -7,7 +7,7 @@
 % Loading the package
 
 \NeedsTeXFormat{LaTeX2e}[2023-11-01]
-\ProvidesExplPackage{clockdate}{2026-03-24}{0.0.0}
+\ProvidesExplPackage{clockdate}{2026-03-25}{0.0.0}
   {Print the time of day and the calendar date}
 
 \msg_new:nnn { clockdate } { l3kernel }
@@ -1060,10 +1060,10 @@
   { a.m \__clockdate_clock_ampm_period: }
 \cs_new_protected:cpn { __clockdate_clock_print_pm_a.m.: }
   { p.m \__clockdate_clock_ampm_period: }
-\cs_new_protected:Npn \__clockdate_clock_print_am_am: {am}
-\cs_new_protected:Npn \__clockdate_clock_print_pm_am: {pm}
-\cs_new_protected:Npn \__clockdate_clock_print_am_a: {a}
-\cs_new_protected:Npn \__clockdate_clock_print_pm_a: {p}
+\cs_new_protected:Npn \__clockdate_clock_print_am_am: { am }
+\cs_new_protected:Npn \__clockdate_clock_print_pm_am: { pm }
+\cs_new_protected:Npn \__clockdate_clock_print_am_a: { a }
+\cs_new_protected:Npn \__clockdate_clock_print_pm_a: { p }
 \cs_new_protected:cpn { __clockdate_clock_print_am_A.M.: }
   { A.M \__clockdate_clock_ampm_period: }
 \cs_new_protected:cpn { __clockdate_clock_print_pm_A.M.: }
