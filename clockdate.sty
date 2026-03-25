@@ -7,7 +7,7 @@
 % Loading the package
 
 \NeedsTeXFormat{LaTeX2e}[2023-11-01]
-\ProvidesExplPackage{clockdate}{2026-03-22}{0.0.0}
+\ProvidesExplPackage{clockdate}{2026-03-24}{0.0.0}
   {Print the time of day and the calendar date}
 
 \msg_new:nnn { clockdate } { l3kernel }
@@ -988,7 +988,7 @@
 
 \keys_define:nn { clockdate }
   {
-      overwrite-date .bool_gset:N  = \g__clockdate_overwrite_date_bool
+      overwrite-date .bool_gset:N = \g__clockdate_overwrite_date_bool
     , overwrite-date .value_forbidden:n = true
     , overwrite-date .default:n = true
     , overwrite-date .usage:n = preamble
