@@ -7,7 +7,7 @@
 % Loading the package
 
 \NeedsTeXFormat{LaTeX2e}[2023-11-01]
-\ProvidesExplPackage{clockdate}{2026-03-29}{0.0.0}
+\ProvidesExplPackage{clockdate}{2026-03-30}{0.0.0}
   {Print the time of day and the calendar date}
 
 \msg_new:nnn { clockdate } { l3kernel }
@@ -1334,9 +1334,9 @@
     Invalid~ calendar~ date~ \msg_line_context:. \\ \\
     \iow_indent:n
       {
-        year:~ \int_use:N \l_clockdate_date_year_int \\
-        month:~ \int_use:N \l_clockdate_date_month_int \\
-        day:~ #1
+        year:~ '\int_use:N \l_clockdate_date_year_int' \\
+        month:~ '\int_use:N \l_clockdate_date_month_int' \\
+        day:~ '#1'
       }
   }
 \msg_new:nnn { clockdate } { month-day-invalid }
@@ -1344,7 +1344,7 @@
     Invalid~ calendar~ date~ \msg_line_context:. \\ \\
     \iow_indent:n
       {
-        month:~ \int_use:N \l_clockdate_date_month_int \\
-        day:~ #1
+        month:~ '\int_use:N \l_clockdate_date_month_int' \\
+        day:~ '#1'
       }
   }
