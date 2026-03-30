@@ -99,6 +99,7 @@
 
 % Some functions
 
+\cs_generate_variant:Nn \msg_error:nnnnn { nnVVV }
 \prg_new_conditional:Npnn \__clockdate_bool_if_eq:nn #1#2 { p }
   {
     \bool_if:nTF {#1}
@@ -417,14 +418,14 @@
       {
         \int_if_zero:nF {#3}
           {
-            \msg_error:nnV { clockdate } { minute-invalid } #3
+            \msg_error:nnVV { clockdate } { hour-minute-invalid } #1 #3
             \prg_break:
           }
       }
       {
         \int_compare:nF { 0 <= #3 < 60 }
           {
-            \msg_error:nnV { clockdate } { minute-invalid } #3
+            \msg_error:nnVV { clockdate } { hour-minute-invalid } #1 #3
             \prg_break:
           }
       }
@@ -439,24 +440,26 @@
       {
         \int_if_zero:nF {#3}
           {
-            \msg_error:nnV { clockdate } { minute-invalid } #3
+            \msg_error:nnVV { clockdate } { hour-minute-invalid } #1 #3
             \prg_break:
           }
         \int_if_zero:nF {#5}
           {
-            \msg_error:nnV { clockdate } { second-invalid } #5
+            \msg_error:nnVVV { clockdate } { hour-minute-second-invalid } #1 #3
+              #5
             \prg_break:
           }
       }
       {
         \int_compare:nF { 0 <= #3 < 60 }
           {
-            \msg_error:nnV { clockdate } { minute-invalid } #3
+            \msg_error:nnVV { clockdate } { hour-minute-invalid } #1 #3
             \prg_break:
           }
         \int_compare:nF { 0 <= #5 < 61 }
           {
-            \msg_error:nnV { clockdate } { second-invalid } #5
+            \msg_error:nnVVV { clockdate } { hour-minute-second-invalid } #1 #3
+              #5
             \prg_break:
           }
       }
@@ -1302,20 +1305,18 @@
 % Messages used in \clock.
 \msg_new:nnn { clockdate } { hour-invalid }
   {
-    Invalid~ hour~ '#1'~ \msg_line_context:. \\
-    The~ hour~ must~ be~ an~ integer~ from~ 0~ to~ 24.
+    Invalid~ time~ of~ day~ \msg_line_context:. \\ \\
+    \iow_indent:n { hour:~ '#1' }
   }
-\msg_new:nnn { clockdate } { minute-invalid }
+\msg_new:nnn { clockdate } { hour-minute-invalid }
   {
-    Invalid~ minute~ '#1'~ \msg_line_context:. \\
-    The~ minute~ must~ be~ an~ integer~ from~ 0~ to~ 59.~
-    If~ the~ hour~ is~ 24,~ then~ the~ minute~ must~ be~ zero.
+    Invalid~ time~ of~ day~ \msg_line_context:. \\ \\
+    \iow_indent:n { hour:~ '#1' \\ minute:~ '#2' }
   }
-\msg_new:nnn { clockdate } { second-invalid }
+\msg_new:nnn { clockdate } { hour-minute-second-invalid }
   {
-    Invalid~ second~ '#1'~ \msg_line_context:. \\
-    The~ second~ must~ be~ an~ integer~ from~ 0~ to~ 60.~
-    If~ the~ hour~ is~ 24,~ then~ the~ second~ must~ be~ zero.
+    Invalid~ time~ of~ day~ \msg_line_context:. \\ \\
+    \iow_indent:n { hour:~ '#1' \\ minute:~ '#2' \\ second:~ '#3' }
   }
 % Messages used in \calendardate.
 \msg_new:nnn { clockdate } { year-invalid }
