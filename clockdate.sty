@@ -1331,11 +1331,20 @@
   }
 \msg_new:nnn { clockdate } { year-month-day-invalid }
   {
-    Invalid~ year-month-day~ ' \int_use:N \l_clockdate_date_year_int -
-    \int_use:N \l_clockdate_date_month_int -#1'~ \msg_line_context:.
+    Invalid~ calendar~ date~ \msg_line_context:. \\ \\
+    \iow_indent:n
+      {
+        year:~ \int_use:N \l_clockdate_date_year_int \\
+        month:~ \int_use:N \l_clockdate_date_month_int \\
+        day:~ #1
+      }
   }
 \msg_new:nnn { clockdate } { month-day-invalid }
   {
-    Invalid~ month-day~ ' \int_use:N \l_clockdate_date_month_int -#1'~
-    \msg_line_context:.
+    Invalid~ calendar~ date~ \msg_line_context:. \\ \\
+    \iow_indent:n
+      {
+        month:~ \int_use:N \l_clockdate_date_month_int \\
+        day:~ #1
+      }
   }
