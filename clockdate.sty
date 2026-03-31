@@ -7,7 +7,7 @@
 % Loading the package
 
 \NeedsTeXFormat{LaTeX2e}[2023-11-01]
-\ProvidesExplPackage{clockdate}{2026-03-30}{0.0.0}
+\ProvidesExplPackage{clockdate}{2026-03-31}{0.0.0}
   {Print the time of day and the calendar date}
 
 \msg_new:nnn { clockdate } { l3kernel }
@@ -305,7 +305,7 @@
                   }
               }
           }
-        }
+      }
     \hook_use:n { clockdate / clock }
     \__clockdate_clock_print_hour:n { \l_clockdate_clock_hour_int }
     \int_compare:nNnF \l_clockdate_clock_minute_int = { -1 }
