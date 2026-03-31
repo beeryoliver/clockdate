@@ -797,9 +797,9 @@
   #1 -- #2 \q__clockdate_stop
   {
     \int_set:Nn \l__clockdate_tmpa_int {#1}
+    \int_set:Nn \l__clockdate_tmpb_int {#2}
     \__clockdate_date_month_if_valid:nTF { \l__clockdate_tmpa_int }
       {
-        \int_set:Nn \l__clockdate_tmpb_int {#2}
         \__clockdate_date_month_if_valid:nTF { \l__clockdate_tmpb_int }
           {
             \str_put_right:Ne \l_clockdate_date_months_str
@@ -874,9 +874,9 @@
   #1 -- #2 \q__clockdate_stop
   {
     \int_set:Nn \l__clockdate_tmpa_int {#1}
+    \int_set:Nn \l__clockdate_tmpb_int {#2}
     \__clockdate_date_month_day_if_valid:nTF { \l__clockdate_tmpa_int }
       {
-        \int_set:Nn \l__clockdate_tmpb_int {#2}
         \__clockdate_date_month_day_if_valid:nTF { \l__clockdate_tmpb_int }
           {
             \str_put_right:Ne \l_clockdate_date_days_str
@@ -959,9 +959,9 @@
   #1 -- #2 \q__clockdate_stop
   {
     \int_set:Nn \l__clockdate_tmpa_int {#1}
+    \int_set:Nn \l__clockdate_tmpb_int {#2}
     \__clockdate_date_year_month_day_if_valid:nTF { \l__clockdate_tmpa_int }
       {
-        \int_set:Nn \l__clockdate_tmpb_int {#2}
         \__clockdate_date_year_month_day_if_valid:nTF
           { \l__clockdate_tmpb_int }
           {
