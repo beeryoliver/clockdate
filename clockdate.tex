@@ -26,7 +26,7 @@ Print the time of day and the calendar date
 
 Oliver Beery
 
-Version 0.0.0\quad\date{2026-03-31}
+Version 0.0.0\quad\date{2026-04-03}
 
 
 \section{Introduction}
@@ -279,8 +279,8 @@ These keys modify the behavior of \cs{clock} (\S\ref{sec:commands}).
 
   The am/pm is omitted if \key{clock/ampm=none} or \key{clock/format=24-hour}.
 
-  If the value is |a.m.| or |A.M.|, the am/pm will not print an extra period
-  if the next token after \cs{clock} is a period.
+  If the value is |a.m.| or |A.M.|, the trailing am/pm will not print an extra
+  period if the next token after \cs{clock} is a period.
   If the am/pm prints the period, it is followed by \cs{@} because the
   sentence does not end here.
 \end{code}
@@ -626,8 +626,7 @@ Outside of \cs{clock}, they do not have defined behavior.
 \begin{code}{\l_clockdate_clock_print_ampm_bool}
   Boolean that stores whether the am/pm will be printed.
   The value is |true| if \key{clock/format=12-hour} (\S\ref{subsec:clock}) and
-  the value of the key \key{clock/ampm} is not |none|
-  (\S\ref{subsubsec:printampm}).
+  \key[neq]{clock/ampm=none} (\S\ref{subsubsec:printampm}).
 \end{code}
 
 \begin{code}{\l_clockdate_clock_print_ampm_first_bool}

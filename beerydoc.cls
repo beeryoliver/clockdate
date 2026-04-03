@@ -1,7 +1,7 @@
 % Loading the class
 
 \NeedsTeXFormat{LaTeX2e}[2023-11-01]
-\ProvidesExplClass{beerydoc}{2026-03-09}{0.0.0}{}
+\ProvidesExplClass{beerydoc}{2026-04-03}{0.0.0}{}
 \prop_gput:Nnn \g_msg_module_type_prop { beerydoc } { Class }
 
 \msg_new:nnn { beerydoc } { l3kernel }
@@ -161,17 +161,34 @@
 \cs_new:Npe \digits { \c_beerydoc_digits_str }
 \cs_new:Npe \pangram { \c_beerydoc_pangram_tl }
 
-\NewDocumentCommand \key { m }
+\NewDocumentCommand \key { o m }
   {
     \mode_if_math:TF
       { \msg_error:nnn { beerydoc } { math-mode-invalid } { key } }
-      { \__beerydoc_key_value:n {#1} }
+      {
+        \IfNoValueTF {#1}
+          { \__beerydoc_key_value:n {#2} }
+          { \__beerydoc_key_value:nn {#1} {#2} }
+      }
   }
 \cs_new_protected:Npn \__beerydoc_key_value:n #1
   {
     \tl_if_in:nnTF {#1} { = }
       { \__beerydoc_key_value:w #1 \q__beerydoc_stop }
       { \__beerydoc_key:n {#1} }
+  }
+\cs_new_protected:Npn \__beerydoc_key_value:nn #1#2
+  {
+    \group_begin:
+      \keys_set:nn { beerydoc / key } {#1}
+      \__beerydoc_key_value:n {#2}
+    \group_end:
+  }
+\keys_define:nn { beerydoc / key }
+  {
+      neq .bool_set:N = \l__beerydoc_key_value_neq_bool
+    , neq .value_forbidden:n = true
+    , neq .default:n = true
   }
 \cs_new_protected:Npn \__beerydoc_key_value:w #1 = #2 \q__beerydoc_stop
   {
@@ -195,7 +212,12 @@
 \cs_new_protected:Npn \__beerydoc_key_value_equal:
   {
     \bool_if:NTF \l__beerydoc_syntax_bool
-      { ~=~ } { \ensuremath { \, = \, } \allowbreak }
+      { ~=~ }
+      {
+        \bool_if:NTF \l__beerydoc_key_value_neq_bool
+          { \ensuremath { \, \neq \, } \allowbreak }
+          { \ensuremath { \, = \, } \allowbreak }
+      }
   }
 \cs_new_protected:Npn \__beerydoc_value:n #1
   {
@@ -890,11 +912,11 @@
     \__beerydoc_pdfstring_meta:n {#2}
     \__beerydoc_pdfstring_cs:wn
   }
-\cs_new:Npn \__beerydoc_pdfstring_key_value:n #1
+\NewExpandableDocumentCommand \__beerydoc_pdfstring_key_value:w { o m }
   {
-    \str_if_eq:eeTF { \str_head:n {#1} } { = }
-      { \__beerydoc_pdfstring_value:n {#1} }
-      { \__beerydoc_pdfstring_key:n {#1} }
+    \str_if_eq:eeTF { \str_head:n {#2} } { = }
+      { \__beerydoc_pdfstring_value:n {#2} }
+      { \__beerydoc_pdfstring_key:n {#2} }
   }
 \cs_new:Npn \__beerydoc_pdfstring_value:n #1
   { \str_range:nnn {#1} { 2 } { -1 } }
@@ -906,7 +928,7 @@
       { \cs_set_eq:NN #1 \__beerydoc_pdfstring_tl_to_str:n }
     \cs_set_eq:NN \meta \__beerydoc_pdfstring_meta:n
     \cs_set_eq:NN \cs   \__beerydoc_pdfstring_cs:n
-    \cs_set_eq:NN \key  \__beerydoc_pdfstring_key_value:n
+    \cs_set_eq:NN \key  \__beerydoc_pdfstring_key_value:w
   }
 
 % Messages
