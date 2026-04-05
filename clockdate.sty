@@ -74,7 +74,7 @@
   { \peek_meaning_remove:NTF . { \@ . \group_end: } { . \@ \group_end: } }
 \cs_new:Npn \__clockdate_date_break: #1 \__clockdate_date_break_point: { }
 \cs_new:Npn \__clockdate_date_break_point:
-  { \use_none:n { \q__clockdate_date } }
+  { \use_none:n { \exp_not:N \q__clockdate_date } }
 \quark_new:N \q__clockdate_date
 
 \quark_new:N \q__clockdate_stop
@@ -99,6 +99,8 @@
 % Some functions
 
 \cs_generate_variant:Nn \msg_error:nnnnn { nnVVV }
+\cs_new:Npn \__clockdate_clock_break: #1 \__clockdate_clock_break_point: { }
+\cs_new_eq:NN \__clockdate_clock_break_point: \prg_do_nothing:
 \prg_new_conditional:Npnn \__clockdate_bool_if_eq:nn #1#2 { p }
   {
     \bool_if:nTF {#1}
@@ -260,7 +262,7 @@
           \l__clockdate_clock_input_tl \q__clockdate_stop
       }
       { \exp_args:NV \__clockdate_clock_print:n \l__clockdate_clock_input_tl }
-    \prg_break_point:
+    \__clockdate_clock_break_point:
   }
 \cs_new_protected:Npn \__clockdate_clock_init:
   {
@@ -384,7 +386,7 @@
     \int_compare:nF { 0 <= #1 < 25 }
       {
         \msg_error:nnV { clockdate } { hour-invalid } #1
-        \prg_break:
+        \__clockdate_clock_break:
       }
   }
 \cs_new_protected:Npn \__clockdate_clock_set_hour_minute:NNw
@@ -397,14 +399,14 @@
         \int_if_zero:nF {#2}
           {
             \msg_error:nnVV { clockdate } { hour-minute-invalid } #1 #2
-            \prg_break:
+            \__clockdate_clock_break:
           }
       }
       {
         \int_compare:nF { 0 <= #2 < 60 }
           {
             \msg_error:nnVV { clockdate } { hour-minute-invalid } #1 #2
-            \prg_break:
+            \__clockdate_clock_break:
           }
       }
   }
@@ -419,26 +421,26 @@
         \int_if_zero:nF {#2}
           {
             \msg_error:nnVV { clockdate } { hour-minute-invalid } #1 #2
-            \prg_break:
+            \__clockdate_clock_break:
           }
         \int_if_zero:nF {#3}
           {
             \msg_error:nnVVV { clockdate } { hour-minute-second-invalid } #1 #2
               #3
-            \prg_break:
+            \__clockdate_clock_break:
           }
       }
       {
         \int_compare:nF { 0 <= #2 < 60 }
           {
             \msg_error:nnVV { clockdate } { hour-minute-invalid } #1 #2
-            \prg_break:
+            \__clockdate_clock_break:
           }
         \int_compare:nF { 0 <= #3 < 61 }
           {
             \msg_error:nnVVV { clockdate } { hour-minute-second-invalid } #1 #2
               #3
-            \prg_break:
+            \__clockdate_clock_break:
           }
       }
   }
@@ -546,11 +548,11 @@
   }
 \cs_new_protected:Npn \__clockdate_clock_ampm_period:
   {
-    \peek_meaning:NTF \prg_break_point:
+    \peek_meaning:NTF \__clockdate_clock_break_point:
       { \__clockdate_clock_ampm_period:w } { . \@ }
   }
 \cs_new_protected:Npn \__clockdate_clock_ampm_period:w
-  \prg_break_point: \group_end:
+  \__clockdate_clock_break_point: \group_end:
   { \peek_meaning_remove:NTF . { \@ . \group_end: } { . \@ \group_end: } }
 
 % \calendardate
