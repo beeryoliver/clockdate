@@ -71,11 +71,12 @@
   }
 \cs_new_protected:Npn \__clockdate_date_month_period:w
   \__clockdate_date_break_point: \group_end:
-  { \peek_meaning_remove:NTF . { \@ . \group_end: } { . \@ \group_end: } }
+  { \peek_charcode_remove:NTF . { \@ . \group_end: } { . \@ \group_end: } }
 \cs_new:Npn \__clockdate_date_break: #1 \__clockdate_date_break_point: { }
+% \clockdate_date_month_period: needs \__clockdate_date_break_point: to be
+% unique according to the \peek_meaning:NTF test. Any private quark will do.
 \cs_new:Npn \__clockdate_date_break_point:
-  { \use_none:n { \exp_not:N \q__clockdate_date } }
-\quark_new:N \q__clockdate_date
+  { \use_none:n { \exp_not:N \q__clockdate_stop } }
 
 \quark_new:N \q__clockdate_stop
 
@@ -547,7 +548,7 @@
   }
 \cs_new_protected:Npn \__clockdate_clock_ampm_period:w
   \prg_break_point: \group_end:
-  { \peek_meaning_remove:NTF . { \@ . \group_end: } { . \@ \group_end: } }
+  { \peek_charcode_remove:NTF . { \@ . \group_end: } { . \@ \group_end: } }
 
 % \calendardate
 
