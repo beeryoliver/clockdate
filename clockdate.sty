@@ -7,7 +7,7 @@
 % Loading the package
 
 \NeedsTeXFormat{LaTeX2e}[2023-11-01]
-\ProvidesExplPackage{clockdate}{2026-04-04}{0.0.0}
+\ProvidesExplPackage{clockdate}{2026-04-05}{0.0.0}
   {Print the time of day and the calendar date}
 
 \msg_new:nnn { clockdate } { l3kernel }
@@ -390,56 +390,52 @@
 \cs_new_protected:Npn \__clockdate_clock_set_hour_minute:NNw
   #1#2#3 : #4 \q__clockdate_stop
   {
-    \__clockdate_clock_set_hour:Nn #1 {#3}
+    \int_set:Nn #1 {#3}
     \int_set:Nn #2 {#4}
+    \int_compare:nF { 0 <= #1 < 25 }
+      { \prg_break:n { \use:n } }
     \int_compare:nNnTF #1 = { 24 }
       {
         \int_if_zero:nF {#2}
-          {
-            \msg_error:nnVV { clockdate } { hour-minute-invalid } #1 #2
-            \prg_break:
-          }
+          { \prg_break:n { \use:n } }
       }
       {
         \int_compare:nF { 0 <= #2 < 60 }
-          {
-            \msg_error:nnVV { clockdate } { hour-minute-invalid } #1 #2
-            \prg_break:
-          }
+          { \prg_break:n { \use:n } }
+      }
+    \use_none:nn
+    \prg_break_point:
+      {
+        \msg_error:nnVV { clockdate } { hour-minute-invalid } #1 #2
+        \prg_break:
       }
   }
 \cs_new_protected:Npn \__clockdate_clock_set_hour_minute_second:NNNw
   #1#2#3#4 : #5 : #6 \q__clockdate_stop
   {
-    \__clockdate_clock_set_hour:Nn #1 {#4}
+    \int_set:Nn #1 {#4}
     \int_set:Nn #2 {#5}
     \int_set:Nn #3 {#6}
+    \int_compare:nF { 0 <= #1 < 25 }
+      { \prg_break:n { \use:n } }
     \int_compare:nNnTF #1 = { 24 }
       {
         \int_if_zero:nF {#2}
-          {
-            \msg_error:nnVV { clockdate } { hour-minute-invalid } #1 #2
-            \prg_break:
-          }
+          { \prg_break:n { \use:n } }
         \int_if_zero:nF {#3}
-          {
-            \msg_error:nnVVV { clockdate } { hour-minute-second-invalid } #1 #2
-              #3
-            \prg_break:
-          }
+          { \prg_break:n { \use:n } }
       }
       {
         \int_compare:nF { 0 <= #2 < 60 }
-          {
-            \msg_error:nnVV { clockdate } { hour-minute-invalid } #1 #2
-            \prg_break:
-          }
+          { \prg_break:n { \use:n } }
         \int_compare:nF { 0 <= #3 < 61 }
-          {
-            \msg_error:nnVVV { clockdate } { hour-minute-second-invalid } #1 #2
-              #3
-            \prg_break:
-          }
+          { \prg_break:n { \use:n } }
+      }
+    \use_none:nn
+    \prg_break_point:
+      {
+        \msg_error:nnVVV { clockdate } { hour-minute-second-invalid } #1 #2 #3
+        \prg_break:
       }
   }
 
