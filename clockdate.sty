@@ -7,7 +7,7 @@
 % Loading the package
 
 \NeedsTeXFormat{LaTeX2e}[2023-11-01]
-\ProvidesExplPackage{clockdate}{2026-04-05}{0.0.0}
+\ProvidesExplPackage{clockdate}{2026-04-06}{0.0.0}
   {Print the time of day and the calendar date}
 
 \msg_new:nnn { clockdate } { l3kernel }
@@ -275,11 +275,14 @@
 \cs_new_protected:Npn \__clockdate_clock_print_range:w
   #1 -- #2 \q__clockdate_stop
   {
-    \__clockdate_clock_print:NNNn \l_clockdate_clock_hour_int
-      \l_clockdate_clock_minute_int \l_clockdate_clock_second_int {#1}
-    \__clockdate_clock_print:NNNn \l_clockdate_clock_hour_range_int
-      \l_clockdate_clock_minute_range_int \l_clockdate_clock_second_range_int
-      {#2}
+    \__clockdate_clock_print:nNNN {#1}
+      \l_clockdate_clock_hour_int
+      \l_clockdate_clock_minute_int
+      \l_clockdate_clock_second_int
+    \__clockdate_clock_print:nNNN {#2}
+      \l_clockdate_clock_hour_range_int
+      \l_clockdate_clock_minute_range_int
+      \l_clockdate_clock_second_range_int
     \bool_set:Nn \l_clockdate_clock_ampm_print_bool
       {
         \bool_lazy_and_p:nn
@@ -339,8 +342,10 @@
   }
 \cs_new_protected:Npn \__clockdate_clock_print:n #1
   {
-    \__clockdate_clock_print:NNNn \l_clockdate_clock_hour_int
-      \l_clockdate_clock_minute_int \l_clockdate_clock_second_int {#1}
+    \__clockdate_clock_print:nNNN {#1}
+      \l_clockdate_clock_hour_int
+      \l_clockdate_clock_minute_int
+      \l_clockdate_clock_second_int
     \bool_set:Nn \l_clockdate_clock_ampm_print_bool
       {
         \bool_lazy_and_p:nn
@@ -364,17 +369,17 @@
     \bool_if:NT \l_clockdate_clock_ampm_print_bool
       { \__clockdate_clock_print_ampm:n { \l_clockdate_clock_hour_int } }
   }
-\cs_new_protected:Npn \__clockdate_clock_print:NNNn #1#2#3#4
+\cs_new_protected:Npn \__clockdate_clock_print:nNNN #1#2#3#4
   {
-    \seq_set_split:Nnn \l__clockdate_tmp_seq { : } {#4}
+    \seq_set_split:Nnn \l__clockdate_tmp_seq { : } {#1}
     \int_case:nnF { \seq_count:N \l__clockdate_tmp_seq - 1 }
       {
-        { 0 } { \__clockdate_clock_set_hour:Nn #1 {#4} }
+        { 0 } { \__clockdate_clock_set_hour:Nn #2 {#1} }
         { 1 }
-        { \__clockdate_clock_set_hour_minute:NNw #1 #2 #4 \q__clockdate_stop }
+        { \__clockdate_clock_set_hour_minute:NNw #2 #3 #1 \q__clockdate_stop }
       }
       {
-        \__clockdate_clock_set_hour_minute_second:NNNw #1 #2 #3 #4
+        \__clockdate_clock_set_hour_minute_second:NNNw #2 #3 #4 #1
           \q__clockdate_stop
       }
   }
