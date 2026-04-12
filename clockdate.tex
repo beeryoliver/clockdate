@@ -26,7 +26,7 @@ Print the time of day and the calendar date
 
 Oliver Beery
 
-Version 0.0.0\quad\date{2026-04-06}
+Version 0.0.0\quad\date{2026-04-12}
 
 
 \section{Introduction}
@@ -329,9 +329,9 @@ These keys modify the behavior of \cs{calendardate} (\S\ref{sec:commands}).
   The initial value is \meta{empty}.
 \end{code}
 
-\begin{code}{date/format}
+\begin{code}{date/order}
   \begin{syntax}
-    \key{date/format=\choices{day-month-year,year-month-day,month-day-year}}
+    \key{date/order=\choices{day-month-year,year-month-day,month-day-year}}
   \end{syntax}
   Choice key that sets the order in which the year, month, and day are printed.
   The initial value is |day-month-year|.
@@ -560,8 +560,8 @@ They are read-only and should not be modified directly.
   The values of the keys documented in \S\ref{subsubsec:printampm}.
 \end{code}
 
-\begin{code}{\l_clockdate_date_format_str}
-  The value of the key \key{date/format} (\S\ref{subsec:date}).
+\begin{code}{\l_clockdate_date_order_str}
+  The value of the key \key{date/order} (\S\ref{subsec:date}).
 \end{code}
 
 \begin{code}
