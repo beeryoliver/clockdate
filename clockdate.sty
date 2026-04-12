@@ -286,7 +286,7 @@
     \bool_set:Nn \l_clockdate_clock_ampm_print_bool
       {
         \bool_lazy_and_p:nn
-          { \str_if_eq_p:ee { \l_clockdate_clock_format_str } { 12-hour } }
+          { \str_if_eq_p:ee { \l_clockdate_clock_clock_str } { 12-hour } }
           { ! \str_if_eq_p:ee { \l_clockdate_clock_ampm_format_str } { none } }
       }
     \bool_set:Nn \l_clockdate_clock_ampm_print_first_bool
@@ -349,7 +349,7 @@
     \bool_set:Nn \l_clockdate_clock_ampm_print_bool
       {
         \bool_lazy_and_p:nn
-          { \str_if_eq_p:ee { \l_clockdate_clock_format_str } { 12-hour } }
+          { \str_if_eq_p:ee { \l_clockdate_clock_clock_str } { 12-hour } }
           { ! \str_if_eq_p:ee { \l_clockdate_clock_ampm_format_str } { none } }
       }
     \bool_set_eq:NN \l_clockdate_clock_ampm_print_first_bool
@@ -447,7 +447,7 @@
 
 \cs_new_protected:Npn \__clockdate_clock_print_hour:n #1
   {
-    \str_case:Vn \l_clockdate_clock_format_str
+    \str_case:Vn \l_clockdate_clock_clock_str
       {
         { 12-hour }
         {
@@ -1049,7 +1049,7 @@
 % Define keys
 
 \tl_new:N \l__clockdate_clock_star_tl
-\str_new:N \l_clockdate_clock_format_str
+\str_new:N \l_clockdate_clock_clock_str
 \str_new:N \l_clockdate_clock_hour_format_str
 \str_new:N \l_clockdate_clock_minute_format_str
 \str_new:N \l_clockdate_clock_second_format_str
@@ -1087,9 +1087,9 @@
         }
     , star .value_required:n = true
 
-    , format .choices:nn = { 12-hour , 24-hour }
-        { \str_set:Nn \l_clockdate_clock_format_str {#1} }
-    , format .value_required:n = true
+    , clock .choices:nn = { 12-hour , 24-hour }
+        { \str_set:Nn \l_clockdate_clock_clock_str {#1} }
+    , clock .value_required:n = true
 
     , range-separator .tl_set:N = \l_clockdate_clock_range_separator_tl
     , range-separator .value_required:n = true
@@ -1210,7 +1210,7 @@
 \cs_new_protected:Npn \__clockdate_clock_keys_set_initial:
   {
     \tl_clear:N \l__clockdate_clock_star_tl
-    \str_set:Nn \l_clockdate_clock_format_str { 12-hour }
+    \str_set:Nn \l_clockdate_clock_clock_str { 12-hour }
     \tl_set:Nn \l_clockdate_clock_range_separator_tl { ~to~ }
     \str_set:Nn \l_clockdate_clock_hour_format_str { h }
     \str_set:Nn \l_clockdate_clock_minute_format_str { mm }
