@@ -192,12 +192,13 @@ These keys modify the behavior of \cs{clock} (\S\ref{sec:commands}).
   The initial value is \meta{empty}.
 \end{code}
 
-\begin{code}{clock/format}
+\begin{code}{clock/clock}
   \begin{syntax}
-    \key{clock/format=\choices{12-hour,24-hour}}
+    \key{clock/clock=\choices{12-hour,24-hour}}
   \end{syntax}
-  Choice key that sets whether to print the hour in 12-hour or 24-hour format.
-  In 24-hour format, the am/pm is always omitted.
+  Choice key that sets whether to print the hour using the 12-hour or 24-hour
+  clock.
+  If the value is |24-hour|, the am/pm is always omitted.
   The initial value is |12-hour|.
 \end{code}
 
@@ -283,7 +284,7 @@ These keys modify the behavior of \cs{clock} (\S\ref{sec:commands}).
   The initial value is |a.m.|
   \input{clockdate-input-ampm.tex}
 
-  The am/pm is omitted if \key{clock/ampm=none} or \key{clock/format=24-hour}.
+  The am/pm is omitted if \key{clock/ampm=none} or \key{clock/clock=24-hour}.
 
   If the value is |a.m.| or |A.M.|, the trailing am/pm will not print an extra
   period if the next token after \cs{clock} is a period.
@@ -526,8 +527,8 @@ This subsection documents the variables that are set by \cs{clockdatesetup}
 (\S\ref{sec:commands}).
 They are read-only and should not be modified directly.
 
-\begin{code}{\l_clockdate_clock_format_str}
-  The value of the key \key{clock/format} (\S\ref{subsec:clock}).
+\begin{code}{\l_clockdate_clock_clock_str}
+  The value of the key \key{clock/clock} (\S\ref{subsec:clock}).
 \end{code}
 
 \begin{code}{\l_clockdate_clock_range_separator_tl}
@@ -631,7 +632,7 @@ Outside of \cs{clock}, they do not have defined behavior.
 
 \begin{code}{\l_clockdate_clock_ampm_print_bool}
   Boolean that stores whether the am/pm will be printed.
-  The value is |true| if \key{clock/format=12-hour} (\S\ref{subsec:clock}) and
+  The value is |true| if \key{clock/clock=12-hour} (\S\ref{subsec:clock}) and
   \key[neq]{clock/ampm=none} (\S\ref{subsubsec:printampm}).
 \end{code}
 
