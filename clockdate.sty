@@ -7,7 +7,7 @@
 % Loading the package
 
 \NeedsTeXFormat{LaTeX2e}[2023-11-01]
-\ProvidesExplPackage{clockdate}{2026-04-06}{0.0.0}
+\ProvidesExplPackage{clockdate}{2026-04-12}{0.0.0}
   {Print the time of day and the calendar date}
 
 \msg_new:nnn { clockdate } { l3kernel }
@@ -678,7 +678,7 @@
   {
     \__clockdate_date_set_year_months:n {#1}
     \hook_use:n { clockdate / date }
-    \str_case:Vn \l_clockdate_date_format_str
+    \str_case:Vn \l_clockdate_date_order_str
       {
         { day-month-year }
         {
@@ -704,7 +704,7 @@
   {
     \__clockdate_date_set_month_days:n {#1}
     \hook_use:n { clockdate / date }
-    \str_case:Vn \l_clockdate_date_format_str
+    \str_case:Vn \l_clockdate_date_order_str
       {
         { day-month-year }
         {
@@ -731,7 +731,7 @@
   {
     \__clockdate_date_set_year_month_days:nn {#1} {#2}
     \hook_use:n { clockdate / date }
-    \str_case:Vn \l_clockdate_date_format_str
+    \str_case:Vn \l_clockdate_date_order_str
       {
         { day-month-year }
         {
@@ -1056,7 +1056,7 @@
 \str_new:N \l_clockdate_clock_ampm_format_str
 
 \tl_new:N \l__clockdate_date_star_tl
-\str_new:N \l_clockdate_date_format_str
+\str_new:N \l_clockdate_date_order_str
 \str_new:N \l_clockdate_date_year_format_str
 \str_new:N \l_clockdate_date_month_format_str
 \str_new:N \l_clockdate_date_day_format_str
@@ -1143,9 +1143,9 @@
         }
     , star .value_required:n = true
 
-    , format .choices:nn = { day-month-year , year-month-day , month-day-year }
-        { \str_set:Nn \l_clockdate_date_format_str {#1} }
-    , format .value_required:n = true
+    , order .choices:nn = { day-month-year , year-month-day , month-day-year }
+        { \str_set:Nn \l_clockdate_date_order_str {#1} }
+    , order .value_required:n = true
 
     , year .choices:nn = { yy , yyyy }
         { \str_set:Nn \l_clockdate_date_year_format_str {#1} }
@@ -1225,7 +1225,7 @@
 \cs_new_protected:Npn \__clockdate_date_keys_set_initial:
   {
     \tl_clear:N \l__clockdate_date_star_tl
-    \str_set:Nn \l_clockdate_date_format_str { day-month-year }
+    \str_set:Nn \l_clockdate_date_order_str { day-month-year }
     \str_set:Nn \l_clockdate_date_year_format_str { yyyy }
     \str_set:Nn \l_clockdate_date_month_format_str { mmmm }
     \str_set:Nn \l_clockdate_date_day_format_str { d }
