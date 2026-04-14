@@ -26,7 +26,7 @@ Print the time of day and the calendar date
 
 Oliver Beery
 
-Version 0.0.0\quad\date{2026-04-12}
+Version 0.0.0\quad\date{2026-04-14}
 
 
 \section{Introduction}
@@ -716,24 +716,39 @@ Outside of \cs{calendardate}, they do not have defined behavior.
 This package uses some ideas from the \pkg{datetime2} and \pkg{siunitx}
 packages.
 
-The \pkg{clockdate} keys on the left resemble the corresponding \pkg{datetime2}
-option on the right.
-\input{clockdate-input-datetime2.tex}
-
-The \pkg{clockdate} package keys
+\listheading
+  {
+    The \pkg{clockdate} package keys in \S\ref{subsubsec:sephourminutesecond}
+    resemble the following \pkg{datetime2} options:
+  }
 \begin{itemize}
-  \item \key{date/days-final-separator}
-  \item \key{date/days-pair-separator}
-  \item \key{date/days-separator}
-  \item \key{date/months-final-separator}
-  \item \key{date/months-pair-separator}
-  \item \key{date/months-separator}
+  \item \key{hourminsep}
+  \item \key{minsecsep}
+  \item \key{timesep}
 \end{itemize}
-use a similar naming convention to the following \pkg{siunitx} options:
+
+\listheading
+  {
+    The \pkg{clockdate} package keys in \S\ref{subsubsec:sepyearmonthday}
+    resemble the following \pkg{datetime2} options:
+  }
 \begin{itemize}
-  \item \key{list-final-separator}
-  \item \key{list-pair-separator}
+  \item \key{yearmonthsep}
+  \item \key{monthdaysep}
+  \item \key{dayyearsep}
+  \item \key{datesep}
+\end{itemize}
+
+\listheading
+  {
+    The \pkg{clockdate} package keys in \S\ref{subsubsec:sepdays} and
+    \S\ref{subsubsec:sepmonths} use a similar naming convention to the
+    following \pkg{siunitx} options:
+  }
+\begin{itemize}
   \item \key{list-separator}
+  \item \key{list-pair-separator}
+  \item \key{list-final-separator}
 \end{itemize}
 
 
