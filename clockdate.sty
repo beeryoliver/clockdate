@@ -1274,15 +1274,6 @@
     \iow_indent:n { hour:~ '#1' \\ minute:~ '#2' \\ second:~ '#3' }
   }
 % Messages used in \calendardate.
-\msg_new:nnn { clockdate } { year-month-invalid }
-  {
-    Invalid~ calendar~ date~ \msg_line_context:. \\ \\
-    \iow_indent:n
-      {
-        year:~ '\int_use:N \l_clockdate_date_year_int' \\
-        month:~ '#1'
-      }
-  }
 \msg_new:nnn { clockdate } { year-month-day-invalid }
   {
     Invalid~ calendar~ date~ \msg_line_context:. \\ \\
@@ -1300,5 +1291,14 @@
       {
         month:~ '\int_use:N \l_clockdate_date_month_int' \\
         day:~ '#1'
+      }
+  }
+\msg_new:nnn { clockdate } { year-month-invalid }
+  {
+    Invalid~ calendar~ date~ \msg_line_context:. \\ \\
+    \iow_indent:n
+      {
+        year:~ '\int_use:N \l_clockdate_date_year_int' \\
+        month:~ '#1'
       }
   }
