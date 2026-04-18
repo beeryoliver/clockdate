@@ -26,7 +26,7 @@ Print the time of day and the calendar date
 
 Oliver Beery
 
-Version 0.0.0\quad\date{2026-04-14}
+Version 0.0.0\quad\date{2026-04-17}
 
 
 \section{Introduction}
@@ -664,8 +664,7 @@ Outside of \cs{calendardate}, they do not have defined behavior.
 \begin{code}{\l_clockdate_date_months_str}
   The value of \meta{months} if two or more months are printed.
   The value takes the same form as the \meta{months} as explained for
-  \cs{calendardate}, except that each \meta{month} is evaluated using
-  \cs{int_eval:n}.
+  \cs{calendardate}.
   The value is \meta{empty} if only a single month is printed.
 \end{code}
 
@@ -678,8 +677,7 @@ Outside of \cs{calendardate}, they do not have defined behavior.
 \begin{code}{\l_clockdate_date_days_str}
   The value of \meta{days} if two or more days are printed.
   The value takes the same form as the \meta{days} as explained for
-  \cs{calendardate}, except that each \meta{day} is evaluated using
-  \cs{int_eval:n}.
+  \cs{calendardate}.
   The value is \meta{empty} if exactly \num{0} or \num{1} days are printed.
 \end{code}
 
