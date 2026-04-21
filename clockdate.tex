@@ -26,7 +26,7 @@ Print the time of day and the calendar date
 
 Oliver Beery
 
-Version 0.0.0\quad\date{2026-04-20}
+Version 0.0.0\quad\date{2026-04-21}
 
 
 \section{Introduction}
@@ -507,6 +507,24 @@ package.
 \label{subsec:hooks}
 
 This subsection documents the hooks provided by the \pkg{clockdate} package.
+
+\begin{code}{cmd/clock/before, cmd/clock/after}
+  Hooks used at the very start and very end of \cs{clock}.
+  The latter is a reversed hook.
+  \hook{cmd/clock/after} is designed such that it does not prevent \cs{clock}
+  from testing whether the next token is a period
+  (See \S\ref{subsubsec:printampm}).
+\end{code}
+
+\begin{code}{cmd/calendardate/before, cmd/calendardate/after}
+  Hooks used at the very start and very end of \cs{calendardate}.
+  These hooks are also used in \cs{date} if the key \key{overwrite-date} was
+  set (\S\ref{sec:keys}).
+  \hook{cmd/calendardate/after} is a reversed hook.
+  \hook{cmd/calendardate/after} is designed such that it does not prevent
+  \cs{calendardate} from testing whether the next token is a period
+  (See \S\ref{subsubsec:printyearmonthday}).
+\end{code}
 
 \begin{code}{clockdate/clock}
   Hook used in \cs{clock} after parsing its input and setting all the variables
