@@ -619,11 +619,7 @@
 \hook_gput_code:nnn { begindocument } { clockdate }
   {
     \bool_if:NT \g__clockdate_overwrite_date_bool
-      {
-        \__clockdate_date_new:Nn \DeclareDocumentCommand { date }
-        \hook_disable_generic:n { cmd / date / before }
-        \hook_disable_generic:n { cmd / date / after }
-      }
+      { \__clockdate_date_new:Nn \DeclareDocumentCommand { date } }
   }
 % Both \__clockdate_date:nn and \__clockdate_date:n must end in the same way so
 % that \clockdate_date_month_period: works correctly.
@@ -1088,6 +1084,8 @@
 
 % Define keys
 
+\bool_new:N \g__clockdate_overwrite_date_bool
+
 \tl_new:N \l__clockdate_clock_star_tl
 \str_new:N \l_clockdate_clock_clock_str
 \str_new:N \l_clockdate_clock_hour_format_str
@@ -1103,9 +1101,9 @@
 
 \keys_define:nn { clockdate }
   {
-      overwrite-date .bool_gset:N = \g__clockdate_overwrite_date_bool
+      overwrite-date .code:n =
+        { \bool_gset_true:N \g__clockdate_overwrite_date_bool }
     , overwrite-date .value_forbidden:n = true
-    , overwrite-date .default:n = true
     , overwrite-date .usage:n = preamble
 
     , reset .code:n =
