@@ -518,12 +518,19 @@ This subsection documents the hooks provided by the \pkg{clockdate} package.
 
 \begin{code}{cmd/calendardate/before, cmd/calendardate/after}
   Hooks used at the very start and very end of \cs{calendardate}.
-  These hooks are also used in \cs{date} if the key \key{overwrite-date} was
-  set (\S\ref{sec:keys}).
-  \hook{cmd/calendardate/after} is a reversed hook.
+  The latter is a reversed hook.
   \hook{cmd/calendardate/after} is designed such that it does not prevent
   \cs{calendardate} from testing whether the next token is a period
   (See \S\ref{subsubsec:printyearmonthday}).
+
+  If the key \key{overwrite-date} is set (\S\ref{sec:keys}):
+  \begin{itemize}
+    \item
+    These hooks are also used at the very start and very end of \cs{date}.
+    \item
+    The generic |cmd| hooks \hook{cmd/date/before} and \hook{cmd/date/after}
+    are disabled.
+  \end{itemize}
 \end{code}
 
 \begin{code}{clockdate/clock}
