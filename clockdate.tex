@@ -26,7 +26,7 @@ Print the time of day and the calendar date
 
 Oliver Beery
 
-Version 0.0.0\quad\date{2026-04-17}
+Version 0.0.0\quad\date{2026-04-20}
 
 
 \section{Introduction}
@@ -506,18 +506,16 @@ package.
 \subsection{Hooks}
 \label{subsec:hooks}
 
+This subsection documents the hooks provided by the \pkg{clockdate} package.
+
 \begin{code}{clockdate/clock}
-  Hook used in \cs{clock} after parsing \meta{token list} and setting all the
-  variables in \S\ref{subsec:varclock}.
-  This hook should be preferred over the generic command hook
-  \hook{cmd/clock/before}.
+  Hook used in \cs{clock} after parsing its input and setting all the variables
+  in \S\ref{subsec:varclock}, but before printing the time-of-day.
 \end{code}
 
 \begin{code}{clockdate/date}
-  Hook used in \cs{calendardate} after parsing \meta{token list} and setting
-  all the variables in \S\ref{subsec:vardate}.
-  This hook should be preferred over the generic command hook
-  \hook{cmd/calendardate/before}.
+  Hook used in \cs{calendardate} after parsing its input and setting all the
+  variables in \S\ref{subsec:vardate}, but before printing the calendar date.
 \end{code}
 
 \subsection{Variables set by \cs{clockdatesetup}}
