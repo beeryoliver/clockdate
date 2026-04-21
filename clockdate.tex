@@ -526,10 +526,12 @@ This subsection documents the hooks provided by the \pkg{clockdate} package.
   If the key \key{overwrite-date} is set (\S\ref{sec:keys}):
   \begin{itemize}
     \item
-    These hooks are also used at the very start and very end of \cs{date}.
+    These hooks are also used in \cs{date} with the same functionality.
     \item
-    The generic |cmd| hooks \hook{cmd/date/before} and \hook{cmd/date/after}
-    are disabled.
+    The hooks \hook{cmd/date/before} and \hook{cmd/date/after} must not be used
+    to avoid duplicating code.
+    If \hook{cmd/date/after} is used, then \cs{date} cannot test whether the
+    next token is a period.
   \end{itemize}
 \end{code}
 
