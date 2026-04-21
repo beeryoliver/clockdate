@@ -7,7 +7,7 @@
 % Loading the package
 
 \NeedsTeXFormat{LaTeX2e}[2023-11-01]
-\ProvidesExplPackage{clockdate}{2026-04-18}{0.0.0}
+\ProvidesExplPackage{clockdate}{2026-04-21}{0.0.0}
   {Print the time of day and the calendar date}
 
 \msg_new:nnn { clockdate } { l3kernel }
@@ -71,8 +71,12 @@
       { \__clockdate_date_month_period:w } { . \@ }
   }
 \cs_new_protected:Npn \__clockdate_date_month_period:w
-  \__clockdate_date_break_point: \group_end:
-  { \peek_charcode_remove:NTF . { \@ . \group_end: } { . \@ \group_end: } }
+  \__clockdate_date_break_point: \__clockdate_date_group_end:
+  {
+    \peek_charcode_remove:NTF .
+      { \@ . \__clockdate_date_group_end: }
+      { . \@ \__clockdate_date_group_end: }
+  }
 \cs_new:Npn \__clockdate_date_break: #1 \__clockdate_date_break_point: { }
 % \clockdate_date_month_period: needs \__clockdate_date_break_point: to be
 % unique according to the \peek_meaning:NTF test. Any private quark will do.
@@ -80,9 +84,6 @@
   { \use_none:n { \exp_not:N \q__clockdate_stop } }
 
 \quark_new:N \q__clockdate_stop
-
-\hook_new:n { clockdate / clock }
-\hook_new:n { clockdate / date }
 
 \group_begin:
   \char_set_active_eq:NN : \scan_stop:
@@ -197,6 +198,39 @@
       }
   }
 
+% Hooks
+
+\hook_new_pair:nn
+  { cmd / clock / before }
+  { cmd / clock / after }
+\cs_new_protected:Npn \__clockdate_clock_group_begin:
+  {
+    \hook_use:n { cmd / clock / before }
+    \group_begin:
+  }
+\cs_new_protected:Npn \__clockdate_clock_group_end:
+  {
+    \group_end:
+    \hook_use:n { cmd / clock / after }
+  }
+
+\hook_new_pair:nn
+  { cmd / calendardate / before }
+  { cmd / calendardate / after }
+\cs_new_protected:Npn \__clockdate_date_group_begin:
+  {
+    \hook_use:n { cmd / calendardate / before }
+    \group_begin:
+  }
+\cs_new_protected:Npn \__clockdate_date_group_end:
+  {
+    \group_end:
+    \hook_use:n { cmd / calendardate / after }
+  }
+
+\hook_new:n { clockdate / clock }
+\hook_new:n { clockdate / date }
+
 % \clock
 
 \NewDocumentCommand \clock { s o m }
@@ -221,31 +255,31 @@
 % so that \__clockdate_clock_ampm_period: works correctly.
 \cs_new_protected:Npn \__clockdate_clock:nn #1#2
   {
-    \group_begin:
+    \__clockdate_clock_group_begin:
       \keys_set:nn { clockdate / clock } {#1}
       \__clockdate_clock_aux:n {#2}
-    \group_end:
+    \__clockdate_clock_group_end:
   }
 \cs_new_protected:Npn \__clockdate_clock:n #1
   {
-    \group_begin:
+    \__clockdate_clock_group_begin:
       \__clockdate_clock_aux:n {#1}
-    \group_end:
+    \__clockdate_clock_group_end:
   }
 \cs_new_protected:Npn \__clockdate_clock_star:nn #1#2
   {
-    \group_begin:
+    \__clockdate_clock_group_begin:
       \l__clockdate_clock_star_tl
       \keys_set:nn { clockdate / clock } {#1}
       \__clockdate_clock_aux:n {#2}
-    \group_end:
+    \__clockdate_clock_group_end:
   }
 \cs_new_protected:Npn \__clockdate_clock_star:n #1
   {
-    \group_begin:
+    \__clockdate_clock_group_begin:
       \l__clockdate_clock_star_tl
       \__clockdate_clock_aux:n {#1}
-    \group_end:
+    \__clockdate_clock_group_end:
   }
 \cs_new_protected:Npn \__clockdate_clock_aux:n #1
   {
@@ -551,8 +585,12 @@
       { \__clockdate_clock_ampm_period:w } { . \@ }
   }
 \cs_new_protected:Npn \__clockdate_clock_ampm_period:w
-  \prg_break_point: \group_end:
-  { \peek_charcode_remove:NTF . { \@ . \group_end: } { . \@ \group_end: } }
+  \prg_break_point: \__clockdate_clock_group_end:
+  {
+    \peek_charcode_remove:NTF .
+      { \@ . \__clockdate_clock_group_end: }
+      { . \@ \__clockdate_clock_group_end: }
+  }
 
 % \calendardate
 
@@ -587,31 +625,31 @@
 % that \clockdate_date_month_period: works correctly.
 \cs_new_protected:Npn \__clockdate_date:nn #1#2
   {
-    \group_begin:
+    \__clockdate_date_group_begin:
       \keys_set:nn { clockdate / date } {#1}
       \__clockdate_date_aux:n {#2}
-    \group_end:
+    \__clockdate_date_group_end:
   }
 \cs_new_protected:Npn \__clockdate_date:n #1
   {
-    \group_begin:
+    \__clockdate_date_group_begin:
       \__clockdate_date_aux:n {#1}
-    \group_end:
+    \__clockdate_date_group_end:
   }
 \cs_new_protected:Npn \__clockdate_date_star:nn #1#2
   {
-    \group_begin:
+    \__clockdate_date_group_begin:
       \l__clockdate_date_star_tl
       \keys_set:nn { clockdate / date } {#1}
       \__clockdate_date_aux:n {#2}
-    \group_end:
+    \__clockdate_date_group_end:
   }
 \cs_new_protected:Npn \__clockdate_date_star:n #1
   {
-    \group_begin:
+    \__clockdate_date_group_begin:
       \l__clockdate_date_star_tl
       \__clockdate_date_aux:n {#1}
-    \group_end:
+    \__clockdate_date_group_end:
   }
 \cs_new_protected:Npn \__clockdate_date_aux:n #1
   {
