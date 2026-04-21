@@ -619,7 +619,11 @@
 \hook_gput_code:nnn { begindocument } { clockdate }
   {
     \bool_if:NT \g__clockdate_overwrite_date_bool
-      { \__clockdate_date_new:Nn \DeclareDocumentCommand { date } }
+      {
+        \__clockdate_date_new:Nn \DeclareDocumentCommand { date }
+        \hook_disable_generic:n { cmd / date / before }
+        \hook_disable_generic:n { cmd / date / after }
+      }
   }
 % Both \__clockdate_date:nn and \__clockdate_date:n must end in the same way so
 % that \clockdate_date_month_period: works correctly.
