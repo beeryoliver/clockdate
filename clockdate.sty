@@ -170,15 +170,6 @@
       }
       { \prg_return_true: } { \prg_return_false: }
   }
-% Tests if the year is a leap year according to the Julian calendar.
-% The historic Julian calendar has more leap years than the Gregorian calendar.
-\prg_new_conditional:Npnn \__clockdate_date_year_if_leap: { p }
-  {
-    \int_compare:nNnTF
-      { \int_div_truncate:nn { \l_clockdate_date_year_int } { 4 } * 4 } =
-      \l_clockdate_date_year_int
-      { \prg_return_true: } { \prg_return_false: }
-  }
 \prg_new_conditional:Npnn \__clockdate_date_month_if_thirty_one_days: { p }
   {
     \int_case:nn { \l_clockdate_date_month_int }
@@ -196,6 +187,13 @@
         { 11 } { \prg_return_false: }
         { 12 } { \prg_return_true:  }
       }
+  }
+% Tests if the year is a leap year according to the Julian calendar.
+% The historic Julian calendar has more leap years than the Gregorian calendar.
+\prg_new_conditional:Npnn \__clockdate_date_year_if_leap: { p }
+  {
+    \int_if_zero:nTF { \int_mod:nn { \l_clockdate_date_year_int } { 4 } }
+      { \prg_return_true: } { \prg_return_false: }
   }
 
 % Hooks
