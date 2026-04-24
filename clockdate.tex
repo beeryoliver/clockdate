@@ -26,7 +26,7 @@ Print the time of day and the calendar date
 
 Oliver Beery
 
-Version 0.0.0\quad\date{2026-04-21}
+Version 0.0.0\quad\date{2026-04-24}
 
 
 \section{Introduction}
@@ -508,32 +508,16 @@ package.
 
 This subsection documents the hooks provided by the \pkg{clockdate} package.
 
-\begin{code}{cmd/clock/before, cmd/clock/after}
-  Hooks used at the very start and very end of \cs{clock}.
-  The latter is a reversed hook.
-  \hook{cmd/clock/after} is designed such that it does not prevent \cs{clock}
-  from testing whether the next token is a period
-  (See \S\ref{subsubsec:printampm}).
-\end{code}
-
-\begin{code}{cmd/calendardate/before, cmd/calendardate/after}
-  Hooks used at the very start and very end of \cs{calendardate}.
-  The latter is a reversed hook.
-  \hook{cmd/calendardate/after} is designed such that it does not prevent
-  \cs{calendardate} from testing whether the next token is a period
-  (See \S\ref{subsubsec:printyearmonthday}).
-
-  If the key \key{overwrite-date} is set (\S\ref{sec:keys}):
-  \begin{itemize}
-    \item
-    These hooks are also used in \cs{date} with the same functionality.
-    \item
-    The hooks \hook{cmd/date/before} and \hook{cmd/date/after} must not be used
-    to avoid duplicating code.
-    If \hook{cmd/date/after} is used, then \cs{date} cannot test whether the
-    next token is a period.
-  \end{itemize}
-\end{code}
+This package disables the following generic |cmd| hooks because they would
+prevent the command from testing whether the next token is a period
+(See \S\ref{subsubsec:printampm} and \S\ref{subsubsec:printyearmonthday}).
+\begin{itemize}
+  \item \hook{cmd/clock/after}
+  \item \hook{cmd/calendardate/after}
+  \item
+  \hook{cmd/date/after}, if the key \key{overwrite-date} is set
+  (\S\ref{sec:keys})
+\end{itemize}
 
 \begin{code}{clockdate/clock}
   Hook used in \cs{clock} after parsing its input and setting all the variables
