@@ -731,7 +731,7 @@
       {
         \tl_if_in:nnTF {##1} { -- }
           {
-            \__clockdate_date_year_month_days_set_split:w ##1
+            \__clockdate_date_year_month_days_set_range:w ##1
               \q__clockdate_stop
           }
           {
@@ -764,16 +764,16 @@
         \str_clear:N \l_clockdate_date_days_str
       }
   }
-\cs_new_protected:Npn \__clockdate_date_year_month_days_set_split:w
+\cs_new_protected:Npn \__clockdate_date_year_month_days_set_range:w
   #1 -- #2 \q__clockdate_stop
   {
     \use:e
       {
-        \__clockdate_date_year_month_days_set_split:nn { \int_eval:n {#1} }
+        \__clockdate_date_year_month_days_set_range:nn { \int_eval:n {#1} }
           { \int_eval:n {#2} }
       }
   }
-\cs_new_protected:Npn \__clockdate_date_year_month_days_set_split:nn #1#2
+\cs_new_protected:Npn \__clockdate_date_year_month_days_set_range:nn #1#2
   {
     \__clockdate_date_year_month_day_if_valid:nTF {#1}
       {
@@ -835,7 +835,7 @@
     \seq_map_inline:Nn \l__clockdate_tmp_seq
       {
         \tl_if_in:nnTF {##1} { -- }
-          { \__clockdate_date_month_days_set_split:w ##1 \q__clockdate_stop }
+          { \__clockdate_date_month_days_set_range:w ##1 \q__clockdate_stop }
           {
             \int_set:Nn \l__clockdate_tmp_int {##1}
             \__clockdate_date_month_day_if_valid:nTF { \l__clockdate_tmp_int }
@@ -865,16 +865,16 @@
         \str_clear:N \l_clockdate_date_days_str
       }
   }
-\cs_new_protected:Npn \__clockdate_date_month_days_set_split:w
+\cs_new_protected:Npn \__clockdate_date_month_days_set_range:w
   #1 -- #2 \q__clockdate_stop
   {
     \use:e
       {
-        \__clockdate_date_month_days_set_split:nn { \int_eval:n {#1} }
+        \__clockdate_date_month_days_set_range:nn { \int_eval:n {#1} }
           { \int_eval:n {#2} }
       }
   }
-\cs_new_protected:Npn \__clockdate_date_month_days_set_split:nn #1#2
+\cs_new_protected:Npn \__clockdate_date_month_days_set_range:nn #1#2
   {
     \__clockdate_date_month_day_if_valid:nTF {#1}
       {
@@ -936,7 +936,7 @@
     \seq_map_inline:Nn \l__clockdate_tmp_seq
       {
         \tl_if_in:nnTF {##1} { -- }
-          { \__clockdate_date_year_months_set_split:w ##1 \q__clockdate_stop }
+          { \__clockdate_date_year_months_set_range:w ##1 \q__clockdate_stop }
           {
             \int_set:Nn \l__clockdate_tmp_int {##1}
             \__clockdate_date_month_if_valid:nTF { \l__clockdate_tmp_int }
@@ -966,16 +966,16 @@
         \str_clear:N \l_clockdate_date_months_str
       }
   }
-\cs_new_protected:Npn \__clockdate_date_year_months_set_split:w
+\cs_new_protected:Npn \__clockdate_date_year_months_set_range:w
   #1 -- #2 \q__clockdate_stop
   {
     \use:e
       {
-        \__clockdate_date_year_months_set_split:nn { \int_eval:n {#1} }
+        \__clockdate_date_year_months_set_range:nn { \int_eval:n {#1} }
           { \int_eval:n {#2} }
       }
   }
-\cs_new_protected:Npn \__clockdate_date_year_months_set_split:nn #1#2
+\cs_new_protected:Npn \__clockdate_date_year_months_set_range:nn #1#2
   {
     \__clockdate_date_month_if_valid:nTF {#1}
       {
