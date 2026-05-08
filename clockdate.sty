@@ -7,7 +7,7 @@
 % Loading the package
 
 \NeedsTeXFormat{LaTeX2e}[2023-11-01]
-\ProvidesExplPackage{clockdate}{2026-04-27}{0.0.0}
+\ProvidesExplPackage{clockdate}{2026-05-08}{0.0.0}
   {Print the time of day and the calendar date}
 
 \msg_new:nnn { clockdate } { l3kernel }
@@ -45,26 +45,26 @@
 \str_new:N \l_clockdate_date_days_str
 
 \seq_new:N \l_clockdate_date_months_mmmm_seq
-\seq_set_from_clist:Nn \l_clockdate_date_months_mmmm_seq
+\seq_set_split:Nnn \l_clockdate_date_months_mmmm_seq { }
   {
-    January, February, March, April, May, June,
-    July, August, September, October, November, December
+    {January} {February} {March} {April} {May} {June}
+    {July} {August} {September} {October} {November} {December}
   }
 \seq_new:N \l_clockdate_date_months_mmm_seq
-\seq_set_from_clist:Nn \l_clockdate_date_months_mmm_seq
+\seq_set_split:Nnn \l_clockdate_date_months_mmm_seq { }
   {
-      Jan \clockdate_date_month_period:
-    , Feb \clockdate_date_month_period:
-    , March
-    , April
-    , May
-    , June
-    , July
-    , Aug \clockdate_date_month_period:
-    , Sept \clockdate_date_month_period:
-    , Oct \clockdate_date_month_period:
-    , Nov \clockdate_date_month_period:
-    , Dec \clockdate_date_month_period:
+    { Jan \clockdate_date_month_period: }
+    { Feb \clockdate_date_month_period: }
+    { March }
+    { April }
+    { May }
+    { June }
+    { July }
+    { Aug \clockdate_date_month_period: }
+    { Sept \clockdate_date_month_period: }
+    { Oct \clockdate_date_month_period: }
+    { Nov \clockdate_date_month_period: }
+    { Dec \clockdate_date_month_period: }
   }
 \cs_new_protected:Npn \clockdate_date_month_period:
   {
