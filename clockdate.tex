@@ -27,7 +27,7 @@ Print the time of day and the calendar date
 
 Oliver Beery
 
-Version 0.0.0\quad\date{2026-05-09}
+Version 0.0.0\quad\date{2026-05-14}
 
 
 \section{Introduction}
@@ -382,6 +382,24 @@ These keys modify the behavior of \cs{calendardate} (\S\ref{sec:commands}).
   The initial value is |d|.
 \end{code}
 
+\begin{code}{date/day-ordinal}
+  \begin{syntax}
+    \key{date/day-ordinal=\choices{true,false}}
+  \end{syntax}
+  Boolean key that sets whether to print the day as an ordinal day
+  (e.g. 1\textsuperscript{st}, 4\textsuperscript{th}).
+  The initial value is |false|.
+\end{code}
+
+\begin{code}{date/day-ordinal-format}
+  \begin{syntax}
+    \key{date/day-ordinal-format=\marg{code}}
+  \end{syntax}
+  Sets the format in which the suffix of the ordinal day is printed.
+  Within \meta{code}, |#1| represents the suffix.
+  The initial value is |\textsuperscript{#1}|.
+\end{code}
+
 \subsubsection{Separating the year, month, and day}
 \label{subsubsec:sepyearmonthday}
 
@@ -530,11 +548,11 @@ prevent the command from testing whether the next token is a period
   variables in \S\ref{subsec:vardate}, but before printing the calendar date.
 \end{code}
 
-\subsection{Variables set by \cs{clockdatesetup}}
+\subsection{Variables and functions set by \cs{clockdatesetup}}
 \label{subsec:clockdatesetup}
 
-This subsection documents the variables that are set by \cs{clockdatesetup}
-(\S\ref{sec:commands}).
+This subsection documents the variables and functions that are set by
+\cs{clockdatesetup} (\S\ref{sec:commands}).
 They are read-only and should not be modified directly.
 
 \begin{code}{\l_clockdate_clock_clock_str}
@@ -579,7 +597,9 @@ They are read-only and should not be modified directly.
   {
     \l_clockdate_date_year_format_str,
     \l_clockdate_date_month_format_str,
-    \l_clockdate_date_day_format_str
+    \l_clockdate_date_day_format_str,
+    \l_clockdate_date_day_ordinal_bool,
+    \clockdate_date_day_ordinal_format:n
   }
   The values of the keys documented in \S\ref{subsubsec:printyearmonthday}.
 \end{code}

@@ -7,7 +7,7 @@
 % Loading the package
 
 \NeedsTeXFormat{LaTeX2e}[2023-11-01]
-\ProvidesExplPackage{clockdate}{2026-05-10}{0.0.0}
+\ProvidesExplPackage{clockdate}{2026-05-14}{0.0.0}
   {Print the time of day and the calendar date}
 
 \msg_new:nnn { clockdate } { l3kernel }
@@ -971,6 +971,19 @@
           \int_eval:n {#1}
         }
       }
+    \bool_if:NT \l_clockdate_date_day_ordinal_bool
+      {
+        \clockdate_date_day_ordinal_format:n
+          {
+            \int_case:nnF {#1}
+              {
+                {  1 } { st } {  2 } { nd } {  3 } { rd }
+                { 21 } { st } { 22 } { nd } { 23 } { rd }
+                { 31 } { st }
+              }
+              { th }
+          }
+      }
   }
 
 % Define keys
@@ -1088,6 +1101,13 @@
         { \str_set:Nn \l_clockdate_date_day_format_str {#1} }
     , day .value_required:n = true
 
+    , day-ordinal .bool_set:N = \l_clockdate_date_day_ordinal_bool
+    , day-ordinal .value_required:n = true
+
+    , day-ordinal-format .cs_set_protected:Np =
+        \clockdate_date_day_ordinal_format:n #1
+    , day-ordinal-format .value_required:n = true
+
     , year-month-separator .tl_set:N =
         \l_clockdate_date_year_month_separator_tl
     , year-month-separator .value_required:n = true
@@ -1158,6 +1178,9 @@
     \str_set:Nn \l_clockdate_date_year_format_str { yyyy }
     \str_set:Nn \l_clockdate_date_month_format_str { mmmm }
     \str_set:Nn \l_clockdate_date_day_format_str { d }
+    \bool_set_false:N \l_clockdate_date_day_ordinal_bool
+    \cs_set_protected:Npn \clockdate_date_day_ordinal_format:n ##1
+      { \textsuperscript {##1} }
     \tl_set_eq:NN \l_clockdate_date_year_month_separator_tl \c_space_tl
     \tl_set_eq:NN \l_clockdate_date_month_day_separator_tl \c_space_tl
     \tl_set:Nn \l_clockdate_date_year_day_separator_tl { ,~ }
