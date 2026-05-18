@@ -973,7 +973,7 @@
       }
     \bool_if:NT \l_clockdate_date_day_ordinal_bool
       {
-        \clockdate_date_day_ordinal_format:n
+        \exp_args:Ne \clockdate_date_day_ordinal_format:n
           {
             \int_case:nnF {#1}
               {
