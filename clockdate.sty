@@ -7,7 +7,7 @@
 % Loading the package
 
 \NeedsTeXFormat{LaTeX2e}[2023-11-01]
-\ProvidesExplPackage{clockdate}{2026-05-14}{0.0.0}
+\ProvidesExplPackage{clockdate}{2026-05-18}{0.0.0}
   {Print the time of day and the calendar date}
 
 \msg_new:nnn { clockdate } { l3kernel }
@@ -679,7 +679,7 @@
     \seq_put_right:Nn \l__clockdate_date_days_seq
       {
         \__clockdate_date_print_day:n {#1}
-        \l_clockdate_date_days_range_separator_tl
+        \clockdate_date_days_range_separator:nn {#1} {#2}
         \__clockdate_date_print_day:n {#2}
       }
   }
@@ -805,7 +805,7 @@
     \seq_put_right:Nn \l__clockdate_date_days_seq
       {
         \__clockdate_date_print_day:n {#1}
-        \l_clockdate_date_days_range_separator_tl
+        \clockdate_date_days_range_separator:nn {#1} {#2}
         \__clockdate_date_print_day:n {#2}
       }
   }
@@ -899,7 +899,7 @@
     \seq_put_right:Nn \l__clockdate_date_months_seq
       {
         \__clockdate_date_print_month:n {#1}
-        \l_clockdate_date_months_range_separator_tl
+        \clockdate_date_months_range_separator:nn {#1} {#2}
         \__clockdate_date_print_month:n {#2}
       }
   }
@@ -1136,8 +1136,8 @@
         \l_clockdate_date_days_final_separator_tl
     , days-final-separator .value_required:n = true
 
-    , days-range-separator .tl_set:N =
-        \l_clockdate_date_days_range_separator_tl
+    , days-range-separator .cs_set_protected:Np =
+        \clockdate_date_days_range_separator:nn #1#2
     , days-range-separator .value_required:n = true
 
     , months-separator .tl_set:N = \l_clockdate_date_months_separator_tl
@@ -1151,8 +1151,8 @@
         \l_clockdate_date_months_final_separator_tl
     , months-final-separator .value_required:n = true
 
-    , months-range-separator .tl_set:N =
-        \l_clockdate_date_months_range_separator_tl
+    , months-range-separator .cs_set_protected:Np =
+        \clockdate_date_months_range_separator:nn #1#2
     , months-range-separator .value_required:n = true
   }
 
@@ -1187,11 +1187,13 @@
     \tl_set:Nn \l_clockdate_date_days_separator_tl { ,~ }
     \tl_set:Nn \l_clockdate_date_days_pair_separator_tl { ~and~ }
     \tl_set:Nn \l_clockdate_date_days_final_separator_tl { ,~and~ }
-    \tl_set:Nn \l_clockdate_date_days_range_separator_tl { ~to~ }
+    \cs_set_protected:Npn \clockdate_date_days_range_separator:nn ##1##2
+      { ~to~ }
     \tl_set:Nn \l_clockdate_date_months_separator_tl { ,~ }
     \tl_set:Nn \l_clockdate_date_months_pair_separator_tl { ~and~ }
     \tl_set:Nn \l_clockdate_date_months_final_separator_tl { ,~and~ }
-    \tl_set:Nn \l_clockdate_date_months_range_separator_tl { ~to~ }
+    \cs_set_protected:Npn \clockdate_date_months_range_separator:nn ##1##2
+      { ~to~ }
   }
 \__clockdate_date_keys_set_initial:
 
