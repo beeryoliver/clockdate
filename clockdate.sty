@@ -7,7 +7,7 @@
 % Loading the package
 
 \NeedsTeXFormat{LaTeX2e}[2023-11-01]
-\ProvidesExplPackage{clockdate}{2026-05-18}{0.0.0}
+\ProvidesExplPackage{clockdate}{2026-05-20}{0.0.0}
   {Print the time of day and the calendar date}
 
 \msg_new:nnn { clockdate } { l3kernel }
@@ -580,7 +580,7 @@
         \__clockdate_date_month_days:n {#2}
       }
       {
-        \int_compare:nTF { 999 < #1 < 10 000 }
+        \int_compare:nTF { 99 < #1 < 10 000 }
           {
             \int_set:Nn \l_clockdate_date_year_int {#1}
             \seq_set_split:Nnn \l__clockdate_tmp_seq { - } {#2}
@@ -926,7 +926,12 @@
     \str_case:Vn \l_clockdate_date_year_format_str
       {
         { yy }
-        { \exp_after:wN \use_none:nn \int_use:N \l_clockdate_date_year_int }
+        {
+          \int_compare:nNnTF \l_clockdate_date_year_int < { 1000 }
+            { \exp_after:wN \use_none:n }
+            { \exp_after:wN \use_none:nn }
+            \int_use:N \l_clockdate_date_year_int
+        }
         { yyyy } { \int_use:N \l_clockdate_date_year_int }
       }
   }
