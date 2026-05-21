@@ -27,7 +27,7 @@ Print the time of day and the calendar date
 
 Oliver Beery
 
-Version 0.0.0\quad\date{2026-05-20}
+Version 0.0.0\quad\date{2026-05-18}
 
 
 \section{Introduction}
@@ -120,7 +120,7 @@ This section documents the commands provided by the \pkg{clockdate} package.
     \item \meta{year}|-|\meta{month(s)}
   \end{itemize}
 
-  \meta{year} must be an \meta{integer} from \num{100} to \num{9999}.
+  \meta{year} must be an \meta{integer} from \num{1000} to \num{9999}.
   \meta{month} must be an \meta{integer} from \num{1} to \num{12}.
 
   \meta{day(s)} must take any of the following forms:
@@ -347,8 +347,8 @@ These keys modify the behavior of \cs{calendardate} (\S\ref{sec:commands}).
     \key{date/year=\choices{yy,yyyy}}
   \end{syntax}
   Choice key that sets the format in which the year is printed.
-  |yy| prints the year with only its last two digits.
-  |yyyy| prints the full year.
+  |yy| prints the year with only the last two digits.
+  |yyyy| prints the 4-digit year.
   The initial value is |yyyy|.
 \end{code}
 
