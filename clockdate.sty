@@ -1227,17 +1227,12 @@
 
 \msg_new:nnn { clockdate } { math-mode-invalid }
   { '\iow_char:N \\ #1'~ invalid~ in~ math~ mode~ \msg_line_context:. }
+% Messages used in \clock.
 \msg_new:nnn { clockdate } { time-of-day-invalid }
   {
     Invalid~ time~ of~ day~ '#1'~ \msg_line_context:. \\
     \msg_see_documentation_text:n { clockdate }
   }
-\msg_new:nnn { clockdate } { calendar-date-invalid }
-  {
-    Invalid~ calendar~ date~ '#1'~ \msg_line_context:. \\
-    \msg_see_documentation_text:n { clockdate }
-  }
-% Messages used in \clock.
 \msg_new:nnn { clockdate } { hour-invalid }
   {
     Invalid~ time~ of~ day~ \msg_line_context:. \\ \\
@@ -1254,6 +1249,11 @@
     \iow_indent:n { hour:~ '#1' \\ minute:~ '#2' \\ second:~ '#3' }
   }
 % Messages used in \calendardate.
+\msg_new:nnn { clockdate } { calendar-date-invalid }
+  {
+    Invalid~ calendar~ date~ '#1'~ \msg_line_context:. \\
+    \msg_see_documentation_text:n { clockdate }
+  }
 \msg_new:nnn { clockdate } { year-month-day-invalid }
   {
     Invalid~ calendar~ date~ \msg_line_context:. \\ \\
