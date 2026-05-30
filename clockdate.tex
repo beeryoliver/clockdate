@@ -27,7 +27,7 @@ Print the time of day and the calendar date
 
 Oliver Beery
 
-Version 0.0.0\quad\date{2026-05-24}
+Version 0.0.0\quad\date{2026-05-29}
 
 
 \section{Introduction}
@@ -144,6 +144,8 @@ This section documents the commands provided by the \pkg{clockdate} package.
     \meta{month} or a month range \meta{month_1}|--|\meta{month_2}
   \end{itemize}
 
+  \meta{token list} should not contain |--| unless it is used to delimit a day
+  or month range.
   Adding the optional argument sets the keys in \meta{key-value list} in path
   |date| for only that particular usage of \cs{calendardate}.
   For details on adding the optional star, see the key \key{date/star}
