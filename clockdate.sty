@@ -7,7 +7,7 @@
 % Loading the package
 
 \NeedsTeXFormat{LaTeX2e}[2023-11-01]
-\ProvidesExplPackage{clockdate}{2026-06-07}{1.0.0}
+\ProvidesExplPackage{clockdate}{2026-06-08}{1.0.0}
   {Print the time of day and the calendar date}
 
 \msg_new:nnn { clockdate } { l3kernel }
@@ -158,13 +158,13 @@
   {
     \group_begin:
       \keys_set:nn { clockdate / clock } {#1}
-      \__clockdate_clock_aux:n {#2}
+      \__clockdate_clock_parse:n {#2}
     \group_end:
   }
 \cs_new_protected:Npn \__clockdate_clock:n #1
   {
     \group_begin:
-      \__clockdate_clock_aux:n {#1}
+      \__clockdate_clock_parse:n {#1}
     \group_end:
   }
 \cs_new_protected:Npn \__clockdate_clock_star:nn #1#2
@@ -172,17 +172,17 @@
     \group_begin:
       \l__clockdate_clock_star_tl
       \keys_set:nn { clockdate / clock } {#1}
-      \__clockdate_clock_aux:n {#2}
+      \__clockdate_clock_parse:n {#2}
     \group_end:
   }
 \cs_new_protected:Npn \__clockdate_clock_star:n #1
   {
     \group_begin:
       \l__clockdate_clock_star_tl
-      \__clockdate_clock_aux:n {#1}
+      \__clockdate_clock_parse:n {#1}
     \group_end:
   }
-\cs_new_protected:Npn \__clockdate_clock_aux:n #1
+\cs_new_protected:Npn \__clockdate_clock_parse:n #1
   {
     \__clockdate_clock_init:
     \tl_set:Nn \l__clockdate_clock_input_tl {#1}
@@ -568,13 +568,13 @@
   {
     \group_begin:
       \keys_set:nn { clockdate / date } {#1}
-      \__clockdate_date_aux:n {#2}
+      \__clockdate_date_parse:n {#2}
     \group_end:
   }
 \cs_new_protected:Npn \__clockdate_date:n #1
   {
     \group_begin:
-      \__clockdate_date_aux:n {#1}
+      \__clockdate_date_parse:n {#1}
     \group_end:
   }
 \cs_new_protected:Npn \__clockdate_date_star:nn #1#2
@@ -582,17 +582,17 @@
     \group_begin:
       \l__clockdate_date_star_tl
       \keys_set:nn { clockdate / date } {#1}
-      \__clockdate_date_aux:n {#2}
+      \__clockdate_date_parse:n {#2}
     \group_end:
   }
 \cs_new_protected:Npn \__clockdate_date_star:n #1
   {
     \group_begin:
       \l__clockdate_date_star_tl
-      \__clockdate_date_aux:n {#1}
+      \__clockdate_date_parse:n {#1}
     \group_end:
   }
-\cs_new_protected:Npn \__clockdate_date_aux:n #1
+\cs_new_protected:Npn \__clockdate_date_parse:n #1
   {
     \__clockdate_date_init:
     \tl_set:Nn \l__clockdate_date_input_tl {#1}
