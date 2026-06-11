@@ -7,7 +7,7 @@
 % Loading the package
 
 \NeedsTeXFormat{LaTeX2e}[2023-11-01]
-\ProvidesExplPackage{clockdate}{2026-06-08}{1.0.0}
+\ProvidesExplPackage{clockdate}{2026-06-11}{1.0.0}
   {Print the time of day and the calendar date}
 
 \msg_new:nnn { clockdate } { l3kernel }
@@ -106,6 +106,7 @@
 % Some functions
 
 \cs_generate_variant:Nn \msg_error:nnnnn { nnVVV }
+\cs_generate_variant:Nn \tl_range:nnn { V }
 \prg_new_conditional:Npnn \__clockdate_bool_if_eq:nn #1#2 { p }
   {
     \bool_if:nTF {#1}
@@ -992,13 +993,7 @@
     \str_case:Vn \l_clockdate_date_year_format_str
       {
         { y } { \int_use:N \l_clockdate_date_year_int }
-        { yy }
-        {
-          \int_compare:nNnTF \l_clockdate_date_year_int < { 1000 }
-            { \exp_after:wN \use_none:n }
-            { \exp_after:wN \use_none:nn }
-            \int_use:N \l_clockdate_date_year_int
-        }
+        { yy } { \tl_range:Vnn \l_clockdate_date_year_int { -2 } { -1 } }
         { yyyy }
         {
           \int_compare:nNnT \l_clockdate_date_year_int < { 1000 }
