@@ -27,7 +27,7 @@ Print the time of day and the calendar date
 
 Oliver Beery
 
-Version 1.0.0\quad\date{2026-6-11}
+Version 1.0.0\quad\date{2026-6-13}
 
 
 \section{Introduction}
@@ -686,34 +686,24 @@ Outside of \cs{clock}, they do not have defined behavior.
 This subsection documents the variables that are set within \cs{calendardate}.
 Outside of \cs{calendardate}, they do not have defined behavior.
 
-\begin{code}{\l_clockdate_date_year_int}
+\begin{code}{\l_clockdate_date_year_str}
   The value of \meta{year}.
-  The value is \num{-1} if \meta{year} is omitted.
+  The value is \meta{empty} if \meta{year} is omitted.
 \end{code}
 
-\begin{code}{\l_clockdate_date_month_int}
-  The value of \meta{month} if only a single month is printed.
-  The value is \num{-1} if two or more months are printed.
-\end{code}
-
-\begin{code}{\l_clockdate_date_months_str}
-  The value of \meta{months} if two or more months are printed.
-  The value takes the same form as the \meta{months} as explained for
+\begin{code}{\l_clockdate_date_month_str}
+  The value of \meta{month(s)}.
+  The value takes the same form as the \meta{month(s)} as explained for
   \cs{calendardate}.
-  The value is \meta{empty} if only a single month is printed.
+  The value is an \meta{integer} if exactly one month is printed.
 \end{code}
 
-\begin{code}{\l_clockdate_date_day_int}
-  The value of \meta{day} if only a single day is printed.
-  The value is \num{-1} if \meta{day} is omitted or if two or more days are
-  printed.
-\end{code}
-
-\begin{code}{\l_clockdate_date_days_str}
-  The value of \meta{days} if two or more days are printed.
-  The value takes the same form as the \meta{days} as explained for
+\begin{code}{\l_clockdate_date_day_str}
+  The value of \meta{day(s)}.
+  The value takes the same form as the \meta{day(s)} as explained for
   \cs{calendardate}.
-  The value is \meta{empty} if exactly \num{0} or \num{1} days are printed.
+  The value is an \meta{integer} if exactly one day is printed.
+  The value is \meta{empty} if \meta{day(s)} is omitted.
 \end{code}
 
 \subsection{Printing the months}
