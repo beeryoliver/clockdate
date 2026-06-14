@@ -7,7 +7,7 @@
 % Loading the package
 
 \NeedsTeXFormat{LaTeX2e}[2023-11-01]
-\ProvidesExplPackage{clockdate}{2026-06-13}{1.0.0}
+\ProvidesExplPackage{clockdate}{2026-06-14}{1.0.0}
   {Print the time of day and the calendar date}
 
 \msg_new:nnn { clockdate } { l3kernel }
@@ -417,77 +417,40 @@
   }
 \cs_new_protected:Npn \__clockdate_clock_print_hour:n #1
   {
-    \str_case:Vn \l_clockdate_clock_clock_str
+    \int_set:Nn \l__clockdate_tmp_int
       {
-        { 12-hour }
-        {
-          \str_case:Vn \l_clockdate_clock_hour_format_str
-            {
-              { h }
+        \str_if_eq:eeTF \l_clockdate_clock_clock_str { 24-hour }
+          {#1}
+          {
+            \int_if_zero:nTF {#1}
+              { 12 }
               {
-                \int_if_zero:nTF {#1}
-                  { 12 }
-                  {
-                    \int_compare:nNnTF {#1} < { 13 }
-                      { \int_eval:n {#1} }
-                      { \int_eval:n { \int_eval:n {#1} - 12 } }
-                  }
+                \int_compare:nNnTF {#1} < { 13 }
+                  {#1} { \int_eval:n {#1} - 12 }
               }
-              { hh }
-              {
-                \int_if_zero:nTF {#1}
-                  { 12 }
-                  {
-                    \bool_lazy_or:nnTF
-                      { \int_compare_p:nNn {#1} < { 10 } }
-                      { \int_compare_p:n { 12 < #1 < 22 } }
-                      { 0 \int_eval:n {#1} }
-                      {
-                        \int_compare:nNnTF {#1} < { 13 }
-                          { \int_eval:n {#1} }
-                          { \int_eval:n { \int_eval:n {#1} - 12 } }
-                      }
-                    }
-              }
-            }
-        }
-        { 24-hour }
-        {
-          \str_case:Vn \l_clockdate_clock_hour_format_str
-            {
-              { h } { \int_eval:n {#1} }
-              { hh }
-              {
-                \int_compare:nNnT {#1} < { 10 } { 0 }
-                \int_eval:n {#1}
-              }
-            }
-        }
+          }
       }
+    \bool_lazy_and:nnT
+      { \str_if_eq_p:ee \l_clockdate_clock_hour_format_str { hh } }
+      { \int_compare_p:nNn \l__clockdate_tmp_int < { 10 } }
+      { 0 }
+    \int_use:N \l__clockdate_tmp_int
   }
 \cs_new_protected:Npn \__clockdate_clock_print_minute:n #1
   {
-    \str_case:Vn \l_clockdate_clock_minute_format_str
-      {
-        { m } { \int_eval:n {#1} }
-        { mm }
-        {
-          \int_compare:nNnT {#1} < { 10 } { 0 }
-          \int_eval:n {#1}
-        }
-      }
+    \bool_lazy_and:nnT
+      { \str_if_eq_p:ee \l_clockdate_clock_minute_format_str { mm } }
+      { \int_compare_p:nNn {#1} < { 10 } }
+      { 0 }
+    \int_eval:n {#1}
   }
 \cs_new_protected:Npn \__clockdate_clock_print_second:n #1
   {
-    \str_case:Vn \l_clockdate_clock_second_format_str
-      {
-        { s } { \int_eval:n {#1} }
-        { ss }
-        {
-          \int_compare:nNnT {#1} < { 10 } { 0 }
-          \int_eval:n {#1}
-        }
-      }
+    \bool_lazy_and:nnT
+      { \str_if_eq_p:ee \l_clockdate_clock_second_format_str { ss } }
+      { \int_compare_p:nNn {#1} < { 10 } }
+      { 0 }
+    \int_eval:n {#1}
   }
 \cs_new_protected:Npn \__clockdate_clock_print_ampm:n #1
   {
