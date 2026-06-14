@@ -226,8 +226,8 @@
     \bool_set:Nn \l_clockdate_clock_ampm_print_bool
       {
         \bool_lazy_and_p:nn
-          { \str_if_eq_p:ee { \l_clockdate_clock_clock_str } { 12-hour } }
-          { ! \str_if_eq_p:ee { \l_clockdate_clock_ampm_format_str } { none } }
+          { \str_if_eq_p:ee \l_clockdate_clock_clock_str { 12-hour } }
+          { ! \str_if_eq_p:ee \l_clockdate_clock_ampm_format_str { none } }
       }
     \bool_set:Nn \l_clockdate_clock_ampm_print_first_bool
       {
@@ -289,8 +289,8 @@
     \bool_set:Nn \l_clockdate_clock_ampm_print_bool
       {
         \bool_lazy_and_p:nn
-          { \str_if_eq_p:ee { \l_clockdate_clock_clock_str } { 12-hour } }
-          { ! \str_if_eq_p:ee { \l_clockdate_clock_ampm_format_str } { none } }
+          { \str_if_eq_p:ee \l_clockdate_clock_clock_str { 12-hour } }
+          { ! \str_if_eq_p:ee \l_clockdate_clock_ampm_format_str { none } }
       }
     \bool_set_eq:NN \l_clockdate_clock_ampm_print_first_bool
       \l_clockdate_clock_ampm_print_bool
@@ -1023,11 +1023,11 @@
   }
 \cs_new_protected:Npn \__clockdate_date_print_day:n #1
   {
-    \str_case:Vn \l_clockdate_date_day_format_str
-      {
-        { d } {#1}
-        { dd } { \int_compare:nNnT {#1} < { 10 } { 0 } #1 }
-      }
+    \bool_lazy_and:nnT
+      { \str_if_eq_p:ee \l_clockdate_date_day_format_str { dd } }
+      { \int_compare_p:nNn {#1} < { 10 } }
+      { 0 }
+    #1
   }
 
 % Define keys
