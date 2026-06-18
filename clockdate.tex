@@ -122,6 +122,11 @@ This section documents the commands provided by the \pkg{clockdate} package.
 
   \meta{year} must be an \meta{integer} greater than \num{100}.
   \meta{month} must be an \meta{integer} from \num{1} to \num{12}.
+  \meta{day} must be an \meta{integer}.
+  The calendar date must be valid.
+  \date{2-29} is always valid if \meta{year} is omitted.
+  If \meta{year} is provided, \date{2-29} is error-checked using the Julian
+  calendar.
 
   \meta{day(s)} must take any of the following forms:
   \begin{itemize}
@@ -131,11 +136,6 @@ This section documents the commands provided by the \pkg{clockdate} package.
     a comma-separated list where each item must be either a single day
     \meta{day} or a day range \meta{day_1}|--|\meta{day_2}
   \end{itemize}
-  \meta{day} must be an \meta{integer}.
-  The calendar date must be valid.
-  \date{2-29} is always valid if \meta{year} is omitted.
-  If \meta{year} is provided, \date{2-29} is error-checked using the Julian
-  calendar.
 
   \meta{month(s)} must take any of the following forms:
   \begin{itemize}
