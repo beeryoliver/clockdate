@@ -7,7 +7,7 @@
 % Loading the package
 
 \NeedsTeXFormat{LaTeX2e}[2023-11-01]
-\ProvidesExplPackage{clockdate}{2026-06-14}{1.0.0}
+\ProvidesExplPackage{clockdate}{2026-06-18}{1.0.0}
   {Print the time of day and the calendar date}
 
 \msg_new:nnn { clockdate } { l3kernel }
@@ -752,7 +752,6 @@
         { 12 } { }
       }
   }
-% Uses the Julian calendar.
 \cs_new:Npn \__clockdate_date_year_if_leap:T
   {
     \int_if_zero:nT { \int_mod:nn { \l_clockdate_date_year_str } { 4 } }
