@@ -7,7 +7,7 @@
 % Loading the package
 
 \NeedsTeXFormat{LaTeX2e}[2023-11-01]
-\ProvidesExplPackage{clockdate}{2026-06-18}{1.0.0}
+\ProvidesExplPackage{clockdate}{2026-06-20}{1.0.0}
   {Print the time of day and the calendar date}
 
 \msg_new:nnn { clockdate } { l3kernel }
@@ -188,10 +188,10 @@
     \__clockdate_clock_normalize:
     \tl_if_in:NnTF \l__clockdate_clock_input_tl { -- }
       {
-        \exp_after:wN \__clockdate_clock_print_range:w
-          \l__clockdate_clock_input_tl \q__clockdate_stop
+        \exp_after:wN \__clockdate_clock_range:w \l__clockdate_clock_input_tl
+          \q__clockdate_stop
       }
-      { \exp_args:NV \__clockdate_clock_print:n \l__clockdate_clock_input_tl }
+      { \exp_args:NV \__clockdate_clock_single:n \l__clockdate_clock_input_tl }
     \prg_break_point:
   }
 \cs_new_protected:Npn \__clockdate_clock_init:
@@ -212,14 +212,19 @@
     \tl_replace_all:Nnn \exp_not:N \l__clockdate_clock_input_tl
       { \exp_not:V \c__clockdate_active_hyphen_tl } { - }
   }
-\cs_new_protected:Npn \__clockdate_clock_print_range:w
-  #1 -- #2 \q__clockdate_stop
+\cs_new_protected:Npn \__clockdate_clock_range:w #1 -- #2 \q__clockdate_stop
   {
-    \__clockdate_clock_print:nNNN {#1}
+    \__clockdate_clock_range_set:nn {#1} {#2}
+    \hook_use:n { clockdate / clock }
+    \__clockdate_clock_range_print:
+  }
+\cs_new_protected:Npn \__clockdate_clock_range_set:nn #1#2
+  {
+    \__clockdate_clock_set:nNNN {#1}
       \l_clockdate_clock_hour_int
       \l_clockdate_clock_minute_int
       \l_clockdate_clock_second_int
-    \__clockdate_clock_print:nNNN {#2}
+    \__clockdate_clock_set:nNNN {#2}
       \l_clockdate_clock_hour_range_int
       \l_clockdate_clock_minute_range_int
       \l_clockdate_clock_second_range_int
@@ -249,7 +254,9 @@
               }
           }
       }
-    \hook_use:n { clockdate / clock }
+  }
+\cs_new_protected:Npn \__clockdate_clock_range_print:
+  {
     \__clockdate_clock_print_hour:n { \l_clockdate_clock_hour_int }
     \int_compare:nNnF \l_clockdate_clock_minute_int = { -1 }
       {
@@ -280,9 +287,15 @@
     \bool_if:NT \l_clockdate_clock_ampm_print_bool
       { \__clockdate_clock_print_ampm:n { \l_clockdate_clock_hour_range_int } }
   }
-\cs_new_protected:Npn \__clockdate_clock_print:n #1
+\cs_new_protected:Npn \__clockdate_clock_single:n #1
   {
-    \__clockdate_clock_print:nNNN {#1}
+    \__clockdate_clock_single_set:n {#1}
+    \hook_use:n { clockdate / clock }
+    \__clockdate_clock_single_print:
+  }
+\cs_new_protected:Npn \__clockdate_clock_single_set:n #1
+  {
+    \__clockdate_clock_set:nNNN {#1}
       \l_clockdate_clock_hour_int
       \l_clockdate_clock_minute_int
       \l_clockdate_clock_second_int
@@ -294,7 +307,9 @@
       }
     \bool_set_eq:NN \l_clockdate_clock_ampm_print_first_bool
       \l_clockdate_clock_ampm_print_bool
-    \hook_use:n { clockdate / clock }
+  }
+\cs_new_protected:Npn \__clockdate_clock_single_print:
+  {
     \__clockdate_clock_print_hour:n { \l_clockdate_clock_hour_int }
     \int_compare:nNnF \l_clockdate_clock_minute_int = { -1 }
       {
@@ -311,7 +326,7 @@
   }
 \use:e
   {
-    \cs_new_protected:Npn \exp_not:N \__clockdate_clock_print:nNNN #1#2#3#4
+    \cs_new_protected:Npn \exp_not:N \__clockdate_clock_set:nNNN #1#2#3#4
       {
         \seq_set_split:Nnn \exp_not:N \l__clockdate_clock_seq { \c_colon_str }
           {#1}
