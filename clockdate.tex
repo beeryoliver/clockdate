@@ -27,7 +27,7 @@ Print the time of day and the calendar date
 
 Oliver Beery
 
-Version 1.0.0\quad\date{2026-6-18}
+Version 1.0.0\quad\date{2026-6-21}
 
 
 \section{Introduction}
@@ -82,7 +82,7 @@ This section documents the commands provided by the \pkg{clockdate} package.
   \begin{syntax}
     \cs{clock} \sarg{} \oarg{key-value list} \marg{token list}
   \end{syntax}
-  Prints the time of day or a time-of-day range.
+  Prints the time of day or time-of-day range specified by \meta{token list}.
   \meta{token list} must take either of the following forms:
   \begin{itemize}
     \item \meta{clock}
@@ -112,7 +112,7 @@ This section documents the commands provided by the \pkg{clockdate} package.
   \begin{syntax}
     \cs{calendardate} \sarg{} \oarg{key-value list} \marg{token list}
   \end{syntax}
-  Prints the calendar date.
+  Prints the calendar date specified by \meta{token list}.
   \meta{token list} must take any of the following forms:
   \begin{itemize}
     \item \meta{year}|-|\meta{month}|-|\meta{day(s)}

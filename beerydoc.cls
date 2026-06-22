@@ -1,7 +1,7 @@
 % Loading the class
 
 \NeedsTeXFormat{LaTeX2e}[2023-11-01]
-\ProvidesExplClass{beerydoc}{2026-04-03}{0.0.0}{}
+\ProvidesExplClass{beerydoc}{2026-06-21}{0.0.0}{}
 \prop_gput:Nnn \g_msg_module_type_prop { beerydoc } { Class }
 
 \msg_new:nnn { beerydoc } { l3kernel }
@@ -120,6 +120,7 @@
 
 \tl_new:N \l__beerydoc_key_tl
 \tl_new:N \l__beerydoc_value_tl
+\tl_new:N \l__beerydoc_value_choices_tl
 \tl_new:N \l__beerydoc_cs_tl
 \tl_new:N \l__beerydoc_meta_tl
 \tl_new:N \l__beerydoc_hook_tl
@@ -149,10 +150,8 @@
 
 % Custom macros
 
-\cs_generate_variant:Nn \tl_replace_once:Nnn { No }
 \cs_generate_variant:Nn \tl_replace_all:Nnn { No }
-\prg_generate_conditional_variant:Nnn \str_if_eq:nn { ne , Ve , e , eV }
-  { p , T , F , TF }
+\cs_generate_variant:Nn \clist_use:nn { V }
 
 \cs_new_protected:Npn \__beerydoc_langle: { \ensuremath { \langle } }
 \cs_new_protected:Npn \__beerydoc_rangle: { \ensuremath { \rangle } }
@@ -236,7 +235,13 @@
     \tl_replace_all:Nnn \l__beerydoc_value_tl { ~ } { \textvisiblespace }
   }
 \cs_new_protected:Npn \__beerydoc_value_choices:n #1
-  { \clist_use:nn {#1} { \__beerydoc_value_choices_separator: } }
+  {
+    \tl_set:Nn \l__beerydoc_value_choices_tl {#1}
+    \tl_replace_all:NVn \l__beerydoc_value_choices_tl
+      \c_catcode_active_space_tl { ~ }
+    \clist_use:Vn \l__beerydoc_value_choices_tl
+      { \__beerydoc_value_choices_separator: }
+  }
 \cs_new_protected:Npn \__beerydoc_value_choices_separator:
   { \ensuremath { \, \vert \, } }
 
