@@ -27,7 +27,7 @@ Print the time of day and the calendar date
 
 Oliver Beery
 
-Version 1.0.0\quad\date{2026-6-26}
+Version 1.0.0\quad\date{2026-6-27}
 
 
 \section{Introduction}
@@ -384,6 +384,15 @@ These keys modify the behavior of \cs{calendardate} (\S\ref{sec:commands}).
   The initial value is |d|.
 \end{code}
 
+\begin{code}{date/day-ordinal}
+  \begin{syntax}
+    \key{date/day-ordinal=\choices{true,false}}
+  \end{syntax}
+  Boolean key that sets whether to print the day as an ordinal day
+  (e.g. 1\textsuperscript{st}, 4\textsuperscript{th}).
+  The initial value is |false|.
+\end{code}
+
 \subsubsection{Separating the year, month, and day}
 \label{subsubsec:sepyearmonthday}
 
@@ -581,7 +590,8 @@ They are read-only and should not be modified directly.
   {
     \l_clockdate_date_year_format_str,
     \l_clockdate_date_month_format_str,
-    \l_clockdate_date_day_format_str
+    \l_clockdate_date_day_format_str,
+    \l_clockdate_date_day_ordinal_bool
   }
   The values of the keys documented in \S\ref{subsubsec:printyearmonthday}.
 \end{code}
@@ -707,6 +717,32 @@ Outside of \cs{calendardate}, they do not have defined behavior.
 
   If \cs{clockdate_date_month_period:} prints the period, it is followed by
   \cs{@} because the sentence does not end here.
+\end{code}
+
+\subsection{Printing the ordinal day}
+
+\begin{code}{\clockdate_date_day_ordinal_format:n}
+  \begin{syntax}
+    \cs{clockdate_date_day_ordinal_format:n} \marg{day}
+  \end{syntax}
+  Sets the format in which the suffix of the ordinal day is printed.
+  |#1| represents the value of \meta{day}.
+  The initial definition is:
+  \begin{verbatim}
+\cs_new_protected:Npn \clockdate_date_day_ordinal_format:n #1
+  {
+    \textsuperscript
+      {
+        \int_case:nnF {#1}
+          {
+            {  1 } { st } {  2 } { nd } {  3 } { rd }
+            { 21 } { st } { 22 } { nd } { 23 } { rd }
+            { 31 } { st }
+          }
+          { th }
+      }
+  }
+  \end{verbatim}
 \end{code}
 
 
