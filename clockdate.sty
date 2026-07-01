@@ -7,7 +7,7 @@
 % Loading the package
 
 \NeedsTeXFormat{LaTeX2e}[2023-11-01]
-\ProvidesExplPackage{clockdate}{2026-06-27}{1.0.0}
+\ProvidesExplPackage{clockdate}{2026-06-30}{1.0.0}
   {Print the time of day and the calendar date}
 
 \msg_new:nnn { clockdate } { l3kernel }
@@ -37,7 +37,6 @@
 \seq_new:N \l__clockdate_date_seq
 \cs_new:Npn \__clockdate_date_range_mark:
   { \msg_expandable_error:nn { clockdate } { double-hyphen-invalid } }
-\bool_new:N \l__clockdate_date_error_bool
 % Used to optimize the printing of day(s) and month(s).
 \seq_new:N \l__clockdate_date_days_seq
 \seq_new:N \l__clockdate_date_months_seq
@@ -669,7 +668,16 @@
     \bool_lazy_and:nnF
       { \int_compare_p:nNn \l_clockdate_date_year_str > { 99 } }
       { \int_compare_p:n { 0 < \l_clockdate_date_month_str < 13 } }
-      { \bool_set_true:N \l__clockdate_date_error_bool }
+      {
+        \cs_set_protected:Npn \__clockdate_date_year_month_days_chk:n ##1
+          {
+            \clist_map_break:n
+              {
+                \msg_error:nnn { clockdate } { year-month-day-invalid } {##1}
+                \__clockdate_date_break:
+              }
+          }
+      }
     \clist_map_inline:nn {#3}
       {
         \tl_if_in:nnTF {##1} { \__clockdate_date_range_mark: }
@@ -721,38 +729,33 @@
   }
 \cs_new_protected:Npn \__clockdate_date_year_month_days_chk:n #1
   {
-    \bool_if:NT \l__clockdate_date_error_bool
-      { \prg_break:n \use:n }
     \int_compare:nT { 0 < #1 < 29 }
-      { \prg_break:n \use_none:n }
+      { \prg_break: }
     \int_compare:nNnT {#1} = { 31 }
       {
         \__clockdate_date_month_if_thirty_one_days:T
-          { \prg_break:n \use_none:n }
+          { \prg_break: }
       }
     \int_compare:nNnT {#1} = { 30 }
       {
         \int_compare:nNnF \l_clockdate_date_month_str = 2
-          { \prg_break:n \use_none:n }
+          { \prg_break: }
       }
     \int_compare:nNnT {#1} = { 29 }
       {
         \int_compare:nNnTF \l_clockdate_date_month_str = 2
           {
             \__clockdate_date_year_if_leap:T
-              { \prg_break:n \use_none:n }
+              { \prg_break: }
           }
-          { \prg_break:n \use_none:n }
+          { \prg_break: }
       }
-    \use_ii:nn
-    \prg_break_point:
+    \clist_map_break:n
       {
-        \clist_map_break:n
-          {
-            \msg_error:nnn { clockdate } { year-month-day-invalid } {#1}
-            \__clockdate_date_break:
-          }
+        \msg_error:nnn { clockdate } { year-month-day-invalid } {#1}
+        \__clockdate_date_break:
       }
+    \prg_break_point:
   }
 \cs_new:Npn \__clockdate_date_month_if_thirty_one_days:T
   {
