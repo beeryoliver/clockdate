@@ -27,7 +27,7 @@ Print the time of day and the calendar date
 
 Oliver Beery
 
-Version 1.0.0\quad\date{2026-6-27}
+Version 1.0.0\quad\date{2026-6-30}
 
 
 \section{Introduction}
@@ -195,7 +195,7 @@ These keys modify the behavior of \cs{clock} (\S\ref{sec:commands}).
 
 \begin{code}{clock/clock}
   \begin{syntax}
-    \key{clock/clock=\choices{12-hour,24-hour}}
+    \key{clock/clock=12-hour|24-hour}
   \end{syntax}
   Choice key that sets whether to print the hour using the 12-hour or 24-hour
   clock.
@@ -217,7 +217,7 @@ These keys modify the behavior of \cs{clock} (\S\ref{sec:commands}).
 
 \begin{code}{clock/hour}
   \begin{syntax}
-    \key{clock/hour=\choices{h,hh}}
+    \key{clock/hour=h|hh}
   \end{syntax}
   Choice key that sets the format in which the hour is printed.
   |h| prints the hour with the minimum number of digits.
@@ -227,7 +227,7 @@ These keys modify the behavior of \cs{clock} (\S\ref{sec:commands}).
 
 \begin{code}{clock/minute}
   \begin{syntax}
-    \key{clock/minute=\choices{m,mm}}
+    \key{clock/minute=m|mm}
   \end{syntax}
   Choice key that sets the format in which the minute is printed.
   |m| prints the minute with the minimum number of digits.
@@ -237,7 +237,7 @@ These keys modify the behavior of \cs{clock} (\S\ref{sec:commands}).
 
 \begin{code}{clock/second}
   \begin{syntax}
-    \key{clock/second=\choices{s,ss}}
+    \key{clock/second=s|ss}
   \end{syntax}
   Choice key that sets the format in which the second is printed.
   |s| prints the second with the minimum number of digits.
@@ -279,7 +279,7 @@ These keys modify the behavior of \cs{clock} (\S\ref{sec:commands}).
 
 \begin{code}{clock/ampm}
   \begin{syntax}
-    \key{clock/ampm=\choices{a.m.,am,a,A.M.,AM,A,none}}
+    \key{clock/ampm=a.m.|am|a|A.M.|AM|A|none}
   \end{syntax}
   Choice key that sets the format in which the am/pm is printed.
   The initial value is |a.m.|
@@ -303,7 +303,7 @@ These keys modify the behavior of \cs{clock} (\S\ref{sec:commands}).
 
 \begin{code}{clock/ampm-omit-first}
   \begin{syntax}
-    \key{clock/ampm-omit-first=\choices{true,false}}
+    \key{clock/ampm-omit-first=true|false}
   \end{syntax}
   Boolean key that sets whether \meta{clock_1} prints the am/pm in a
   time-of-day range if \meta{clock_1} and \meta{clock_2} either both print am
@@ -333,7 +333,7 @@ These keys modify the behavior of \cs{calendardate} (\S\ref{sec:commands}).
 
 \begin{code}{date/order}
   \begin{syntax}
-    \key{date/order=\choices{day-month-year,year-month-day,month-day-year}}
+    \key{date/order=day-month-year|year-month-day|month-day-year}
   \end{syntax}
   Choice key that sets the order in which the year, month, and day are printed.
   The initial value is |day-month-year|.
@@ -344,7 +344,7 @@ These keys modify the behavior of \cs{calendardate} (\S\ref{sec:commands}).
 
 \begin{code}{date/year}
   \begin{syntax}
-    \key{date/year=\choices{y,yy,yyyy}}
+    \key{date/year=y|yy|yyyy}
   \end{syntax}
   Choice key that sets the format in which the year is printed.
   |y| prints the year with the minimum number of digits.
@@ -356,7 +356,7 @@ These keys modify the behavior of \cs{calendardate} (\S\ref{sec:commands}).
 
 \begin{code}{date/month}
   \begin{syntax}
-    \key{date/month=\choices{m,mm,mmm,mmmm}}
+    \key{date/month=m|mm|mmm|mmmm}
   \end{syntax}
   Choice key that sets the format in which the month is printed.
   |m| prints the month with the minimum number of digits.
@@ -376,7 +376,7 @@ These keys modify the behavior of \cs{calendardate} (\S\ref{sec:commands}).
 
 \begin{code}{date/day}
   \begin{syntax}
-    \key{date/day=\choices{d,dd}}
+    \key{date/day=d|dd}
   \end{syntax}
   Choice key that sets the format in which the day is printed.
   |d| prints the day with the minimum number of digits.
@@ -386,7 +386,7 @@ These keys modify the behavior of \cs{calendardate} (\S\ref{sec:commands}).
 
 \begin{code}{date/day-ordinal}
   \begin{syntax}
-    \key{date/day-ordinal=\choices{true,false}}
+    \key{date/day-ordinal=true|false}
   \end{syntax}
   Boolean key that sets whether to print the day as an ordinal day
   (e.g. 1\textsuperscript{st}, 4\textsuperscript{th}).

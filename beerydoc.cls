@@ -1,7 +1,7 @@
 % Loading the class
 
 \NeedsTeXFormat{LaTeX2e}[2023-11-01]
-\ProvidesExplClass{beerydoc}{2026-06-27}{0.0.0}{}
+\ProvidesExplClass{beerydoc}{2026-06-30}{0.0.0}{}
 \prop_gput:Nnn \g_msg_module_type_prop { beerydoc } { Class }
 
 \msg_new:nnn { beerydoc } { l3kernel }
@@ -120,7 +120,7 @@
 
 \tl_new:N \l__beerydoc_key_tl
 \tl_new:N \l__beerydoc_value_tl
-\tl_new:N \l__beerydoc_value_choices_tl
+\seq_new:N \l__beerydoc_value_seq
 \tl_new:N \l__beerydoc_cs_tl
 \tl_new:N \l__beerydoc_meta_tl
 \tl_new:N \l__beerydoc_hook_tl
@@ -192,13 +192,12 @@
   }
 \cs_new_protected:Npn \__beerydoc_key_value:w #1 = #2 \q__beerydoc_stop
   {
-    \tl_if_blank:nTF {#1}
-      { \__beerydoc_value:n {#2} }
+    \tl_if_blank:nF {#1}
       {
         \__beerydoc_key:n {#1}
         \__beerydoc_key_value_equal:
-        \__beerydoc_value:n {#2}
       }
+    \__beerydoc_value_list:n {#2}
   }
 \cs_new_protected:Npn \__beerydoc_key:n #1
   {
@@ -219,31 +218,22 @@
           { \ensuremath { \, = \, } \allowbreak }
       }
   }
-\cs_new_protected:Npn \__beerydoc_value:n #1
+\cs_new_protected:Npn \__beerydoc_value_list:n #1
   {
     \group_begin:
       \tl_set:Nn \l__beerydoc_value_tl {#1}
-      \__beerydoc_value_replace_spaces:
-      \cs_set_eq:NN \choices \__beerydoc_value_choices:n
+      \tl_replace_all:NVn \l__beerydoc_value_tl \c__beerydoc_active_vert_tl
+        { | }
+      \tl_replace_all:NVn \l__beerydoc_value_tl \c_catcode_active_space_tl
+        { \textvisiblespace }
+      \tl_replace_all:Nnn \l__beerydoc_value_tl { ~ } { \textvisiblespace }
+      \seq_set_split:NnV \l__beerydoc_value_seq { | } \l__beerydoc_value_tl
       \ttfamily
-      \l__beerydoc_value_tl \@
+      \seq_use:Nn \l__beerydoc_value_seq { \__beerydoc_value_separator: }
+      \@
     \group_end:
   }
-\cs_new_protected:Npn \__beerydoc_value_replace_spaces:
-  {
-    \tl_replace_all:NVn \l__beerydoc_value_tl \c_catcode_active_space_tl
-      { \textvisiblespace }
-    \tl_replace_all:Nnn \l__beerydoc_value_tl { ~ } { \textvisiblespace }
-  }
-\cs_new_protected:Npn \__beerydoc_value_choices:n #1
-  {
-    \tl_set:Nn \l__beerydoc_value_choices_tl {#1}
-    \tl_replace_all:NVn \l__beerydoc_value_choices_tl
-      \c_catcode_active_space_tl { ~ }
-    \clist_use:Vn \l__beerydoc_value_choices_tl
-      { \__beerydoc_value_choices_separator: }
-  }
-\cs_new_protected:Npn \__beerydoc_value_choices_separator:
+\cs_new_protected:Npn \__beerydoc_value_separator:
   { \ensuremath { \, \vert \, } }
 
 \NewDocumentCommand \cs { m }
