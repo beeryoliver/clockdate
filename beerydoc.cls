@@ -1,7 +1,7 @@
 % Loading the class
 
 \NeedsTeXFormat{LaTeX2e}[2023-11-01]
-\ProvidesExplClass{beerydoc}{2026-07-01}{0.0.0}{}
+\ProvidesExplClass{beerydoc}{2026-07-02}{0.0.0}{}
 \prop_gput:Nnn \g_msg_module_type_prop { beerydoc } { Class }
 
 \msg_new:nnn { beerydoc } { l3kernel }
@@ -131,7 +131,6 @@
 \bool_new:N   \l__beerydoc_code_bool
 
 \tl_new:N     \l__beerydoc_code_names_tl
-\clist_new:N  \l__beerydoc_code_names_clist
 \coffin_new:N \l__beerydoc_code_names_coffin
 \dim_new:N    \l__beerydoc_code_names_dim
 \bool_new:N   \l__beerydoc_code_names_long_bool
@@ -152,6 +151,7 @@
 % Custom macros
 
 \cs_generate_variant:Nn \tl_replace_all:Nnn { No }
+\cs_generate_variant:Nn \clist_use:nn { V }
 
 \cs_new_protected:Npn \__beerydoc_langle: { \ensuremath { \langle } }
 \cs_new_protected:Npn \__beerydoc_rangle: { \ensuremath { \rangle } }
@@ -566,13 +566,11 @@
       { ~ }
     \tl_replace_all:NVn \l__beerydoc_code_names_tl \c_catcode_active_space_tl
       { ~ }
-    \clist_set:NV \l__beerydoc_code_names_clist \l__beerydoc_code_names_tl
-    \clist_if_empty:NT \l__beerydoc_code_names_clist
-      { \msg_error:nn { beerydoc } { code-env-no-items } }
     \tl_set:Ne \l__beerydoc_code_names_tl
-      { \clist_use:Nn \l__beerydoc_code_names_clist { , } }
+      { \clist_use:Vn \l__beerydoc_code_names_tl { , } }
+    \tl_if_empty:NT \l__beerydoc_code_names_tl
+      { \msg_error:nn { beerydoc } { code-env-no-items } }
     \tl_replace_all:Nnn \l__beerydoc_code_names_tl { ~ } { \textvisiblespace }
-    \clist_set:NV \l__beerydoc_code_names_clist \l__beerydoc_code_names_tl
     \hcoffin_set:Nn \l__beerydoc_code_names_coffin
       {
         \small
@@ -581,7 +579,7 @@
           { colspec = { l } , rowsep = 0pt , colsep = 0pt }
           \toprule
           \addlinespace[2pt]
-            \expanded { \clist_use:Nn \l__beerydoc_code_names_clist { \\ } }
+            \expanded { \clist_use:Vn \l__beerydoc_code_names_tl { \\ } }
             \\
           \addlinespace[2pt]
           \bottomrule
@@ -666,11 +664,7 @@
   { \__beerydoc_syntax_end: }
 \cs_new_protected:Npn \__beerydoc_syntax:w
   {
-    \bool_if:NF \l__beerydoc_code_bool
-      { \msg_error:nn { beerydoc } { syntax-env-misused } }
-    \bool_if:NT \l__beerydoc_syntax_bool
-      { \msg_error:nn { beerydoc } { syntax-env-not-nestable } }
-    \bool_set_true:N \l__beerydoc_syntax_bool
+    \__beerydoc_syntax_init:
     \vbox_gset:Nw \g__beerydoc_syntax_box
       \dim_set:Nn \hsize
         {
@@ -689,6 +683,14 @@
   {
     \vbox_gset_end:
     \ignorespacesafterend
+  }
+\cs_new_protected:Npn \__beerydoc_syntax_init:
+  {
+    \bool_if:NF \l__beerydoc_code_bool
+      { \msg_error:nn { beerydoc } { syntax-env-misused } }
+    \bool_if:NT \l__beerydoc_syntax_bool
+      { \msg_error:nn { beerydoc } { syntax-env-not-nestable } }
+    \bool_set_true:N \l__beerydoc_syntax_bool
   }
 
 % Floats
