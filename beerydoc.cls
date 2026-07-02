@@ -1,7 +1,7 @@
 % Loading the class
 
 \NeedsTeXFormat{LaTeX2e}[2023-11-01]
-\ProvidesExplClass{beerydoc}{2026-06-30}{0.0.0}{}
+\ProvidesExplClass{beerydoc}{2026-07-01}{0.0.0}{}
 \prop_gput:Nnn \g_msg_module_type_prop { beerydoc } { Class }
 
 \msg_new:nnn { beerydoc } { l3kernel }
@@ -152,7 +152,6 @@
 % Custom macros
 
 \cs_generate_variant:Nn \tl_replace_all:Nnn { No }
-\cs_generate_variant:Nn \clist_use:nn { V }
 
 \cs_new_protected:Npn \__beerydoc_langle: { \ensuremath { \langle } }
 \cs_new_protected:Npn \__beerydoc_rangle: { \ensuremath { \rangle } }
@@ -876,18 +875,21 @@
 
 % Verbatim
 
-\cs_new_protected:Npn \__beerydoc_active_vert:w
+\cs_new_protected:Npn \__beerydoc_active_vert:
   {
-    \group_begin:
-      \char_set_active_eq:nN { `\  } \textvisiblespace
-      \char_set_active_eq:nN { `\^^I } \textvisiblespace
-      \ttfamily
-      \__beerydoc_active_vert_aux:w |
+    \mode_if_math:TF { \vert }
+      {
+        \group_begin:
+          \char_set_active_eq:nN { `\  } \textvisiblespace
+          \char_set_active_eq:nN { `\^^I } \textvisiblespace
+          \ttfamily
+          \__beerydoc_active_vert:w |
+      }
   }
-\NewDocumentCommand \__beerydoc_active_vert_aux:w { v } { #1 \@ \group_end:  }
+\NewDocumentCommand \__beerydoc_active_vert:w { v } { #1 \@ \group_end:  }
 \hook_gput_code:nnn { begindocument } { beerydoc }
   {
-    \char_set_active_eq:NN | \__beerydoc_active_vert:w
+    \char_set_active_eq:NN | \__beerydoc_active_vert:
     \char_set_catcode_active:N |
   }
 \hook_gput_code:nnn { cmd / dospecials / after } { beerydoc } { \do | }
