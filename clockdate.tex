@@ -27,7 +27,7 @@ Print the time of day and the calendar date
 
 Oliver Beery
 
-Version 1.0.0\quad\date{2026-7-1}
+Version 1.0.0\quad\date{2026-7-3}
 
 
 \section{Introduction}
@@ -705,13 +705,11 @@ Outside of \cs{calendardate}, they do not have defined behavior.
   The purpose of this function is to avoid mistakenly printing two consecutive
   periods if the month is abbreviated and ends with a period.
   Prints a period unless all of the following is true:
-
   \begin{itemize}
     \item The display of \cs{calendardate} ends with the month.
     \item The month ends with \cs{clockdate_date_month_period:}.
     \item The next token after \cs{calendardate} is a period.
   \end{itemize}
-
   If \cs{clockdate_date_month_period:} prints the period, it is followed by
   \cs{@} because the sentence does not end here.
 \end{code}
