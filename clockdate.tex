@@ -27,7 +27,7 @@ Print the time of day and the calendar date
 
 Oliver Beery
 
-Version 1.0.0\quad\date{2026-7-3}
+Version 1.0.0\quad\date{2026-7-5}
 
 
 \section{Introduction}
@@ -118,11 +118,13 @@ This section documents the commands provided by the \pkg{clockdate} package.
     \item \meta{year}|-|\meta{month}|-|\meta{day(s)}
     \item \meta{month}|-|\meta{day(s)}
     \item \meta{year}|-|\meta{month(s)}
+    \item \meta{year}
   \end{itemize}
 
-  \meta{year} must be an \meta{integer} greater than \num{100}.
+  \meta{year} and \meta{day} must be an \meta{integer}.
+  \meta{year} may be substituted with \meta{empty}|-|\meta{year} to ensure that
+  the year is always before the common era.
   \meta{month} must be an \meta{integer} from \num{1} to \num{12}.
-  \meta{day} must be an \meta{integer}.
   The calendar date must be valid.
   \date{2-29} is always valid if \meta{year} is omitted.
   If \meta{year} is provided, \date{2-29} is error-checked using the Julian
@@ -331,6 +333,19 @@ These keys modify the behavior of \cs{calendardate} (\S\ref{sec:commands}).
   The initial value is \meta{empty}.
 \end{code}
 
+\begin{code}{date/priority}
+  \begin{syntax}
+    \key{date/priority=month-day|year-month}
+  \end{syntax}
+  Depending on the values of the inputs, it may be impossible for
+  \cs{calendardate} to differentiate between typesetting
+  \meta{month}|-|\meta{day(s)} and \meta{year}|-|\meta{month(s)}.
+  This situation occurs if \meta{token list} contains exactly two fields and
+  all values within are an \meta{integer} from \num{1} to \num{12}.
+  This key sets the prioritized representation.
+  The initial value is |month-day|.
+\end{code}
+
 \begin{code}{date/order}
   \begin{syntax}
     \key{date/order=day-month-year|year-month-day|month-day-year}
@@ -508,6 +523,52 @@ These keys modify the behavior of \cs{calendardate} (\S\ref{sec:commands}).
   The initial value is | to |.
 \end{code}
 
+\subsubsection{Printing the era}
+\label{subsubsec:printera}
+
+\begin{code}{date/era}
+  \begin{syntax}
+    \key{date/era=A.D.|AD|C.E.|CE|signed-integer}
+  \end{syntax}
+  Choice key that sets the format in which the era is printed.
+  The initial value is |AD|.
+  \input{clockdate-input-era.tex}
+
+  |signed-integer| prints the year as a signed integer.
+  The |-| of a signed-integer-year is printed using \cs{textminus}.
+
+  If the calendar date ends with an era that ends with a period, then the
+  trailing era will not print an extra period if the next token after
+  \cs{calendardate} is a period.
+  If the era prints the period, it is followed by \cs{@} because the sentence
+  does not end here.
+\end{code}
+
+\begin{code}{date/era-threshold}
+  \begin{syntax}
+    \key{date/era-threshold=\meta{integer}}
+  \end{syntax}
+  The AD, CE, and the |+| of a signed-integer-year are printed only if
+  \meta{year} is less than \meta{integer}.
+  The initial value is \num{100}.
+\end{code}
+
+\begin{code}{date/era-ad-before-year}
+  \begin{syntax}
+    \key{date/era-ad-before-year=true|false}
+  \end{syntax}
+  Boolean key that sets whether the AD is printed before the year.
+  The initial value is |true|.
+\end{code}
+
+\begin{code}{date/era-separator}
+  \begin{syntax}
+    \key{date/era-separator=\meta{token list}}
+  \end{syntax}
+  Sets the separator between the year and the era to \meta{token list}.
+  The initial value is | |.
+\end{code}
+
 
 \section{Programming}
 \label{sec:programming}
@@ -579,6 +640,10 @@ They are read-only and should not be modified directly.
   The values of the keys documented in \S\ref{subsubsec:printampm}.
 \end{code}
 
+\begin{code}{\l_clockdate_date_priority_str}
+  The value of the key \key{date/priority} (\S\ref{subsec:date}).
+\end{code}
+
 \begin{code}{\l_clockdate_date_order_str}
   The value of the key \key{date/order} (\S\ref{subsec:date}).
 \end{code}
@@ -620,6 +685,16 @@ They are read-only and should not be modified directly.
     \l_clockdate_date_months_range_separator_tl
   }
   The values of the keys documented in \S\ref{subsubsec:sepmonths}.
+\end{code}
+
+\begin{code}
+  {
+    \l_clockdate_date_era_format_str,
+    \l_clockdate_date_era_threshold_int,
+    \l_clockdate_date_era_ad_before_year_bool,
+    \l_clockdate_date_era_separator_tl
+  }
+  The values of the keys documented in \S\ref{subsubsec:printera}.
 \end{code}
 
 \subsection{Variables set in \cs{clock}}
@@ -680,6 +755,7 @@ Outside of \cs{calendardate}, they do not have defined behavior.
   The value takes the same form as the \meta{month(s)} as explained for
   \cs{calendardate}.
   The value is an \meta{integer} if exactly one month is printed.
+  The value is \meta{empty} if no months are printed.
 \end{code}
 
 \begin{code}{\l_clockdate_date_day_str}
