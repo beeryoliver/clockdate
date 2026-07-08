@@ -111,12 +111,8 @@
       { \@ . \group_end: }
       { . \@ \group_end: }
   }
-\prg_new_conditional:Npnn \__clockdate_bool_if_eq:nn #1#2 { p }
-  {
-    \bool_if:nTF {#1}
-      { \bool_if:nTF {#2} { \prg_return_true:  } { \prg_return_false: } }
-      { \bool_if:nTF {#2} { \prg_return_false: } { \prg_return_true:  } }
-  }
+\cs_new:Npn \__clockdate_bool_if_eq_p:nn #1
+  { \bool_if:nF {#1} { ! } \bool_if_p:n }
 \prg_new_conditional:Npnn \__clockdate_clock_hour_if_am:n #1 { p , TF }
   {
     \bool_lazy_or:nnTF
