@@ -97,7 +97,7 @@
   { \use_none:n { \q__clockdate_end } \group_end: }
 \quark_new:N \q__clockdate_end
 \cs_new_protected:Npn \__clockdate_error_break: #1 \__clockdate_end:
-  { \group_end: }
+  { \__clockdate_end: }
 % \clockdate_end_period: needs \__clockdate_end: to be unique according to the
 % \peek_meaning:NTF test.
 \cs_new_protected:Npn \clockdate_end_period:
@@ -531,8 +531,6 @@
         \hook_disable_generic:n { cmd / date / after }
       }
   }
-% Both \__clockdate_date:nn and \__clockdate_date:n must end in the same way so
-% that \clockdate_date_month_period: works correctly.
 \cs_new_protected:Npn \__clockdate_date:nn #1#2
   {
     \__clockdate_begin:
