@@ -108,8 +108,8 @@
 \cs_new_protected:Npn \__clockdate_end_period:w \__clockdate_end:
   {
     \peek_charcode_remove:NTF .
-      { \@ . \group_end: }
-      { . \@ \group_end: }
+      { \@ . \__clockdate_end: }
+      { . \@ \__clockdate_end: }
   }
 \cs_new:Npn \__clockdate_bool_if_eq_p:nn #1
   { \bool_if:nF {#1} { ! } \bool_if_p:n }
