@@ -247,7 +247,7 @@ These keys modify the behavior of \cs{clock} (\S\ref{sec:cmds}).
 \end{code}
 
 \subsubsection{Separating the hour, minute, and second}
-\label{subsubsec:sephourminutesecond}
+\label{subsubsec:sephms}
 
 \begin{code}{clock/hour-minute-separator}
   \begin{syntax}
@@ -408,7 +408,7 @@ These keys modify the behavior of \cs{calendardate} (\S\ref{sec:cmds}).
 \end{code}
 
 \subsubsection{Separating the year, month, and day}
-\label{subsubsec:sepyearmonthday}
+\label{subsubsec:sepymd}
 
 \begin{code}{date/year-month-separator}
   \begin{syntax}
@@ -627,7 +627,7 @@ They are read-only and should not be modified directly.
     \l_clockdate_clock_hour_minute_separator_tl,
     \l_clockdate_clock_minute_second_separator_tl
   }
-  The values of the keys documented in \S\ref{subsubsec:sephourminutesecond}.
+  The values of the keys documented in \S\ref{subsubsec:sephms}.
 \end{code}
 
 \begin{code}
@@ -663,7 +663,7 @@ They are read-only and should not be modified directly.
     \l_clockdate_date_month_day_separator_tl,
     \l_clockdate_date_year_day_separator_tl
   }
-  The values of the keys documented in \S\ref{subsubsec:sepyearmonthday}.
+  The values of the keys documented in \S\ref{subsubsec:sepymd}.
 \end{code}
 
 \begin{code}
@@ -824,8 +824,8 @@ The \pkg{clockdate} package uses some ideas from the \pkg{datetime2} and
 
 \listheading
   {
-    The keys in \S\ref{subsubsec:sephourminutesecond} resemble the following
-    \pkg{datetime2} options:
+    The keys in \S\ref{subsubsec:sephms} resemble the following \pkg{datetime2}
+    options:
   }
 \begin{itemize}
   \item \key{hourminsep}
@@ -835,8 +835,8 @@ The \pkg{clockdate} package uses some ideas from the \pkg{datetime2} and
 
 \listheading
   {
-    The keys in \S\ref{subsubsec:sepyearmonthday} resemble the following
-    \pkg{datetime2} options:
+    The keys in \S\ref{subsubsec:sepymd} resemble the following \pkg{datetime2}
+    options:
   }
 \begin{itemize}
   \item \key{yearmonthsep}
