@@ -64,7 +64,7 @@ documented in \pkg{usrguide}.
 
 
 \section{Commands}
-\label{sec:commands}
+\label{sec:cmds}
 
 This section documents the commands provided by the \pkg{clockdate} package.
 
@@ -161,11 +161,10 @@ This section documents the commands provided by the \pkg{clockdate} package.
 \label{sec:keys}
 
 This section documents the keys provided by the \pkg{clockdate} package.
-Set the package keys using \cs{clockdatesetup} (\S\ref{sec:commands}).
+Set the package keys using \cs{clockdatesetup} (\S\ref{sec:cmds}).
 
 \begin{code}{overwrite-date, \date}
-  Redefines \cs{date} as equivalent to \cs{calendardate}
-  (\S\ref{sec:commands}).
+  Redefines \cs{date} as equivalent to \cs{calendardate} (\S\ref{sec:cmds}).
   This is done at the \hook{begindocument} hook so that the original definition
   remains usuable in the preamble.
   This key must be used in the preamble.
@@ -179,7 +178,7 @@ Set the package keys using \cs{clockdatesetup} (\S\ref{sec:commands}).
 \label{subsec:clock}
 
 This subsection documents the keys in path |clock|.
-These keys modify the behavior of \cs{clock} (\S\ref{sec:commands}).
+These keys modify the behavior of \cs{clock} (\S\ref{sec:cmds}).
 
 \begin{code}{clock/reset}
   Meta key that sets all the keys in path |clock| to their initial values.
@@ -215,7 +214,7 @@ These keys modify the behavior of \cs{clock} (\S\ref{sec:commands}).
 \end{code}
 
 \subsubsection{Printing the hour, minute, and second}
-\label{subsubsec:printhourminutesecond}
+\label{subsubsec:printhms}
 
 \begin{code}{clock/hour}
   \begin{syntax}
@@ -317,7 +316,7 @@ These keys modify the behavior of \cs{clock} (\S\ref{sec:commands}).
 \label{subsec:date}
 
 This subsection documents the keys in path |date|.
-These keys modify the behavior of \cs{calendardate} (\S\ref{sec:commands}).
+These keys modify the behavior of \cs{calendardate} (\S\ref{sec:cmds}).
 
 \begin{code}{date/reset}
   Meta key that sets all the keys in path |date| to their initial values.
@@ -355,7 +354,7 @@ These keys modify the behavior of \cs{calendardate} (\S\ref{sec:commands}).
 \end{code}
 
 \subsubsection{Printing the year, month, and day}
-\label{subsubsec:printyearmonthday}
+\label{subsubsec:printymd}
 
 \begin{code}{date/year}
   \begin{syntax}
@@ -583,8 +582,8 @@ This subsection documents the hooks provided by the \pkg{clockdate} package.
 
 \begin{code}{cmd/clock/after, cmd/calendardate/after, cmd/date/after}
   These generic |cmd| hooks are disabled because they would prevent the command
-  from testing whether the next token is a period
-  (See \S\ref{subsubsec:printampm} and \S\ref{subsubsec:printyearmonthday}).
+  from testing whether the next token is a period (See
+  \S\ref{subsubsec:printampm} and \S\ref{subsubsec:printymd}).
   \hook{cmd/date/after} is disabled only if the key \key{overwrite-date} is set
   (\S\ref{sec:keys}).
 \end{code}
@@ -602,8 +601,8 @@ This subsection documents the hooks provided by the \pkg{clockdate} package.
 \subsection{Variables set by \cs{clockdatesetup}}
 \label{subsec:clockdatesetup}
 
-This subsection documents the variables that are set by
-\cs{clockdatesetup} (\S\ref{sec:commands}).
+This subsection documents the variables that are set by \cs{clockdatesetup}
+(\S\ref{sec:cmds}).
 They are read-only and should not be modified directly.
 
 \begin{code}{\l_clockdate_clock_clock_str}
@@ -620,7 +619,7 @@ They are read-only and should not be modified directly.
     \l_clockdate_clock_minute_format_str,
     \l_clockdate_clock_second_format_str
   }
-  The values of the keys documented in \S\ref{subsubsec:printhourminutesecond}.
+  The values of the keys documented in \S\ref{subsubsec:printhms}.
 \end{code}
 
 \begin{code}
@@ -655,7 +654,7 @@ They are read-only and should not be modified directly.
     \l_clockdate_date_day_format_str,
     \l_clockdate_date_day_ordinal_bool
   }
-  The values of the keys documented in \S\ref{subsubsec:printyearmonthday}.
+  The values of the keys documented in \S\ref{subsubsec:printymd}.
 \end{code}
 
 \begin{code}
