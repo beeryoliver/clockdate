@@ -7,7 +7,7 @@
 % Loading the package
 
 \NeedsTeXFormat{LaTeX2e}[2023-11-01]
-\ProvidesExplPackage{clockdate}{2026-07-07}{1.0.0}
+\ProvidesExplPackage{clockdate}{2026-07-10}{1.0.0}
   {Print the time of day and the calendar date}
 
 \msg_new:nnn { clockdate } { l3kernel }
@@ -719,20 +719,20 @@
   {
     \__clockdate_date_year_month_days_chk:n {#1}
     \__clockdate_date_year_month_days_chk:n {#2}
-    \str_put_right:Nn \l_clockdate_date_day_str { , #1 -- #2 }
     \seq_put_right:Nn \l__clockdate_date_days_seq
       {
         \__clockdate_date_print_day:n {#1}
         \l_clockdate_date_days_range_separator_tl
         \__clockdate_date_print_day:n {#2}
       }
+    \str_put_right:Nn \l_clockdate_date_day_str { , #1 -- #2 }
   }
 \cs_new_protected:Npn \__clockdate_date_year_month_days_set_single:n #1
   {
     \__clockdate_date_year_month_days_chk:n {#1}
-    \str_put_right:Nn \l_clockdate_date_day_str { , #1 }
     \seq_put_right:Nn \l__clockdate_date_days_seq
       { \__clockdate_date_print_day:n {#1} }
+    \str_put_right:Nn \l_clockdate_date_day_str { , #1 }
   }
 \cs_new_protected:Npn \__clockdate_date_year_month_days_chk:n #1
   {
@@ -864,20 +864,20 @@
   {
     \__clockdate_date_month_days_chk:n {#1}
     \__clockdate_date_month_days_chk:n {#2}
-    \str_put_right:Nn \l_clockdate_date_day_str { , #1 -- #2 }
     \seq_put_right:Nn \l__clockdate_date_days_seq
       {
         \__clockdate_date_print_day:n {#1}
         \l_clockdate_date_days_range_separator_tl
         \__clockdate_date_print_day:n {#2}
       }
+    \str_put_right:Nn \l_clockdate_date_day_str { , #1 -- #2 }
   }
 \cs_new_protected:Npn \__clockdate_date_month_days_set_single:n #1
   {
     \__clockdate_date_month_days_chk:n {#1}
-    \str_put_right:Nn \l_clockdate_date_day_str { , #1 }
     \seq_put_right:Nn \l__clockdate_date_days_seq
       { \__clockdate_date_print_day:n {#1} }
+    \str_put_right:Nn \l_clockdate_date_day_str { , #1 }
   }
 \cs_new_protected:Npn \__clockdate_date_month_days_chk:n #1
   {
@@ -965,20 +965,20 @@
   {
     \__clockdate_date_year_months_chk:n {#1}
     \__clockdate_date_year_months_chk:n {#2}
-    \str_put_right:Nn \l_clockdate_date_month_str { , #1 -- #2 }
     \seq_put_right:Nn \l__clockdate_date_months_seq
       {
         \__clockdate_date_print_month:n {#1}
         \l_clockdate_date_months_range_separator_tl
         \__clockdate_date_print_month:n {#2}
       }
+    \str_put_right:Nn \l_clockdate_date_month_str { , #1 -- #2 }
   }
 \cs_new_protected:Npn \__clockdate_date_year_months_set_single:n #1
   {
     \__clockdate_date_year_months_chk:n {#1}
-    \str_put_right:Nn \l_clockdate_date_month_str { , #1 }
     \seq_put_right:Nn \l__clockdate_date_months_seq
       { \__clockdate_date_print_month:n {#1} }
+    \str_put_right:Nn \l_clockdate_date_month_str { , #1 }
   }
 \cs_new_protected:Npn \__clockdate_date_year_months_chk:n #1
   {
