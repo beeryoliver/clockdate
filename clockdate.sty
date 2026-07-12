@@ -7,7 +7,7 @@
 % Loading the package
 
 \NeedsTeXFormat{LaTeX2e}[2023-11-01]
-\ProvidesExplPackage{clockdate}{2026-07-10}{1.0.0}
+\ProvidesExplPackage{clockdate}{2026-07-12}{1.0.0}
   {Print the time of day and the calendar date}
 
 \msg_new:nnn { clockdate } { l3kernel }
@@ -205,8 +205,8 @@
   }
 \cs_new_protected:Npe \__clockdate_clock_normalize:
   {
-    \tl_replace_all:Nnn \exp_not:N \l__clockdate_clock_input_tl { : }
-      { \c_colon_str }
+    \tl_replace_all:Nnn \exp_not:N \l__clockdate_clock_input_tl
+      { : } { \c_colon_str }
     \tl_replace_all:Nnn \exp_not:N \l__clockdate_clock_input_tl
       { \exp_not:V \c__clockdate_active_colon_tl } { \c_colon_str }
     \tl_replace_all:Nnn \exp_not:N \l__clockdate_clock_input_tl
@@ -630,8 +630,8 @@
   {
     \tl_replace_all:Nnn \exp_not:N \l__clockdate_date_input_tl
       { \exp_not:V \c__clockdate_active_hyphen_tl } { - }
-    \tl_replace_all:Nnn \exp_not:N \l__clockdate_date_input_tl { -- }
-      { \exp_not:N \__clockdate_date_range_mark: }
+    \tl_replace_all:Nnn \exp_not:N \l__clockdate_date_input_tl
+      { -- } { \exp_not:N \__clockdate_date_range_mark: }
     \tl_replace_all:Nnn \exp_not:N \l__clockdate_date_input_tl
       { \exp_not:V \c__clockdate_active_comma_tl } { , }
   }
