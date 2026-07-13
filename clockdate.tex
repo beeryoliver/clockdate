@@ -108,7 +108,7 @@ This section documents the commands provided by the \pkg{clockdate} package.
   (\S\ref{subsec:clock}).
 \end{code}
 
-\begin{code}{\calendardate}
+\begin{code}{\calendardate, \Calendardate}
   \begin{syntax}
     \cs{calendardate} \sarg{} \oarg{key-value list} \marg{token list}
   \end{syntax}
@@ -154,6 +154,12 @@ This section documents the commands provided by the \pkg{clockdate} package.
   |date| for only that instance of \cs{calendardate}.
   For details on adding the optional star, see the key \key{date/star}
   (\S\ref{subsec:date}).
+
+  \cs{Calendardate} is equivalent to \cs{calendardate}, except that it sets the
+  key \key{date/capitalize-first=true} (\S\ref{subsubsec:printymd}) for only
+  that instance of \cs{Calendardate}.
+  (The value of the key \key{date/capitalize-first} may be overwritten by the
+  optional star or optional argument.)
 \end{code}
 
 
@@ -163,10 +169,11 @@ This section documents the commands provided by the \pkg{clockdate} package.
 This section documents the keys provided by the \pkg{clockdate} package.
 Set the package keys using \cs{clockdatesetup} (\S\ref{sec:cmds}).
 
-\begin{code}{overwrite-date, \date}
-  Redefines \cs{date} as equivalent to \cs{calendardate} (\S\ref{sec:cmds}).
-  This is done at the \hook{begindocument} hook so that the original definition
-  remains usuable in the preamble.
+\begin{code}{overwrite-date, \date, \Date}
+  Redefines \cs{date} as equivalent to \cs{calendardate}.
+  Defines \cs{Date} as equivalent to \cs{Calendardate}.
+  This is done at the \hook{begindocument} hook so that the original
+  definition of \cs{date} remains usuable in the preamble.
   This key must be used in the preamble.
 \end{code}
 
@@ -351,6 +358,16 @@ These keys modify the behavior of \cs{calendardate} (\S\ref{sec:cmds}).
   \end{syntax}
   Choice key that sets the order in which the year, month, and day are printed.
   The initial value is |day-month-year|.
+\end{code}
+
+\begin{code}{date/capitalize-first}
+  \begin{syntax}
+    \key{date/capitalize-first=true|false}
+  \end{syntax}
+  Boolean key that sets whether the month will be capitalized if it is printed
+  at the start of \cs{calendardate}.
+  See \cs{Calendardate} (\S\ref{sec:cmds}).
+  The initial value is |false|.
 \end{code}
 
 \subsubsection{Printing the year, month, and day}
@@ -580,12 +597,19 @@ package.
 
 This subsection documents the hooks provided by the \pkg{clockdate} package.
 
-\begin{code}{cmd/clock/after, cmd/calendardate/after, cmd/date/after}
+\begin{code}
+  {
+    cmd/clock/after,
+    cmd/calendardate/after,
+    cmd/Calendardate/after,
+    cmd/date/after,
+    cmd/Date/after
+  }
   These generic |cmd| hooks are disabled because they would prevent the command
   from testing whether the next token is a period (See
   \S\ref{subsubsec:printampm} and \S\ref{subsubsec:printymd}).
-  \hook{cmd/date/after} is disabled only if the key \key{overwrite-date} is set
-  (\S\ref{sec:keys}).
+  \hook{cmd/date/after} and \hook{cmd/Date/after} are disabled only if the key
+  \key{overwrite-date} is set (\S\ref{sec:keys}).
 \end{code}
 
 \begin{code}{clockdate/clock}
@@ -636,7 +660,12 @@ They are read-only and should not be modified directly.
   The values of the keys documented in \S\ref{subsubsec:printampm}.
 \end{code}
 
-\begin{code}{\l_clockdate_date_priority_str, \l_clockdate_date_order_str}
+\begin{code}
+  {
+    \l_clockdate_date_priority_str,
+    \l_clockdate_date_order_str,
+    \l_clockdate_date_capitalize_first_bool
+  }
   The value of the keys documented at the start of \S\ref{subsec:date}.
 \end{code}
 
@@ -780,6 +809,13 @@ Outside of \cs{calendardate}, they do not have defined behavior.
   \end{itemize}
   If \cs{clockdate_end_period:} prints the period, it is followed by \cs{@}
   because the sentence does not end here.
+\end{code}
+
+\begin{code}{\l_clockdate_date_if_capitalized_bool}
+  Use this variable in \cs{l_clockdate_date_months_mmmm_seq} and
+  \cs{l_clockdate_date_months_mmm_seq} to capitalize the month if it is printed
+  at the start of \cs{calendardate}.
+  This variable is read-only and should not be modified directly.
 \end{code}
 
 \subsection{Printing the ordinal day}
