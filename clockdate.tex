@@ -47,7 +47,7 @@ For advanced users, this package also provides robust \LaTeX3 programming
 support.
 
 \subsection{Loading the package}
-\label{subsec:loading}
+\label{subsec:load}
 
 \listheading{Requirements:}
 \begin{itemize}
@@ -368,6 +368,7 @@ These keys modify the behavior of \cs{calendardate} (\S\ref{sec:cmds}).
   at the start of \cs{calendardate}.
   See \cs{Calendardate} (\S\ref{sec:cmds}).
   The initial value is |false|.
+  See \S\ref{subsec:varmonths} for more details.
 \end{code}
 
 \subsubsection{Printing the year, month, and day}
@@ -403,6 +404,7 @@ These keys modify the behavior of \cs{calendardate} (\S\ref{sec:cmds}).
   month that ends in a period.
   If the abbreviated month prints the period, it is followed by \cs{@} because
   the sentence does not end here.
+  See \S\ref{subsec:varmonths} for more details.
 \end{code}
 
 \begin{code}{date/day}
@@ -422,6 +424,7 @@ These keys modify the behavior of \cs{calendardate} (\S\ref{sec:cmds}).
   Boolean key that sets whether to print the day as an ordinal day
   (e.g. 1\textsuperscript{st}, 4\textsuperscript{th}).
   The initial value is |false|.
+  See \S\ref{subsec:varday} to customize the display of the ordinal day.
 \end{code}
 
 \subsubsection{Separating the year, month, and day}
@@ -788,6 +791,7 @@ Outside of \cs{calendardate}, they do not have defined behavior.
 \end{code}
 
 \subsection{Printing the months}
+\label{subsec:varmonths}
 
 \begin{code}
   {\l_clockdate_date_months_mmmm_seq, \l_clockdate_date_months_mmm_seq}
@@ -819,6 +823,7 @@ Outside of \cs{calendardate}, they do not have defined behavior.
 \end{code}
 
 \subsection{Printing the ordinal day}
+\label{subsec:varday}
 
 \begin{code}{\clockdate_date_day_ordinal_format:n}
   \begin{syntax}
@@ -846,7 +851,7 @@ Outside of \cs{calendardate}, they do not have defined behavior.
 
 
 \section{References}
-\label{sec:references}
+\label{sec:ref}
 
 The \pkg{clockdate} package uses some ideas from the \pkg{datetime2} and
 \pkg{siunitx} packages.
