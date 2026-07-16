@@ -27,7 +27,7 @@ Print the time of day and the calendar date
 
 Oliver Beery
 
-Version 1.0.0\quad\date{2026-7-13}
+Version 1.0.0\quad\date{2026-7-15}
 
 
 \section{Introduction}
@@ -816,10 +816,10 @@ Outside of \cs{calendardate}, they do not have defined behavior.
 \end{code}
 
 \begin{code}{\l_clockdate_date_if_capitalized_bool}
-  Use this variable in \cs{l_clockdate_date_months_mmmm_seq} and
-  \cs{l_clockdate_date_months_mmm_seq} to capitalize the month if it is printed
-  at the start of \cs{calendardate}.
-  This variable is read-only and should not be modified directly.
+  Use in \cs{l_clockdate_date_months_(mmm|mmmm)_seq} to capitalize the month
+  if it is printed at the start of \cs{calendardate}.
+  This variable does not have defined behavior outside of
+  \cs{l_clockdate_date_months_(mmm|mmmm)_seq}.
 \end{code}
 
 \subsection{Printing the ordinal day}
