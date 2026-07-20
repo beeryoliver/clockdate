@@ -31,7 +31,7 @@ Print the time of day and the calendar date
 
 Oliver Beery
 
-Version 1.0.0\quad\date{2026-7-19}
+Version 1.0.0\quad\date{2026-7-20}
 
 
 \section{Introduction}
@@ -129,13 +129,13 @@ This section documents the commands provided by the \pkg{clockdate} package.
   \end{itemize}
 
   \meta{year} and \meta{day} must be an \meta{integer}.
-  \meta{year} may be substituted with \meta{empty}|-|\meta{year} to ensure that
-  the year is always before the common era.
   \meta{month} must be an \meta{integer} from \num{1} to \num{12}.
   The calendar date must be valid.
   \date{2-29} is always valid if \meta{year} is omitted.
   If \meta{year} is provided, \date{2-29} is error-checked using the Julian
   calendar.
+  \meta{year} may be substituted with \meta{empty}|-|\meta{year} to ensure that
+  the year is always before the common era.
 
   \meta{day(s)} must take any of the following forms:
   \begin{itemize}
