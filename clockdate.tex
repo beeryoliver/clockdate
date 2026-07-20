@@ -6,7 +6,11 @@
 \clockdatesetup
   {
       overwrite-date
-    , clock / star = { ampm = none }
+    , clock / star =
+        {
+            clocks-final-separator = { ,~or~ }
+          , clocks-pair-separator  = {  ~or~ }
+        }
     , date / star =
         {
             days-final-separator   = { ,~or~ }
@@ -27,7 +31,7 @@ Print the time of day and the calendar date
 
 Oliver Beery
 
-Version 1.0.0\quad\date{2026-7-15}
+Version 1.0.0\quad\date{2026-7-19}
 
 
 \section{Introduction}
@@ -80,13 +84,16 @@ This section documents the commands provided by the \pkg{clockdate} package.
 
 \begin{code}{\clock}
   \begin{syntax}
-    \cs{clock} \sarg{} \oarg{key-value list} \marg{token list}
+    \cs{clock} \sarg{} \oarg{key-value list} \marg{clock(s)}
   \end{syntax}
-  Prints the time of day or time-of-day range specified by \meta{token list}.
-  \meta{token list} must take either of the following forms:
+  Prints the time of day specified by \meta{clock(s)}.
+  \meta{clock(s)} must take any of the following forms:
   \begin{itemize}
-    \item \meta{clock}
-    \item \meta{clock_1}|--|\meta{clock_2}
+    \item a single clock \meta{clock}
+    \item a clock range \meta{clock_1}|--|\meta{clock_2}
+    \item
+    a comma-separated list where each item must be either a single clock
+    \meta{clock} or a clock range \meta{clock_1}|--|\meta{clock_2}
   \end{itemize}
 
   \meta{clock} must take any of the following forms:
@@ -211,15 +218,6 @@ These keys modify the behavior of \cs{clock} (\S\ref{sec:cmds}).
   The initial value is |12-hour|.
 \end{code}
 
-\begin{code}{clock/range-separator}
-  \begin{syntax}
-    \key{clock/range-separator=\meta{token list}}
-  \end{syntax}
-  Sets the separator between \meta{clock_1} and \meta{clock_2} in a time-of-day
-  range to \meta{token list}.
-  The initial value is | to |.
-\end{code}
-
 \subsubsection{Printing the hour, minute, and second}
 \label{subsubsec:printhms}
 
@@ -309,14 +307,60 @@ These keys modify the behavior of \cs{clock} (\S\ref{sec:cmds}).
   The initial value is | |.
 \end{code}
 
-\begin{code}{clock/ampm-omit-first}
+\begin{code}{clock/ampm-omit-range}
   \begin{syntax}
-    \key{clock/ampm-omit-first=true|false}
+    \key{clock/ampm-omit-range=true|false}
   \end{syntax}
-  Boolean key that sets whether \meta{clock_1} omits the am/pm in a
-  time-of-day range if \meta{clock_1} and \meta{clock_2} would either both
-  print am or both print pm.
+  Boolean key that sets whether \meta{clock_1} omits the am/pm in a clock range
+  if \meta{clock_1} and \meta{clock_2} would print the same meridiem.
   The initial value is |true|.
+\end{code}
+
+\begin{code}{clock/ampm-omit-list}
+  \begin{syntax}
+    \key{clock/ampm-omit-list=true|false}
+  \end{syntax}
+  Boolean key that sets whether each \meta{clock}---except the very
+  last---omits the am/pm if each \meta{clock} would print the same meridiem.
+  The initial value is |true|.
+\end{code}
+
+\subsubsection{Separating the clocks}
+\label{subsubsec:sepclocks}
+
+\begin{code}{clock/clocks-separator}
+  \begin{syntax}
+    \key{clock/clocks-separator=\meta{token list}}
+  \end{syntax}
+  Sets the separator between each item in \meta{clocks} to \meta{token list}.
+  The initial value is |, |.
+\end{code}
+
+\begin{code}{clock/clocks-pair-separator}
+  \begin{syntax}
+    \key{clock/clocks-pair-separator=\meta{token list}}
+  \end{syntax}
+  Sets the separator between each item in \meta{clocks} to \meta{token list} if
+  \meta{clocks} contains exactly two items.
+  The initial value is | and |.
+\end{code}
+
+\begin{code}{clock/clocks-final-separator}
+  \begin{syntax}
+    \key{clock/clocks-final-separator=\meta{token list}}
+  \end{syntax}
+  Sets the separator between the last two items in \meta{clocks} to
+  \meta{token list} if \meta{clocks} contains three or more items.
+  The initial value is |, and |.
+\end{code}
+
+\begin{code}{clock/clocks-range-separator}
+  \begin{syntax}
+    \key{clock/clocks-range-separator=\meta{token list}}
+  \end{syntax}
+  Sets the separator between \meta{clock_1} and \meta{clock_2} in a clock range
+  to \meta{token list}.
+  The initial value is | to |.
 \end{code}
 
 \subsection{\cs{calendardate}}
@@ -632,9 +676,8 @@ This subsection documents the variables that are set by \cs{clockdatesetup}
 (\S\ref{sec:cmds}).
 They are read-only and should not be modified directly.
 
-\begin{code}
-  {\l_clockdate_clock_clock_str, \l_clockdate_clock_range_separator_tl}
-  The value of the keys documented at the start of \S\ref{subsec:clock}.
+\begin{code}{\l_clockdate_clock_clock_str}
+  The value of the key \key{clock/clock} (\S\ref{subsec:clock}).
 \end{code}
 
 \begin{code}
@@ -658,9 +701,20 @@ They are read-only and should not be modified directly.
   {
     \l_clockdate_clock_ampm_format_str,
     \l_clockdate_clock_ampm_separator_tl,
-    \l_clockdate_clock_ampm_omit_first_bool
+    \l_clockdate_clock_ampm_omit_range_bool,
+    \l_clockdate_clock_ampm_omit_list_bool
   }
   The values of the keys documented in \S\ref{subsubsec:printampm}.
+\end{code}
+
+\begin{code}
+  {
+    \l_clockdate_clock_clocks_separator_tl,
+    \l_clockdate_clock_clocks_pair_separator_tl,
+    \l_clockdate_clock_clocks_final_separator_tl,
+    \l_clockdate_clock_clocks_range_separator_tl
+  }
+  The value of the keys documented in \S\ref{subsubsec:sepclocks}.
 \end{code}
 
 \begin{code}
@@ -727,40 +781,11 @@ They are read-only and should not be modified directly.
 This subsection documents the variables that are set within \cs{clock}.
 Outside of \cs{clock}, they do not have defined behavior.
 
-\begin{code}
-  {
-    \l_clockdate_clock_hour_int,
-    \l_clockdate_clock_minute_int,
-    \l_clockdate_clock_second_int
-  }
-  The value of \meta{hour}, \meta{minute}, and \meta{second}.
-  The value is \num{-1} if omitted.
-\end{code}
-
-\begin{code}
-  {
-    \l_clockdate_clock_hour_range_int,
-    \l_clockdate_clock_minute_range_int,
-    \l_clockdate_clock_second_range_int
-  }
-  The value of \meta{hour_2}, \meta{minute_2}, and \meta{second_2} in a
-  time-of-day range.
-  The value is \num{-1} if omitted.
-\end{code}
-
-\begin{code}{\l_clockdate_clock_ampm_print_bool}
-  Boolean that stores whether the am/pm will be printed.
-  The value is |true| if \key{clock/clock=12-hour} (\S\ref{subsec:clock}) and
-  \key[neq]{clock/ampm=none} (\S\ref{subsubsec:printampm}).
-\end{code}
-
-\begin{code}{\l_clockdate_clock_ampm_print_first_bool}
-  Boolean that stores whether \meta{clock_1} prints the am/pm in a
-  time-of-day range.
-  Equivalent to \cs{l_clockdate_clock_ampm_print_bool} if printing only a
-  single \meta{clock}.
-  This variable should not be confused with
-  \cs{l_clockdate_clock_ampm_omit_first_bool} (\S\ref{subsubsec:printampm}).
+\begin{code}{\l_clockdate_clock_clocks_str}
+  The value of \meta{clock(s)}.
+  The value takes the same form as the \meta{clock(s)} as explained for
+  \cs{clock}.
+  The \meta{hour}, \meta{minute}, and \meta{second} are separated by a colon.
 \end{code}
 
 \subsection{Variables set in \cs{calendardate}}
@@ -881,8 +906,9 @@ The \pkg{clockdate} package uses some ideas from the \pkg{datetime2} and
 
 \listheading
   {
-    The keys in \S\ref{subsubsec:sepdays} and \S\ref{subsubsec:sepmonths} use a
-    similar naming convention to the following \pkg{siunitx} options:
+    The keys in \S\ref{subsubsec:sepclocks}, \S\ref{subsubsec:sepdays}, and
+    \S\ref{subsubsec:sepmonths} use a similar naming convention to the
+    following \pkg{siunitx} options:
   }
 \begin{itemize}
   \item \key{list-separator}
