@@ -7,7 +7,7 @@
 % Loading the package
 
 \NeedsTeXFormat{LaTeX2e}[2023-11-01]
-\ProvidesExplPackage{clockdate}{2026-07-19}{1.0.0}
+\ProvidesExplPackage{clockdate}{2026-07-21}{1.0.0}
   {Print the time of day and the calendar date}
 
 \msg_new:nnn { clockdate } { l3kernel }
@@ -119,6 +119,12 @@
   }
 \cs_new:Npn \__clockdate_bool_if_eq_p:nn #1
   { \bool_if:nF {#1} { ! } \bool_if_p:n }
+\cs_new:Npn \__clockdate_tl_trim_spaces_braces:n #1
+  {
+    \exp_last_unbraced:Ne \__clockdate_use_delimit_by_q_stop:w
+      { \tl_trim_spaces:n {#1} } \q__clockdate_stop
+  }
+\cs_new:Npn \__clockdate_use_delimit_by_q_stop:w #1 \q__clockdate_stop {#1}
 \prg_new_conditional:Npnn \__clockdate_clock_hour_if_am:n #1 { TF }
   {
     \bool_lazy_or:nnTF
@@ -132,12 +138,6 @@
       { \int_compare_p:nNn {#1} < { 12 } }
       { \int_compare_p:nNn {#1} = { 24 } }
   }
-\cs_new:Npn \__clockdate_tl_trim_spaces_braces:n #1
-  {
-    \exp_last_unbraced:Ne \__clockdate_use_delimit_by_q_stop:w
-      { \tl_trim_spaces:n {#1} } \q__clockdate_stop
-  }
-\cs_new:Npn \__clockdate_use_delimit_by_q_stop:w #1 \q__clockdate_stop {#1}
 
 % Hooks
 
