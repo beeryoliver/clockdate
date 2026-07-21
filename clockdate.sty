@@ -942,9 +942,9 @@
     \bool_lazy_and:nnT
       { \l__clockdate_date_unknown_bool }
       { \str_if_eq_p:ee \l_clockdate_date_priority_str { year-month } }
-      { \__clockdate_date_month_days_set_switch: }
+      { \__clockdate_date_month_days_to_year_months: }
   }
-\cs_new_protected:Npn \__clockdate_date_month_days_set_switch:
+\cs_new_protected:Npn \__clockdate_date_month_days_to_year_months:
   {
     \str_set_eq:NN \l_clockdate_date_year_str \l_clockdate_date_month_str
     \str_set_eq:NN \l_clockdate_date_month_str \l_clockdate_date_day_str
