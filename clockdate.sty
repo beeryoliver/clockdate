@@ -405,11 +405,6 @@
       {
         \__clockdate_bool_if_eq:nnTF {#1}
           { \__clockdate_clock_hour_if_am_p:n {#2} }
-          {
-            \exp_args:Ne \__clockdate_clock_clocks_if_same_ampm_loop:nnnnnnn
-              { \__clockdate_clock_hour_if_am_p:n {#2} }
-          }
-          { \use_i_delimit_by_q_recursion_stop:nw { \c_false_bool } }
       }
       {
         \bool_lazy_and:nnTF
@@ -421,12 +416,12 @@
             \__clockdate_bool_if_eq_p:nn {#1}
               { \__clockdate_clock_hour_if_am_p:n {#5} }
           }
-          {
-            \exp_args:Ne \__clockdate_clock_clocks_if_same_ampm_loop:nnnnnnn
-              { \__clockdate_clock_hour_if_am_p:n {#2} }
-          }
-          { \use_i_delimit_by_q_recursion_stop:nw { \c_false_bool } }
       }
+      {
+        \exp_args:Ne \__clockdate_clock_clocks_if_same_ampm_loop:nnnnnnn
+          { \__clockdate_clock_hour_if_am_p:n {#2} }
+      }
+      { \use_i_delimit_by_q_recursion_stop:nw { \c_false_bool } }
   }
 \cs_new_protected:Npn \__clockdate_clock_set_loop:nnnnnn #1#2#3#4#5#6
   {
