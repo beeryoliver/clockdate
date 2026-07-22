@@ -297,17 +297,23 @@
         }
       }
       {
-        \msg_error:nnV { clockdate } { time-of-day-invalid }
-          \l__clockdate_clock_input_tl
-        \__clockdate_error_break:
+        \clist_map_break:n
+          {
+            \msg_error:nnV { clockdate } { time-of-day-invalid }
+              \l__clockdate_clock_input_tl
+            \__clockdate_error_break:
+          }
       }
   }
 \cs_new_protected:Npn \__clockdate_clock_set_hour:n #1
   {
     \int_compare:nF { 0 <= #1 < 25 }
       {
-        \msg_error:nnn { clockdate } { hour-invalid } {#1}
-        \__clockdate_error_break:
+        \clist_map_break:n
+          {
+            \msg_error:nnn { clockdate } { hour-invalid } {#1}
+            \__clockdate_error_break:
+          }
       }
     \tl_put_right:Nn \l__clockdate_clock_clocks_tl { {#1} { } { } }
     \str_put_right:Nn \l_clockdate_clock_clocks_str {#1}
@@ -328,8 +334,11 @@
     \use_none:nn
     \prg_break_point:
       {
-        \msg_error:nnnn { clockdate } { hour-minute-invalid } {#1} {#2}
-        \__clockdate_error_break:
+        \clist_map_break:n
+          {
+            \msg_error:nnnn { clockdate } { hour-minute-invalid } {#1} {#2}
+            \__clockdate_error_break:
+          }
       }
     \tl_put_right:Nn \l__clockdate_clock_clocks_tl { {#1} {#2} { } }
     \str_put_right:Nn \l_clockdate_clock_clocks_str { #1 : #2 }
@@ -354,9 +363,12 @@
     \use_none:nn
     \prg_break_point:
       {
-        \msg_error:nnnnn { clockdate } { hour-minute-second-invalid }
-          {#1} {#2} {#3}
-        \__clockdate_error_break:
+        \clist_map_break:n
+          {
+            \msg_error:nnnnn { clockdate } { hour-minute-second-invalid }
+              {#1} {#2} {#3}
+            \__clockdate_error_break:
+          }
       }
     \tl_put_right:Nn \l__clockdate_clock_clocks_tl { {#1} {#2} {#3} }
     \str_put_right:Nn \l_clockdate_clock_clocks_str { #1 : #2 : #3 }
