@@ -31,7 +31,7 @@ Print the time of day and the calendar date
 
 Oliver Beery
 
-Version 1.0.0\quad\date{2026-7-20}
+Version 1.0.0\quad\date{2026-7-21}
 
 
 \section{Introduction}
@@ -117,10 +117,10 @@ This section documents the commands provided by the \pkg{clockdate} package.
 
 \begin{code}{\calendardate, \Calendardate}
   \begin{syntax}
-    \cs{calendardate} \sarg{} \oarg{key-value list} \marg{token list}
+    \cs{calendardate} \sarg{} \oarg{key-value list} \marg{date(s)}
   \end{syntax}
-  Prints the calendar date specified by \meta{token list}.
-  \meta{token list} must take any of the following forms:
+  Prints the calendar date specified by \meta{date(s)}.
+  \meta{date(s)} must take any of the following forms:
   \begin{itemize}
     \item \meta{year}|-|\meta{month}|-|\meta{day(s)}
     \item \meta{month}|-|\meta{day(s)}
@@ -155,7 +155,7 @@ This section documents the commands provided by the \pkg{clockdate} package.
     \meta{month} or a month range \meta{month_1}|--|\meta{month_2}
   \end{itemize}
 
-  \meta{token list} must not contain |--| at the top level unless it is used to
+  \meta{date(s)} must not contain |--| at the top level unless it is used to
   delimit a day or month range.
   Adding the optional argument sets the keys in \meta{key-value list} in path
   |date| for only that instance of \cs{calendardate}.
@@ -390,8 +390,8 @@ These keys modify the behavior of \cs{calendardate} (\S\ref{sec:cmds}).
   Depending on the values of the inputs, it may be impossible for
   \cs{calendardate} to differentiate between typesetting
   \meta{month}|-|\meta{day(s)} and \meta{year}|-|\meta{month(s)}.
-  This situation occurs if \meta{token list} contains exactly two fields and
-  all values within are an \meta{integer} from \num{1} to \num{12}.
+  This situation occurs if \meta{date(s)} contains exactly two fields and all
+  values within are an \meta{integer} from \num{1} to \num{12}.
   This key sets the prioritized representation.
   The initial value is |month-day|.
 \end{code}
