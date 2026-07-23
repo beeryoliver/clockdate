@@ -7,7 +7,7 @@
 % Loading the package
 
 \NeedsTeXFormat{LaTeX2e}[2023-11-01]
-\ProvidesExplPackage{clockdate}{2026-07-21}{1.0.0}
+\ProvidesExplPackage{clockdate}{2026-07-23}{1.0.0}
   {Print the time of day and the calendar date}
 
 \msg_new:nnn { clockdate } { l3kernel }
@@ -28,6 +28,8 @@
 \int_new:N \l__clockdate_clock_clocks_count_int
 \bool_new:N \l__clockdate_clock_ampm_print_bool
 \bool_new:N \l__clockdate_clock_clocks_if_same_ampm_bool
+\bool_set_true:N \l__clockdate_clock_clocks_if_same_ampm_bool
+\bool_new:N \l__clockdate_clock_clocks_if_same_ampm_test_bool
 \tl_new:N \l__clockdate_clock_clocks_tl
 
 \str_new:N \l_clockdate_clock_clocks_str
@@ -111,7 +113,7 @@
       { \@ . \__clockdate_end: }
       { . \@ \__clockdate_end: }
   }
-\prg_new_conditional:Npnn \__clockdate_bool_if_eq:nn #1#2 { TF }
+\prg_new_conditional:Npnn \__clockdate_bool_if_eq:nn #1#2 { F }
   {
     \bool_if:nTF {#1}
       { \bool_if:nTF {#2} { \prg_return_true:  } { \prg_return_false: } }
@@ -242,13 +244,6 @@
           { \__clockdate_clock_set_range:w ##1 \q__clockdate_stop }
           { \__clockdate_clock_set_single:n {##1} }
       }
-    \bool_lazy_and:nnT
-      { \l__clockdate_clock_ampm_print_bool }
-      { \l_clockdate_clock_ampm_omit_list_bool }
-      {
-        \bool_set:Nn \l__clockdate_clock_clocks_if_same_ampm_bool
-          { \__clockdate_clock_clocks_if_same_ampm_p: }
-      }
     \exp_after:wN \__clockdate_clock_set_loop:nnnnnn
       \l__clockdate_clock_clocks_tl
       { \q_recursion_tail } { } { } { } { } { }
@@ -315,8 +310,23 @@
             \__clockdate_error_break:
           }
       }
+    \__clockdate_clock_if_same_ampm:n {#1}
     \tl_put_right:Nn \l__clockdate_clock_clocks_tl { {#1} { } { } }
     \str_put_right:Nn \l_clockdate_clock_clocks_str {#1}
+  }
+\cs_new_protected:Npn \__clockdate_clock_if_same_ampm:n #1
+  {
+    \bool_set:Nn \l__clockdate_clock_clocks_if_same_ampm_test_bool
+      { \__clockdate_clock_hour_if_am_p:n {#1} }
+    \cs_set_eq:NN \__clockdate_clock_if_same_ampm:n
+      \__clockdate_clock_if_same_ampm_next:n
+  }
+\cs_new_protected:Npn \__clockdate_clock_if_same_ampm_next:n #1
+  {
+    \__clockdate_bool_if_eq:nnF
+      { \l__clockdate_clock_clocks_if_same_ampm_test_bool }
+      { \__clockdate_clock_hour_if_am_p:n {#1} }
+      { \bool_set_false:N \l__clockdate_clock_clocks_if_same_ampm_bool }
   }
 \cs_new_protected:Npn \__clockdate_clock_set_hour_minute:nn #1#2
   {
@@ -372,56 +382,6 @@
       }
     \tl_put_right:Nn \l__clockdate_clock_clocks_tl { {#1} {#2} {#3} }
     \str_put_right:Nn \l_clockdate_clock_clocks_str { #1 : #2 : #3 }
-  }
-\cs_new:Npn \__clockdate_clock_clocks_if_same_ampm_p:
-  {
-    \exp_after:wN \__clockdate_clock_clocks_if_same_ampm_start:nnnnnn
-      \l__clockdate_clock_clocks_tl
-      { \q_recursion_tail } { } { } { } { } { } { }
-    \q_recursion_stop
-  }
-\cs_new:Npn \__clockdate_clock_clocks_if_same_ampm_start:nnnnnn #1#2#3#4#5#6
-  {
-    \tl_if_empty:nTF {#4}
-      {
-        \exp_args:Ne \__clockdate_clock_clocks_if_same_ampm_loop:nnnnnnn
-          { \__clockdate_clock_hour_if_am_p:n {#1} }
-      }
-      {
-        \__clockdate_bool_if_eq:nnTF
-          { \__clockdate_clock_hour_if_am_p:n {#1} }
-          { \__clockdate_clock_hour_if_am_p:n {#4} }
-          {
-            \exp_args:Ne \__clockdate_clock_clocks_if_same_ampm_loop:nnnnnnn
-              { \__clockdate_clock_hour_if_am_p:n {#1} }
-          }
-          { \use_i_delimit_by_q_recursion_stop:nw { \c_false_bool } }
-      }
-  }
-\cs_new:Npn \__clockdate_clock_clocks_if_same_ampm_loop:nnnnnnn #1#2#3#4#5#6#7
-  {
-    \quark_if_recursion_tail_stop_do:nn {#2} { \c_true_bool }
-    \tl_if_empty:nTF {#5}
-      {
-        \__clockdate_bool_if_eq:nnTF {#1}
-          { \__clockdate_clock_hour_if_am_p:n {#2} }
-      }
-      {
-        \bool_lazy_and:nnTF
-          {
-            \__clockdate_bool_if_eq_p:nn {#1}
-              { \__clockdate_clock_hour_if_am_p:n {#2} }
-          }
-          {
-            \__clockdate_bool_if_eq_p:nn {#1}
-              { \__clockdate_clock_hour_if_am_p:n {#5} }
-          }
-      }
-      {
-        \exp_args:Ne \__clockdate_clock_clocks_if_same_ampm_loop:nnnnnnn
-          { \__clockdate_clock_hour_if_am_p:n {#2} }
-      }
-      { \use_i_delimit_by_q_recursion_stop:nw { \c_false_bool } }
   }
 \cs_new_protected:Npn \__clockdate_clock_set_loop:nnnnnn #1#2#3#4#5#6
   {
