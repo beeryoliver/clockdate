@@ -7,7 +7,7 @@
 % Loading the package
 
 \NeedsTeXFormat{LaTeX2e}[2023-11-01]
-\ProvidesExplPackage{clockdate}{2026-07-23}{1.0.0}
+\ProvidesExplPackage{clockdate}{2026-07-24}{1.0.0}
   {Print the time of day and the calendar date}
 
 \msg_new:nnn { clockdate } { l3kernel }
@@ -27,6 +27,7 @@
 \int_new:N \l__clockdate_clock_clocks_step_int
 \int_new:N \l__clockdate_clock_clocks_count_int
 \bool_new:N \l__clockdate_clock_ampm_print_bool
+\bool_set_true:N \l__clockdate_clock_ampm_print_bool
 \bool_new:N \l__clockdate_clock_clocks_if_same_ampm_bool
 \bool_set_true:N \l__clockdate_clock_clocks_if_same_ampm_bool
 \bool_new:N \l__clockdate_clock_clocks_if_same_ampm_test_bool
@@ -208,11 +209,12 @@
 \cs_new_protected:Npn \__clockdate_clock_init:
   {
     \str_clear:N \l_clockdate_clock_clocks_str
-    \bool_set:Nn \l__clockdate_clock_ampm_print_bool
+    \bool_lazy_or:nnT
+      { \str_if_eq_p:ee \l_clockdate_clock_clock_str { 24-hour } }
+      { \str_if_eq_p:ee \l_clockdate_clock_ampm_format_str { none } }
       {
-        \bool_lazy_and_p:nn
-          { \str_if_eq_p:ee \l_clockdate_clock_clock_str { 12-hour } }
-          { ! \str_if_eq_p:ee \l_clockdate_clock_ampm_format_str { none } }
+        \bool_set_false:N \l__clockdate_clock_ampm_print_bool
+        \cs_set_eq:NN \__clockdate_clock_if_same_ampm:n \use_none:n
       }
   }
 \cs_new_protected:Npe \__clockdate_clock_normalize:
