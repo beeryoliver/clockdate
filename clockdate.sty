@@ -7,7 +7,7 @@
 % Loading the package
 
 \NeedsTeXFormat{LaTeX2e}[2023-11-01]
-\ProvidesExplPackage{clockdate}{2026-07-24}{1.0.0}
+\ProvidesExplPackage{clockdate}{2026-07-25}{1.0.0}
   {Print the time of day and the calendar date}
 
 \msg_new:nnn { clockdate } { l3kernel }
@@ -114,32 +114,24 @@
       { \@ . \__clockdate_end: }
       { . \@ \__clockdate_end: }
   }
-\prg_new_conditional:Npnn \__clockdate_bool_if_eq:nn #1#2 { F }
+\prg_new_conditional:Npnn \__clockdate_bool_if_eq:nn #1#2 { p , F }
   {
     \bool_if:nTF {#1}
       { \bool_if:nTF {#2} { \prg_return_true:  } { \prg_return_false: } }
       { \bool_if:nTF {#2} { \prg_return_false: } { \prg_return_true:  } }
   }
-\cs_new:Npn \__clockdate_bool_if_eq_p:nn #1
-  { \bool_if:nF {#1} { ! } \bool_if_p:n }
 \cs_new:Npn \__clockdate_tl_trim_spaces_braces:n #1
   {
     \exp_last_unbraced:Ne \__clockdate_use_delimit_by_q_stop:w
       { \tl_trim_spaces:n {#1} } \q__clockdate_stop
   }
 \cs_new:Npn \__clockdate_use_delimit_by_q_stop:w #1 \q__clockdate_stop {#1}
-\prg_new_conditional:Npnn \__clockdate_clock_hour_if_am:n #1 { TF }
+\prg_new_conditional:Npnn \__clockdate_clock_hour_if_am:n #1 { p , TF }
   {
     \bool_lazy_or:nnTF
       { \int_compare_p:nNn {#1} < { 12 } }
       { \int_compare_p:nNn {#1} = { 24 } }
       { \prg_return_true: } { \prg_return_false: }
-  }
-\cs_new:Npn \__clockdate_clock_hour_if_am_p:n #1
-  {
-    \bool_lazy_or_p:nn
-      { \int_compare_p:nNn {#1} < { 12 } }
-      { \int_compare_p:nNn {#1} = { 24 } }
   }
 
 % Hooks
