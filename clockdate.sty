@@ -1110,14 +1110,12 @@
             { 1 } { \l_clockdate_date_year_str }
             { 0 }
             {
-              \str_if_eq:eeTF \l_clockdate_date_era_format_str
-                { signed-integer }
+              \str_if_eq:eeTF \l_clockdate_date_era_format_str { integer }
                 { 0 } { 1 }
             }
             { -1 }
             {
-              \str_if_eq:eeTF \l_clockdate_date_era_format_str
-                { signed-integer }
+              \str_if_eq:eeTF \l_clockdate_date_era_format_str { integer }
                 { \exp_after:wN \use_none:n \l_clockdate_date_year_str }
                 { \int_eval:n { 1 - \l_clockdate_date_year_str } }
             }
@@ -1220,15 +1218,9 @@
             }
             { \l_clockdate_date_era_separator_tl BCE \@ }
         }
-        { signed-integer }
+        { integer }
         {
-          \int_compare:nNnTF \l_clockdate_date_year_str > { -1 }
-            {
-              \int_compare:nNnT \l_clockdate_date_year_str <
-                \l_clockdate_date_era_threshold_int
-                { + }
-            }
-            { \textminus }
+          \int_compare:nNnT \l_clockdate_date_year_str < 0 { \textminus }
           \l__clockdate_tmp_str
         }
       }
@@ -1485,7 +1477,7 @@
         \l_clockdate_date_months_range_separator_tl
     , months-range-separator .value_required:n = true
 
-    , era .choices:nn = { A.D. , AD , C.E. , CE , signed-integer }
+    , era .choices:nn = { A.D. , AD , C.E. , CE , integer }
         { \str_set:Nn \l_clockdate_date_era_format_str {#1} }
     , era .value_required:n = true
 
