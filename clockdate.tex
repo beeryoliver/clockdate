@@ -31,7 +31,7 @@ Print the time of day and the calendar date
 
 Oliver Beery
 
-Version 1.0.0\quad\date{2026-7-21}
+Version 1.0.0\quad\date{2026-7-24}
 
 
 \section{Introduction}
@@ -591,14 +591,15 @@ These keys modify the behavior of \cs{calendardate} (\S\ref{sec:cmds}).
 
 \begin{code}{date/era}
   \begin{syntax}
-    \key{date/era=A.D.|AD|C.E.|CE|signed-integer}
+    \key{date/era=A.D.|AD|C.E.|CE|integer}
   \end{syntax}
   Choice key that sets the format in which the era is printed.
   The initial value is |AD|.
   \input{clockdate-input-era.tex}
 
-  |signed-integer| prints the year as a signed integer.
-  The |-| of a signed-integer-year is printed using \cs{textminus}.
+  |integer| prints the year as an integer which may be positive, zero, or
+  negative.
+  Negative years are printed using \cs{textminus}.
 
   If the calendar date ends with an era that ends with a period, then the
   trailing era will not print an extra period if the next token after
@@ -611,8 +612,7 @@ These keys modify the behavior of \cs{calendardate} (\S\ref{sec:cmds}).
   \begin{syntax}
     \key{date/era-threshold=\meta{integer}}
   \end{syntax}
-  The AD, CE, and the |+| of a signed-integer-year are printed only if
-  \meta{year} is less than \meta{integer}.
+  The AD and CE are printed only if \meta{year} is less than \meta{integer}.
   The initial value is \num{100}.
 \end{code}
 
