@@ -599,7 +599,6 @@ These keys modify the behavior of \cs{calendardate} (\S\ref{sec:cmds}).
 
   |integer| prints the year as an integer which may be positive, zero, or
   negative.
-  Negative years are printed using \cs{textminus}.
 
   If the calendar date ends with an era that ends with a period, then the
   trailing era will not print an extra period if the next token after
@@ -630,6 +629,42 @@ These keys modify the behavior of \cs{calendardate} (\S\ref{sec:cmds}).
   \end{syntax}
   Sets the separator between the year and the era to \meta{token list}.
   The initial value is | |.
+\end{code}
+
+\begin{code}{date/era-ad-before-year-separator}
+  \begin{syntax}
+    \key{date/era-ad-before-year-separator=\meta{token list}}
+  \end{syntax}
+  Sets the separator between the year and the AD to \meta{token list} if
+  \key{date/era-ad-before-year=true}.
+  The initial value is | |.
+\end{code}
+
+\begin{code}{date/era-positive-year-prefix}
+  \begin{syntax}
+    \key{date/era-positive-year-prefix=\meta{token list}}
+  \end{syntax}
+  Prepends \meta{token list} to the printed year if \key{date/era=integer} and
+  the year is positive.
+  The initial value is \meta{empty}.
+\end{code}
+
+\begin{code}{date/era-negative-year-prefix}
+  \begin{syntax}
+    \key{date/era-negative-year-prefix=\meta{token list}}
+  \end{syntax}
+  Prepends \meta{token list} to the printed year if \key{date/era=integer} and
+  the year is negative.
+  The initial value is \cs{textminus}.
+\end{code}
+
+\begin{code}{date/era-zero-year-prefix}
+  \begin{syntax}
+    \key{date/era-zero-year-prefix=\meta{token list}}
+  \end{syntax}
+  Prepends \meta{token list} to the printed year if \key{date/era=integer} and
+  the year is zero.
+  The initial value is \meta{empty}.
 \end{code}
 
 
@@ -771,7 +806,11 @@ They are read-only and should not be modified directly.
     \l_clockdate_date_era_format_str,
     \l_clockdate_date_era_threshold_int,
     \l_clockdate_date_era_ad_before_year_bool,
-    \l_clockdate_date_era_separator_tl
+    \l_clockdate_date_era_separator_tl,
+    \l_clockdate_date_era_ad_before_year_separator_tl,
+    \l_clockdate_date_era_positive_year_prefix_tl,
+    \l_clockdate_date_era_negative_year_prefix_tl,
+    \l_clockdate_date_era_zero_year_prefix_tl
   }
   The values of the keys documented in \S\ref{subsubsec:printera}.
 \end{code}
