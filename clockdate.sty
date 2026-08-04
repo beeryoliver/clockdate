@@ -288,8 +288,7 @@
       {
         \seq_map_break:n
           {
-            \msg_error:nnV { clockdate } { time-of-day-invalid }
-              \l__clockdate_clock_input_tl
+            \msg_error:nnn { clockdate } { time-of-day-invalid } {#1}
             \__clockdate_error_break:
           }
       }
