@@ -7,7 +7,7 @@
 % Loading the package
 
 \NeedsTeXFormat{LaTeX2e}[2023-11-01]
-\ProvidesExplPackage{clockdate}{2026-07-27}{1.0.0}
+\ProvidesExplPackage{clockdate}{2026-08-04}{1.0.0}
   {Print the time of day and the calendar date}
 
 \msg_new:nnn { clockdate } { l3kernel }
@@ -90,10 +90,11 @@
 \tl_new:N \l__clockdate_tmp_tl
 \str_new:N \l__clockdate_tmp_str
 \int_new:N \l__clockdate_tmp_int
-\clist_new:N \l__clockdate_tmp_clist
+\seq_new:N \l__clockdate_tmp_seq
 
 % Some functions
 
+\cs_generate_variant:Nn \seq_set_from_clist:Nn { NV }
 \cs_new_eq:NN \__clockdate_begin: \group_begin:
 \cs_new_protected:Npn \__clockdate_end:
   { \use_none:n { \q__clockdate_end } \group_end: }
@@ -221,15 +222,15 @@
   }
 \cs_new_protected:Npn \__clockdate_clock_set:
   {
-    \clist_set:NV \l__clockdate_tmp_clist \l__clockdate_clock_input_tl
-    \clist_if_empty:NT \l__clockdate_tmp_clist
+    \seq_set_from_clist:NV \l__clockdate_tmp_seq \l__clockdate_clock_input_tl
+    \seq_if_empty:NT \l__clockdate_tmp_seq
       {
         \msg_error:nn { clockdate } { clocks-empty }
         \__clockdate_error_break:
       }
     \int_set:Nn \l__clockdate_clock_clocks_count_int
-      { \clist_count:N \l__clockdate_tmp_clist }
-    \clist_map_inline:Nn \l__clockdate_tmp_clist
+      { \seq_count:N \l__clockdate_tmp_seq }
+    \seq_map_inline:Nn \l__clockdate_tmp_seq
       {
         \str_if_empty:NF \l_clockdate_clock_clocks_str
           { \str_put_right:Nn \l_clockdate_clock_clocks_str { , } }
@@ -285,7 +286,7 @@
         }
       }
       {
-        \clist_map_break:n
+        \seq_map_break:n
           {
             \msg_error:nnV { clockdate } { time-of-day-invalid }
               \l__clockdate_clock_input_tl
@@ -297,7 +298,7 @@
   {
     \int_compare:nF { 0 <= #1 < 25 }
       {
-        \clist_map_break:n
+        \seq_map_break:n
           {
             \msg_error:nnn { clockdate } { hour-invalid } {#1}
             \__clockdate_error_break:
@@ -339,7 +340,7 @@
     \use_none:nn
     \prg_break_point:
       {
-        \clist_map_break:n
+        \seq_map_break:n
           {
             \msg_error:nnnn { clockdate } { hour-minute-invalid } {#1} {#2}
             \__clockdate_error_break:
@@ -368,7 +369,7 @@
     \use_none:nn
     \prg_break_point:
       {
-        \clist_map_break:n
+        \seq_map_break:n
           {
             \msg_error:nnnnn { clockdate } { hour-minute-second-invalid }
               {#1} {#2} {#3}
