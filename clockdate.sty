@@ -7,7 +7,7 @@
 % Loading the package
 
 \NeedsTeXFormat{LaTeX2e}[2023-11-01]
-\ProvidesExplPackage{clockdate}{2026-08-04}{1.0.0}
+\ProvidesExplPackage{clockdate}{2026-08-05}{1.0.0}
   {Print the time of day and the calendar date}
 
 \msg_new:nnn { clockdate } { l3kernel }
@@ -288,7 +288,7 @@
       {
         \seq_map_break:n
           {
-            \msg_error:nnn { clockdate } { time-of-day-invalid } {#1}
+            \msg_error:nnn { clockdate } { clock-invalid } {#1}
             \__clockdate_error_break:
           }
       }
@@ -656,7 +656,7 @@
                 }
             }
           }
-          { \msg_error:nnn { clockdate } { calendar-date-invalid } {#1} }
+          { \msg_error:nnn { clockdate } { date-invalid } {#1} }
       }
       {
         \str_set:Ne \l_clockdate_date_year_str
@@ -689,7 +689,7 @@
                 }
             }
           }
-          { \msg_error:nnn { clockdate } { calendar-date-invalid } {#1} }
+          { \msg_error:nnn { clockdate } { date-invalid } {#1} }
       }
   }
 \cs_new_protected:Npn \__clockdate_date_init:
@@ -1569,7 +1569,7 @@
 \msg_new:nnn { clockdate } { math-mode-invalid }
   { '\iow_char:N \\ #1'~ invalid~ in~ math~ mode~ \msg_line_context:. }
 % Messages used in \clock.
-\msg_new:nnn { clockdate } { time-of-day-invalid }
+\msg_new:nnn { clockdate } { clock-invalid }
   {
     Invalid~ time~ of~ day~ '#1'~ \msg_line_context:. \\
     \msg_see_documentation_text:n { clockdate }
@@ -1592,7 +1592,7 @@
     \iow_indent:n { hour:~ '#1' \\ minute:~ '#2' \\ second:~ '#3' }
   }
 % Messages used in \calendardate.
-\msg_new:nnn { clockdate } { calendar-date-invalid }
+\msg_new:nnn { clockdate } { date-invalid }
   {
     Invalid~ calendar~ date~ '#1'~ \msg_line_context:. \\
     \msg_see_documentation_text:n { clockdate }
