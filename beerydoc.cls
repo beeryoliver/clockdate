@@ -61,7 +61,7 @@
 \RequirePackage { siunitx }
 \sisetup { list-final-separator = { ,~ and~ } , mode = math }
 \RequirePackage { mathtools }
-\DeclarePairedDelimiter\abs{\lvert}{\rvert}
+\DeclarePairedDelimiter \abs { \lvert } { \rvert }
 \cs_set_eq:NN \muskipeval \muskip_eval:n
 \RequirePackage { xcolor }
 
@@ -352,12 +352,7 @@
 \cs_set_protected:Npn \__beerydoc_tmp:Nn #1#2
   {
     \cs_new_protected:Npn #1 ##1
-      {
-        \group_begin:
-          \ttfamily
-          [ #2 ]
-        \group_end:
-      }
+      { \group_begin: \ttfamily [ #2 ] \group_end: }
   }
 \__beerydoc_tmp:Nn \__beerydoc_o_arg:n {#1}
 \__beerydoc_tmp:Nn \__beerydoc_o_arg_meta:n { \meta {#1} }
@@ -573,8 +568,7 @@
     \tl_replace_all:Nnn \l__beerydoc_code_names_tl { ~ } { \textvisiblespace }
     \hcoffin_set:Nn \l__beerydoc_code_names_coffin
       {
-        \small
-        \ttfamily
+        \ttfamily \small
         \begin{tblr}[expand=\expanded]
           { colspec = { l } , rowsep = 0pt , colsep = 0pt }
           \toprule
@@ -673,11 +667,9 @@
             { - \l__beerydoc_code_names_dim + \marginparwidth }
         }
       \skip_zero:N \parskip
-      \ttfamily
-      \small
+      \ttfamily \small
       \raggedright
-      \obeyspaces
-      \obeylines
+      \obeyspaces \obeylines
   }
 \cs_new_protected:Npn \__beerydoc_syntax_end:
   {
@@ -695,10 +687,10 @@
 
 % Floats
 
-\renewcommand\bottomfraction{0.5} % default = 0.3
-\setcounter{bottomnumber}{2} % default = 1
-\setcounter{topnumber}{3} % default = 2
-\setcounter{totalnumber}{4} % default = 3
+\renewcommand \bottomfraction { 0.5 } % default = 0.3
+\setcounter { bottomnumber } { 2 } % default = 1
+\setcounter { topnumber } { 3 } % default = 2
+\setcounter { totalnumber } { 4 } % default = 3
 
 % Environments
 
@@ -864,11 +856,7 @@
       { \__beerydoc_list_heading:n {#1} }
   }
 \cs_new_protected:Npn \__beerydoc_list_heading:n #1
-  {
-    #1
-    \par
-    \__beerydoc_keep_next_par_if_single_line:
-  }
+  { #1 \par \__beerydoc_keep_next_par_if_single_line: }
 
 % Tables
 
