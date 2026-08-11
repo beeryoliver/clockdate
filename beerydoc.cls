@@ -1,7 +1,7 @@
 % Loading the class
 
 \NeedsTeXFormat{LaTeX2e}[2023-11-01]
-\ProvidesExplClass{beerydoc}{2026-08-10}{0.0.0}{}
+\ProvidesExplClass{beerydoc}{2026-08-11}{0.0.0}{}
 \prop_gput:Nnn \g_msg_module_type_prop { beerydoc } { Class }
 
 \msg_new:nnn { beerydoc } { l3kernel }
@@ -35,9 +35,9 @@
         \msg_error:nnn { beerydoc } { math-mode-invalid }
           { printfontsizecommand }
       }
-      { \__beerydoc_print_name: }
+      { \__beerydoc_fontscale_print_name: }
   }
-\cs_new_protected:Npn \__beerydoc_print_name:
+\cs_new_protected:Npn \__beerydoc_fontscale_print_name:
   {
     \exp_args:Ne \cs
       {
@@ -687,7 +687,7 @@
 
 % Floats
 
-\renewcommand \bottomfraction { 0.5 } % default = 0.3
+\tl_set:Nn \bottomfraction { 0.5 } % default = 0.3
 \setcounter { bottomnumber } { 2 } % default = 1
 \setcounter { topnumber } { 3 } % default = 2
 \setcounter { totalnumber } { 4 } % default = 3
@@ -729,7 +729,7 @@
 \RequirePackage { fancyhdr }
 \pagestyle { fancy }
 \fancyhf { }
-\renewcommand \headrulewidth { 0pt }
+\tl_set:Nn \headrulewidth { 0pt }
 \fancyfoot [ C ] { \thepage \c_space_tl of~ \pageref { LastPage } }
 
 % Paragraph style
@@ -821,9 +821,9 @@
     , parsep    = 0pt
     , itemsep   = 0pt
   }
-\setlist[2]{leftmargin=*}
-\setlist[3]{leftmargin=*}
-\setlist[4]{leftmargin=*}
+\setlist [2] { leftmargin = * }
+\setlist [3] { leftmargin = * }
+\setlist [4] { leftmargin = * }
 \setlist [ itemize   , 1 ] { label = \textbullet }
 \setlist [ itemize   , 2 ] { label = \scaletextbullets {2} }
 \setlist [ itemize   , 3 ] { label = \scaletextbullets {3} }
@@ -933,27 +933,13 @@
 % The argument to \tl_to_str:n must be braced.
 \cs_new:Npn \__beerydoc_pdfstring_tl_to_str:n #1 { \tl_to_str:n {#1} }
 \cs_new:Npn \__beerydoc_pdfstring_meta:n #1 { < \tl_to_str:n {#1} > }
-\cs_new:Npn \__beerydoc_pdfstring_cs:n
-  { \textbackslash \__beerydoc_pdfstring_cs_aux:n }
-% Replaces \meta with \__beerydoc_pdfstring_meta:n.
-\cs_new:Npn \__beerydoc_pdfstring_cs_aux:n #1
-  { \__beerydoc_pdfstring_cs:wn #1 \meta \q_recursion_tail \q_recursion_stop }
-\cs_new:Npn \__beerydoc_pdfstring_cs:wn #1 \meta #2
-  {
-    \tl_to_str:n {#1}
-    \quark_if_recursion_tail_stop:n {#2}
-    \__beerydoc_pdfstring_meta:n {#2}
-    \__beerydoc_pdfstring_cs:wn
-  }
+\cs_new:Npn \__beerydoc_pdfstring_cs:n #1 { \textbackslash \tl_to_str:n {#1} }
 \NewExpandableDocumentCommand \__beerydoc_pdfstring_key_value:w { o m }
   {
     \str_if_eq:eeTF { \str_head:n {#2} } { = }
-      { \__beerydoc_pdfstring_value:n {#2} }
-      { \__beerydoc_pdfstring_key:n {#2} }
+      { \str_range:nnn {#2} { 2 } { -1 } }
+      { \tl_to_str:n {#2} }
   }
-\cs_new:Npn \__beerydoc_pdfstring_value:n #1
-  { \str_range:nnn {#1} { 2 } { -1 } }
-\cs_new_eq:NN \__beerydoc_pdfstring_key:n \__beerydoc_pdfstring_cs_aux:n
 
 \pdfstringdefDisableCommands
   {
