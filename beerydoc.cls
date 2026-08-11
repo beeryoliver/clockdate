@@ -888,7 +888,7 @@
           \__beerydoc_active_vert:w |
       }
   }
-\NewDocumentCommand \__beerydoc_active_vert:w { v } { #1 \@ \group_end:  }
+\NewDocumentCommand \__beerydoc_active_vert:w { v } { #1 \@ \group_end: }
 \hook_gput_code:nnn { begindocument } { beerydoc }
   {
     \char_set_active_eq:NN | \__beerydoc_active_vert:
