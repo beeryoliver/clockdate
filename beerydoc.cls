@@ -1,7 +1,7 @@
 % Loading the class
 
 \NeedsTeXFormat{LaTeX2e}[2023-11-01]
-\ProvidesExplClass{beerydoc}{2026-08-09}{0.0.0}{}
+\ProvidesExplClass{beerydoc}{2026-08-10}{0.0.0}{}
 \prop_gput:Nnn \g_msg_module_type_prop { beerydoc } { Class }
 
 \msg_new:nnn { beerydoc } { l3kernel }
@@ -756,7 +756,7 @@
 \RequirePackage { letterspace }
 \pretolerance = -1 % default = 100
 \tolerance = 200 % default = 200
-\setlength \emergencystretch { 0pt } % default = 0
+\emergencystretch = 0pt % default = 0
 \widowpenalty = 10000
 \clubpenalty = \widowpenalty
 \displaywidowpenalty = \widowpenalty
@@ -903,8 +903,8 @@
   {
     \list { }
       {
-        \setlength \leftmargin { 1.5em }
-        \setlength \rightmargin { \leftmargin }
+        \dim_set:Nn \leftmargin { 1.5em }
+        \dim_set_eq:NN \rightmargin \leftmargin
       }
     \item \scan_stop:
   }
@@ -914,7 +914,7 @@
 
 \RequirePackage [ bottomfloats , ragged ] { footmisc }
 % \setlength { \skip \footins } { \c_beerydoc_big_skip }
-\setlength \footnotesep { \f@linespread \footnotesep }
+\dim_set:Nn \footnotesep { \f@linespread \footnotesep }
 \cs_set_protected:Npn \@makefntext #1
   {
     \hbox_set:Nn \l__beerydoc_footnote_box { \@thefnmark . }
@@ -922,12 +922,12 @@
       {
         \list { \@thefnmark . }
           {
-            \setlength \leftmargin
-              { \dim_eval:n { \box_wd:N \l__beerydoc_footnote_box + 0.5em } }
-            % \setlength \rightmargin { \leftmargin }
-            \setlength \labelsep { 0.5em }
-            \setlength \topsep { 0pt }
-            \setlength \partopsep { 0pt }
+            \dim_set:Nn \leftmargin
+              { \box_wd:N \l__beerydoc_footnote_box + 0.5em }
+            % \dim_set_eq:NN \rightmargin \leftmargin
+            \dim_set:Nn \labelsep { 0.5em }
+            \skip_zero:N \topsep
+            \skip_zero:N \partopsep
           }
         \item \scan_stop: #1 \endlist
       }
