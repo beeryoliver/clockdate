@@ -7,7 +7,7 @@
 % Loading the package
 
 \NeedsTeXFormat{LaTeX2e}[2023-11-01]
-\ProvidesExplPackage{clockdate}{2026-08-05}{1.0.0}
+\ProvidesExplPackage{clockdate}{2026-08-12}{1.0.0}
   {Print the time of day and the calendar date}
 
 \msg_new:nnn { clockdate } { l3kernel }
@@ -1339,7 +1339,7 @@
         { \str_set:Nn \l_clockdate_clock_hour_format_str {#1} }
     , hour .value_required:n = true
 
-    , minute .choices:nn = { m , mm  }
+    , minute .choices:nn = { m , mm }
         { \str_set:Nn \l_clockdate_clock_minute_format_str {#1} }
     , minute .value_required:n = true
 
