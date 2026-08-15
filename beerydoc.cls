@@ -1,7 +1,7 @@
 % Loading the class
 
 \NeedsTeXFormat{LaTeX2e}[2023-11-01]
-\ProvidesExplClass{beerydoc}{2026-08-14}{0.0.0}{}
+\ProvidesExplClass{beerydoc}{2026-08-15}{0.0.0}{}
 \prop_gput:Nnn \g_msg_module_type_prop { beerydoc } { Class }
 
 \msg_new:nnn { beerydoc } { l3kernel }
@@ -131,6 +131,7 @@
 \bool_new:N   \l__beerydoc_code_bool
 
 \tl_new:N     \l__beerydoc_code_names_tl
+\seq_new:N    \l__beerydoc_code_names_seq
 \coffin_new:N \l__beerydoc_code_names_coffin
 \dim_new:N    \l__beerydoc_code_names_dim
 \bool_new:N   \l__beerydoc_code_names_long_bool
@@ -148,9 +149,10 @@
 
 \quark_new:N \q__beerydoc_stop
 
-% Custom macros
+\tl_new:N \l__beerydoc_tmp_tl
+\seq_new:N \l__beerydoc_tmp_seq
 
-\cs_generate_variant:Nn \clist_use:nn { V }
+% Custom macros
 
 \cs_new_protected:Npn \__beerydoc_langle: { \ensuremath { \langle } }
 \cs_new_protected:Npn \__beerydoc_rangle: { \ensuremath { \rangle } }
@@ -511,7 +513,26 @@
 % Code and syntax environments
 
 % For the code and syntax environments, I have used ideas from l3doc.
-\NewDocumentEnvironment { code } { +v } { \__beerydoc_code_start:nw {#1} }
+\str_new:N \l__beerydoc_code_separator_str
+\str_set:Nn \l__beerydoc_code_separator_str { , }
+\keys_define:nn { beerydoc / code }
+  {
+      separator .code:n =
+        {
+          \str_set:Nn \l__beerydoc_code_separator_str {#1}
+          \str_if_empty:NT \l__beerydoc_code_separator_str
+            { \msg_error:nn { beerydoc } { code-separator-invalid } }
+          \str_if_in:NnT \l__beerydoc_code_separator_str { ~ }
+            { \msg_error:nn { beerydoc } { code-separator-invalid } }
+        }
+    , separator .value_required:n = true
+  }
+\NewDocumentEnvironment { code } { o +v }
+  {
+    \IfNoValueF {#1}
+      { \keys_set:nn { beerydoc / code } {#1} }
+    \__beerydoc_code_start:nw {#2}
+  }
   { \__beerydoc_code_end: }
 \cs_new_protected:Npn \__beerydoc_code_start:nw #1
   {
@@ -553,35 +574,66 @@
   }
 \cs_new_protected:Npn \__beerydoc_code_names:n #1
   {
-    \tl_set:Nn \l__beerydoc_code_names_tl {#1}
-    \tl_remove_all:Nn \l__beerydoc_code_names_tl { \obeyedline }
-    \tl_replace_all:NVn \l__beerydoc_code_names_tl \c__beerydoc_active_tab_tl
-      { ~ }
-    \tl_replace_all:NVn \l__beerydoc_code_names_tl \c_catcode_active_space_tl
-      { ~ }
-    \tl_set:Ne \l__beerydoc_code_names_tl
-      { \clist_use:Vn \l__beerydoc_code_names_tl { , } }
-    \tl_if_empty:NT \l__beerydoc_code_names_tl
-      { \msg_error:nn { beerydoc } { code-env-no-items } }
-    \tl_replace_all:Nnn \l__beerydoc_code_names_tl { ~ } { \textvisiblespace }
+    \__beerydoc_code_names_set:n {#1}
     \hcoffin_set:Nn \l__beerydoc_code_names_coffin
       {
         \ttfamily \small
-        \begin{tblr}[expand=\expanded]
+        \begin { tblr } [ expand = \expanded ]
           { colspec = { l } , rowsep = 0pt , colsep = 0pt }
           \toprule
-          \addlinespace[2pt]
-            \expanded { \clist_use:Vn \l__beerydoc_code_names_tl { \\ } }
+          \addlinespace [ 2pt ]
+            \expanded { \seq_use:Nn \l__beerydoc_code_names_seq { \\ } }
             \\
-          \addlinespace[2pt]
+          \addlinespace [ 2pt ]
           \bottomrule
-        \end{tblr}
+        \end { tblr }
       }
     \dim_set:Nn \l__beerydoc_code_names_dim
       { \coffin_wd:N \l__beerydoc_code_names_coffin }
     \bool_set:Nn \l__beerydoc_code_names_long_bool
       { \dim_compare_p:nNn \l__beerydoc_code_names_dim > \marginparwidth }
   }
+\cs_new_protected:Npn \__beerydoc_code_names_set:n #1
+  {
+    \tl_set:Nn \l__beerydoc_code_names_tl {#1}
+    \tl_replace_all:NVn \l__beerydoc_code_names_tl
+      { \c_catcode_active_space_tl } { \scan_stop: }
+    \tl_replace_all:NVn \l__beerydoc_code_names_tl
+      { \c__beerydoc_active_tab_tl } { \scan_stop: }
+    \tl_replace_all:NVn \l__beerydoc_code_names_tl
+      \l__beerydoc_code_separator_str { \obeyedline }
+    \seq_set_split:NnV \l__beerydoc_code_names_seq
+      { \obeyedline } \l__beerydoc_code_names_tl
+    \seq_map_variable:NNn \l__beerydoc_code_names_seq \l__beerydoc_tmp_tl
+      {
+        \tl_set:Ne \l__beerydoc_tmp_tl
+          {
+            \exp_after:wN \__beerydoc_code_names_set_loop:N
+              \l__beerydoc_tmp_tl
+              \q_recursion_tail
+            \q_recursion_stop
+          }
+        \tl_if_empty:NF \l__beerydoc_tmp_tl
+          {
+            \tl_replace_all:Nnn \l__beerydoc_tmp_tl
+              { \scan_stop: } { \textvisiblespace }
+            \seq_put_right:NV \l__beerydoc_tmp_seq \l__beerydoc_tmp_tl
+          }
+      }
+    \seq_if_empty:NT \l__beerydoc_tmp_seq
+      { \msg_error:nn { beerydoc } { code-env-no-items } }
+    \seq_set_eq:NN \l__beerydoc_code_names_seq \l__beerydoc_tmp_seq
+  }
+\cs_new:Npn \__beerydoc_code_names_set_loop:N #1
+  {
+    \quark_if_recursion_tail_stop:N #1
+    \token_if_eq_meaning:NNTF #1 \scan_stop:
+      { \__beerydoc_code_names_set_loop:N }
+      { \__beerydoc_code_names_set_loop_end:nw {#1} }
+  }
+\cs_new:Npn \__beerydoc_code_names_set_loop_end:nw #1#2
+  \q_recursion_tail \q_recursion_stop
+  { \exp_not:n { #1 #2 } }
 \cs_new_protected:Npn \__beerydoc_code_descr_start:w
   {
     \vcoffin_set:Nnw \l__beerydoc_code_descr_coffin { \textwidth }
@@ -954,6 +1006,12 @@
   { '\iow_char:N \\ #1'~ invalid~ in~ math~ mode~ \msg_line_context:. }
 \msg_new:nnn { beerydoc } { char-invalid }
   { Invalid~ character~ '#1'~ \msg_line_context:. }
+\msg_new:nnn { beerydoc } { code-separator-invalid }
+  {
+    Invalid~ value~ '\l__beerydoc_code_separator_str'~ \msg_line_context:. \\
+    The~ value~ of~ the~ key~ 'code / separator'~ cannot~ be~ empty~ or~
+    contain~ spaces.
+  }
 \msg_new:nnn { beerydoc } { code-env-no-items }
   {
     The~ argument~ to~ the~ 'code'~ environment~ must~ contain~ at~ least~
