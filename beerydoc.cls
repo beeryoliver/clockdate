@@ -570,7 +570,7 @@
 \cs_new_protected:Npn \__beerydoc_code_footnote:n #1
   {
     \footnotemark
-    \hook_gput_next_code:nn { env/code/after } { \footnotetext {#1} }
+    \hook_gput_next_code:nn { env / code / after } { \footnotetext {#1} }
   }
 \cs_new_protected:Npn \__beerydoc_code_names:n #1
   {
