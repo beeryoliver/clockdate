@@ -1,7 +1,7 @@
 % Loading the class
 
 \NeedsTeXFormat{LaTeX2e}[2023-11-01]
-\ProvidesExplClass{beerydoc}{2026-08-11}{0.0.0}{}
+\ProvidesExplClass{beerydoc}{2026-08-14}{0.0.0}{}
 \prop_gput:Nnn \g_msg_module_type_prop { beerydoc } { Class }
 
 \msg_new:nnn { beerydoc } { l3kernel }
@@ -150,7 +150,6 @@
 
 % Custom macros
 
-\cs_generate_variant:Nn \tl_replace_all:Nnn { No }
 \cs_generate_variant:Nn \clist_use:nn { V }
 
 \cs_new_protected:Npn \__beerydoc_langle: { \ensuremath { \langle } }
@@ -245,24 +244,25 @@
   {
     \group_begin:
       \tl_set:Nn \l__beerydoc_cs_tl {#1}
-      \tl_replace_all:NVn \l__beerydoc_cs_tl \c__beerydoc_active_vert_tl { | }
-      \__beerydoc_cs_replace_underscore:
+      \__beerydoc_cs_normalize:
       \__beerydoc_cs_replace_spaces:
       \__beerydoc_cs_hyphenation:
       \ttfamily
       \c_backslash_str \l__beerydoc_cs_tl \@
     \group_end:
   }
-\cs_new_protected:Npn \__beerydoc_cs_replace_underscore:
+\cs_new_protected:Npe \__beerydoc_cs_normalize:
   {
-    \tl_map_inline:nn
-      {
-        \c__beerydoc_math_subscript_underscore_tl
-        \c_underscore_str
-        \c__beerydoc_active_underscore_tl
-      }
-      { \tl_replace_all:NVn \l__beerydoc_cs_tl ##1 { _ } }
-    \tl_replace_all:Nnn \l__beerydoc_cs_tl { \_ } { _ }
+    \tl_replace_all:Nnn \exp_not:N \l__beerydoc_cs_tl
+      { \exp_not:V \c__beerydoc_active_vert_tl } { | }
+    \tl_replace_all:Nnn \exp_not:N \l__beerydoc_cs_tl
+      { \c__beerydoc_math_subscript_underscore_tl } { \c_underscore_str }
+    \tl_replace_all:Nnn \exp_not:N \l__beerydoc_cs_tl
+      { _ } { \c_underscore_str }
+    \tl_replace_all:Nnn \exp_not:N \l__beerydoc_cs_tl
+      { \exp_not:V \c__beerydoc_active_underscore_tl } { \c_underscore_str }
+    \tl_replace_all:Nnn \exp_not:N \l__beerydoc_cs_tl
+      { \exp_not:N \_ } { \c_underscore_str }
   }
 \cs_new_protected:Npn \__beerydoc_cs_replace_spaces:
   {
@@ -274,7 +274,7 @@
   {
     \bool_if:NF \l__beerydoc_syntax_bool
       {
-        \tl_if_in:NnT \l__beerydoc_cs_tl { _ }
+        \tl_if_in:NVT \l__beerydoc_cs_tl \c_underscore_str
           {
             \regex_replace_all:NnN \c__beerydoc_cs_hyphenation_regex
               { \1 \c{-} \2 } \l__beerydoc_cs_tl
@@ -299,22 +299,21 @@
       \__beerydoc_rangle:
     \group_end:
   }
-\cs_new_protected:Npn \__beerydoc_meta_replace_underscore:
-  {
-    \tl_map_inline:nn
-      {
-        \c__beerydoc_math_subscript_underscore_tl
-        _
-        \c_underscore_str
-        \c__beerydoc_active_underscore_tl
-      }
-      {
-        \tl_replace_all:Non \l__beerydoc_meta_tl {##1}
-          { \__beerydoc_meta_subscript:n }
-      }
-  }
 \cs_new_protected:Npn \__beerydoc_meta_subscript:n #1
   { \ensuremath { \sb {#1} } }
+\cs_new_protected:Npe \__beerydoc_meta_replace_underscore:
+  {
+    \tl_replace_all:Nnn \exp_not:N \l__beerydoc_meta_tl
+      { \c__beerydoc_math_subscript_underscore_tl }
+      { \__beerydoc_meta_subscript:n }
+    \tl_replace_all:Nnn \exp_not:N \l__beerydoc_meta_tl
+      { _ } { \__beerydoc_meta_subscript:n }
+    \tl_replace_all:Nnn \exp_not:N \l__beerydoc_meta_tl
+      { \c_underscore_str } { \__beerydoc_meta_subscript:n }
+    \tl_replace_all:Nnn \exp_not:N \l__beerydoc_meta_tl
+      { \exp_not:V \c__beerydoc_active_underscore_tl }
+      { \__beerydoc_meta_subscript:n }
+  }
 
 \NewDocumentCommand \marg { s m }
   {
@@ -326,18 +325,20 @@
           { \__beerydoc_m_arg_meta:n {#2} }
       }
   }
-\cs_set_protected:Npn \__beerydoc_tmp:Nn #1#2
-  {
-    \cs_new_protected:Npn #1 ##1
-      {
-        \group_begin:
-          \ttfamily
-          \c_left_brace_str #2 \c_right_brace_str
-        \group_end:
-      }
-  }
-\__beerydoc_tmp:Nn \__beerydoc_m_arg:n {#1}
-\__beerydoc_tmp:Nn \__beerydoc_m_arg_meta:n { \meta {#1} }
+\group_begin:
+  \cs_set_protected:Npn \__beerydoc_tmp:Nn #1#2
+    {
+      \cs_new_protected:Npe #1 ##1
+        {
+          \group_begin:
+            \exp_not:N \ttfamily
+            \c_left_brace_str #2 \c_right_brace_str
+          \group_end:
+        }
+    }
+  \__beerydoc_tmp:Nn \__beerydoc_m_arg:n {#1}
+  \__beerydoc_tmp:Nn \__beerydoc_m_arg_meta:n { \meta {#1} }
+\group_end:
 
 \NewDocumentCommand \oarg { s m }
   {
@@ -349,13 +350,10 @@
           { \__beerydoc_o_arg_meta:n {#2} }
       }
   }
-\cs_set_protected:Npn \__beerydoc_tmp:Nn #1#2
-  {
-    \cs_new_protected:Npn #1 ##1
-      { \group_begin: \ttfamily [ #2 ] \group_end: }
-  }
-\__beerydoc_tmp:Nn \__beerydoc_o_arg:n {#1}
-\__beerydoc_tmp:Nn \__beerydoc_o_arg_meta:n { \meta {#1} }
+\cs_new_protected:Npn \__beerydoc_o_arg:n #1
+  { \group_begin: \ttfamily [ #1 ] \group_end: }
+\cs_new_protected:Npn \__beerydoc_o_arg_meta:n #1
+  { \group_begin: \ttfamily [ \meta {#1} ] \group_end: }
 
 \NewDocumentCommand \sarg { }
   {
