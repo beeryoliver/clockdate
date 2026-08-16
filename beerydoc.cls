@@ -1,7 +1,7 @@
 % Loading the class
 
 \NeedsTeXFormat{LaTeX2e}[2023-11-01]
-\ProvidesExplClass{beerydoc}{2026-08-15}{0.0.0}{}
+\ProvidesExplClass{beerydoc}{2026-08-16}{0.0.0}{}
 \prop_gput:Nnn \g_msg_module_type_prop { beerydoc } { Class }
 
 \msg_new:nnn { beerydoc } { l3kernel }
@@ -113,6 +113,8 @@
   \char_set_active_eq:NN _ \scan_stop:
   \tl_const:Ne \c__beerydoc_active_underscore_tl
     { \char_generate:nn { `_ } { 13 } }
+  \char_set_active_eq:NN : \scan_stop:
+  \tl_const:Ne \c__beerydoc_active_colon_tl { \char_generate:nn { `: } { 13 } }
   \char_set_active_eq:nN { `\^^I } \scan_stop:
   \tl_const:Ne \c__beerydoc_active_tab_tl
     { \char_generate:nn { `\^^I } { 13 } }
@@ -257,6 +259,8 @@
   {
     \tl_replace_all:Nnn \exp_not:N \l__beerydoc_cs_tl
       { \exp_not:V \c__beerydoc_active_vert_tl } { | }
+    \tl_replace_all:Nnn \exp_not:N \l__beerydoc_cs_tl
+      { \exp_not:V \c__beerydoc_active_colon_tl } { \c_colon_str }
     \tl_replace_all:Nnn \exp_not:N \l__beerydoc_cs_tl
       { \c__beerydoc_math_subscript_underscore_tl } { \c_underscore_str }
     \tl_replace_all:Nnn \exp_not:N \l__beerydoc_cs_tl
@@ -466,24 +470,6 @@
   }
 \cs_new_eq:NN \__beerydoc_charcode_subscript:n \__beerydoc_meta_subscript:n
 
-\NewDocumentCommand \latin { m }
-  {
-    \mode_if_math:TF
-      { \msg_error:nnn { beerydoc } { math-mode-invalid } { latin } }
-      { \__beerydoc_latin:n {#1} }
-  }
-\cs_new_protected:Npn \__beerydoc_latin:n #1
-  { \group_begin: \ttfamily #1 \group_end: }
-
-\NewDocumentCommand \honorific { m }
-  {
-    \mode_if_math:TF
-      { \msg_error:nnn { beerydoc } { math-mode-invalid } { honorific } }
-      { \__beerydoc_honorific:n {#1} }
-  }
-\cs_new_protected:Npn \__beerydoc_honorific:n #1
-  { \group_begin: #1 \@ \group_end: }
-
 \NewDocumentCommand \allcaps { O { 50 } m }
   {
     \mode_if_math:TF
@@ -513,19 +499,19 @@
 % Code and syntax environments
 
 % For the code and syntax environments, I have used ideas from l3doc.
-\str_new:N \l__beerydoc_code_separator_str
-\str_set:Nn \l__beerydoc_code_separator_str { , }
+\str_new:N \l__beerydoc_code_input_separator_str
+\str_set:Nn \l__beerydoc_code_input_separator_str { , }
 \keys_define:nn { beerydoc / code }
   {
-      separator .code:n =
+      input-separator .code:n =
         {
-          \str_set:Nn \l__beerydoc_code_separator_str {#1}
-          \str_if_empty:NT \l__beerydoc_code_separator_str
-            { \msg_error:nn { beerydoc } { code-separator-invalid } }
-          \str_if_in:NnT \l__beerydoc_code_separator_str { ~ }
-            { \msg_error:nn { beerydoc } { code-separator-invalid } }
+          \str_set:Nn \l__beerydoc_code_input_separator_str {#1}
+          \str_if_empty:NT \l__beerydoc_code_input_separator_str
+            { \msg_error:nn { beerydoc } { code-input-separator-invalid } }
+          \str_if_in:NnT \l__beerydoc_code_input_separator_str { ~ }
+            { \msg_error:nn { beerydoc } { code-input-separator-invalid } }
         }
-    , separator .value_required:n = true
+    , input-separator .value_required:n = true
   }
 \NewDocumentEnvironment { code } { o +v }
   {
@@ -601,7 +587,7 @@
     \tl_replace_all:NVn \l__beerydoc_code_names_tl
       { \c__beerydoc_active_tab_tl } { \scan_stop: }
     \tl_replace_all:NVn \l__beerydoc_code_names_tl
-      \l__beerydoc_code_separator_str { \obeyedline }
+      \l__beerydoc_code_input_separator_str { \obeyedline }
     \seq_set_split:NnV \l__beerydoc_code_names_seq
       { \obeyedline } \l__beerydoc_code_names_tl
     \seq_map_variable:NNn \l__beerydoc_code_names_seq \l__beerydoc_tmp_tl
@@ -1006,10 +992,11 @@
   { '\iow_char:N \\ #1'~ invalid~ in~ math~ mode~ \msg_line_context:. }
 \msg_new:nnn { beerydoc } { char-invalid }
   { Invalid~ character~ '#1'~ \msg_line_context:. }
-\msg_new:nnn { beerydoc } { code-separator-invalid }
+\msg_new:nnn { beerydoc } { code-input-separator-invalid }
   {
-    Invalid~ value~ '\l__beerydoc_code_separator_str'~ \msg_line_context:. \\
-    The~ value~ of~ the~ key~ 'code / separator'~ cannot~ be~ empty~ or~
+    Invalid~ value~ '\l__beerydoc_code_input_separator_str'~
+    \msg_line_context:. \\
+    The~ value~ of~ the~ key~ 'code / input-separator'~ cannot~ be~ empty~ or~
     contain~ spaces.
   }
 \msg_new:nnn { beerydoc } { code-env-no-items }
