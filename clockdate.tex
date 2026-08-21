@@ -31,7 +31,7 @@ Print the time of day and the calendar date
 
 Oliver Beery
 
-Version 1.0.0\quad\date{2026-7-27}
+Version 1.0.0\quad\date{2026-8-21}
 
 
 \section{Introduction}
@@ -387,12 +387,11 @@ These keys modify the behavior of \cs{calendardate} (\S\ref{sec:cmds}).
   \begin{syntax}
     \key{date/priority=month-day|year-month}
   \end{syntax}
-  Depending on the values of the inputs, it may be impossible for
-  \cs{calendardate} to differentiate between typesetting
-  \meta{month}|-|\meta{day(s)} and \meta{year}|-|\meta{month(s)}.
+  Choice key that sets the typeset representation if the parser cannot
+  distinguish between \meta{month}|-|\meta{day(s)} and
+  \meta{year}|-|\meta{month(s)}.
   This situation occurs if \meta{date(s)} contains exactly two fields and all
   values within are an \meta{integer} from \num{1} to \num{12}.
-  This key sets the prioritized representation.
   The initial value is |month-day|.
 \end{code}
 
