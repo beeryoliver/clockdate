@@ -42,8 +42,8 @@
 \seq_new:N \l__clockdate_date_days_seq
 \seq_new:N \l__clockdate_date_months_seq
 % Used to indicate when year-month(s) and month-day(s) cannot be distinguished.
-\bool_new:N \l__clockdate_date_unknown_bool
-\bool_set_true:N \l__clockdate_date_unknown_bool
+\bool_new:N \l__clockdate_date_priority_bool
+\bool_set_true:N \l__clockdate_date_priority_bool
 
 \str_new:N \l_clockdate_date_year_str
 \str_new:N \l_clockdate_date_month_str
@@ -902,7 +902,7 @@
     \str_set:Ne \l_clockdate_date_day_str
       { \exp_after:wN \use_none:n \l_clockdate_date_day_str }
     \bool_lazy_and:nnT
-      { \l__clockdate_date_unknown_bool }
+      { \l__clockdate_date_priority_bool }
       { \str_if_eq_p:ee \l_clockdate_date_priority_str { year-month } }
       { \__clockdate_date_month_days_to_year_months: }
   }
@@ -965,7 +965,7 @@
 \cs_new_protected:Npn \__clockdate_date_month_days_chk:n #1
   {
     \int_compare:nNnT {#1} > { 12 }
-      { \bool_set_false:N \l__clockdate_date_unknown_bool }
+      { \bool_set_false:N \l__clockdate_date_priority_bool }
     \int_compare:nT { 0 < #1 < 30 }
       { \prg_break: }
     \int_compare:nNnT {#1} = { 31 }
