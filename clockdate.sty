@@ -7,7 +7,7 @@
 % Loading the package
 
 \NeedsTeXFormat{LaTeX2e}[2023-11-01]
-\ProvidesExplPackage{clockdate}{2026-08-26}{1.0.0}
+\ProvidesExplPackage{clockdate}{2026-08-27}{1.0.0}
   {Print the time of day and the calendar date}
 
 \msg_new:nnn { clockdate } { l3kernel }
@@ -97,7 +97,8 @@
 \cs_generate_variant:Nn \seq_set_from_clist:Nn { NV }
 \cs_new_eq:NN \__clockdate_group_begin: \group_begin:
 \cs_new_protected:Npn \__clockdate_group_end:
-  { \use_none:n \__clockdate_group_end: \group_end: }
+  { \use_none:n \q__clockdate_group_end \group_end: }
+\quark_new:N \q__clockdate_group_end
 \cs_new_protected:Npn \__clockdate_error_break: #1 \__clockdate_group_end:
   { \__clockdate_group_end: }
 % \clockdate_end_period: needs \__clockdate_group_end: to be unique according
