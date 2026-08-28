@@ -325,19 +325,13 @@
   }
 \cs_new_protected:Npn \__clockdate_clock_set_hour_minute:nn #1#2
   {
-    \int_compare:nF { 0 <= #1 < 25 }
-      { \prg_break:n \use:n }
-    \int_compare:nNnTF {#1} = { 24 }
+    \bool_lazy_and:nnF
+      { \int_compare_p:n { 0 <= #1 < 25 } }
       {
-        \int_if_zero:nF {#2}
-          { \prg_break:n \use:n }
+        \int_compare:nNnTF {#1} = { 24 }
+          { \int_if_zero_p:n {#2} }
+          { \int_compare_p:n { 0 <= #2 < 60 } }
       }
-      {
-        \int_compare:nF { 0 <= #2 < 60 }
-          { \prg_break:n \use:n }
-      }
-    \use_none:nn
-    \prg_break_point:
       {
         \seq_map_break:n
           {
@@ -350,23 +344,21 @@
   }
 \cs_new_protected:Npn \__clockdate_clock_set_hour_minute_second:nnn #1#2#3
   {
-    \int_compare:nF { 0 <= #1 < 25 }
-      { \prg_break:n \use:n }
-    \int_compare:nNnTF {#1} = { 24 }
+    \bool_lazy_and:nnF
+      { \int_compare_p:n { 0 <= #1 < 25 } }
       {
-        \int_if_zero:nF {#2}
-          { \prg_break:n \use:n }
-        \int_if_zero:nF {#3}
-          { \prg_break:n \use:n }
+        \int_compare:nNnTF {#1} = { 24 }
+          {
+            \bool_lazy_and_p:nn
+              { \int_if_zero_p:n {#2} }
+              { \int_if_zero_p:n {#3} }
+          }
+          {
+            \bool_lazy_and_p:nn
+              { \int_compare_p:n { 0 <= #2 < 60 } }
+              { \int_compare_p:n { 0 <= #3 < 61 } }
+          }
       }
-      {
-        \int_compare:nF { 0 <= #2 < 60 }
-          { \prg_break:n \use:n }
-        \int_compare:nF { 0 <= #3 < 61 }
-          { \prg_break:n \use:n }
-      }
-    \use_none:nn
-    \prg_break_point:
       {
         \seq_map_break:n
           {
