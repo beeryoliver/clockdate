@@ -676,12 +676,9 @@
                     \l_clockdate_date_year_str
                   \str_clear:N \l_clockdate_date_year_str
                   \exp_args:Ne \__clockdate_date_month_days:n
-                    { \seq_item:Nn \l__clockdate_date_seq {2} }
                 }
-                {
-                  \exp_args:Ne \__clockdate_date_year_months:n
-                    { \seq_item:Nn \l__clockdate_date_seq {2} }
-                }
+                { \exp_args:Ne \__clockdate_date_year_months:n }
+                { \seq_item:Nn \l__clockdate_date_seq {2} }
             }
             { 3 }
             {
