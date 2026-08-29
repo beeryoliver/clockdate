@@ -408,7 +408,8 @@
             \bool_if:NT \l__clockdate_tmp_bool
               {
                 \exp_not:N \l_clockdate_clock_ampm_separator_tl
-                \__clockdate_clock_print_ampm:n {#1}
+                \__clockdate_clock_hour_if_am:nTF {#1}
+                  \__clockdate_clock_print_am: \__clockdate_clock_print_pm:
               }
           }
           {
@@ -425,7 +426,8 @@
               }
               {
                 \exp_not:N \l_clockdate_clock_ampm_separator_tl
-                \__clockdate_clock_print_ampm:n {#1}
+                \__clockdate_clock_hour_if_am:nTF {#1}
+                  \__clockdate_clock_print_am: \__clockdate_clock_print_pm:
               }
             \exp_not:N \l_clockdate_clock_clocks_range_separator_tl
             \__clockdate_clock_print_hour:n {#4}
@@ -442,7 +444,8 @@
             \bool_if:NT \l__clockdate_tmp_bool
               {
                 \exp_not:N \l_clockdate_clock_ampm_separator_tl
-                \__clockdate_clock_print_ampm:n {#4}
+                \__clockdate_clock_hour_if_am:nTF {#4}
+                  \__clockdate_clock_print_am: \__clockdate_clock_print_pm:
               }
           }
       }
@@ -480,30 +483,28 @@
       { 0 }
     #1
   }
-\cs_new_protected:Npn \__clockdate_clock_print_ampm:n #1
+\cs_new_protected:Npn \__clockdate_clock_print_am:
   {
-    \__clockdate_clock_hour_if_am:nTF {#1}
+    \str_case:Vn \l_clockdate_clock_ampm_format_str
       {
-        \str_case:Vn \l_clockdate_clock_ampm_format_str
-          {
-            { a.m. } { a.m \clockdate_end_period: }
-            { am   } { am }
-            { a    } { a }
-            { A.M. } { A.M \clockdate_end_period: }
-            { AM   } { AM \@ }
-            { A    } { A \@ }
-          }
+        { a.m. } { a.m \clockdate_end_period: }
+        { am   } { am }
+        { a    } { a }
+        { A.M. } { A.M \clockdate_end_period: }
+        { AM   } { AM \@ }
+        { A    } { A \@ }
       }
+  }
+\cs_new_protected:Npn \__clockdate_clock_print_pm:
+  {
+    \str_case:Vn \l_clockdate_clock_ampm_format_str
       {
-        \str_case:Vn \l_clockdate_clock_ampm_format_str
-          {
-            { a.m. } { p.m \clockdate_end_period: }
-            { am   } { pm }
-            { a    } { p }
-            { A.M. } { P.M \clockdate_end_period: }
-            { AM   } { PM \@ }
-            { A    } { P \@ }
-          }
+        { a.m. } { p.m \clockdate_end_period: }
+        { am   } { pm }
+        { a    } { p }
+        { A.M. } { P.M \clockdate_end_period: }
+        { AM   } { PM \@ }
+        { A    } { P \@ }
       }
   }
 \cs_new_protected:Npn \__clockdate_clock_print:
