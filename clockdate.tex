@@ -31,7 +31,7 @@ Print the time of day and the calendar date
 
 Oliver Beery
 
-Version 1.0.0\quad\date{2026-8-24}
+Version 1.0.0\quad\date{2026-8-29}
 
 
 \section{Introduction}
@@ -311,8 +311,8 @@ These keys modify the behavior of \cs{clock} (\S\ref{sec:cmds}).
   \begin{syntax}
     \key{clock/ampm-omit-range=true|false}
   \end{syntax}
-  Boolean key that sets whether \meta{clock_1} omits the am/pm in a clock range
-  if \meta{clock_1} and \meta{clock_2} would print the same meridiem.
+  Boolean key that sets if \meta{clock_1} omits the am/pm in a clock range if
+  \meta{clock_1} and \meta{clock_2} would print the same meridiem.
   The initial value is |true|.
 \end{code}
 
@@ -320,8 +320,8 @@ These keys modify the behavior of \cs{clock} (\S\ref{sec:cmds}).
   \begin{syntax}
     \key{clock/ampm-omit-list=true|false}
   \end{syntax}
-  Boolean key that sets whether each \meta{clock}---except the very
-  last---omits the am/pm if each \meta{clock} would print the same meridiem.
+  Boolean key that sets if each \meta{clock}---except the very last---omits the
+  am/pm if each \meta{clock} would print the same meridiem.
   The initial value is |true|.
 \end{code}
 
@@ -407,8 +407,8 @@ These keys modify the behavior of \cs{calendardate} (\S\ref{sec:cmds}).
   \begin{syntax}
     \key{date/capitalize-first=true|false}
   \end{syntax}
-  Boolean key that sets whether the month will be capitalized if it is printed
-  at the start of \cs{calendardate}.
+  Boolean key that sets if the month will be capitalized if it is printed at
+  the start of \cs{calendardate}.
   See \cs{Calendardate} (\S\ref{sec:cmds}).
   The initial value is |false|.
   See \S\ref{subsec:varmonths} for more details.
@@ -464,7 +464,7 @@ These keys modify the behavior of \cs{calendardate} (\S\ref{sec:cmds}).
   \begin{syntax}
     \key{date/day-ordinal=true|false}
   \end{syntax}
-  Boolean key that sets whether to print the day as an ordinal day
+  Boolean key that sets if the day is printed as an ordinal day
   (e.g. 1\textsuperscript{st}, 4\textsuperscript{th}).
   The initial value is |false|.
   See \S\ref{subsec:varday} to customize the display of the ordinal day.
@@ -618,7 +618,7 @@ These keys modify the behavior of \cs{calendardate} (\S\ref{sec:cmds}).
   \begin{syntax}
     \key{date/era-ad-before-year=true|false}
   \end{syntax}
-  Boolean key that sets whether the AD is printed before the year.
+  Boolean key that sets if the AD is printed before the year.
   The initial value is |true|.
 \end{code}
 
@@ -687,9 +687,8 @@ This subsection documents the hooks provided by the \pkg{clockdate} package.
     cmd/Date/after
   }
   These generic |cmd| hooks are disabled because they would prevent the command
-  from testing whether the next token is a period (See
-  \S\ref{subsubsec:printampm}, \S\ref{subsubsec:printymd}, and
-  \S\ref{subsubsec:printera}).
+  from testing if the next token is a period (See \S\ref{subsubsec:printampm},
+  \S\ref{subsubsec:printymd}, and \S\ref{subsubsec:printera}).
   \hook{cmd/date/after} and \hook{cmd/Date/after} are disabled only if the key
   \key{overwrite-date} is set (\S\ref{sec:keys}).
 \end{code}
