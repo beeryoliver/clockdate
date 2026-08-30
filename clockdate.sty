@@ -660,7 +660,10 @@
                 }
             }
           }
-          { \msg_error:nnn { clockdate } { date-invalid } {#1} }
+          {
+            \msg_error:nnn { clockdate } { date-invalid } {#1}
+            \__clockdate_error_break:
+          }
       }
       {
         \str_set:Ne \l_clockdate_date_year_str
@@ -690,7 +693,10 @@
                 }
             }
           }
-          { \msg_error:nnn { clockdate } { date-invalid } {#1} }
+          {
+            \msg_error:nnn { clockdate } { date-invalid } {#1}
+            \__clockdate_error_break:
+          }
       }
   }
 \cs_new_protected:Npn \__clockdate_date_init:
