@@ -31,7 +31,7 @@ Print the time of day and the calendar date
 
 Oliver Beery
 
-Version 1.0.0\quad\date{2026-8-29}
+Version 1.0.0\quad\date{2026-9-1}
 
 
 \section{Introduction}
@@ -92,8 +92,7 @@ This section documents the commands provided by the \pkg{clockdate} package.
     \item a single clock \meta{clock}
     \item a clock range \meta{clock_1}|--|\meta{clock_2}
     \item
-    a comma-separated list where each item must be either a single clock or a
-    clock range
+    a comma-separated list where each item is a single clock or a clock range
   \end{itemize}
 
   \meta{clock} must take any of the following forms:
@@ -109,8 +108,8 @@ This section documents the commands provided by the \pkg{clockdate} package.
   (The value of \num{60} allows for leap seconds.)
   If $\meta{hour}=\num{24}$, then \meta{minute} and \meta{second} must be zero.
 
-  Adding the optional argument sets the keys in \meta{key-value list} in path
-  |clock| for only that instance of \cs{clock}.
+  The optional argument sets the keys in \meta{key-value list} in path |clock|
+  for only that instance of \cs{clock}.
   For details on the optional star, see the key \key{clock/star}
   (\S\ref{subsec:clock}).
 \end{code}
@@ -141,9 +140,7 @@ This section documents the commands provided by the \pkg{clockdate} package.
   \begin{itemize}
     \item a single day \meta{day}
     \item a day range \meta{day_1}|--|\meta{day_2}
-    \item
-    a comma-separated list where each item must be either a single day or a day
-    range
+    \item a comma-separated list where each item is a single day or a day range
   \end{itemize}
 
   \meta{month(s)} must take any of the following forms:
@@ -151,14 +148,13 @@ This section documents the commands provided by the \pkg{clockdate} package.
     \item a single month \meta{month}
     \item a month range \meta{month_1}|--|\meta{month_2}
     \item
-    a comma-separated list where each item must be either a single month or a
-    month range
+    a comma-separated list where each item is a single month or a month range
   \end{itemize}
 
   \meta{date(s)} must not contain |--| at the top level unless it is used to
   delimit a day or month range.
-  Adding the optional argument sets the keys in \meta{key-value list} in path
-  |date| for only that instance of \cs{calendardate}.
+  The optional argument sets the keys in \meta{key-value list} in path |date|
+  for only that instance of \cs{calendardate}.
   For details on the optional star, see the key \key{date/star}
   (\S\ref{subsec:date}).
 
@@ -202,9 +198,8 @@ These keys modify the behavior of \cs{clock} (\S\ref{sec:cmds}).
   \begin{syntax}
     \key{clock/star=\marg{key-value list}}
   \end{syntax}
-  When adding the optional star in \cs{clock}, the keys in
-  \meta{key-value list} in path |clock| are set for only that instance of
-  \cs{clock}.
+  If the optional star is added, the keys in \meta{key-value list} in path
+  |clock| are set for only that instance of \cs{clock}.
   The initial value is \meta{empty}.
 \end{code}
 
@@ -212,8 +207,7 @@ These keys modify the behavior of \cs{clock} (\S\ref{sec:cmds}).
   \begin{syntax}
     \key{clock/clock=12-hour|24-hour}
   \end{syntax}
-  Choice key that sets whether to print the hour using the 12-hour or 24-hour
-  clock.
+  Choice key that sets the format in which the clock is printed.
   If the value is |24-hour|, the am/pm is always omitted.
   The initial value is |12-hour|.
 \end{code}
@@ -377,9 +371,8 @@ These keys modify the behavior of \cs{calendardate} (\S\ref{sec:cmds}).
   \begin{syntax}
     \key{date/star=\marg{key-value list}}
   \end{syntax}
-  When adding the optional star in \cs{calendardate}, the keys in
-  \meta{key-value list} in path |date| are set for only that instance of
-  \cs{calendardate}.
+  If the optional star is added, the keys in \meta{key-value list} in path
+  |date| are set for only that instance of \cs{calendardate}.
   The initial value is \meta{empty}.
 \end{code}
 
@@ -423,8 +416,9 @@ These keys modify the behavior of \cs{calendardate} (\S\ref{sec:cmds}).
   \end{syntax}
   Choice key that sets the format in which the year is printed.
   |y| prints the year with the minimum number of digits.
-  |yy| prints the year with only the last two digits.
-  |yyyy| prints the year with a minimum of four digits, adding a leading zero
+  |yy| prints the year with only the last two digits, adding a leading zero if
+  the year is a single digit.
+  |yyyy| prints the year with a minimum of four digits, adding leading zeroes
   if necessary.
   The initial value is |y|.
 \end{code}
@@ -464,8 +458,8 @@ These keys modify the behavior of \cs{calendardate} (\S\ref{sec:cmds}).
   \begin{syntax}
     \key{date/day-ordinal=true|false}
   \end{syntax}
-  Boolean key that sets if the day is printed as an ordinal day
-  (e.g. 1\textsuperscript{st}, 4\textsuperscript{th}).
+  Boolean key that sets if the day is printed as an ordinal day (e.g.
+  1\textsuperscript{st}, 4\textsuperscript{th}).
   The initial value is |false|.
   See \S\ref{subsec:varday} to customize the display of the ordinal day.
 \end{code}
