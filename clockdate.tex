@@ -31,7 +31,7 @@ Print the time of day and the calendar date
 
 Oliver Beery
 
-Version 1.0.0\quad\date{2026-9-1}
+Version 1.0.0\quad\date{2026-9-4}
 
 
 \section{Introduction}
@@ -127,12 +127,6 @@ This section documents the commands provided by the \pkg{clockdate} package.
     \item \meta{year}
   \end{itemize}
 
-  \meta{year} and \meta{day} must be an \meta{integer}.
-  \meta{month} must be an \meta{integer} from \num{1} to \num{12}.
-  The calendar date must be valid.
-  \date{2-29} is always valid if \meta{year} is omitted.
-  If \meta{year} is provided, \date{2-29} is error-checked using the Julian
-  calendar.
   \meta{year} may be substituted with \meta{empty}|-|\meta{year} to ensure that
   the year is always before the common era.
 
@@ -153,6 +147,13 @@ This section documents the commands provided by the \pkg{clockdate} package.
 
   \meta{date(s)} must not contain |--| at the top level unless it is used to
   delimit a day or month range.
+  \meta{year} and \meta{day} must be an \meta{integer}.
+  \meta{month} must be an \meta{integer} from \num{1} to \num{12}.
+  Each calendar date must be valid.
+  \date{2-29} is always valid if \meta{year} is omitted.
+  If \meta{year} is provided, \date{2-29} is error-checked using the Julian
+  calendar.
+
   The optional argument sets the keys in \meta{key-value list} in path |date|
   for only that instance of \cs{calendardate}.
   For details on the optional star, see the key \key{date/star}
