@@ -7,7 +7,7 @@
 % Loading the package
 
 \NeedsTeXFormat{LaTeX2e}[2023-11-01]
-\ProvidesExplPackage{clockdate}{2026-08-29}{1.0.0}
+\ProvidesExplPackage{clockdate}{2026-09-04}{1.0.0}
   {Print the time of day and the calendar date}
 
 \msg_new:nnn { clockdate } { l3kernel }
@@ -1515,8 +1515,8 @@
     \str_set:Nn \l_clockdate_clock_second_format_str { ss }
     \tl_set:NV \l_clockdate_clock_hour_minute_separator_tl \c_colon_str
     \tl_set:NV \l_clockdate_clock_minute_second_separator_tl \c_colon_str
-    \str_set:Nn \l_clockdate_clock_ampm_format_str { a.m. }
-    \tl_set_eq:NN \l_clockdate_clock_ampm_separator_tl \c_space_tl
+    \str_set:Nn \l_clockdate_clock_ampm_format_str { AM }
+    \tl_set:Nn \l_clockdate_clock_ampm_separator_tl { \nobreakspace }
     \bool_set_true:N \l_clockdate_clock_ampm_omit_range_bool
     \bool_set_true:N \l_clockdate_clock_ampm_omit_list_bool
     \tl_set:Nn \l_clockdate_clock_clocks_separator_tl { ,~ }
@@ -1549,8 +1549,9 @@
     \str_set:Nn \l_clockdate_date_era_format_str { AD }
     \int_set:Nn \l_clockdate_date_era_threshold_int { 100 }
     \bool_set_true:N \l_clockdate_date_era_ad_before_year_bool
-    \tl_set_eq:NN \l_clockdate_date_era_separator_tl \c_space_tl
-    \tl_set_eq:NN \l_clockdate_date_era_ad_before_year_separator_tl \c_space_tl
+    \tl_set:Nn \l_clockdate_date_era_separator_tl { \nobreakspace }
+    \tl_set:Nn \l_clockdate_date_era_ad_before_year_separator_tl
+      { \nobreakspace }
     \tl_clear:N \l_clockdate_date_era_positive_year_prefix_tl
     \tl_set:Nn \l_clockdate_date_era_negative_year_prefix_tl { \textminus }
     \tl_clear:N \l_clockdate_date_era_zero_year_prefix_tl

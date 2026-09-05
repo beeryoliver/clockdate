@@ -283,7 +283,7 @@ These keys modify the behavior of \cs{clock} (\S\ref{sec:cmds}).
     \key{clock/ampm=a.m.|am|a|A.M.|AM|A|none}
   \end{syntax}
   Choice key that sets the format in which the am/pm is printed.
-  The initial value is |a.m.|
+  The initial value is |AM|.
   \input{clockdate-input-ampm.tex}
 
   The am/pm is omitted if \key{clock/ampm=none} or \key{clock/clock=24-hour}.
@@ -299,7 +299,7 @@ These keys modify the behavior of \cs{clock} (\S\ref{sec:cmds}).
     \key{clock/ampm-separator=\meta{token list}}
   \end{syntax}
   Sets the separator before the am/pm to \meta{token list}.
-  The initial value is | |.
+  The initial value is \cs{nobreakspace}.
 \end{code}
 
 \begin{code}{clock/ampm-omit-range}
@@ -622,7 +622,7 @@ These keys modify the behavior of \cs{calendardate} (\S\ref{sec:cmds}).
     \key{date/era-separator=\meta{token list}}
   \end{syntax}
   Sets the separator between the year and the era to \meta{token list}.
-  The initial value is | |.
+  The initial value is \cs{nobreakspace}.
 \end{code}
 
 \begin{code}{date/era-ad-before-year-separator}
@@ -631,7 +631,7 @@ These keys modify the behavior of \cs{calendardate} (\S\ref{sec:cmds}).
   \end{syntax}
   Sets the separator between the year and the AD to \meta{token list} if
   \key{date/era-ad-before-year=true}.
-  The initial value is | |.
+  The initial value is \cs{nobreakspace}.
 \end{code}
 
 \begin{code}{date/era-positive-year-prefix}
