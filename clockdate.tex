@@ -31,7 +31,7 @@ Print the time of day and the calendar date
 
 Oliver Beery
 
-Version 1.0.0\quad\date{2026-9-4}
+Version 1.0.0\quad\date{2026-9-5}
 
 
 \section{Introduction}
@@ -609,9 +609,9 @@ These keys modify the behavior of \cs{calendardate} (\S\ref{sec:cmds}).
   The initial value is \num{100}.
 \end{code}
 
-\begin{code}{date/era-ad-before-year}
+\begin{code}{date/era-ad-first}
   \begin{syntax}
-    \key{date/era-ad-before-year=true|false}
+    \key{date/era-ad-first=true|false}
   \end{syntax}
   Boolean key that sets if the AD is printed before the year.
   The initial value is |true|.
@@ -625,12 +625,12 @@ These keys modify the behavior of \cs{calendardate} (\S\ref{sec:cmds}).
   The initial value is \cs{nobreakspace}.
 \end{code}
 
-\begin{code}{date/era-ad-before-year-separator}
+\begin{code}{date/era-ad-first-separator}
   \begin{syntax}
-    \key{date/era-ad-before-year-separator=\meta{token list}}
+    \key{date/era-ad-first-separator=\meta{token list}}
   \end{syntax}
   Sets the separator between the year and the AD to \meta{token list} if
-  \key{date/era-ad-before-year=true}.
+  \key{date/era-ad-first=true}.
   The initial value is \cs{nobreakspace}.
 \end{code}
 
@@ -798,9 +798,9 @@ They are read-only and should not be modified directly.
   {
     \l_clockdate_date_era_format_str,
     \l_clockdate_date_era_threshold_int,
-    \l_clockdate_date_era_ad_before_year_bool,
+    \l_clockdate_date_era_ad_first_bool,
     \l_clockdate_date_era_separator_tl,
-    \l_clockdate_date_era_ad_before_year_separator_tl,
+    \l_clockdate_date_era_ad_first_separator_tl,
     \l_clockdate_date_era_positive_year_prefix_tl,
     \l_clockdate_date_era_negative_year_prefix_tl,
     \l_clockdate_date_era_zero_year_prefix_tl
