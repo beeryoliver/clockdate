@@ -7,7 +7,7 @@
 % Loading the package
 
 \NeedsTeXFormat{LaTeX2e}[2023-11-01]
-\ProvidesExplPackage{clockdate}{2026-09-06}{1.0.0}
+\ProvidesExplPackage{clockdate}{2026-09-07}{1.0.0}
   {Print the time of day and the calendar date}
 
 \msg_new:nnn { clockdate } { l3kernel }
@@ -724,7 +724,7 @@
   {
     \str_case:Vn \l_clockdate_date_order_str
       {
-        { day-month-year }
+        { DMY }
         {
           \__clockdate_date_print_days:
           \l_clockdate_date_month_day_separator_tl
@@ -732,7 +732,7 @@
           \l_clockdate_date_year_month_separator_tl
           \__clockdate_date_print_year:
         }
-        { year-month-day }
+        { YMD }
         {
           \__clockdate_date_print_year:
           \l_clockdate_date_year_month_separator_tl
@@ -740,7 +740,7 @@
           \l_clockdate_date_month_day_separator_tl
           \__clockdate_date_print_days:
         }
-        { month-day-year }
+        { MDY }
         {
           \__clockdate_date_print_month_first:
           \l_clockdate_date_month_day_separator_tl
@@ -866,19 +866,19 @@
   {
     \str_case:Vn \l_clockdate_date_order_str
       {
-        { day-month-year }
+        { DMY }
         {
           \__clockdate_date_print_days:
           \l_clockdate_date_month_day_separator_tl
           \__clockdate_date_print_month:
         }
-        { year-month-day }
+        { YMD }
         {
           \__clockdate_date_print_month_first:
           \l_clockdate_date_month_day_separator_tl
           \__clockdate_date_print_days:
         }
-        { month-day-year }
+        { MDY }
         {
           \__clockdate_date_print_month_first:
           \l_clockdate_date_month_day_separator_tl
@@ -906,7 +906,7 @@
       { \exp_after:wN \use_none:n \l_clockdate_date_day_str }
     \bool_lazy_and:nnT
       { \l__clockdate_date_priority_bool }
-      { \str_if_eq_p:ee \l_clockdate_date_priority_str { year-month } }
+      { \str_if_eq_p:ee \l_clockdate_date_priority_str { YM } }
       { \__clockdate_date_month_days_to_year_months: }
   }
 \cs_new_protected:Npn \__clockdate_date_month_days_to_year_months:
@@ -923,7 +923,7 @@
       }
     \bool_lazy_and:nnT
       { \l_clockdate_date_capitalize_first_bool }
-      { ! \str_if_eq_p:ee \l_clockdate_date_order_str { year-month-day } }
+      { ! \str_if_eq_p:ee \l_clockdate_date_order_str { YMD } }
       {
         \seq_pop_left:NN \l__clockdate_date_months_seq \l__clockdate_tmp_tl
         \exp_args:NNo \tl_set:No \l__clockdate_tmp_tl
@@ -995,19 +995,19 @@
   {
     \str_case:Vn \l_clockdate_date_order_str
       {
-        { day-month-year }
+        { DMY }
         {
           \__clockdate_date_print_months:
           \l_clockdate_date_year_month_separator_tl
           \__clockdate_date_print_year:
         }
-        { year-month-day }
+        { YMD }
         {
           \__clockdate_date_print_year:
           \l_clockdate_date_year_month_separator_tl
           \__clockdate_date_print_months:
         }
-        { month-day-year }
+        { MDY }
         {
           \__clockdate_date_print_months:
           \l_clockdate_date_year_month_separator_tl
@@ -1054,9 +1054,7 @@
           {
             { \l_clockdate_date_capitalize_first_bool }
             { \str_if_empty_p:N \l_clockdate_date_month_str }
-            {
-              ! \str_if_eq_p:ee \l_clockdate_date_order_str { year-month-day }
-            }
+            { ! \str_if_eq_p:ee \l_clockdate_date_order_str { YMD } }
           }
           { \__clockdate_date_print_month_first:n {#1} }
           { \__clockdate_date_print_month:n {#1} }
@@ -1074,9 +1072,7 @@
           {
             { \l_clockdate_date_capitalize_first_bool }
             { \str_if_empty_p:N \l_clockdate_date_month_str }
-            {
-              ! \str_if_eq_p:ee \l_clockdate_date_order_str { year-month-day }
-            }
+            { ! \str_if_eq_p:ee \l_clockdate_date_order_str { YMD } }
           }
           { \__clockdate_date_print_month_first:n {#1} }
           { \__clockdate_date_print_month:n {#1} }
@@ -1402,11 +1398,11 @@
         }
     , star .value_required:n = true
 
-    , priority .choices:nn = { month-day , year-month }
+    , priority .choices:nn = { MD , YM }
         { \str_set:Nn \l_clockdate_date_priority_str {#1} }
     , priority .value_required:n = true
 
-    , order .choices:nn = { day-month-year , year-month-day , month-day-year }
+    , order .choices:nn = { DMY , YMD , MDY }
         { \str_set:Nn \l_clockdate_date_order_str {#1} }
     , order .value_required:n = true
 
@@ -1525,8 +1521,8 @@
 \cs_new_protected:Npn \__clockdate_date_keys_set_initial:
   {
     \tl_clear:N \l__clockdate_date_star_tl
-    \str_set:Nn \l_clockdate_date_priority_str { month-day }
-    \str_set:Nn \l_clockdate_date_order_str { day-month-year }
+    \str_set:Nn \l_clockdate_date_priority_str { MD }
+    \str_set:Nn \l_clockdate_date_order_str { DMY }
     \bool_set_false:N \l_clockdate_date_capitalize_first_bool
     \str_set:Nn \l_clockdate_date_year_format_str { y }
     \str_set:Nn \l_clockdate_date_month_format_str { mmmm }
