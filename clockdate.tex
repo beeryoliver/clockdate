@@ -31,7 +31,7 @@ Print the time of day and the calendar date
 
 Oliver Beery
 
-Version 1.0.0\quad\date{2026-9-6}
+Version 1.0.0\quad\date{2026-9-7}
 
 
 \section{Introduction}
@@ -379,22 +379,22 @@ These keys modify the behavior of \cs{calendardate} (\S\ref{sec:cmds}).
 
 \begin{code}{date/priority}
   \begin{syntax}
-    \key{date/priority=month-day|year-month}
+    \key{date/priority=MD|YM}
   \end{syntax}
   Choice key that sets the typeset representation if the parser cannot
   distinguish between \meta{month}|-|\meta{day(s)} and
   \meta{year}|-|\meta{month(s)}.
   This situation occurs if \meta{date(s)} contains exactly two fields and all
   values within are an \meta{integer} from \num{1} to \num{12}.
-  The initial value is |month-day|.
+  The initial value is |MD|.
 \end{code}
 
 \begin{code}{date/order}
   \begin{syntax}
-    \key{date/order=day-month-year|year-month-day|month-day-year}
+    \key{date/order=DMY|YMD|MDY}
   \end{syntax}
   Choice key that sets the order in which the year, month, and day are printed.
-  The initial value is |day-month-year|.
+  The initial value is |DMY|.
 \end{code}
 
 \begin{code}{date/capitalize-first}
