@@ -609,14 +609,6 @@ These keys modify the behavior of \cs{calendardate} (\S\ref{sec:cmds}).
   The initial value is \num{100}.
 \end{code}
 
-\begin{code}{date/era-ad-first}
-  \begin{syntax}
-    \key{date/era-ad-first=true|false}
-  \end{syntax}
-  Boolean key that sets if the AD is printed before the year.
-  The initial value is |true|.
-\end{code}
-
 \begin{code}{date/era-separator}
   \begin{syntax}
     \key{date/era-separator=\meta{token list}}
@@ -625,36 +617,44 @@ These keys modify the behavior of \cs{calendardate} (\S\ref{sec:cmds}).
   The initial value is \cs{nobreakspace}.
 \end{code}
 
-\begin{code}{date/era-ad-first-separator}
+\begin{code}{date/ad-first}
   \begin{syntax}
-    \key{date/era-ad-first-separator=\meta{token list}}
+    \key{date/ad-first=true|false}
+  \end{syntax}
+  Boolean key that sets if the AD is printed before the year.
+  The initial value is |true|.
+\end{code}
+
+\begin{code}{date/ad-first-separator}
+  \begin{syntax}
+    \key{date/ad-first-separator=\meta{token list}}
   \end{syntax}
   Sets the separator between the year and the AD to \meta{token list} if
-  \key{date/era-ad-first=true}.
+  \key{date/ad-first=true}.
   The initial value is \cs{nobreakspace}.
 \end{code}
 
-\begin{code}{date/era-positive-year-prefix}
+\begin{code}{date/positive-year-prefix}
   \begin{syntax}
-    \key{date/era-positive-year-prefix=\meta{token list}}
+    \key{date/positive-year-prefix=\meta{token list}}
   \end{syntax}
   Prepends \meta{token list} to the printed year if \key{date/era=integer} and
   the year is positive.
   The initial value is \meta{empty}.
 \end{code}
 
-\begin{code}{date/era-negative-year-prefix}
+\begin{code}{date/negative-year-prefix}
   \begin{syntax}
-    \key{date/era-negative-year-prefix=\meta{token list}}
+    \key{date/negative-year-prefix=\meta{token list}}
   \end{syntax}
   Prepends \meta{token list} to the printed year if \key{date/era=integer} and
   the year is negative.
   The initial value is \cs{textminus}.
 \end{code}
 
-\begin{code}{date/era-zero-year-prefix}
+\begin{code}{date/zero-year-prefix}
   \begin{syntax}
-    \key{date/era-zero-year-prefix=\meta{token list}}
+    \key{date/zero-year-prefix=\meta{token list}}
   \end{syntax}
   Prepends \meta{token list} to the printed year if \key{date/era=integer} and
   the year is zero.
@@ -798,12 +798,12 @@ They are read-only and should not be modified directly.
   {
     \l_clockdate_date_era_format_str,
     \l_clockdate_date_era_threshold_int,
-    \l_clockdate_date_era_ad_first_bool,
     \l_clockdate_date_era_separator_tl,
-    \l_clockdate_date_era_ad_first_separator_tl,
-    \l_clockdate_date_era_positive_year_prefix_tl,
-    \l_clockdate_date_era_negative_year_prefix_tl,
-    \l_clockdate_date_era_zero_year_prefix_tl
+    \l_clockdate_date_ad_first_bool,
+    \l_clockdate_date_ad_first_separator_tl,
+    \l_clockdate_date_positive_year_prefix_tl,
+    \l_clockdate_date_negative_year_prefix_tl,
+    \l_clockdate_date_zero_year_prefix_tl
   }
   The values of the keys documented in \S\ref{subsubsec:printera}.
 \end{code}
