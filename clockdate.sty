@@ -100,7 +100,7 @@
   { \use_none:n \q__clockdate_group_end \group_end: }
 \quark_new:N \q__clockdate_group_end
 \cs_new_protected:Npn \__clockdate_error_break: #1 \__clockdate_group_end:
-  { \__clockdate_group_end: }
+  { \group_end: }
 % \clockdate_end_period: needs \__clockdate_group_end: to be unique according
 % to the \peek_meaning:NTF test.
 \cs_new_protected:Npn \clockdate_end_period:
@@ -111,8 +111,8 @@
 \cs_new_protected:Npn \__clockdate_end_period:w \__clockdate_group_end:
   {
     \peek_charcode_remove:NTF .
-      { \@ . \__clockdate_group_end: }
-      { . \@ \__clockdate_group_end: }
+      { \@ . \group_end: }
+      { . \@ \group_end: }
   }
 \prg_new_conditional:Npnn \__clockdate_bool_if_eq:nn #1#2 { p }
   {
