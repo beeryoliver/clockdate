@@ -31,7 +31,7 @@ Print the time of day and the calendar date
 
 Oliver Beery
 
-Version 1.0.0\quad\date{2026-9-10}
+Version 1.0.0\quad\date{2026-9-13}
 
 
 \section{Introduction}
@@ -405,7 +405,7 @@ These keys modify the behavior of \cs{calendardate} (\S\ref{sec:cmds}).
   the start of \cs{calendardate}.
   See \cs{Calendardate} (\S\ref{sec:cmds}).
   The initial value is |false|.
-  See \S\ref{subsec:varmonths} for more details.
+  See \S\ref{subsec:expl3date} for more details.
 \end{code}
 
 \subsubsection{Printing the year, month, and day}
@@ -442,7 +442,7 @@ These keys modify the behavior of \cs{calendardate} (\S\ref{sec:cmds}).
   month that ends in a period.
   If the abbreviated month prints the period, it is followed by \cs{@} because
   the sentence does not end here.
-  See \S\ref{subsec:varmonths} for more details.
+  See \S\ref{subsec:expl3date} for more details.
 \end{code}
 
 \begin{code}{date/day}
@@ -462,7 +462,7 @@ These keys modify the behavior of \cs{calendardate} (\S\ref{sec:cmds}).
   Boolean key that sets if the day is printed as an ordinal day (e.g.
   1\textsuperscript{st}, 4\textsuperscript{th}).
   The initial value is |false|.
-  See \S\ref{subsec:varday} to customize the display of the ordinal day.
+  See \S\ref{subsec:expl3date} to customize the display of the ordinal day.
 \end{code}
 
 \subsubsection{Separating the year, month, and day}
@@ -848,45 +848,99 @@ Outside of \cs{calendardate}, they do not have defined behavior.
   The value is \meta{empty} if \meta{day(s)} is omitted.
 \end{code}
 
-\subsection{Printing the months}
-\label{subsec:varmonths}
+\subsection{Functions used in \cs{clock}}
+\label{subsec:expl3clock}
+
+This subsection documents the public functions used in \cs{clock}.
+You may redefine them, but they must be |protected| and have the same parameter
+text.
+The initial definitions are in \file{clockdate.sty}.
+
+\begin{code}{\clockdate_clock_print_hour:n}
+  \begin{syntax}
+    \cs{clockdate_clock_print_hour:n} \marg{hour}
+  \end{syntax}
+  Function used in \cs{clock} that prints the hour.
+  |#1| represents the value of \meta{hour}.
+\end{code}
+
+\begin{code}{\clockdate_clock_print_minute:n}
+  \begin{syntax}
+    \cs{clockdate_clock_print_minute:n} \marg{minute}
+  \end{syntax}
+  Function used in \cs{clock} that prints the minute.
+  |#1| represents the value of \meta{minute}.
+\end{code}
+
+\begin{code}{\clockdate_clock_print_second:n}
+  \begin{syntax}
+    \cs{clockdate_clock_print_second:n} \marg{second}
+  \end{syntax}
+  Function used in \cs{clock} that prints the second.
+  |#1| represents the value of \meta{second}.
+\end{code}
+
+\begin{code}{\clockdate_clock_print_am:, \clockdate_clock_print_pm:}
+  Functions used in \cs{clock} that print the am and pm.
+\end{code}
+
+\subsection{Functions and variables used in \cs{calendardate}}
+\label{subsec:expl3date}
+
+This subsection documents the public functions and variables used in
+\cs{calendardate}.
+You may redefine the public functions, but they must be |protected| and have
+the same parameter text.
+The initial definitions are in \file{clockdate.sty}.
+
+\begin{code}{\clockdate_date_print_year:n}
+  \begin{syntax}
+    \cs{clockdate_date_print_year:n} \marg{year}
+  \end{syntax}
+  Function used in \cs{calendardate} that prints the year, including the era.
+  |#1| represents the value of \meta{year}.
+\end{code}
+
+\begin{code}{\clockdate_date_print_month:n}
+  \begin{syntax}
+    \cs{clockdate_date_print_month:n} \marg{month}
+  \end{syntax}
+  Function used in \cs{calendardate} that prints the month.
+  |#1| represents the value of \meta{month}.
+\end{code}
 
 \begin{code}
   {\l_clockdate_date_months_mmmm_seq, \l_clockdate_date_months_mmm_seq}
-  The months used if the value of the key \key{date/month} is |mmmm| or |mmm|.
+  Variables used in \cs{clockdate_date_print_month:n} that store the months
+  used if the value of the key \key{date/month} is |mmmm| or |mmm|.
   The initial values are displayed in in Table \ref{table:months-seq}.
 \end{code}
 
 \input{clockdate-input-months-seq.tex}
 
-\begin{code}{\clockdate_end_period:}
-  The purpose of this function is to avoid mistakenly printing two consecutive
-  periods if the month is abbreviated and ends with a period.
-  Prints a period unless all of the following is true:
-  \begin{itemize}
-    \item The display of \cs{calendardate} ends with the month.
-    \item The month ends with \cs{clockdate_end_period:}.
-    \item The next token after \cs{calendardate} is a period.
-  \end{itemize}
-  If \cs{clockdate_end_period:} prints the period, it is followed by \cs{@}
-  because the sentence does not end here.
-\end{code}
-
 \begin{code}{\l_clockdate_date_if_capitalized_bool}
-  Use in \cs{l_clockdate_date_months_(mmm|mmmm)_seq} to capitalize the month if
-  it is printed at the start of \cs{calendardate}.
+  Boolean that may be used in \cs{clockdate_date_print_month:n} to capitalize
+  the month if it is printed at the start of \cs{calendardate}.
   This variable does not have defined behavior outside of
-  \cs{l_clockdate_date_months_(mmm|mmmm)_seq}.
+  \cs{clockdate_date_print_month:n}.
+  This variable may be used in \cs{l_clockdate_date_months_mmm_seq} and
+  \cs{l_clockdate_date_months_mmmm_seq}.
 \end{code}
 
-\subsection{Printing the ordinal day}
-\label{subsec:varday}
+\begin{code}{\clockdate_date_print_day:n}
+  \begin{syntax}
+    \cs{clockdate_date_print_day:n} \marg{day}
+  \end{syntax}
+  Function used in \cs{calendardate} that prints the day.
+  |#1| represents the value of \meta{day}.
+\end{code}
 
 \begin{code}{\clockdate_date_day_ordinal_format:n}
   \begin{syntax}
     \cs{clockdate_date_day_ordinal_format:n} \marg{day}
   \end{syntax}
-  Sets the format in which the suffix of the ordinal day is printed.
+  Function used in \cs{clockdate_date_print_day:n} that sets the format in
+  which the suffix of the ordinal day is printed.
   |#1| represents the value of \meta{day}.
   The initial definition is:
   \begin{verbatim}
@@ -904,6 +958,36 @@ Outside of \cs{calendardate}, they do not have defined behavior.
       }
   }
   \end{verbatim}
+\end{code}
+
+\subsection{The extra period problem}
+\label{subsec:extraperiod}
+
+\begin{code}{\clockdate_end_period:}
+  Function used in \cs{clock} and \cs{calendardate} to avoid mistakenly
+  printing two consecutive periods if the next token after \cs{clock} or
+  \cs{calendardate} is a period.
+
+  This function is used in:
+  \begin{itemize}
+    \item \cs{clockdate_clock_print_am:}, \cs{clockdate_clock_print_pm:}
+    \item
+    \cs{clockdate_date_print_month:n}, \cs{l_clockdate_date_months_mmm_seq}
+    \item \cs{clockdate_date_print_year:n}
+  \end{itemize}
+
+  Prints a period unless both of the following are true:
+  \begin{itemize}
+    \item
+    This function is used at the very end of \cs{clock} or \cs{calendardate},
+    followed by zero or more tokens with the same meaning as \cs{group_end:}.
+    \item The next token after \cs{clock} or \cs{calendardate} is a period.
+  \end{itemize}
+
+  The gobbling and replacement of \cs{group_end:} tokens or equivalent ensures
+  that the period has the same formatting as the preceding text.
+  If \cs{clockdate_end_period:} prints the period, it is followed by \cs{@}
+  because the sentence does not end here.
 \end{code}
 
 
