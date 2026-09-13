@@ -7,7 +7,7 @@
 % Loading the package
 
 \NeedsTeXFormat{LaTeX2e}[2023-11-01]
-\ProvidesExplPackage{clockdate}{2026-09-11}{1.0.0}
+\ProvidesExplPackage{clockdate}{2026-09-13}{1.0.0}
   {Print the time of day and the calendar date}
 
 \msg_new:nnn { clockdate } { l3kernel }
@@ -90,6 +90,7 @@
 \tl_new:N \l__clockdate_tmp_tl
 \str_new:N \l__clockdate_tmp_str
 \int_new:N \l__clockdate_tmp_int
+\int_new:N \g__clockdate_tmp_int
 \seq_new:N \l__clockdate_tmp_seq
 
 % Some functions
@@ -105,14 +106,24 @@
 % \peek_meaning:NTF test.
 \cs_new_protected:Npn \clockdate_end_period:
   {
-    \peek_meaning:NTF \__clockdate_end:
-      { \__clockdate_end_period:w } { . \@ }
+    \int_gzero:N \g__clockdate_tmp_int
+    \peek_meaning:NTF \__clockdate_end: { \__clockdate_end_period:w }
+      { \peek_meaning:NTF \group_end: { \__clockdate_end_period:n } { . \@ } }
   }
 \cs_new_protected:Npn \__clockdate_end_period:w \__clockdate_end:
   {
     \peek_charcode_remove:NTF .
-      { \@ . \group_end: }
-      { . \@ \group_end: }
+      { \@ . \prg_replicate:nn { \g__clockdate_tmp_int + 1 } { \group_end: } }
+      { . \@ \prg_replicate:nn { \g__clockdate_tmp_int + 1 } { \group_end: } }
+  }
+\cs_new_protected:Npn \__clockdate_end_period:n #1
+  {
+    \int_gincr:N \g__clockdate_tmp_int
+    \peek_meaning:NTF \__clockdate_end: { \__clockdate_end_period:w }
+      {
+        \peek_meaning:NTF \group_end: { \__clockdate_end_period:n }
+          { . \@ \prg_replicate:nn { \g__clockdate_tmp_int } { \group_end: } }
+      }
   }
 \prg_new_conditional:Npnn \__clockdate_bool_if_eq:nn #1#2 { p }
   {
@@ -392,15 +403,15 @@
       }
     \seq_put_right:Ne \l__clockdate_clock_clocks_seq
       {
-        \__clockdate_clock_print_hour:n {#1}
+        \clockdate_clock_print_hour:n {#1}
         \tl_if_empty:nF {#2}
           {
             \exp_not:N \l_clockdate_clock_hour_minute_separator_tl
-            \__clockdate_clock_print_minute:n {#2}
+            \clockdate_clock_print_minute:n {#2}
             \tl_if_empty:nF {#3}
               {
                 \exp_not:N \l_clockdate_clock_minute_second_separator_tl
-                \__clockdate_clock_print_second:n {#3}
+                \clockdate_clock_print_second:n {#3}
               }
           }
         \tl_if_empty:nTF {#4}
@@ -409,7 +420,7 @@
               {
                 \exp_not:N \l_clockdate_clock_ampm_separator_tl
                 \__clockdate_clock_hour_if_am:nTF {#1}
-                  \__clockdate_clock_print_am: \__clockdate_clock_print_pm:
+                  \clockdate_clock_print_am: \clockdate_clock_print_pm:
               }
           }
           {
@@ -427,31 +438,31 @@
               {
                 \exp_not:N \l_clockdate_clock_ampm_separator_tl
                 \__clockdate_clock_hour_if_am:nTF {#1}
-                  \__clockdate_clock_print_am: \__clockdate_clock_print_pm:
+                  \clockdate_clock_print_am: \clockdate_clock_print_pm:
               }
             \exp_not:N \l_clockdate_clock_clocks_range_separator_tl
-            \__clockdate_clock_print_hour:n {#4}
+            \clockdate_clock_print_hour:n {#4}
             \tl_if_empty:nF {#5}
               {
                 \exp_not:N \l_clockdate_clock_hour_minute_separator_tl
-                \__clockdate_clock_print_minute:n {#5}
+                \clockdate_clock_print_minute:n {#5}
                 \tl_if_empty:nF {#6}
                   {
                     \exp_not:N \l_clockdate_clock_minute_second_separator_tl
-                    \__clockdate_clock_print_second:n {#6}
+                    \clockdate_clock_print_second:n {#6}
                   }
               }
             \bool_if:NT \l__clockdate_tmp_bool
               {
                 \exp_not:N \l_clockdate_clock_ampm_separator_tl
                 \__clockdate_clock_hour_if_am:nTF {#4}
-                  \__clockdate_clock_print_am: \__clockdate_clock_print_pm:
+                  \clockdate_clock_print_am: \clockdate_clock_print_pm:
               }
           }
       }
     \__clockdate_clock_set_loop:nnnnnn
   }
-\cs_new_protected:Npn \__clockdate_clock_print_hour:n #1
+\cs_new_protected:Npn \clockdate_clock_print_hour:n #1
   {
     \int_set:Nn \l__clockdate_tmp_int
       {
@@ -467,7 +478,7 @@
       { 0 }
     \int_use:N \l__clockdate_tmp_int
   }
-\cs_new_protected:Npn \__clockdate_clock_print_minute:n #1
+\cs_new_protected:Npn \clockdate_clock_print_minute:n #1
   {
     \bool_lazy_and:nnT
       { \str_if_eq_p:ee \l_clockdate_clock_minute_format_str { mm } }
@@ -475,7 +486,7 @@
       { 0 }
     #1
   }
-\cs_new_protected:Npn \__clockdate_clock_print_second:n #1
+\cs_new_protected:Npn \clockdate_clock_print_second:n #1
   {
     \bool_lazy_and:nnT
       { \str_if_eq_p:ee \l_clockdate_clock_second_format_str { ss } }
@@ -483,7 +494,7 @@
       { 0 }
     #1
   }
-\cs_new_protected:Npn \__clockdate_clock_print_am:
+\cs_new_protected:Npn \clockdate_clock_print_am:
   {
     \str_case:Vn \l_clockdate_clock_ampm_format_str
       {
@@ -495,7 +506,7 @@
         { A    } { A \@ }
       }
   }
-\cs_new_protected:Npn \__clockdate_clock_print_pm:
+\cs_new_protected:Npn \clockdate_clock_print_pm:
   {
     \str_case:Vn \l_clockdate_clock_ampm_format_str
       {
@@ -800,9 +811,9 @@
     \__clockdate_date_year_month_days_chk:n {#2}
     \seq_put_right:Nn \l__clockdate_date_days_seq
       {
-        \__clockdate_date_print_day:n {#1}
+        \clockdate_date_print_day:n {#1}
         \l_clockdate_date_days_range_separator_tl
-        \__clockdate_date_print_day:n {#2}
+        \clockdate_date_print_day:n {#2}
       }
     \str_put_right:Nn \l_clockdate_date_day_str { , #1 -- #2 }
   }
@@ -810,7 +821,7 @@
   {
     \__clockdate_date_year_month_days_chk:n {#1}
     \seq_put_right:Nn \l__clockdate_date_days_seq
-      { \__clockdate_date_print_day:n {#1} }
+      { \clockdate_date_print_day:n {#1} }
     \str_put_right:Nn \l_clockdate_date_day_str { , #1 }
   }
 \cs_new_protected:Npn \__clockdate_date_year_month_days_chk:n #1
@@ -919,6 +930,8 @@
         \tl_replace_once:Nnn \l__clockdate_tmp_tl
           { \l_clockdate_date_days_range_separator_tl }
           { \l_clockdate_date_months_range_separator_tl }
+        \tl_replace_all:Nnn \l__clockdate_tmp_tl
+          { \clockdate_date_print_day:n } { \clockdate_date_print_month:n }
         \seq_put_right:NV \l__clockdate_date_months_seq \l__clockdate_tmp_tl
       }
     \bool_lazy_and:nnT
@@ -932,7 +945,6 @@
           { \__clockdate_date_print_month_first:n }
         \seq_put_left:NV \l__clockdate_date_months_seq \l__clockdate_tmp_tl
       }
-    \cs_set_eq:NN \__clockdate_date_print_day:n \__clockdate_date_print_month:n
     \cs_set_eq:NN \__clockdate_date_month_days_print:
       \__clockdate_date_year_months_print:
   }
@@ -952,9 +964,9 @@
     \__clockdate_date_month_days_chk:n {#2}
     \seq_put_right:Nn \l__clockdate_date_days_seq
       {
-        \__clockdate_date_print_day:n {#1}
+        \clockdate_date_print_day:n {#1}
         \l_clockdate_date_days_range_separator_tl
-        \__clockdate_date_print_day:n {#2}
+        \clockdate_date_print_day:n {#2}
       }
     \str_put_right:Nn \l_clockdate_date_day_str { , #1 -- #2 }
   }
@@ -962,7 +974,7 @@
   {
     \__clockdate_date_month_days_chk:n {#1}
     \seq_put_right:Nn \l__clockdate_date_days_seq
-      { \__clockdate_date_print_day:n {#1} }
+      { \clockdate_date_print_day:n {#1} }
     \str_put_right:Nn \l_clockdate_date_day_str { , #1 }
   }
 \cs_new_protected:Npn \__clockdate_date_month_days_chk:n #1
@@ -1057,9 +1069,9 @@
             { ! \str_if_eq_p:ee \l_clockdate_date_order_str { YMD } }
           }
           { \__clockdate_date_print_month_first:n {#1} }
-          { \__clockdate_date_print_month:n {#1} }
+          { \clockdate_date_print_month:n {#1} }
         \exp_not:N \l_clockdate_date_months_range_separator_tl
-        \__clockdate_date_print_month:n {#2}
+        \clockdate_date_print_month:n {#2}
       }
     \str_put_right:Nn \l_clockdate_date_month_str { , #1 -- #2 }
   }
@@ -1075,7 +1087,7 @@
             { ! \str_if_eq_p:ee \l_clockdate_date_order_str { YMD } }
           }
           { \__clockdate_date_print_month_first:n {#1} }
-          { \__clockdate_date_print_month:n {#1} }
+          { \clockdate_date_print_month:n {#1} }
       }
     \str_put_right:Nn \l_clockdate_date_month_str { , #1 }
   }
@@ -1091,8 +1103,8 @@
       }
   }
 \cs_new_protected:Npn \__clockdate_date_print_year:
-  { \exp_args:NV \__clockdate_date_print_year:n \l_clockdate_date_year_str }
-\cs_new_protected:Npn \__clockdate_date_print_year:n #1
+  { \exp_args:NV \clockdate_date_print_year:n \l_clockdate_date_year_str }
+\cs_new_protected:Npn \clockdate_date_print_year:n #1
   {
     \str_set:Ne \l__clockdate_tmp_str
       {
@@ -1213,8 +1225,8 @@
       { \l_clockdate_date_months_final_separator_tl }
   }
 \cs_new_protected:Npn \__clockdate_date_print_month:
-  { \__clockdate_date_print_month:n { \l_clockdate_date_month_str } }
-\cs_new_protected:Npn \__clockdate_date_print_month:n #1
+  { \exp_args:NV \clockdate_date_print_month:n \l_clockdate_date_month_str }
+\cs_new_protected:Npn \clockdate_date_print_month:n #1
   {
     \str_case:Vn \l_clockdate_date_month_format_str
       {
@@ -1227,14 +1239,14 @@
 \cs_new_protected:Npn \__clockdate_date_print_month_first:
   {
     \bool_if:NTF \l_clockdate_date_capitalize_first_bool
-      { \__clockdate_date_print_month_first:n }
-      { \__clockdate_date_print_month:n }
-      { \l_clockdate_date_month_str }
+      { \exp_args:NV \__clockdate_date_print_month_first:n }
+      { \exp_args:NV \clockdate_date_print_month:n }
+      \l_clockdate_date_month_str
   }
 \cs_new_protected:Npn \__clockdate_date_print_month_first:n #1
   {
     \bool_set_true:N \l_clockdate_date_if_capitalized_bool
-    \__clockdate_date_print_month:n {#1}
+    \clockdate_date_print_month:n {#1}
     \bool_set_false:N \l_clockdate_date_if_capitalized_bool
   }
 \cs_new_protected:Npn \__clockdate_date_print_days:
@@ -1244,7 +1256,7 @@
       { \l_clockdate_date_days_separator_tl }
       { \l_clockdate_date_days_final_separator_tl }
   }
-\cs_new_protected:Npn \__clockdate_date_print_day:n #1
+\cs_new_protected:Npn \clockdate_date_print_day:n #1
   {
     \bool_lazy_and:nnT
       { \str_if_eq_p:ee \l_clockdate_date_day_format_str { dd } }
