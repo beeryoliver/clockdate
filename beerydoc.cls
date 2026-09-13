@@ -1,7 +1,7 @@
 % Loading the class
 
 \NeedsTeXFormat{LaTeX2e}[2023-11-01]
-\ProvidesExplClass{beerydoc}{2026-08-23}{0.0.0}{}
+\ProvidesExplClass{beerydoc}{2026-09-13}{0.0.0}{}
 \prop_gput:Nnn \g_msg_module_type_prop { beerydoc } { Class }
 
 \msg_new:nnn { beerydoc } { l3kernel }
@@ -368,6 +368,13 @@
   }
 \cs_new_protected:Npn \__beerydoc_s_arg:
   { \__beerydoc_langle: \texttt {*} \__beerydoc_rangle: }
+
+\NewDocumentCommand \file { m }
+  {
+    \mode_if_math:TF
+      { \msg_error:nnn { beerydoc } { math-mode-invalid } { file } }
+      { \nolinkurl {#1} }
+  }
 
 \cs_set_protected:Npn \__beerydoc_tmp:nN #1#2
   {
