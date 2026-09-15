@@ -31,7 +31,7 @@ Print the time of day and the calendar date
 
 Oliver Beery
 
-Version 1.0.0\quad\date{2026-9-13}
+Version 1.0.0\quad\date{2026-9-15}
 
 
 \section{Introduction}
@@ -145,8 +145,8 @@ This section documents the commands provided by the \pkg{clockdate} package.
     a comma-separated list where each item is a single month or a month range
   \end{itemize}
 
-  \meta{date(s)} must not contain |--| at the top level unless it is used to
-  delimit a day or month range.
+  Within \meta{date(s)}, |-| and |--| at the top level must only be used as a
+  delimiter.
   \meta{year} and \meta{day} must be an \meta{integer}.
   \meta{month} must be an \meta{integer} from \num{1} to \num{12}.
   Each calendar date must be valid.
