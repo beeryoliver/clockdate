@@ -826,20 +826,13 @@
   {
     \int_compare:nT { 0 < #1 < 29 } { \prg_break: }
     \int_compare:nNnT {#1} = { 31 }
-      {
-        \__clockdate_date_month_if_thirty_one_days:T { \prg_break: }
-      }
+      { \__clockdate_date_month_if_thirty_one_days:T { \prg_break: } }
     \int_compare:nNnT {#1} = { 30 }
-      {
-        \int_compare:nNnF \l_clockdate_date_month_str = 2 { \prg_break: }
-      }
+      { \int_compare:nNnF \l_clockdate_date_month_str = 2 { \prg_break: } }
     \int_compare:nNnT {#1} = { 29 }
       {
         \int_compare:nNnTF \l_clockdate_date_month_str = 2
-          {
-            \__clockdate_date_year_if_leap:T { \prg_break: }
-          }
-          { \prg_break: }
+          { \__clockdate_date_year_if_leap:T { \prg_break: } } { \prg_break: }
       }
     \clist_map_break:n
       {
@@ -980,13 +973,9 @@
       { \bool_set_false:N \l__clockdate_date_priority_bool }
     \int_compare:nT { 0 < #1 < 30 } { \prg_break: }
     \int_compare:nNnT {#1} = { 31 }
-      {
-        \__clockdate_date_month_if_thirty_one_days:T { \prg_break: }
-      }
+      { \__clockdate_date_month_if_thirty_one_days:T { \prg_break: } }
     \int_compare:nNnT {#1} = { 30 }
-      {
-        \int_compare:nNnF \l_clockdate_date_month_str = 2 { \prg_break: }
-      }
+      { \int_compare:nNnF \l_clockdate_date_month_str = 2 { \prg_break: } }
     \clist_map_break:n
       {
         \msg_error:nnn { clockdate } { month-day-invalid } {#1}
