@@ -7,7 +7,7 @@
 % Loading the package
 
 \NeedsTeXFormat{LaTeX2e}[2023-11-01]
-\ProvidesExplPackage{clockdate}{2026-09-15}{1.0.0}
+\ProvidesExplPackage{clockdate}{2026-09-16}{1.0.0}
   {Print the time of day and the calendar date}
 
 \msg_new:nnn { clockdate } { l3kernel }
@@ -937,9 +937,8 @@
       { ! \str_if_eq_p:ee \l_clockdate_date_order_str { YMD } }
       {
         \seq_pop_left:NN \l__clockdate_date_months_seq \l__clockdate_tmp_tl
-        \exp_args:NNo \tl_set:No \l__clockdate_tmp_tl
-          { \exp_after:wN \use_none:n \l__clockdate_tmp_tl }
-        \tl_put_left:Nn \l__clockdate_tmp_tl
+        \tl_replace_once:Nnn \l__clockdate_tmp_tl
+          { \clockdate_date_print_month:n }
           { \__clockdate_date_print_month_first:n }
         \seq_put_left:NV \l__clockdate_date_months_seq \l__clockdate_tmp_tl
       }
