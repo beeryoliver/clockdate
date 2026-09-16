@@ -88,7 +88,6 @@
 \tl_new:N \l__clockdate_tmp_tl
 \str_new:N \l__clockdate_tmp_str
 \int_new:N \l__clockdate_tmp_int
-\int_new:N \g__clockdate_tmp_int
 \seq_new:N \l__clockdate_tmp_seq
 
 % Some functions
@@ -104,23 +103,28 @@
 % \peek_meaning:NTF test.
 \cs_new_protected:Npn \clockdate_end_period:
   {
-    \int_gzero:N \g__clockdate_tmp_int
-    \peek_meaning:NTF \__clockdate_end: { \__clockdate_end_period:w }
-      { \peek_meaning:NTF \group_end: { \__clockdate_end_period:n } { . \@ } }
+    \int_zero:N \l__clockdate_tmp_int
+    \peek_meaning_remove:NTF \__clockdate_end:
+      { \__clockdate_end_period_stop: }
+      {
+        \peek_meaning_remove:NTF \group_end: { \__clockdate_end_period_loop: }
+          { . \@ }
+      }
   }
-\cs_new_protected:Npn \__clockdate_end_period:w \__clockdate_end:
+\cs_new_protected:Npn \__clockdate_end_period_stop:
   {
     \peek_charcode_remove:NTF .
-      { \@ . \prg_replicate:nn { \g__clockdate_tmp_int + 1 } { \group_end: } }
-      { . \@ \prg_replicate:nn { \g__clockdate_tmp_int + 1 } { \group_end: } }
+      { \@ . \prg_replicate:nn { \l__clockdate_tmp_int + 1 } { \group_end: } }
+      { . \@ \prg_replicate:nn { \l__clockdate_tmp_int + 1 } { \group_end: } }
   }
-\cs_new_protected:Npn \__clockdate_end_period:n #1
+\cs_new_protected:Npn \__clockdate_end_period_loop:
   {
-    \int_gincr:N \g__clockdate_tmp_int
-    \peek_meaning:NTF \__clockdate_end: { \__clockdate_end_period:w }
+    \int_incr:N \l__clockdate_tmp_int
+    \peek_meaning_remove:NTF \__clockdate_end:
+      { \__clockdate_end_period_stop: }
       {
-        \peek_meaning:NTF \group_end: { \__clockdate_end_period:n }
-          { . \@ \prg_replicate:nn { \g__clockdate_tmp_int } { \group_end: } }
+        \peek_meaning_remove:NTF \group_end: { \__clockdate_end_period_loop: }
+          { . \@ \prg_replicate:nn { \l__clockdate_tmp_int } { \group_end: } }
       }
   }
 \prg_new_conditional:Npnn \__clockdate_bool_if_eq:nn #1#2 { p }
