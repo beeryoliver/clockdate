@@ -866,26 +866,16 @@
   }
 \cs_new_protected:Npn \__clockdate_date_month_days_print:
   {
-    \str_case:Vn \l_clockdate_date_order_str
+    \str_if_eq:eeTF \l_clockdate_date_order_str { DMY }
       {
-        { DMY }
-        {
-          \__clockdate_date_print_days:
-          \l_clockdate_date_month_day_separator_tl
-          \__clockdate_date_print_month:
-        }
-        { YMD }
-        {
-          \__clockdate_date_print_month_first:
-          \l_clockdate_date_month_day_separator_tl
-          \__clockdate_date_print_days:
-        }
-        { MDY }
-        {
-          \__clockdate_date_print_month_first:
-          \l_clockdate_date_month_day_separator_tl
-          \__clockdate_date_print_days:
-        }
+        \__clockdate_date_print_days:
+        \l_clockdate_date_month_day_separator_tl
+        \__clockdate_date_print_month:
+      }
+      {
+        \__clockdate_date_print_month_first:
+        \l_clockdate_date_month_day_separator_tl
+        \__clockdate_date_print_days:
       }
   }
 \cs_new_protected:Npn \__clockdate_date_month_days_set:n #1
@@ -991,26 +981,16 @@
   }
 \cs_new_protected:Npn \__clockdate_date_year_months_print:
   {
-    \str_case:Vn \l_clockdate_date_order_str
+    \str_if_eq:eeTF \l_clockdate_date_order_str { YMD }
       {
-        { DMY }
-        {
-          \__clockdate_date_print_months:
-          \l_clockdate_date_year_month_separator_tl
-          \__clockdate_date_print_year:
-        }
-        { YMD }
-        {
-          \__clockdate_date_print_year:
-          \l_clockdate_date_year_month_separator_tl
-          \__clockdate_date_print_months:
-        }
-        { MDY }
-        {
-          \__clockdate_date_print_months:
-          \l_clockdate_date_year_month_separator_tl
-          \__clockdate_date_print_year:
-        }
+        \__clockdate_date_print_year:
+        \l_clockdate_date_year_month_separator_tl
+        \__clockdate_date_print_months:
+      }
+      {
+        \__clockdate_date_print_months:
+        \l_clockdate_date_year_month_separator_tl
+        \__clockdate_date_print_year:
       }
   }
 \cs_new_protected:Npn \__clockdate_date_year_months_set:n #1
