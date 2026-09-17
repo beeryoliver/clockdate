@@ -97,8 +97,14 @@
 \cs_new_protected:Npn \__clockdate_end:
   { \use_none:n \q__clockdate_end \group_end: }
 \quark_new:N \q__clockdate_end
-\cs_new_protected:Npn \__clockdate_error_break: #1 \__clockdate_end:
-  { \group_end: }
+\cs_new_protected:Npn \__clockdate_error:n #1#2 \__clockdate_end:
+  { \group_end: \msg_error:nn { clockdate } {#1} }
+\cs_new_protected:Npn \__clockdate_error:nn #1#2#3 \__clockdate_end:
+  { \group_end: \msg_error:nnn { clockdate } {#1} {#2} }
+\cs_new_protected:Npn \__clockdate_error:nnn #1#2#3#4 \__clockdate_end:
+  { \group_end: \msg_error:nnnn { clockdate } {#1} {#2} {#3} }
+\cs_new_protected:Npn \__clockdate_error:nnnn #1#2#3#4#5 \__clockdate_end:
+  { \group_end: \msg_error:nnnnn { clockdate } {#1} {#2} {#3} {#4} }
 % \clockdate_end_period: needs \__clockdate_end: to be unique according to the
 % \peek_meaning:NTF test.
 \cs_new_protected:Npn \clockdate_end_period:
@@ -235,10 +241,7 @@
   {
     \seq_set_from_clist:NV \l__clockdate_tmp_seq \l__clockdate_clock_input_tl
     \seq_if_empty:NT \l__clockdate_tmp_seq
-      {
-        \msg_error:nn { clockdate } { clocks-empty }
-        \__clockdate_error_break:
-      }
+      { \__clockdate_error:n { clocks-empty } }
     \int_set:Nn \l__clockdate_clock_clocks_count_int
       { \seq_count:N \l__clockdate_tmp_seq }
     \seq_map_inline:Nn \l__clockdate_tmp_seq
@@ -296,24 +299,12 @@
             }
         }
       }
-      {
-        \seq_map_break:n
-          {
-            \msg_error:nnn { clockdate } { clock-invalid } {#1}
-            \__clockdate_error_break:
-          }
-      }
+      { \seq_map_break:n { \__clockdate_error:nn { clock-invalid } {#1} } }
   }
 \cs_new_protected:Npn \__clockdate_clock_set_hour:n #1
   {
     \int_compare:nF { 0 <= #1 < 25 }
-      {
-        \seq_map_break:n
-          {
-            \msg_error:nnn { clockdate } { hour-invalid } {#1}
-            \__clockdate_error_break:
-          }
-      }
+      { \seq_map_break:n { \__clockdate_error:nn { hour-invalid } {#1} } }
     \__clockdate_clock_if_same_ampm:n {#1}
     \tl_put_right:Nn \l__clockdate_clock_clocks_tl { {#1} { } { } }
     \str_put_right:Nn \l_clockdate_clock_clocks_str {#1}
@@ -345,10 +336,7 @@
       }
       {
         \seq_map_break:n
-          {
-            \msg_error:nnnn { clockdate } { hour-minute-invalid } {#1} {#2}
-            \__clockdate_error_break:
-          }
+          { \__clockdate_error:nnn { hour-minute-invalid } {#1} {#2} }
       }
     \tl_put_right:Nn \l__clockdate_clock_clocks_tl { {#1} {#2} { } }
     \str_put_right:Nn \l_clockdate_clock_clocks_str { #1 : #2 }
@@ -373,9 +361,8 @@
       {
         \seq_map_break:n
           {
-            \msg_error:nnnnn { clockdate } { hour-minute-second-invalid }
+            \__clockdate_error:nnnn { hour-minute-second-invalid }
               {#1} {#2} {#3}
-            \__clockdate_error_break:
           }
       }
     \tl_put_right:Nn \l__clockdate_clock_clocks_tl { {#1} {#2} {#3} }
@@ -671,10 +658,7 @@
                 }
             }
           }
-          {
-            \msg_error:nnn { clockdate } { date-invalid } {#1}
-            \__clockdate_error_break:
-          }
+          { \__clockdate_error:nn { date-invalid } {#1} }
       }
       {
         \str_set:Ne \l_clockdate_date_year_str
@@ -704,10 +688,7 @@
                 }
             }
           }
-          {
-            \msg_error:nnn { clockdate } { date-invalid } {#1}
-            \__clockdate_error_break:
-          }
+          { \__clockdate_error:nn { date-invalid } {#1} }
       }
   }
 \cs_new_protected:Npn \__clockdate_date_init:
@@ -767,10 +748,7 @@
         \cs_set_protected:Npn \__clockdate_date_year_month_days_chk:n ##1
           {
             \clist_map_break:n
-              {
-                \msg_error:nnn { clockdate } { year-month-day-invalid } {##1}
-                \__clockdate_error_break:
-              }
+              { \__clockdate_error:nn { year-month-day-invalid } {##1} }
           }
       }
     \clist_map_inline:nn {#2}
@@ -786,10 +764,7 @@
           }
       }
     \str_if_empty:NT \l_clockdate_date_day_str
-      {
-        \msg_error:nn { clockdate } { days-empty }
-        \__clockdate_error_break:
-      }
+      { \__clockdate_error:n { days-empty } }
     \str_set:Ne \l_clockdate_date_day_str
       { \exp_after:wN \use_none:n \l_clockdate_date_day_str }
   }
@@ -835,10 +810,7 @@
           { \__clockdate_date_year_if_leap:T { \prg_break: } } { \prg_break: }
       }
     \clist_map_break:n
-      {
-        \msg_error:nnn { clockdate } { year-month-day-invalid } {#1}
-        \__clockdate_error_break:
-      }
+      { \__clockdate_error:nn { year-month-day-invalid } {#1} }
     \prg_break_point:
   }
 \cs_new:Npn \__clockdate_date_month_if_thirty_one_days:T
@@ -890,10 +862,7 @@
           }
       }
     \str_if_empty:NT \l_clockdate_date_day_str
-      {
-        \msg_error:nn { clockdate } { days-empty }
-        \__clockdate_error_break:
-      }
+      { \__clockdate_error:n { days-empty } }
     \str_set:Ne \l_clockdate_date_day_str
       { \exp_after:wN \use_none:n \l_clockdate_date_day_str }
     \bool_lazy_and:nnT
@@ -966,11 +935,7 @@
       { \__clockdate_date_month_if_thirty_one_days:T { \prg_break: } }
     \int_compare:nNnT {#1} = { 30 }
       { \int_compare:nNnF \l_clockdate_date_month_str = 2 { \prg_break: } }
-    \clist_map_break:n
-      {
-        \msg_error:nnn { clockdate } { month-day-invalid } {#1}
-        \__clockdate_error_break:
-      }
+    \clist_map_break:n { \__clockdate_error:nn { month-day-invalid } {#1} }
     \prg_break_point:
   }
 \cs_new_protected:Npn \__clockdate_date_year_months:n #1
@@ -1005,10 +970,7 @@
           }
       }
     \str_if_empty:NT \l_clockdate_date_month_str
-      {
-        \msg_error:nn { clockdate } { months-empty }
-        \__clockdate_error_break:
-      }
+      { \__clockdate_error:n { months-empty } }
     \str_set:Ne \l_clockdate_date_month_str
       { \exp_after:wN \use_none:n \l_clockdate_date_month_str }
   }
@@ -1062,10 +1024,7 @@
     \int_compare:nF { 0 < #1 < 13 }
       {
         \clist_map_break:n
-          {
-            \msg_error:nnn { clockdate } { year-month-invalid } {#1}
-            \__clockdate_error_break:
-          }
+          { \__clockdate_error:nn { year-month-invalid } {#1} }
       }
   }
 \cs_new_protected:Npn \__clockdate_date_print_year:
