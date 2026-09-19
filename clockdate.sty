@@ -7,7 +7,7 @@
 % Loading the package
 
 \NeedsTeXFormat{LaTeX2e}[2023-11-01]
-\ProvidesExplPackage{clockdate}{2026-09-16}{1.0.0}
+\ProvidesExplPackage{clockdate}{2026-09-18}{1.0.0}
   {Print the time of day and the calendar date}
 
 \msg_new:nnn { clockdate } { l3kernel }
@@ -162,22 +162,14 @@
 
 % \clock
 
-\NewDocumentCommand \clock { s o m }
+\NewDocumentCommand \clock { o m }
   {
     \mode_if_math:TF
       { \msg_error:nnn { clockdate } { math-mode-invalid } { clock } }
       {
-        \IfBooleanTF #1
-          {
-            \IfNoValueTF {#2}
-              { \__clockdate_clock_star:n {#3} }
-              { \__clockdate_clock_star:nn {#2} {#3} }
-          }
-          {
-            \IfNoValueTF {#2}
-              { \__clockdate_clock:n {#3} }
-              { \__clockdate_clock:nn {#2} {#3} }
-          }
+        \IfNoValueTF {#1}
+          { \__clockdate_clock:n {#2} }
+          { \__clockdate_clock:nn {#1} {#2} }
       }
   }
 \cs_new_protected:Npn \__clockdate_clock:nn #1#2
@@ -190,21 +182,6 @@
 \cs_new_protected:Npn \__clockdate_clock:n #1
   {
     \__clockdate_begin:
-      \__clockdate_clock_parse:n {#1}
-    \__clockdate_end:
-  }
-\cs_new_protected:Npn \__clockdate_clock_star:nn #1#2
-  {
-    \__clockdate_begin:
-      \l__clockdate_clock_star_tl
-      \keys_set:nn { clockdate / clock } {#1}
-      \__clockdate_clock_parse:n {#2}
-    \__clockdate_end:
-  }
-\cs_new_protected:Npn \__clockdate_clock_star:n #1
-  {
-    \__clockdate_begin:
-      \l__clockdate_clock_star_tl
       \__clockdate_clock_parse:n {#1}
     \__clockdate_end:
   }
@@ -517,44 +494,28 @@
 
 \cs_new_protected:Npn \__clockdate_date_new:Nn #1#2
   {
-    \exp_args:Nc #1 {#2} { s o m }
+    \exp_args:Nc #1 {#2} { o m }
       {
         \mode_if_math:TF
           { \msg_error:nnn { clockdate } { math-mode-invalid } {#2} }
           {
-            \IfBooleanTF ##1
-              {
-                \IfNoValueTF {##2}
-                  { \__clockdate_date_star:n {##3} }
-                  { \__clockdate_date_star:nn {##2} {##3} }
-              }
-              {
-                \IfNoValueTF {##2}
-                  { \__clockdate_date:n {##3} }
-                  { \__clockdate_date:nn {##2} {##3} }
-              }
+            \IfNoValueTF {##1}
+              { \__clockdate_date:n {##2} }
+              { \__clockdate_date:nn {##1} {##2} }
           }
       }
   }
 \__clockdate_date_new:Nn \NewDocumentCommand { calendardate }
 \cs_new_protected:Npn \__clockdate_date_capitalized_new:Nn #1#2
   {
-    \exp_args:Nc #1 {#2} { s o m }
+    \exp_args:Nc #1 {#2} { o m }
       {
         \mode_if_math:TF
           { \msg_error:nnn { clockdate } { math-mode-invalid } {#2} }
           {
-            \IfBooleanTF ##1
-              {
-                \IfNoValueTF {##2}
-                  { \__clockdate_date_capitalized_star:n {##3} }
-                  { \__clockdate_date_capitalized_star:nn {##2} {##3} }
-              }
-              {
-                \IfNoValueTF {##2}
-                  { \__clockdate_date_capitalized:n {##3} }
-                  { \__clockdate_date_capitalized:nn {##2} {##3} }
-              }
+            \IfNoValueTF {##1}
+              { \__clockdate_date_capitalized:n {##2} }
+              { \__clockdate_date_capitalized:nn {##1} {##2} }
           }
       }
   }
@@ -582,21 +543,6 @@
       \__clockdate_date_parse:n {#1}
     \__clockdate_end:
   }
-\cs_new_protected:Npn \__clockdate_date_star:nn #1#2
-  {
-    \__clockdate_begin:
-      \l__clockdate_date_star_tl
-      \keys_set:nn { clockdate / date } {#1}
-      \__clockdate_date_parse:n {#2}
-    \__clockdate_end:
-  }
-\cs_new_protected:Npn \__clockdate_date_star:n #1
-  {
-    \__clockdate_begin:
-      \l__clockdate_date_star_tl
-      \__clockdate_date_parse:n {#1}
-    \__clockdate_end:
-  }
 \cs_new_protected:Npn \__clockdate_date_capitalized:nn #1#2
   {
     \__clockdate_begin:
@@ -609,23 +555,6 @@
   {
     \__clockdate_begin:
       \bool_set_true:N \l_clockdate_date_capitalize_first_bool
-      \__clockdate_date_parse:n {#1}
-    \__clockdate_end:
-  }
-\cs_new_protected:Npn \__clockdate_date_capitalized_star:nn #1#2
-  {
-    \__clockdate_begin:
-      \bool_set_true:N \l_clockdate_date_capitalize_first_bool
-      \l__clockdate_date_star_tl
-      \keys_set:nn { clockdate / date } {#1}
-      \__clockdate_date_parse:n {#2}
-    \__clockdate_end:
-  }
-\cs_new_protected:Npn \__clockdate_date_capitalized_star:n #1
-  {
-    \__clockdate_begin:
-      \bool_set_true:N \l_clockdate_date_capitalize_first_bool
-      \l__clockdate_date_star_tl
       \__clockdate_date_parse:n {#1}
     \__clockdate_end:
   }
@@ -1209,14 +1138,12 @@
 
 \bool_new:N \g__clockdate_overwrite_date_bool
 
-\tl_new:N \l__clockdate_clock_star_tl
 \str_new:N \l_clockdate_clock_clock_str
 \str_new:N \l_clockdate_clock_hour_format_str
 \str_new:N \l_clockdate_clock_minute_format_str
 \str_new:N \l_clockdate_clock_second_format_str
 \str_new:N \l_clockdate_clock_ampm_format_str
 
-\tl_new:N \l__clockdate_date_star_tl
 \str_new:N \l_clockdate_date_priority_str
 \str_new:N \l_clockdate_date_order_str
 \str_new:N \l_clockdate_date_year_format_str
@@ -1242,13 +1169,6 @@
   {
       reset .code:n = { \__clockdate_clock_keys_set_initial: }
     , reset .value_forbidden:n = true
-
-    , star .code:n =
-        {
-          \keys_precompile:nnN { clockdate / clock } {#1}
-            \l__clockdate_clock_star_tl
-        }
-    , star .value_required:n = true
 
     , clock .choices:nn = { 12-hour , 24-hour }
         { \str_set:Nn \l_clockdate_clock_clock_str {#1} }
@@ -1313,13 +1233,6 @@
   {
       reset .code:n = { \__clockdate_date_keys_set_initial: }
     , reset .value_forbidden:n = true
-
-    , star .code:n =
-        {
-          \keys_precompile:nnN { clockdate / date } {#1}
-            \l__clockdate_date_star_tl
-        }
-    , star .value_required:n = true
 
     , priority .choices:nn = { MD , YM }
         { \str_set:Nn \l_clockdate_date_priority_str {#1} }
@@ -1424,7 +1337,6 @@
 
 \cs_new_protected:Npn \__clockdate_clock_keys_set_initial:
   {
-    \tl_clear:N \l__clockdate_clock_star_tl
     \str_set:Nn \l_clockdate_clock_clock_str { 12-hour }
     \str_set:Nn \l_clockdate_clock_hour_format_str { h }
     \str_set:Nn \l_clockdate_clock_minute_format_str { mm }
@@ -1443,7 +1355,6 @@
 \__clockdate_clock_keys_set_initial:
 \cs_new_protected:Npn \__clockdate_date_keys_set_initial:
   {
-    \tl_clear:N \l__clockdate_date_star_tl
     \str_set:Nn \l_clockdate_date_priority_str { MD }
     \str_set:Nn \l_clockdate_date_order_str { DMY }
     \bool_set_false:N \l_clockdate_date_capitalize_first_bool
