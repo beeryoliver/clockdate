@@ -12,7 +12,7 @@ Print the time of day and the calendar date
 
 Oliver Beery
 
-Version 1.0.0\quad\date{2026-9-19}
+Version 1.0.0\quad\date{2026-9-20}
 
 
 \section{Introduction}
@@ -321,7 +321,8 @@ These keys modify the behavior of \cs{clock} (\S\ref{sec:cmds}).
   \begin{syntax}
     \key{clock/clocks-separator=\meta{token list}}
   \end{syntax}
-  Sets the separator between each item in \meta{clocks} to \meta{token list}.
+  Sets the separator between each item in \meta{clocks}---except the last
+  two---to \meta{token list} if \meta{clocks} contains three or more items.
   The initial value is |, |.
 \end{code}
 
@@ -496,7 +497,8 @@ These keys modify the behavior of \cs{calendardate} (\S\ref{sec:cmds}).
   \begin{syntax}
     \key{date/days-separator=\meta{token list}}
   \end{syntax}
-  Sets the separator between each item in \meta{days} to \meta{token list}.
+  Sets the separator between each item in \meta{days}---except the last
+  two---to \meta{token list} if \meta{days} contains three or more items.
   The initial value is |, |.
 \end{code}
 
@@ -534,7 +536,8 @@ These keys modify the behavior of \cs{calendardate} (\S\ref{sec:cmds}).
   \begin{syntax}
     \key{date/months-separator=\meta{token list}}
   \end{syntax}
-  Sets the separator between each item in \meta{months} to \meta{token list}.
+  Sets the separator between each item in \meta{months}---except the last
+  two---to \meta{token list} if \meta{months} contains three or more items.
   The initial value is |, |.
 \end{code}
 
