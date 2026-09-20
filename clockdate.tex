@@ -1,6 +1,22 @@
 \documentclass{beerydoc}
+
+
 \usepackage{clockdate}
 \clockdatesetup{overwrite-date}
+\ExplSyntaxOn
+\clockdate_clock_keys_save:nn { or }
+  {
+      clocks-pair-separator  = {  ~or~ }
+    , clocks-final-separator = { ,~or~ }
+  }
+\clockdate_date_keys_save:nn { or }
+  {
+      days-pair-separator    = {  ~or~ }
+    , days-final-separator   = { ,~or~ }
+    , months-pair-separator  = {  ~or~ }
+    , months-final-separator = { ,~or~ }
+  }
+\ExplSyntaxOff
 
 
 \begin{document}
@@ -197,6 +213,14 @@ These keys modify the behavior of \cs{clock} (\S\ref{sec:cmds}).
   Meta key that sets all the keys in path |clock| to their initial values.
 \end{code}
 
+\begin{code}{clock/load}
+  \begin{syntax}
+    \key{clock/load=\meta{string}}
+  \end{syntax}
+  Used to load precompiled keys in path |clock|.
+  See \S\ref{subsec:save} for more detail.
+\end{code}
+
 \begin{code}{clock/clock}
   \begin{syntax}
     \key{clock/clock=12-hour|24-hour}
@@ -361,6 +385,14 @@ These keys modify the behavior of \cs{calendardate} (\S\ref{sec:cmds}).
 
 \begin{code}{date/reset}
   Meta key that sets all the keys in path |date| to their initial values.
+\end{code}
+
+\begin{code}{date/load}
+  \begin{syntax}
+    \key{date/load=\meta{string}}
+  \end{syntax}
+  Used to load precompiled keys in path |date|.
+  See \S\ref{subsec:save} for more detail.
 \end{code}
 
 \begin{code}{date/priority}
@@ -684,6 +716,25 @@ This subsection documents the hooks provided by the \pkg{clockdate} package.
 \begin{code}{clockdate/date}
   Hook used in \cs{calendardate} after parsing its input and setting all the
   variables in \S\ref{subsec:vardate}, but before printing the calendar date.
+\end{code}
+
+\subsection{Precompiling the keys}
+\label{subsec:save}
+
+\begin{code}{\clockdate_clock_keys_save:nn}
+  \begin{syntax}
+    \cs{clockdate_clock_keys_save:nn} \marg{string} \marg{key-value list}
+  \end{syntax}
+  Precompiles the keys in \meta{key-value list} in path |clock| for use when
+  setting the key \key{clock/load=\meta{string}} (\S\ref{subsec:clock}).
+\end{code}
+
+\begin{code}{\clockdate_date_keys_save:nn}
+  \begin{syntax}
+    \cs{clockdate_date_keys_save:nn} \marg{string} \marg{key-value list}
+  \end{syntax}
+  Precompiles the keys in \meta{key-value list} in path |date| for use when
+  setting the key \key{date/load=\meta{string}} (\S\ref{subsec:date}).
 \end{code}
 
 \subsection{Variables set by \cs{clockdatesetup}}

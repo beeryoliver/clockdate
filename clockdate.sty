@@ -1209,6 +1209,14 @@
       reset .code:n = { \__clockdate_clock_keys_set_initial: }
     , reset .value_forbidden:n = true
 
+    , load .code:n =
+        {
+          \tl_if_exist:cTF { l__clockdate_clock_save_ \tl_to_str:n {#1} _tl }
+            { \use:c { l__clockdate_clock_save_ \tl_to_str:n {#1} _tl } }
+            { \msg_error:nnnn { clockdate } { load-invalid } { clock } {#1} }
+        }
+    , load .value_required:n = true
+
     , clock .choices:nn = { 12-hour , 24-hour }
         { \str_set:Nn \l_clockdate_clock_clock_str {#1} }
     , clock .value_required:n = true
@@ -1272,6 +1280,14 @@
   {
       reset .code:n = { \__clockdate_date_keys_set_initial: }
     , reset .value_forbidden:n = true
+
+    , load .code:n =
+        {
+          \tl_if_exist:cTF { l__clockdate_date_save_ \tl_to_str:n {#1} _tl }
+            { \use:c { l__clockdate_date_save_ \tl_to_str:n {#1} _tl } }
+            { \msg_error:nnnn { clockdate } { load-invalid } { date } {#1} }
+        }
+    , load .value_required:n = true
 
     , priority .choices:nn = { MD , YM }
         { \str_set:Nn \l_clockdate_date_priority_str {#1} }
@@ -1423,6 +1439,28 @@
   }
 \__clockdate_date_keys_set_initial:
 
+\cs_new_protected:Npn \clockdate_clock_keys_save:nn #1
+  {
+    \exp_args:Nc \__clockdate_clock_keys_save:Nn
+      { l__clockdate_clock_save_ \tl_to_str:n {#1} _tl }
+  }
+\cs_new_protected:Npn \__clockdate_clock_keys_save:Nn #1#2
+  {
+    \tl_clear_new:N #1
+    \keys_precompile:nnN { clockdate / clock } {#2} #1
+  }
+
+\cs_new_protected:Npn \clockdate_date_keys_save:nn #1
+  {
+    \exp_args:Nc \__clockdate_date_keys_save:Nn
+      { l__clockdate_date_save_ \tl_to_str:n {#1} _tl }
+  }
+\cs_new_protected:Npn \__clockdate_date_keys_save:Nn #1#2
+  {
+    \tl_clear_new:N #1
+    \keys_precompile:nnN { clockdate / date } {#2} #1
+  }
+
 \NewDocumentCommand \clockdatesetup { m }
   {
     \mode_if_math:TF
@@ -1434,6 +1472,11 @@
 
 \msg_new:nnn { clockdate } { math-mode-invalid }
   { '\iow_char:N \\ #1'~ invalid~ in~ math~ mode~ \msg_line_context:. }
+\msg_new:nnn { clockdate } { load-invalid }
+  {
+    Invalid~ value~ '#2'~ for~ the~ key~ '#1 / load'~ \msg_line_context:. \\
+    \msg_see_documentation_text:n { clockdate }
+  }
 % Messages used in \clock.
 \msg_new:nnn { clockdate } { clock-invalid }
   {
