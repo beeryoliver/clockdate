@@ -7,7 +7,7 @@
 % Loading the package
 
 \NeedsTeXFormat{LaTeX2e}[2023-11-01]
-\ProvidesExplPackage{clockdate}{2026-09-18}{1.0.0}
+\ProvidesExplPackage{clockdate}{2026-09-19}{1.0.0}
   {Print the time of day and the calendar date}
 
 \msg_new:nnn { clockdate } { l3kernel }
@@ -391,12 +391,18 @@
             \bool_lazy_and:nnT
               { \l__clockdate_tmp_bool }
               {
-                ! \bool_lazy_and_p:nn
-                  { \l_clockdate_clock_ampm_omit_range_bool }
+                ! \bool_lazy_all_p:n
                   {
-                    \__clockdate_bool_if_eq_p:nn
-                      { \__clockdate_clock_hour_if_am_p:n {#1} }
-                      { \__clockdate_clock_hour_if_am_p:n {#4} }
+                    { \l_clockdate_clock_ampm_omit_range_bool }
+                    {
+                      \__clockdate_bool_if_eq_p:nn
+                        { \__clockdate_clock_hour_if_am_p:n {#1} }
+                        { \__clockdate_clock_hour_if_am_p:n {#4} }
+                    }
+                    {
+                      \__clockdate_clock_compare_p:nnnnnn
+                        {#1} {#2} {#3} {#4} {#5} {#6}
+                    }
                   }
               }
               {
@@ -426,6 +432,25 @@
       }
     \__clockdate_clock_set_loop:nnnnnn
   }
+\cs_new:Npn \__clockdate_clock_compare_p:nnnnnn #1#2#3#4#5#6
+  {
+    \exp_args:Nee \__clockdate_clock_compare_aux:nn
+      {
+        \int_compare:nNnTF {#1} = { 24 } { 0 } {#1}
+        \tl_if_empty:nTF {#2} { 00 }
+          { \int_compare:nNnT {#2} < { 10 } { 0 } #2 }
+        \tl_if_empty:nTF {#3} { 00 }
+          { \int_compare:nNnT {#3} < { 10 } { 0 } #3 }
+      }
+      {
+        \int_compare:nNnTF {#4} = { 24 } { 0 } {#4}
+        \tl_if_empty:nTF {#5} { 00 }
+          { \int_compare:nNnT {#5} < { 10 } { 0 } #5 }
+        \tl_if_empty:nTF {#6} { 00 }
+          { \int_compare:nNnT {#6} < { 10 } { 0 } #6 }
+      }
+  }
+\cs_new:Npn \__clockdate_clock_compare_aux:nn #1 { \int_compare_p:nNn {#1} < }
 \cs_new_protected:Npn \clockdate_clock_print_hour:n #1
   {
     \int_set:Nn \l__clockdate_tmp_int
