@@ -585,8 +585,8 @@
 \cs_new_protected:Npn \__clockdate_date_capitalized:nn #1#2
   {
     \__clockdate_begin:
-      \bool_set_true:N \l_clockdate_date_capitalize_first_bool
       \keys_set:nn { clockdate / date } {#1}
+      \bool_set_true:N \l_clockdate_date_capitalize_first_bool
       \__clockdate_date_parse:n {#2}
     \__clockdate_end:
   }
