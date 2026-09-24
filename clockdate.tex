@@ -339,15 +339,6 @@ These keys modify the behavior of \cs{clock} (\S\ref{sec:cmds}).
 \subsubsection{Separating the clocks}
 \label{subsubsec:sepclocks}
 
-\begin{code}{clock/clocks-separator}
-  \begin{syntax}
-    \key{clock/clocks-separator=\meta{token list}}
-  \end{syntax}
-  Sets the separator between each item in \meta{clocks}---except the last
-  two---to \meta{token list} if \meta{clocks} contains three or more items.
-  The initial value is |, |.
-\end{code}
-
 \begin{code}{clock/clocks-pair-separator}
   \begin{syntax}
     \key{clock/clocks-pair-separator=\meta{token list}}
@@ -364,6 +355,27 @@ These keys modify the behavior of \cs{clock} (\S\ref{sec:cmds}).
   Sets the separator between the last two items in \meta{clocks} to
   \meta{token list} if \meta{clocks} contains three or more items.
   The initial value is |, and |.
+\end{code}
+
+\begin{code}{clock/clocks-nonfinal-separator}
+  \begin{syntax}
+    \key{clock/clocks-nonfinal-separator=\meta{token list}}
+  \end{syntax}
+  Sets the separator between each item in \meta{clocks}---except the last
+  two---to \meta{token list} if \meta{clocks} contains three or more items.
+  The initial value is |, |.
+\end{code}
+
+\begin{code}{clock/clocks-separator}
+  \begin{syntax}
+    \key{clock/clocks-separator=\meta{token list}}
+  \end{syntax}
+  Meta key that sets the value of the following keys to \meta{token list}:
+  \begin{itemize}
+    \item \key{clock/clocks-pair-separator}
+    \item \key{clock/clocks-final-separator}
+    \item \key{clock/clocks-nonfinal-separator}
+  \end{itemize}
 \end{code}
 
 \begin{code}{clock/clocks-range-separator}
@@ -523,15 +535,6 @@ These keys modify the behavior of \cs{calendardate} (\S\ref{sec:cmds}).
 \subsubsection{Separating the days}
 \label{subsubsec:sepdays}
 
-\begin{code}{date/days-separator}
-  \begin{syntax}
-    \key{date/days-separator=\meta{token list}}
-  \end{syntax}
-  Sets the separator between each item in \meta{days}---except the last
-  two---to \meta{token list} if \meta{days} contains three or more items.
-  The initial value is |, |.
-\end{code}
-
 \begin{code}{date/days-pair-separator}
   \begin{syntax}
     \key{date/days-pair-separator=\meta{token list}}
@@ -550,6 +553,27 @@ These keys modify the behavior of \cs{calendardate} (\S\ref{sec:cmds}).
   The initial value is |, and |.
 \end{code}
 
+\begin{code}{date/days-nonfinal-separator}
+  \begin{syntax}
+    \key{date/days-nonfinal-separator=\meta{token list}}
+  \end{syntax}
+  Sets the separator between each item in \meta{days}---except the last
+  two---to \meta{token list} if \meta{days} contains three or more items.
+  The initial value is |, |.
+\end{code}
+
+\begin{code}{date/days-separator}
+  \begin{syntax}
+    \key{date/days-separator=\meta{token list}}
+  \end{syntax}
+  Meta key that sets the value of the following keys to \meta{token list}:
+  \begin{itemize}
+    \item \key{date/days-pair-separator}
+    \item \key{date/days-final-separator}
+    \item \key{date/days-nonfinal-separator}
+  \end{itemize}
+\end{code}
+
 \begin{code}{date/days-range-separator}
   \begin{syntax}
     \key{date/days-range-separator=\meta{token list}}
@@ -561,15 +585,6 @@ These keys modify the behavior of \cs{calendardate} (\S\ref{sec:cmds}).
 
 \subsubsection{Separating the months}
 \label{subsubsec:sepmonths}
-
-\begin{code}{date/months-separator}
-  \begin{syntax}
-    \key{date/months-separator=\meta{token list}}
-  \end{syntax}
-  Sets the separator between each item in \meta{months}---except the last
-  two---to \meta{token list} if \meta{months} contains three or more items.
-  The initial value is |, |.
-\end{code}
 
 \begin{code}{date/months-pair-separator}
   \begin{syntax}
@@ -587,6 +602,27 @@ These keys modify the behavior of \cs{calendardate} (\S\ref{sec:cmds}).
   Sets the separator between the last two items in \meta{months} to
   \meta{token list} if \meta{months} contains three or more items.
   The initial value is |, and |.
+\end{code}
+
+\begin{code}{date/months-nonfinal-separator}
+  \begin{syntax}
+    \key{date/months-nonfinal-separator=\meta{token list}}
+  \end{syntax}
+  Sets the separator between each item in \meta{months}---except the last
+  two---to \meta{token list} if \meta{months} contains three or more items.
+  The initial value is |, |.
+\end{code}
+
+\begin{code}{date/months-separator}
+  \begin{syntax}
+    \key{date/months-separator=\meta{token list}}
+  \end{syntax}
+  Meta key that sets the value of the following keys to \meta{token list}:
+  \begin{itemize}
+    \item \key{date/months-pair-separator}
+    \item \key{date/months-final-separator}
+    \item \key{date/months-nonfinal-separator}
+  \end{itemize}
 \end{code}
 
 \begin{code}{date/months-range-separator}
@@ -775,9 +811,9 @@ They are read-only and should not be modified directly.
 
 \begin{code}
   {
-    \l_clockdate_clock_clocks_separator_tl,
     \l_clockdate_clock_clocks_pair_separator_tl,
     \l_clockdate_clock_clocks_final_separator_tl,
+    \l_clockdate_clock_clocks_nonfinal_separator_tl,
     \l_clockdate_clock_clocks_range_separator_tl
   }
   The value of the keys documented in \S\ref{subsubsec:sepclocks}.
@@ -813,9 +849,9 @@ They are read-only and should not be modified directly.
 
 \begin{code}
   {
-    \l_clockdate_date_days_separator_tl,
     \l_clockdate_date_days_pair_separator_tl,
     \l_clockdate_date_days_final_separator_tl,
+    \l_clockdate_date_days_nonfinal_separator_tl,
     \l_clockdate_date_days_range_separator_tl
   }
   The values of the keys documented in \S\ref{subsubsec:sepdays}.
@@ -823,9 +859,9 @@ They are read-only and should not be modified directly.
 
 \begin{code}
   {
-    \l_clockdate_date_months_separator_tl,
     \l_clockdate_date_months_pair_separator_tl,
     \l_clockdate_date_months_final_separator_tl,
+    \l_clockdate_date_months_nonfinal_separator_tl,
     \l_clockdate_date_months_range_separator_tl
   }
   The values of the keys documented in \S\ref{subsubsec:sepmonths}.
@@ -1064,7 +1100,7 @@ The \pkg{clockdate} package uses some ideas from the \pkg{datetime2} and
     following \pkg{siunitx} options:
   }
 \begin{itemize}
-  \item \key{list-separator}
+  % \item \key{list-separator}
   \item \key{list-pair-separator}
   \item \key{list-final-separator}
 \end{itemize}

@@ -7,7 +7,7 @@
 % Loading the package
 
 \NeedsTeXFormat{LaTeX2e}[2023-11-01]
-\ProvidesExplPackage{clockdate}{2026-09-20}{1.0.0}
+\ProvidesExplPackage{clockdate}{2026-09-23}{1.0.0}
   {Print the time of day and the calendar date}
 
 \msg_new:nnn { clockdate } { l3kernel }
@@ -515,7 +515,7 @@
   {
     \seq_use:Nnnn \l__clockdate_clock_clocks_seq
       { \l_clockdate_clock_clocks_pair_separator_tl }
-      { \l_clockdate_clock_clocks_separator_tl }
+      { \l_clockdate_clock_clocks_nonfinal_separator_tl }
       { \l_clockdate_clock_clocks_final_separator_tl }
   }
 
@@ -1114,7 +1114,7 @@
   {
     \seq_use:Nnnn \l__clockdate_date_months_seq
       { \l_clockdate_date_months_pair_separator_tl }
-      { \l_clockdate_date_months_separator_tl }
+      { \l_clockdate_date_months_nonfinal_separator_tl }
       { \l_clockdate_date_months_final_separator_tl }
   }
 \cs_new_protected:Npn \__clockdate_date_print_month:
@@ -1146,7 +1146,7 @@
   {
     \seq_use:Nnnn \l__clockdate_date_days_seq
       { \l_clockdate_date_days_pair_separator_tl }
-      { \l_clockdate_date_days_separator_tl }
+      { \l_clockdate_date_days_nonfinal_separator_tl }
       { \l_clockdate_date_days_final_separator_tl }
   }
 \cs_new_protected:Npn \clockdate_date_print_day:n #1
@@ -1261,9 +1261,6 @@
     , ampm-omit-list .bool_set:N = \l_clockdate_clock_ampm_omit_list_bool
     , ampm-omit-list .value_required:n = true
 
-    , clocks-separator .tl_set:N = \l_clockdate_clock_clocks_separator_tl
-    , clocks-separator .value_required:n = true
-
     , clocks-pair-separator .tl_set:N =
         \l_clockdate_clock_clocks_pair_separator_tl
     , clocks-pair-separator .value_required:n = true
@@ -1271,6 +1268,18 @@
     , clocks-final-separator .tl_set:N =
         \l_clockdate_clock_clocks_final_separator_tl
     , clocks-final-separator .value_required:n = true
+
+    , clocks-nonfinal-separator .tl_set:N =
+        \l_clockdate_clock_clocks_nonfinal_separator_tl
+    , clocks-nonfinal-separator .value_required:n = true
+
+    , clocks-separator .code:n =
+        {
+          \tl_set:Nn \l_clockdate_clock_clocks_pair_separator_tl {#1}
+          \tl_set:Nn \l_clockdate_clock_clocks_final_separator_tl {#1}
+          \tl_set:Nn \l_clockdate_clock_clocks_nonfinal_separator_tl {#1}
+        }
+    , clocks-separator .value_required:n = true
 
     , clocks-range-separator .tl_set:N =
         \l_clockdate_clock_clocks_range_separator_tl
@@ -1333,9 +1342,6 @@
         }
     , date-separator .value_required:n = true
 
-    , days-separator .tl_set:N = \l_clockdate_date_days_separator_tl
-    , days-separator .value_required:n = true
-
     , days-pair-separator .tl_set:N = \l_clockdate_date_days_pair_separator_tl
     , days-pair-separator .value_required:n = true
 
@@ -1343,12 +1349,21 @@
         \l_clockdate_date_days_final_separator_tl
     , days-final-separator .value_required:n = true
 
+    , days-nonfinal-separator .tl_set:N =
+        \l_clockdate_date_days_nonfinal_separator_tl
+    , days-nonfinal-separator .value_required:n = true
+
+    , days-separator .code:n =
+        {
+          \tl_set:Nn \l_clockdate_date_days_pair_separator_tl {#1}
+          \tl_set:Nn \l_clockdate_date_days_final_separator_tl {#1}
+          \tl_set:Nn \l_clockdate_date_days_nonfinal_separator_tl {#1}
+        }
+    , days-separator .value_required:n = true
+
     , days-range-separator .tl_set:N =
         \l_clockdate_date_days_range_separator_tl
     , days-range-separator .value_required:n = true
-
-    , months-separator .tl_set:N = \l_clockdate_date_months_separator_tl
-    , months-separator .value_required:n = true
 
     , months-pair-separator .tl_set:N =
         \l_clockdate_date_months_pair_separator_tl
@@ -1357,6 +1372,18 @@
     , months-final-separator .tl_set:N =
         \l_clockdate_date_months_final_separator_tl
     , months-final-separator .value_required:n = true
+
+    , months-nonfinal-separator .tl_set:N =
+        \l_clockdate_date_months_nonfinal_separator_tl
+    , months-nonfinal-separator .value_required:n = true
+
+    , months-separator .code:n =
+        {
+          \tl_set:Nn \l_clockdate_date_months_pair_separator_tl {#1}
+          \tl_set:Nn \l_clockdate_date_months_final_separator_tl {#1}
+          \tl_set:Nn \l_clockdate_date_months_nonfinal_separator_tl {#1}
+        }
+    , months-separator .value_required:n = true
 
     , months-range-separator .tl_set:N =
         \l_clockdate_date_months_range_separator_tl
@@ -1402,9 +1429,9 @@
     \tl_set:Nn \l_clockdate_clock_ampm_separator_tl { \nobreakspace }
     \bool_set_true:N \l_clockdate_clock_ampm_omit_range_bool
     \bool_set_true:N \l_clockdate_clock_ampm_omit_list_bool
-    \tl_set:Nn \l_clockdate_clock_clocks_separator_tl { ,~ }
     \tl_set:Nn \l_clockdate_clock_clocks_pair_separator_tl { ~and~ }
     \tl_set:Nn \l_clockdate_clock_clocks_final_separator_tl { ,~and~ }
+    \tl_set:Nn \l_clockdate_clock_clocks_nonfinal_separator_tl { ,~ }
     \tl_set:Nn \l_clockdate_clock_clocks_range_separator_tl { ~to~ }
   }
 \__clockdate_clock_keys_set_initial:
@@ -1420,13 +1447,13 @@
     \tl_set_eq:NN \l_clockdate_date_year_month_separator_tl \c_space_tl
     \tl_set_eq:NN \l_clockdate_date_month_day_separator_tl \c_space_tl
     \tl_set:Nn \l_clockdate_date_year_day_separator_tl { ,~ }
-    \tl_set:Nn \l_clockdate_date_days_separator_tl { ,~ }
     \tl_set:Nn \l_clockdate_date_days_pair_separator_tl { ~and~ }
     \tl_set:Nn \l_clockdate_date_days_final_separator_tl { ,~and~ }
+    \tl_set:Nn \l_clockdate_date_days_nonfinal_separator_tl { ,~ }
     \tl_set:Nn \l_clockdate_date_days_range_separator_tl { ~to~ }
-    \tl_set:Nn \l_clockdate_date_months_separator_tl { ,~ }
     \tl_set:Nn \l_clockdate_date_months_pair_separator_tl { ~and~ }
     \tl_set:Nn \l_clockdate_date_months_final_separator_tl { ,~and~ }
+    \tl_set:Nn \l_clockdate_date_months_nonfinal_separator_tl { ,~ }
     \tl_set:Nn \l_clockdate_date_months_range_separator_tl { ~to~ }
     \str_set:Nn \l_clockdate_date_era_format_str { CE }
     \int_set:Nn \l_clockdate_date_era_threshold_int { 100 }
