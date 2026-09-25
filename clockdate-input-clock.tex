@@ -1,0 +1,30 @@
+\ProvidesFile{clockdate-input-clock.tex}[2026-09-24]
+
+\begin{table}
+  \centering
+  \caption
+    {%
+      Example usage of \cs{clock} with all the keys in path \texttt{clock}
+      set to their initial values.%
+      \label{table:clock}%
+    }
+  \bigskip
+  \begin{tblr}
+    {
+        colspec = { l l }
+      , cell{2-Z}{1} = { cmd = \texttt , preto=\cs{clock}\{ , appto=\} }
+      , cell{2-Z}{2} = {cmd=\clock}
+    }
+    \toprule
+      markup & result \\
+    \midrule
+      6              & 6              \\
+      12:05          & 12:05          \\
+      5:45:20        & 5:45:20        \\
+      9--17:00       & 9--17:00       \\
+      13:25--14      & 13:25--14      \\
+      11,15          & 11,15          \\
+      17:15,18:30,20 & 17:15,18:30,20 \\
+    \bottomrule
+  \end{tblr}
+\end{table}

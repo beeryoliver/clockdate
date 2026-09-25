@@ -1,0 +1,36 @@
+\ProvidesFile{clockdate-input-date.tex}[2026-09-24]
+
+\begin{table}
+  \centering
+  \caption
+    {%
+      Example usage of \cs{calendardate} with all the keys in path
+      \texttt{date} set to their initial values.%
+      \label{table:date}%
+    }
+  \bigskip
+  \begin{tblr}
+    {
+        colspec = { l l }
+      , cell{2-Z}{1} = { cmd = \texttt , preto=\cs{calendardate}\{ , appto=\} }
+      , cell{2-Z}{2} = {cmd=\calendardate}
+    }
+    \toprule
+      markup & result \\
+    \midrule
+      \cs{year}-\cs{month}-\cs{day} & \year-\month-\day \\
+      2016-5-28      & 2016-5-28      \\
+      12-25          & 12-25          \\
+      2023-5         & 2023-5         \\
+      2000           & 2000           \\
+      70             & 70             \\
+      -43            & -43            \\
+      1945-8-6,9     & 1945-8-6,9     \\
+      1962-10-16--28 & 1962-10-16--28 \\
+      12-5,10,15     & 12-5,10,15     \\
+      1-1--12        & 1-1--12        \\
+      2004-2,4       & 2004-2,4       \\
+      2020-1--3      & 2020-1--3      \\
+    \bottomrule
+  \end{tblr}
+\end{table}
