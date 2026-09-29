@@ -4,14 +4,11 @@
 \usepackage{clockdate}
 \clockdatesetup{overwrite-date}
 \ExplSyntaxOn
-\clockdate_clock_keys_save:nn { or }
+\clockdate_keys_save:nn { or }
   {
       clocks-pair-separator  = {  ~or~ }
     , clocks-final-separator = { ,~or~ }
-  }
-\clockdate_date_keys_save:nn { or }
-  {
-      days-pair-separator    = {  ~or~ }
+    , days-pair-separator    = {  ~or~ }
     , days-final-separator   = { ,~or~ }
     , months-pair-separator  = {  ~or~ }
     , months-final-separator = { ,~or~ }
@@ -28,7 +25,7 @@ Print the time of day and the calendar date
 
 Oliver Beery
 
-Version 1.0.0\quad\date{2026-9-26}
+Version 1.0.0\quad\date{2026-9-28}
 
 
 \section{Introduction}
@@ -45,7 +42,7 @@ flexible, easy-to-understand, and unambiguous.%
 \footnote
   {%
     Not entirely unambiguous.
-    See the key \key{date/priority} (\S\ref{subsec:date}).%
+    See the key \key{priority} (\S\ref{subsec:date}).%
   }
 The printed time of day and calendar date are highly customizable through a
 variety of key-value options.
@@ -110,8 +107,8 @@ This section documents the commands provided by the \pkg{clockdate} package.
   (The value of \num{60} allows for leap seconds.)
   If $\meta{hour}=\num{24}$, then \meta{minute} and \meta{second} must be zero.
 
-  The optional argument sets the keys in \meta{key-value list} in path |clock|
-  for only that instance of \cs{clock}.
+  The optional argument sets the \pkg{clockdate} package keys in
+  \meta{key-value list} for only that instance of \cs{clock}.
 
   Additional parsing details for \meta{clock(s)}:
   \begin{itemize}
@@ -124,6 +121,8 @@ This section documents the commands provided by the \pkg{clockdate} package.
     of catcode 12.
     \item Active hyphens at the top level are replaced by that of catcode 12.
   \end{itemize}
+
+  Table~\ref{table:clock} displays example usages of \cs{clock}.
 \end{code}
 
 \input{clockdate-input-clock.tex}
@@ -166,12 +165,11 @@ This section documents the commands provided by the \pkg{clockdate} package.
   If \meta{year} is provided, \date{2-29} is error-checked using the Julian
   calendar.
 
-  The optional argument sets the keys in \meta{key-value list} in path |date|
-  for only that instance of \cs{calendardate}.
-
+  The optional argument sets the \pkg{clockdate} package keys in
+  \meta{key-value list} for only that instance of \cs{calendardate}.
   \cs{Calendardate} is equivalent to \cs{calendardate}, except that it always
-  sets the key \key{date/capitalize-first=true} (\S\ref{subsec:date}) for only
-  that instance of \cs{Calendardate}.
+  sets the key \key{capitalize-first=true} (\S\ref{subsec:date}) for only that
+  instance of \cs{Calendardate}.
 
   Additional parsing details for \meta{date(s)}:
   \begin{itemize}
@@ -182,6 +180,8 @@ This section documents the commands provided by the \pkg{clockdate} package.
     (|--| is valid input within an integer expression.)
     \item Active hyphens at the top level are replaced by that of catcode 12.
   \end{itemize}
+
+  Table~\ref{table:date} displays example usages of \cs{calendardate}.
 \end{code}
 
 \input{clockdate-input-date.tex}
@@ -202,42 +202,41 @@ Set the package keys using \cs{clockdatesetup} (\S\ref{sec:cmds}).
 \end{code}
 
 \begin{code}{reset}
-  Meta key that sets the keys \key{clock/reset} and \key{date/reset}.
+  Meta key that sets all the \pkg{clockdate} package keys to their initial
+  values.
+\end{code}
+
+\begin{code}{load}
+  \begin{syntax}
+    \key{load=\meta{string}}
+  \end{syntax}
+  Used to load precompiled keys.
+  \meta{string} must first be declared using \cs{clockdate_keys_save:nn}
+  (\S\ref{subsec:save}).
 \end{code}
 
 \subsection{\cs{clock}}
 \label{subsec:clock}
 
-This subsection documents the keys in path |clock|.
-These keys modify the behavior of \cs{clock} (\S\ref{sec:cmds}).
+This subsection documents the keys that modify the behavior of \cs{clock}
+(\S\ref{sec:cmds}).
 
-\begin{code}{clock/reset}
-  Meta key that sets all the keys in path |clock| to their initial values.
-\end{code}
-
-\begin{code}{clock/load}
+\begin{code}{clock}
   \begin{syntax}
-    \key{clock/load=\meta{string}}
+    \key{clock=12|24}
   \end{syntax}
-  Used to load precompiled keys in path |clock|.
-  See \S\ref{subsec:save} for more detail.
-\end{code}
-
-\begin{code}{clock/clock}
-  \begin{syntax}
-    \key{clock/clock=12-hour|24-hour}
-  \end{syntax}
-  Choice key that sets the format in which the clock is printed.
-  If the value is |24-hour|, the am/pm is always omitted.
-  The initial value is |12-hour|.
+  Choice key that sets whether the hour is printed using a 12-hour or 24-hour
+  clock.
+  If the value is |24|, the am/pm is always omitted.
+  The initial value is |12|.
 \end{code}
 
 \subsubsection{Printing the hour, minute, and second}
 \label{subsubsec:printhms}
 
-\begin{code}{clock/hour}
+\begin{code}{hour}
   \begin{syntax}
-    \key{clock/hour=h|hh}
+    \key{hour=h|hh}
   \end{syntax}
   Choice key that sets the format in which the hour is printed.
   |h| prints the hour with the minimum number of digits.
@@ -245,9 +244,9 @@ These keys modify the behavior of \cs{clock} (\S\ref{sec:cmds}).
   The initial value is |h|.
 \end{code}
 
-\begin{code}{clock/minute}
+\begin{code}{minute}
   \begin{syntax}
-    \key{clock/minute=m|mm}
+    \key{minute=m|mm}
   \end{syntax}
   Choice key that sets the format in which the minute is printed.
   |m| prints the minute with the minimum number of digits.
@@ -255,9 +254,9 @@ These keys modify the behavior of \cs{clock} (\S\ref{sec:cmds}).
   The initial value is |mm|.
 \end{code}
 
-\begin{code}{clock/second}
+\begin{code}{second}
   \begin{syntax}
-    \key{clock/second=s|ss}
+    \key{second=s|ss}
   \end{syntax}
   Choice key that sets the format in which the second is printed.
   |s| prints the second with the minimum number of digits.
@@ -268,44 +267,44 @@ These keys modify the behavior of \cs{clock} (\S\ref{sec:cmds}).
 \subsubsection{Separating the hour, minute, and second}
 \label{subsubsec:sephms}
 
-\begin{code}{clock/hour-minute-separator}
+\begin{code}{hour-minute-separator}
   \begin{syntax}
-    \key{clock/hour-minute-separator=\meta{token list}}
+    \key{hour-minute-separator=\meta{token list}}
   \end{syntax}
   Sets the separator between \meta{hour} and \meta{minute} to
   \meta{token list}.
   The initial value is |:|.
 \end{code}
 
-\begin{code}{clock/minute-second-separator}
+\begin{code}{minute-second-separator}
   \begin{syntax}
-    \key{clock/minute-second-separator=\meta{token list}}
+    \key{minute-second-separator=\meta{token list}}
   \end{syntax}
   Sets the separator between \meta{minute} and \meta{second} to
   \meta{token list}.
   The initial value is |:|.
 \end{code}
 
-\begin{code}{clock/time-separator}
+\begin{code}{time-separator}
   \begin{syntax}
-    \key{clock/time-separator=\meta{token list}}
+    \key{time-separator=\meta{token list}}
   \end{syntax}
-  Meta key that sets the value of the keys \key{clock/hour-minute-separator}
-  and \key{clock/minute-second-separator} to \meta{token list}.
+  Meta key that sets the value of the keys \key{hour-minute-separator} and
+  \key{minute-second-separator} to \meta{token list}.
 \end{code}
 
 \subsubsection{Printing the am/pm}
 \label{subsubsec:printampm}
 
-\begin{code}{clock/ampm}
+\begin{code}{ampm}
   \begin{syntax}
-    \key{clock/ampm=a.m.|am|a|A.M.|AM|A|none}
+    \key{ampm=a.m.|am|a|A.M.|AM|A|none}
   \end{syntax}
   Choice key that sets the format in which the am/pm is printed.
   The initial value is |AM|.
   \input{clockdate-input-ampm.tex}
 
-  The am/pm is omitted if \key{clock/ampm=none} or \key{clock/clock=24-hour}.
+  The am/pm is omitted if \key{ampm=none} or \key{clock=24}.
 
   If the value is |a.m.| or |A.M.|, the trailing am/pm will not print an extra
   period if the next token after \cs{clock} is a period.
@@ -313,17 +312,17 @@ These keys modify the behavior of \cs{clock} (\S\ref{sec:cmds}).
   does not end here.
 \end{code}
 
-\begin{code}{clock/ampm-separator}
+\begin{code}{ampm-separator}
   \begin{syntax}
-    \key{clock/ampm-separator=\meta{token list}}
+    \key{ampm-separator=\meta{token list}}
   \end{syntax}
   Sets the separator before the am/pm to \meta{token list}.
   The initial value is \cs{nobreakspace}.
 \end{code}
 
-\begin{code}{clock/ampm-omit-range}
+\begin{code}{ampm-omit-range}
   \begin{syntax}
-    \key{clock/ampm-omit-range=true|false}
+    \key{ampm-omit-range=true|false}
   \end{syntax}
   Boolean key that sets if \meta{clock_1} omits the am/pm in a clock range if
   \meta{clock_1} and \meta{clock_2} would print the same meridiem and
@@ -331,9 +330,9 @@ These keys modify the behavior of \cs{clock} (\S\ref{sec:cmds}).
   The initial value is |true|.
 \end{code}
 
-\begin{code}{clock/ampm-omit-list}
+\begin{code}{ampm-omit-list}
   \begin{syntax}
-    \key{clock/ampm-omit-list=true|false}
+    \key{ampm-omit-list=true|false}
   \end{syntax}
   Boolean key that sets if each \meta{clock}---except the very last---omits the
   am/pm if each \meta{clock} would print the same meridiem.
@@ -343,48 +342,48 @@ These keys modify the behavior of \cs{clock} (\S\ref{sec:cmds}).
 \subsubsection{Separating the clocks}
 \label{subsubsec:sepclocks}
 
-\begin{code}{clock/clocks-pair-separator}
+\begin{code}{clocks-pair-separator}
   \begin{syntax}
-    \key{clock/clocks-pair-separator=\meta{token list}}
+    \key{clocks-pair-separator=\meta{token list}}
   \end{syntax}
   Sets the separator between each item in \meta{clocks} to \meta{token list} if
   \meta{clocks} contains exactly two items.
   The initial value is | and |.
 \end{code}
 
-\begin{code}{clock/clocks-final-separator}
+\begin{code}{clocks-nonfinal-separator}
   \begin{syntax}
-    \key{clock/clocks-final-separator=\meta{token list}}
-  \end{syntax}
-  Sets the separator between the last two items in \meta{clocks} to
-  \meta{token list} if \meta{clocks} contains three or more items.
-  The initial value is |, and |.
-\end{code}
-
-\begin{code}{clock/clocks-nonfinal-separator}
-  \begin{syntax}
-    \key{clock/clocks-nonfinal-separator=\meta{token list}}
+    \key{clocks-nonfinal-separator=\meta{token list}}
   \end{syntax}
   Sets the separator between each item in \meta{clocks}---except the last
   two---to \meta{token list} if \meta{clocks} contains three or more items.
   The initial value is |, |.
 \end{code}
 
-\begin{code}{clock/clocks-separator}
+\begin{code}{clocks-final-separator}
   \begin{syntax}
-    \key{clock/clocks-separator=\meta{token list}}
+    \key{clocks-final-separator=\meta{token list}}
+  \end{syntax}
+  Sets the separator between the last two items in \meta{clocks} to
+  \meta{token list} if \meta{clocks} contains three or more items.
+  The initial value is |, and |.
+\end{code}
+
+\begin{code}{clocks-separator}
+  \begin{syntax}
+    \key{clocks-separator=\meta{token list}}
   \end{syntax}
   Meta key that sets the value of the following keys to \meta{token list}:
   \begin{itemize}
-    \item \key{clock/clocks-pair-separator}
-    \item \key{clock/clocks-final-separator}
-    \item \key{clock/clocks-nonfinal-separator}
+    \item \key{clocks-pair-separator}
+    \item \key{clocks-nonfinal-separator}
+    \item \key{clocks-final-separator}
   \end{itemize}
 \end{code}
 
-\begin{code}{clock/clocks-range-separator}
+\begin{code}{clocks-range-separator}
   \begin{syntax}
-    \key{clock/clocks-range-separator=\meta{token list}}
+    \key{clocks-range-separator=\meta{token list}}
   \end{syntax}
   Sets the separator between \meta{clock_1} and \meta{clock_2} in a clock range
   to \meta{token list}.
@@ -394,24 +393,12 @@ These keys modify the behavior of \cs{clock} (\S\ref{sec:cmds}).
 \subsection{\cs{calendardate}}
 \label{subsec:date}
 
-This subsection documents the keys in path |date|.
-These keys modify the behavior of \cs{calendardate} (\S\ref{sec:cmds}).
+This subsection documents the keys that modify the behavior of
+\cs{calendardate} (\S\ref{sec:cmds}).
 
-\begin{code}{date/reset}
-  Meta key that sets all the keys in path |date| to their initial values.
-\end{code}
-
-\begin{code}{date/load}
+\begin{code}{priority}
   \begin{syntax}
-    \key{date/load=\meta{string}}
-  \end{syntax}
-  Used to load precompiled keys in path |date|.
-  See \S\ref{subsec:save} for more detail.
-\end{code}
-
-\begin{code}{date/priority}
-  \begin{syntax}
-    \key{date/priority=MD|YM}
+    \key{priority=MD|YM}
   \end{syntax}
   Choice key that sets the typeset representation if the parser cannot
   distinguish between \meta{month}|-|\meta{day(s)} and
@@ -421,17 +408,17 @@ These keys modify the behavior of \cs{calendardate} (\S\ref{sec:cmds}).
   The initial value is |MD|.
 \end{code}
 
-\begin{code}{date/order}
+\begin{code}{order}
   \begin{syntax}
-    \key{date/order=DMY|YMD|MDY}
+    \key{order=DMY|YMD|MDY}
   \end{syntax}
   Choice key that sets the order in which the year, month, and day are printed.
   The initial value is |DMY|.
 \end{code}
 
-\begin{code}{date/capitalize-first}
+\begin{code}{capitalize-first}
   \begin{syntax}
-    \key{date/capitalize-first=true|false}
+    \key{capitalize-first=true|false}
   \end{syntax}
   Boolean key that sets if the month will be capitalized if it is printed at
   the start of \cs{calendardate}.
@@ -443,9 +430,9 @@ These keys modify the behavior of \cs{calendardate} (\S\ref{sec:cmds}).
 \subsubsection{Printing the year, month, and day}
 \label{subsubsec:printymd}
 
-\begin{code}{date/year}
+\begin{code}{year}
   \begin{syntax}
-    \key{date/year=y|yy|yyyy}
+    \key{year=y|yy|yyyy}
   \end{syntax}
   Choice key that sets the format in which the year is printed.
   |y| prints the year with the minimum number of digits.
@@ -456,9 +443,9 @@ These keys modify the behavior of \cs{calendardate} (\S\ref{sec:cmds}).
   The initial value is |y|.
 \end{code}
 
-\begin{code}{date/month}
+\begin{code}{month}
   \begin{syntax}
-    \key{date/month=m|mm|mmm|mmmm}
+    \key{month=m|mm|mmm|mmmm}
   \end{syntax}
   Choice key that sets the format in which the month is printed.
   |m| prints the month with the minimum number of digits.
@@ -477,9 +464,9 @@ These keys modify the behavior of \cs{calendardate} (\S\ref{sec:cmds}).
   See \S\ref{subsec:expl3date} for more details.
 \end{code}
 
-\begin{code}{date/day}
+\begin{code}{day}
   \begin{syntax}
-    \key{date/day=d|dd}
+    \key{day=d|dd}
   \end{syntax}
   Choice key that sets the format in which the day is printed.
   |d| prints the day with the minimum number of digits.
@@ -487,100 +474,101 @@ These keys modify the behavior of \cs{calendardate} (\S\ref{sec:cmds}).
   The initial value is |d|.
 \end{code}
 
-\begin{code}{date/day-ordinal}
+\begin{code}{day-ordinal}
   \begin{syntax}
-    \key{date/day-ordinal=true|false}
+    \key{day-ordinal=true|false}
   \end{syntax}
   Boolean key that sets if the day is printed as an ordinal day (e.g.
   1\textsuperscript{st}, 4\textsuperscript{th}).
   The initial value is |false|.
-  See \S\ref{subsec:expl3date} to customize the display of the ordinal day.
+  You can customize the display of the ordinal day by redefining
+  \cs{clockdate_day_ordinal_format:n} (\S\ref{subsec:expl3date}).
 \end{code}
 
 \subsubsection{Separating the year, month, and day}
 \label{subsubsec:sepymd}
 
-\begin{code}{date/year-month-separator}
+\begin{code}{year-month-separator}
   \begin{syntax}
-    \key{date/year-month-separator=\meta{token list}}
+    \key{year-month-separator=\meta{token list}}
   \end{syntax}
   Sets the separator between \meta{year} and \meta{month} to \meta{token list}.
   The initial value is | |.
 \end{code}
 
-\begin{code}{date/month-day-separator}
+\begin{code}{month-day-separator}
   \begin{syntax}
-    \key{date/month-day-separator=\meta{token list}}
+    \key{month-day-separator=\meta{token list}}
   \end{syntax}
   Sets the separator between \meta{month} and \meta{day} to \meta{token list}.
   The initial value is | |.
 \end{code}
 
-\begin{code}{date/year-day-separator}
+\begin{code}{year-day-separator}
   \begin{syntax}
-    \key{date/year-day-separator=\meta{token list}}
+    \key{year-day-separator=\meta{token list}}
   \end{syntax}
   Sets the separator between \meta{year} and \meta{day} to \meta{token list}.
   The initial value is |, |.
 \end{code}
 
-\begin{code}{date/date-separator}
+\begin{code}{date-separator}
   \begin{syntax}
-    \key{date/date-separator=\meta{token list}}
+    \key{date-separator=\meta{token list}}
   \end{syntax}
   Meta key that sets the value of the following keys to \meta{token list}:
   \begin{itemize}
-    \item \key{date/year-month-separator}
-    \item \key{date/month-day-separator}
-    \item \key{date/year-day-separator}
+    \item \key{year-month-separator}
+    \item \key{month-day-separator}
+    \item \key{year-day-separator}
   \end{itemize}
 \end{code}
 
 \subsubsection{Separating the days}
 \label{subsubsec:sepdays}
 
-\begin{code}{date/days-pair-separator}
+\begin{code}{days-pair-separator}
   \begin{syntax}
-    \key{date/days-pair-separator=\meta{token list}}
+    \key{days-pair-separator=\meta{token list}}
   \end{syntax}
   Sets the separator between each item in \meta{days} to \meta{token list} if
   \meta{days} contains exactly two items.
   The initial value is | and |.
 \end{code}
 
-\begin{code}{date/days-final-separator}
+\begin{code}{days-nonfinal-separator}
   \begin{syntax}
-    \key{date/days-final-separator=\meta{token list}}
-  \end{syntax}
-  Sets the separator between the last two items in \meta{days} to
-  \meta{token list} if \meta{days} contains three or more items.
-  The initial value is |, and |.
-\end{code}
-
-\begin{code}{date/days-nonfinal-separator}
-  \begin{syntax}
-    \key{date/days-nonfinal-separator=\meta{token list}}
+    \key{days-nonfinal-separator=\meta{token list}}
   \end{syntax}
   Sets the separator between each item in \meta{days}---except the last
   two---to \meta{token list} if \meta{days} contains three or more items.
   The initial value is |, |.
 \end{code}
 
-\begin{code}{date/days-separator}
+\begin{code}{days-final-separator}
   \begin{syntax}
-    \key{date/days-separator=\meta{token list}}
+    \key{days-final-separator=\meta{token list}}
+  \end{syntax}
+  Sets the separator between the last two items in \meta{days} to
+  \meta{token list} if \meta{days} contains three or more items.
+  The initial value is |, and |.
+\end{code}
+
+\begin{code}{days-separator}
+  \begin{syntax}
+    \key{days-separator=\meta{token list}}
   \end{syntax}
   Meta key that sets the value of the following keys to \meta{token list}:
   \begin{itemize}
-    \item \key{date/days-pair-separator}
-    \item \key{date/days-final-separator}
-    \item \key{date/days-nonfinal-separator}
+    \item \key{days-pair-separator}
+    \item \key{days-nonfinal-separator}
+    \item \key{days-final-separator}
   \end{itemize}
 \end{code}
 
-\begin{code}{date/days-range-separator}
+\begin{code}{days-range-separator}
   \begin{syntax}
-    \key{date/days-range-separator=\meta{token list}}
+    \key{days-range-separator=\meta{token list}}
   \end{syntax}
   Sets the separator between \meta{day_1} and \meta{day_2} in a day range to
   \meta{token list}.
@@ -590,48 +578,48 @@ These keys modify the behavior of \cs{calendardate} (\S\ref{sec:cmds}).
 \subsubsection{Separating the months}
 \label{subsubsec:sepmonths}
 
-\begin{code}{date/months-pair-separator}
+\begin{code}{months-pair-separator}
   \begin{syntax}
-    \key{date/months-pair-separator=\meta{token list}}
+    \key{months-pair-separator=\meta{token list}}
   \end{syntax}
   Sets the separator between each item in \meta{months} to \meta{token list} if
   \meta{months} contains exactly two items.
   The initial value is | and |.
 \end{code}
 
-\begin{code}{date/months-final-separator}
+\begin{code}{months-nonfinal-separator}
   \begin{syntax}
-    \key{date/months-final-separator=\meta{token list}}
-  \end{syntax}
-  Sets the separator between the last two items in \meta{months} to
-  \meta{token list} if \meta{months} contains three or more items.
-  The initial value is |, and |.
-\end{code}
-
-\begin{code}{date/months-nonfinal-separator}
-  \begin{syntax}
-    \key{date/months-nonfinal-separator=\meta{token list}}
+    \key{months-nonfinal-separator=\meta{token list}}
   \end{syntax}
   Sets the separator between each item in \meta{months}---except the last
   two---to \meta{token list} if \meta{months} contains three or more items.
   The initial value is |, |.
 \end{code}
 
-\begin{code}{date/months-separator}
+\begin{code}{months-final-separator}
   \begin{syntax}
-    \key{date/months-separator=\meta{token list}}
+    \key{months-final-separator=\meta{token list}}
+  \end{syntax}
+  Sets the separator between the last two items in \meta{months} to
+  \meta{token list} if \meta{months} contains three or more items.
+  The initial value is |, and |.
+\end{code}
+
+\begin{code}{months-separator}
+  \begin{syntax}
+    \key{months-separator=\meta{token list}}
   \end{syntax}
   Meta key that sets the value of the following keys to \meta{token list}:
   \begin{itemize}
-    \item \key{date/months-pair-separator}
-    \item \key{date/months-final-separator}
-    \item \key{date/months-nonfinal-separator}
+    \item \key{months-pair-separator}
+    \item \key{months-nonfinal-separator}
+    \item \key{months-final-separator}
   \end{itemize}
 \end{code}
 
-\begin{code}{date/months-range-separator}
+\begin{code}{months-range-separator}
   \begin{syntax}
-    \key{date/months-range-separator=\meta{token list}}
+    \key{months-range-separator=\meta{token list}}
   \end{syntax}
   Sets the separator between \meta{month_1} and \meta{month_2} in a month range
   to \meta{token list}.
@@ -641,9 +629,9 @@ These keys modify the behavior of \cs{calendardate} (\S\ref{sec:cmds}).
 \subsubsection{Printing the era}
 \label{subsubsec:printera}
 
-\begin{code}{date/era}
+\begin{code}{era}
   \begin{syntax}
-    \key{date/era=A.D.|AD|C.E.|CE|integer}
+    \key{era=A.D.|AD|C.E.|CE|integer}
   \end{syntax}
   Choice key that sets the format in which the era is printed.
   The initial value is |CE|.
@@ -659,63 +647,63 @@ These keys modify the behavior of \cs{calendardate} (\S\ref{sec:cmds}).
   does not end here.
 \end{code}
 
-\begin{code}{date/era-threshold}
+\begin{code}{era-threshold}
   \begin{syntax}
-    \key{date/era-threshold=\meta{integer}}
+    \key{era-threshold=\meta{integer}}
   \end{syntax}
   The AD and CE are printed only if \meta{year} is less than \meta{integer}.
   The initial value is \num{100}.
 \end{code}
 
-\begin{code}{date/era-separator}
+\begin{code}{era-separator}
   \begin{syntax}
-    \key{date/era-separator=\meta{token list}}
+    \key{era-separator=\meta{token list}}
   \end{syntax}
   Sets the separator between the year and the era to \meta{token list}.
   The initial value is \cs{nobreakspace}.
 \end{code}
 
-\begin{code}{date/ad-first}
+\begin{code}{ad-first}
   \begin{syntax}
-    \key{date/ad-first=true|false}
+    \key{ad-first=true|false}
   \end{syntax}
   Boolean key that sets if the AD is printed before the year.
   The initial value is |true|.
 \end{code}
 
-\begin{code}{date/ad-first-separator}
+\begin{code}{ad-first-separator}
   \begin{syntax}
-    \key{date/ad-first-separator=\meta{token list}}
+    \key{ad-first-separator=\meta{token list}}
   \end{syntax}
   Sets the separator between the year and the AD to \meta{token list} if
-  \key{date/ad-first=true}.
+  \key{ad-first=true}.
   The initial value is \cs{nobreakspace}.
 \end{code}
 
-\begin{code}{date/positive-year-prefix}
+\begin{code}{positive-year-prefix}
   \begin{syntax}
-    \key{date/positive-year-prefix=\meta{token list}}
+    \key{positive-year-prefix=\meta{token list}}
   \end{syntax}
-  Prepends \meta{token list} to the printed year if \key{date/era=integer} and
-  the year is positive.
+  Prepends \meta{token list} to the printed year if \key{era=integer} and the
+  year is positive.
   The initial value is \meta{empty}.
 \end{code}
 
-\begin{code}{date/negative-year-prefix}
+\begin{code}{negative-year-prefix}
   \begin{syntax}
-    \key{date/negative-year-prefix=\meta{token list}}
+    \key{negative-year-prefix=\meta{token list}}
   \end{syntax}
-  Prepends \meta{token list} to the printed year if \key{date/era=integer} and
-  the year is negative.
+  Prepends \meta{token list} to the printed year if \key{era=integer} and the
+  year is negative.
   The initial value is \cs{textminus}.
 \end{code}
 
-\begin{code}{date/zero-year-prefix}
+\begin{code}{zero-year-prefix}
   \begin{syntax}
-    \key{date/zero-year-prefix=\meta{token list}}
+    \key{zero-year-prefix=\meta{token list}}
   \end{syntax}
-  Prepends \meta{token list} to the printed year if \key{date/era=integer} and
-  the year is zero.
+  Prepends \meta{token list} to the printed year if \key{era=integer} and the
+  year is zero.
   The initial value is \meta{empty}.
 \end{code}
 
@@ -759,20 +747,12 @@ This subsection documents the hooks provided by the \pkg{clockdate} package.
 \subsection{Precompiling the keys}
 \label{subsec:save}
 
-\begin{code}{\clockdate_clock_keys_save:nn}
+\begin{code}{\clockdate_keys_save:nn}
   \begin{syntax}
-    \cs{clockdate_clock_keys_save:nn} \marg{string} \marg{key-value list}
+    \cs{clockdate_keys_save:nn} \marg{string} \marg{key-value list}
   \end{syntax}
-  Precompiles the keys in \meta{key-value list} in path |clock| for use when
-  setting the key \key{clock/load=\meta{string}} (\S\ref{subsec:clock}).
-\end{code}
-
-\begin{code}{\clockdate_date_keys_save:nn}
-  \begin{syntax}
-    \cs{clockdate_date_keys_save:nn} \marg{string} \marg{key-value list}
-  \end{syntax}
-  Precompiles the keys in \meta{key-value list} in path |date| for use when
-  setting the key \key{date/load=\meta{string}} (\S\ref{subsec:date}).
+  Precompiles the \pkg{clockdate} package keys in \meta{key-value list} for use
+  when setting the key \key{load=\meta{string}} (\S\ref{sec:keys}).
 \end{code}
 
 \subsection{Variables set by \cs{clockdatesetup}}
@@ -782,105 +762,105 @@ This subsection documents the variables that are set by \cs{clockdatesetup}
 (\S\ref{sec:cmds}).
 They are read-only and should not be modified directly.
 
-\begin{code}{\l_clockdate_clock_clock_str}
-  The value of the key \key{clock/clock} (\S\ref{subsec:clock}).
+\begin{code}{\l_clockdate_clock_format_str}
+  The value of the key \key{clock} (\S\ref{subsec:clock}).
 \end{code}
 
 \begin{code}
   {
-    \l_clockdate_clock_hour_format_str,
-    \l_clockdate_clock_minute_format_str,
-    \l_clockdate_clock_second_format_str
+    \l_clockdate_hour_format_str,
+    \l_clockdate_minute_format_str,
+    \l_clockdate_second_format_str
   }
   The values of the keys documented in \S\ref{subsubsec:printhms}.
 \end{code}
 
 \begin{code}
   {
-    \l_clockdate_clock_hour_minute_separator_tl,
-    \l_clockdate_clock_minute_second_separator_tl
+    \l_clockdate_hour_minute_separator_tl,
+    \l_clockdate_minute_second_separator_tl
   }
   The values of the keys documented in \S\ref{subsubsec:sephms}.
 \end{code}
 
 \begin{code}
   {
-    \l_clockdate_clock_ampm_format_str,
-    \l_clockdate_clock_ampm_separator_tl,
-    \l_clockdate_clock_ampm_omit_range_bool,
-    \l_clockdate_clock_ampm_omit_list_bool
+    \l_clockdate_ampm_format_str,
+    \l_clockdate_ampm_separator_tl,
+    \l_clockdate_ampm_omit_range_bool,
+    \l_clockdate_ampm_omit_list_bool
   }
   The values of the keys documented in \S\ref{subsubsec:printampm}.
 \end{code}
 
 \begin{code}
   {
-    \l_clockdate_clock_clocks_pair_separator_tl,
-    \l_clockdate_clock_clocks_final_separator_tl,
-    \l_clockdate_clock_clocks_nonfinal_separator_tl,
-    \l_clockdate_clock_clocks_range_separator_tl
+    \l_clockdate_clocks_pair_separator_tl,
+    \l_clockdate_clocks_nonfinal_separator_tl,
+    \l_clockdate_clocks_final_separator_tl,
+    \l_clockdate_clocks_range_separator_tl
   }
   The value of the keys documented in \S\ref{subsubsec:sepclocks}.
 \end{code}
 
 \begin{code}
   {
-    \l_clockdate_date_priority_str,
-    \l_clockdate_date_order_str,
-    \l_clockdate_date_capitalize_first_bool
+    \l_clockdate_priority_str,
+    \l_clockdate_order_str,
+    \l_clockdate_capitalize_first_bool
   }
   The value of the keys documented at the start of \S\ref{subsec:date}.
 \end{code}
 
 \begin{code}
   {
-    \l_clockdate_date_year_format_str,
-    \l_clockdate_date_month_format_str,
-    \l_clockdate_date_day_format_str,
-    \l_clockdate_date_day_ordinal_bool
+    \l_clockdate_year_format_str,
+    \l_clockdate_month_format_str,
+    \l_clockdate_day_format_str,
+    \l_clockdate_day_ordinal_bool
   }
   The values of the keys documented in \S\ref{subsubsec:printymd}.
 \end{code}
 
 \begin{code}
   {
-    \l_clockdate_date_year_month_separator_tl,
-    \l_clockdate_date_month_day_separator_tl,
-    \l_clockdate_date_year_day_separator_tl
+    \l_clockdate_year_month_separator_tl,
+    \l_clockdate_month_day_separator_tl,
+    \l_clockdate_year_day_separator_tl
   }
   The values of the keys documented in \S\ref{subsubsec:sepymd}.
 \end{code}
 
 \begin{code}
   {
-    \l_clockdate_date_days_pair_separator_tl,
-    \l_clockdate_date_days_final_separator_tl,
-    \l_clockdate_date_days_nonfinal_separator_tl,
-    \l_clockdate_date_days_range_separator_tl
+    \l_clockdate_days_pair_separator_tl,
+    \l_clockdate_days_nonfinal_separator_tl,
+    \l_clockdate_days_final_separator_tl,
+    \l_clockdate_days_range_separator_tl
   }
   The values of the keys documented in \S\ref{subsubsec:sepdays}.
 \end{code}
 
 \begin{code}
   {
-    \l_clockdate_date_months_pair_separator_tl,
-    \l_clockdate_date_months_final_separator_tl,
-    \l_clockdate_date_months_nonfinal_separator_tl,
-    \l_clockdate_date_months_range_separator_tl
+    \l_clockdate_months_pair_separator_tl,
+    \l_clockdate_months_nonfinal_separator_tl,
+    \l_clockdate_months_final_separator_tl,
+    \l_clockdate_months_range_separator_tl
   }
   The values of the keys documented in \S\ref{subsubsec:sepmonths}.
 \end{code}
 
 \begin{code}
   {
-    \l_clockdate_date_era_format_str,
-    \l_clockdate_date_era_threshold_int,
-    \l_clockdate_date_era_separator_tl,
-    \l_clockdate_date_ad_first_bool,
-    \l_clockdate_date_ad_first_separator_tl,
-    \l_clockdate_date_positive_year_prefix_tl,
-    \l_clockdate_date_negative_year_prefix_tl,
-    \l_clockdate_date_zero_year_prefix_tl
+    \l_clockdate_era_format_str,
+    \l_clockdate_era_threshold_int,
+    \l_clockdate_era_separator_tl,
+    \l_clockdate_ad_first_bool,
+    \l_clockdate_ad_first_separator_tl,
+    \l_clockdate_positive_year_prefix_tl,
+    \l_clockdate_negative_year_prefix_tl,
+    \l_clockdate_zero_year_prefix_tl
   }
   The values of the keys documented in \S\ref{subsubsec:printera}.
 \end{code}
@@ -891,7 +871,7 @@ They are read-only and should not be modified directly.
 This subsection documents the variables that are set within \cs{clock}.
 Outside of \cs{clock}, they do not have defined behavior.
 
-\begin{code}{\l_clockdate_clock_clocks_str}
+\begin{code}{\l_clockdate_clocks_str}
   The value of \meta{clock(s)}.
   The value takes the same form as the \meta{clock(s)} as explained for
   \cs{clock}.
@@ -904,12 +884,12 @@ Outside of \cs{clock}, they do not have defined behavior.
 This subsection documents the variables that are set within \cs{calendardate}.
 Outside of \cs{calendardate}, they do not have defined behavior.
 
-\begin{code}{\l_clockdate_date_year_str}
+\begin{code}{\l_clockdate_year_str}
   The value of \meta{year}.
   The value is \meta{empty} if \meta{year} is omitted.
 \end{code}
 
-\begin{code}{\l_clockdate_date_month_str}
+\begin{code}{\l_clockdate_month_str}
   The value of \meta{month(s)}.
   The value takes the same form as the \meta{month(s)} as explained for
   \cs{calendardate}.
@@ -917,7 +897,7 @@ Outside of \cs{calendardate}, they do not have defined behavior.
   The value is \meta{empty} if no months are printed.
 \end{code}
 
-\begin{code}{\l_clockdate_date_day_str}
+\begin{code}{\l_clockdate_day_str}
   The value of \meta{day(s)}.
   The value takes the same form as the \meta{day(s)} as explained for
   \cs{calendardate}.
@@ -933,31 +913,31 @@ You may redefine them, but they must be |protected| and have the same parameter
 text.
 The initial definitions are in \file{clockdate.sty}.
 
-\begin{code}{\clockdate_clock_print_hour:n}
+\begin{code}{\clockdate_print_hour:n}
   \begin{syntax}
-    \cs{clockdate_clock_print_hour:n} \marg{hour}
+    \cs{clockdate_print_hour:n} \marg{hour}
   \end{syntax}
   Function used in \cs{clock} that prints the hour.
   |#1| represents the value of \meta{hour}.
 \end{code}
 
-\begin{code}{\clockdate_clock_print_minute:n}
+\begin{code}{\clockdate_print_minute:n}
   \begin{syntax}
-    \cs{clockdate_clock_print_minute:n} \marg{minute}
+    \cs{clockdate_print_minute:n} \marg{minute}
   \end{syntax}
   Function used in \cs{clock} that prints the minute.
   |#1| represents the value of \meta{minute}.
 \end{code}
 
-\begin{code}{\clockdate_clock_print_second:n}
+\begin{code}{\clockdate_print_second:n}
   \begin{syntax}
-    \cs{clockdate_clock_print_second:n} \marg{second}
+    \cs{clockdate_print_second:n} \marg{second}
   \end{syntax}
   Function used in \cs{clock} that prints the second.
   |#1| represents the value of \meta{second}.
 \end{code}
 
-\begin{code}{\clockdate_clock_print_am:, \clockdate_clock_print_pm:}
+\begin{code}{\clockdate_print_am:, \clockdate_print_pm:}
   Functions used in \cs{clock} that print the am and pm.
 \end{code}
 
@@ -970,58 +950,57 @@ You may redefine the public functions, but they must be |protected| and have
 the same parameter text.
 The initial definitions are in \file{clockdate.sty}.
 
-\begin{code}{\clockdate_date_print_year:n}
+\begin{code}{\clockdate_print_year:n}
   \begin{syntax}
-    \cs{clockdate_date_print_year:n} \marg{year}
+    \cs{clockdate_print_year:n} \marg{year}
   \end{syntax}
   Function used in \cs{calendardate} that prints the year, including the era.
   |#1| represents the value of \meta{year}.
 \end{code}
 
-\begin{code}{\clockdate_date_print_month:n}
+\begin{code}{\clockdate_print_month:n}
   \begin{syntax}
-    \cs{clockdate_date_print_month:n} \marg{month}
+    \cs{clockdate_print_month:n} \marg{month}
   \end{syntax}
   Function used in \cs{calendardate} that prints the month.
   |#1| represents the value of \meta{month}.
 \end{code}
 
-\begin{code}
-  {\l_clockdate_date_months_mmmm_seq, \l_clockdate_date_months_mmm_seq}
-  Variables used in \cs{clockdate_date_print_month:n} that store the months
-  used if the value of the key \key{date/month} is |mmmm| or |mmm|.
+\begin{code}{\l_clockdate_months_mmmm_seq, \l_clockdate_months_mmm_seq}
+  Variables used in \cs{clockdate_print_month:n} that store the months used if
+  the value of the key \key{month} is |mmmm| or |mmm|.
   The initial values are displayed in Table~\ref{table:months}.
 \end{code}
 
 \input{clockdate-input-months.tex}
 
-\begin{code}{\l_clockdate_date_if_capitalized_bool}
-  Boolean that may be used in \cs{clockdate_date_print_month:n} to capitalize
-  the month if it is printed at the start of \cs{calendardate}.
+\begin{code}{\l_clockdate_if_capitalized_bool}
+  Boolean that may be used in \cs{clockdate_print_month:n} to capitalize the
+  month if it is printed at the start of \cs{calendardate}.
   This variable does not have defined behavior outside of
-  \cs{clockdate_date_print_month:n}.
-  This variable may be used in \cs{l_clockdate_date_months_mmm_seq} and
-  \cs{l_clockdate_date_months_mmmm_seq}.
+  \cs{clockdate_print_month:n}.
+  This variable may be used in \cs{l_clockdate_months_mmm_seq} and
+  \cs{l_clockdate_months_mmmm_seq}.
 \end{code}
 
-\begin{code}{\clockdate_date_print_day:n}
+\begin{code}{\clockdate_print_day:n}
   \begin{syntax}
-    \cs{clockdate_date_print_day:n} \marg{day}
+    \cs{clockdate_print_day:n} \marg{day}
   \end{syntax}
   Function used in \cs{calendardate} that prints the day.
   |#1| represents the value of \meta{day}.
 \end{code}
 
-\begin{code}{\clockdate_date_day_ordinal_format:n}
+\begin{code}{\clockdate_day_ordinal_format:n}
   \begin{syntax}
-    \cs{clockdate_date_day_ordinal_format:n} \marg{day}
+    \cs{clockdate_day_ordinal_format:n} \marg{day}
   \end{syntax}
-  Function used in \cs{clockdate_date_print_day:n} that sets the format in
-  which the suffix of the ordinal day is printed.
+  Function used in \cs{clockdate_print_day:n} that sets the format in which the
+  suffix of the ordinal day is printed.
   |#1| represents the value of \meta{day}.
   The initial definition is:
   \begin{verbatim}
-\cs_new_protected:Npn \clockdate_date_day_ordinal_format:n #1
+\cs_new_protected:Npn \clockdate_day_ordinal_format:n #1
   {
     \textsuperscript
       {
@@ -1047,10 +1026,9 @@ The initial definitions are in \file{clockdate.sty}.
 
   This function is used in:
   \begin{itemize}
-    \item \cs{clockdate_clock_print_am:}, \cs{clockdate_clock_print_pm:}
-    \item
-    \cs{clockdate_date_print_month:n}, \cs{l_clockdate_date_months_mmm_seq}
-    \item \cs{clockdate_date_print_year:n}
+    \item \cs{clockdate_print_am:}, \cs{clockdate_print_pm:}
+    \item \cs{clockdate_print_month:n}, \cs{l_clockdate_months_mmm_seq}
+    \item \cs{clockdate_print_year:n}
   \end{itemize}
 
   Prints a period unless both of the following are true:
