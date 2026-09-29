@@ -7,7 +7,7 @@
 % Loading the package
 
 \NeedsTeXFormat{LaTeX2e}[2023-11-01]
-\ProvidesExplPackage{clockdate}{2026-09-28}{1.0.0}
+\ProvidesExplPackage{clockdate}{2026-09-29}{1.0.0}
   {Print the time of day and the calendar date}
 
 \msg_new:nnn { clockdate } { l3kernel }
@@ -287,22 +287,6 @@
     \tl_put_right:Nn \l__clockdate_clock_clocks_tl { {#1} { } { } }
     \str_put_right:Nn \l_clockdate_clocks_str {#1}
   }
-\cs_new_protected:Npn \__clockdate_clock_if_same_ampm:n #1
-  {
-    \cs_set_protected:Npe \__clockdate_clock_if_same_ampm:n ##1
-      {
-        \__clockdate_clock_hour_if_am:nTF {#1}
-          { \exp_not:N \__clockdate_clock_hour_if_am:nF {##1} }
-          { \exp_not:N \__clockdate_clock_hour_if_am:nT {##1} }
-          {
-            \exp_not:n
-              {
-                \bool_set_false:N \l__clockdate_clock_clocks_if_same_ampm_bool
-                \cs_set_eq:NN \__clockdate_clock_if_same_ampm:n \use_none:n
-              }
-          }
-      }
-  }
 \cs_new_protected:Npn \__clockdate_clock_set_hour_minute:nn #1#2
   {
     \bool_lazy_and:nnF
@@ -316,6 +300,7 @@
         \seq_map_break:n
           { \__clockdate_error:nnn { hour-minute-invalid } {#1} {#2} }
       }
+    \__clockdate_clock_if_same_ampm:n {#1}
     \tl_put_right:Nn \l__clockdate_clock_clocks_tl { {#1} {#2} { } }
     \str_put_right:Nn \l_clockdate_clocks_str { #1 : #2 }
   }
@@ -343,8 +328,25 @@
               {#1} {#2} {#3}
           }
       }
+    \__clockdate_clock_if_same_ampm:n {#1}
     \tl_put_right:Nn \l__clockdate_clock_clocks_tl { {#1} {#2} {#3} }
     \str_put_right:Nn \l_clockdate_clocks_str { #1 : #2 : #3 }
+  }
+\cs_new_protected:Npn \__clockdate_clock_if_same_ampm:n #1
+  {
+    \cs_set_protected:Npe \__clockdate_clock_if_same_ampm:n ##1
+      {
+        \__clockdate_clock_hour_if_am:nTF {#1}
+          { \exp_not:N \__clockdate_clock_hour_if_am:nF {##1} }
+          { \exp_not:N \__clockdate_clock_hour_if_am:nT {##1} }
+          {
+            \exp_not:n
+              {
+                \bool_set_false:N \l__clockdate_clock_clocks_if_same_ampm_bool
+                \cs_set_eq:NN \__clockdate_clock_if_same_ampm:n \use_none:n
+              }
+          }
+      }
   }
 \cs_new_protected:Npn \__clockdate_clock_set_loop:nnnnnn #1#2#3#4#5#6
   {
