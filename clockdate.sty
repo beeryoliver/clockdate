@@ -203,7 +203,7 @@
       { \str_if_eq_p:ee \l_clockdate_ampm_format_str { none } }
       {
         \bool_set_false:N \l__clockdate_clock_ampm_print_bool
-        \cs_set_eq:NN \__clockdate_clock_if_same_ampm:n \use_none:n
+        \cs_set_eq:NN \__clockdate_clock_same_ampm_chk:n \use_none:n
       }
   }
 \cs_new_protected:Npe \__clockdate_clock_normalize:
@@ -283,7 +283,7 @@
   {
     \int_compare:nF { 0 <= #1 < 25 }
       { \seq_map_break:n { \__clockdate_error:nn { hour-invalid } {#1} } }
-    \__clockdate_clock_if_same_ampm:n {#1}
+    \__clockdate_clock_same_ampm_chk:n {#1}
     \tl_put_right:Nn \l__clockdate_clock_clocks_tl { {#1} { } { } }
     \str_put_right:Nn \l_clockdate_clocks_str {#1}
   }
@@ -300,7 +300,7 @@
         \seq_map_break:n
           { \__clockdate_error:nnn { hour-minute-invalid } {#1} {#2} }
       }
-    \__clockdate_clock_if_same_ampm:n {#1}
+    \__clockdate_clock_same_ampm_chk:n {#1}
     \tl_put_right:Nn \l__clockdate_clock_clocks_tl { {#1} {#2} { } }
     \str_put_right:Nn \l_clockdate_clocks_str { #1 : #2 }
   }
@@ -328,13 +328,13 @@
               {#1} {#2} {#3}
           }
       }
-    \__clockdate_clock_if_same_ampm:n {#1}
+    \__clockdate_clock_same_ampm_chk:n {#1}
     \tl_put_right:Nn \l__clockdate_clock_clocks_tl { {#1} {#2} {#3} }
     \str_put_right:Nn \l_clockdate_clocks_str { #1 : #2 : #3 }
   }
-\cs_new_protected:Npn \__clockdate_clock_if_same_ampm:n #1
+\cs_new_protected:Npn \__clockdate_clock_same_ampm_chk:n #1
   {
-    \cs_set_protected:Npe \__clockdate_clock_if_same_ampm:n ##1
+    \cs_set_protected:Npe \__clockdate_clock_same_ampm_chk:n ##1
       {
         \__clockdate_clock_hour_if_am:nTF {#1}
           { \exp_not:N \__clockdate_clock_hour_if_am:nF {##1} }
@@ -343,7 +343,7 @@
             \exp_not:n
               {
                 \bool_set_false:N \l__clockdate_clock_clocks_if_same_ampm_bool
-                \cs_set_eq:NN \__clockdate_clock_if_same_ampm:n \use_none:n
+                \cs_set_eq:NN \__clockdate_clock_same_ampm_chk:n \use_none:n
               }
           }
       }
