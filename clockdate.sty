@@ -540,8 +540,8 @@
       { \msg_error:nnn { clockdate } { math-mode-invalid } { Calendardate } }
       {
         \IfNoValueTF {#1}
-          { \__clockdate_date_capitalized:n {#2} }
-          { \__clockdate_date_capitalized:nn {#1} {#2} }
+          { \__clockdate_date_capitalize_first:n {#2} }
+          { \__clockdate_date_capitalize_first:nn {#1} {#2} }
       }
   }
 \hook_gput_code:nnn { begindocument } { clockdate }
@@ -564,8 +564,8 @@
               { \msg_error:nnn { clockdate } { math-mode-invalid } { Date } }
               {
                 \IfNoValueTF {#1}
-                  { \__clockdate_date_capitalized:n {#2} }
-                  { \__clockdate_date_capitalized:nn {#1} {#2} }
+                  { \__clockdate_date_capitalize_first:n {#2} }
+                  { \__clockdate_date_capitalize_first:nn {#1} {#2} }
               }
           }
         \hook_disable_generic:n { cmd / date / after }
@@ -585,7 +585,7 @@
       \__clockdate_date_parse:n {#1}
     \__clockdate_end:
   }
-\cs_new_protected:Npn \__clockdate_date_capitalized:nn #1#2
+\cs_new_protected:Npn \__clockdate_date_capitalize_first:nn #1#2
   {
     \__clockdate_begin:
       \keys_set:nn { clockdate } {#1}
@@ -593,7 +593,7 @@
       \__clockdate_date_parse:n {#2}
     \__clockdate_end:
   }
-\cs_new_protected:Npn \__clockdate_date_capitalized:n #1
+\cs_new_protected:Npn \__clockdate_date_capitalize_first:n #1
   {
     \__clockdate_begin:
       \bool_set_true:N \l_clockdate_capitalize_first_bool
