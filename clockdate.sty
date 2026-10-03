@@ -98,13 +98,13 @@
   { \use_none:n \q__clockdate_end \group_end: }
 \quark_new:N \q__clockdate_end
 \cs_new_protected:Npn \__clockdate_error:n #1#2 \__clockdate_end:
-  { \group_end: \msg_error:nn { clockdate } {#1} }
+  { \msg_error:nn { clockdate } {#1} \group_end: }
 \cs_new_protected:Npn \__clockdate_error:nn #1#2#3 \__clockdate_end:
-  { \group_end: \msg_error:nnn { clockdate } {#1} {#2} }
+  { \msg_error:nnn { clockdate } {#1} {#2} \group_end: }
 \cs_new_protected:Npn \__clockdate_error:nnn #1#2#3#4 \__clockdate_end:
-  { \group_end: \msg_error:nnnn { clockdate } {#1} {#2} {#3} }
+  { \msg_error:nnnn { clockdate } {#1} {#2} {#3} \group_end: }
 \cs_new_protected:Npn \__clockdate_error:nnnn #1#2#3#4#5 \__clockdate_end:
-  { \group_end: \msg_error:nnnnn { clockdate } {#1} {#2} {#3} {#4} }
+  { \msg_error:nnnnn { clockdate } {#1} {#2} {#3} {#4} \group_end: }
 % \clockdate_end_period: needs \__clockdate_end: to be unique according to the
 % \peek_meaning:NTF test.
 \cs_new_protected:Npn \clockdate_end_period:
@@ -608,7 +608,10 @@
     \tl_if_empty:NTF \l__clockdate_tmp_tl
       {
         \str_set:Ne \l_clockdate_year_str
-          { - \int_abs:n { \seq_item:Nn \l__clockdate_date_seq {2} } }
+          {
+            \int_eval:n
+              { - \int_abs:n { \seq_item:Nn \l__clockdate_date_seq {2} } }
+          }
         \int_case:nnF { \seq_count:N \l__clockdate_date_seq }
           {
             { 2 } { \__clockdate_print_year: }
