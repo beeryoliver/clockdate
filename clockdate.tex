@@ -4,7 +4,7 @@
 \usepackage{clockdate}
 \clockdatesetup{overwrite-date}
 \ExplSyntaxOn
-\clockdate_keys_save:nn { or }
+\keys_precompile:nnN { clockdate }
   {
       clocks-pair-separator  = {  ~or~ }
     , clocks-final-separator = { ,~or~ }
@@ -13,6 +13,8 @@
     , months-pair-separator  = {  ~or~ }
     , months-final-separator = { ,~or~ }
   }
+  \l_tmpa_tl
+\prop_put:NnV \l_clockdate_load_prop { or } \l_tmpa_tl
 \ExplSyntaxOff
 
 
@@ -25,7 +27,7 @@ Print the time of day and the calendar date
 
 Oliver Beery
 
-Version 1.0.0\quad\date{2026-9-30}
+Version 1.0.0\quad\date{2026-10-2}
 
 
 \section{Introduction}
@@ -212,8 +214,8 @@ Set the package keys using \cs{clockdatesetup} (\S\ref{sec:cmds}).
   \begin{syntax}
     \key{load=\meta{string}}
   \end{syntax}
-  Used to load precompiled keys.
-  \meta{string} must first be declared using \cs{clockdate_keys_save:nn}
+  Used to load precompiled \pkg{clockdate} keys.
+  \meta{string} must be a key in \cs{l_clockdate_load_prop}
   (\S\ref{subsec:save}).
 \end{code}
 
@@ -749,12 +751,29 @@ This subsection documents the hooks provided by the \pkg{clockdate} package.
 \subsection{Precompiling the keys}
 \label{subsec:save}
 
-\begin{code}{\clockdate_keys_save:nn}
-  \begin{syntax}
-    \cs{clockdate_keys_save:nn} \marg{string} \marg{key-value list}
-  \end{syntax}
-  Precompiles the \pkg{clockdate} package keys in \meta{key-value list} for use
-  when setting the key \key{load=\meta{string}} (\S\ref{sec:keys}).
+\begin{code}{\l_clockdate_load_prop}
+  Property list used in the key \key{load} (\S\ref{sec:keys}).
+  The value of the key \key{load} must be a key in \cs{l_clockdate_load_prop}.
+  The value of each key in \cs{l_clockdate_load_prop} should contain
+  precompiled \pkg{clockdate} keys.
+  \cs{l_clockdate_load_prop} initially contains no entries.
+
+  Example usage:
+  \begin{verbatim}
+\ExplSyntaxOn
+\keys_precompile:nnN { clockdate }
+  {
+      clocks-pair-separator  = {  ~or~ }
+    , clocks-final-separator = { ,~or~ }
+    , days-pair-separator    = {  ~or~ }
+    , days-final-separator   = { ,~or~ }
+    , months-pair-separator  = {  ~or~ }
+    , months-final-separator = { ,~or~ }
+  }
+  \l_tmpa_tl
+\prop_put:NnV \l_clockdate_load_prop { or } \l_tmpa_tl
+\ExplSyntaxOff
+  \end{verbatim}
 \end{code}
 
 \subsection{Variables set by \cs{clockdatesetup}}
