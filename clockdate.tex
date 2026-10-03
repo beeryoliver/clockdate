@@ -741,11 +741,13 @@ This subsection documents the hooks provided by the \pkg{clockdate} package.
 \begin{code}{clockdate/clock}
   Hook used in \cs{clock} after parsing its input and setting all the variables
   in \S\ref{subsec:varclock}, but before printing the time of day.
+  This hook should not be used to set the \pkg{clockdate} keys.
 \end{code}
 
 \begin{code}{clockdate/date}
   Hook used in \cs{calendardate} after parsing its input and setting all the
   variables in \S\ref{subsec:vardate}, but before printing the calendar date.
+  This hook should not be used to set the \pkg{clockdate} keys.
 \end{code}
 
 \subsection{Precompiling the keys}
