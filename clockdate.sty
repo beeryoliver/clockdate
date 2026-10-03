@@ -7,7 +7,7 @@
 % Loading the package
 
 \NeedsTeXFormat{LaTeX2e}[2023-11-01]
-\ProvidesExplPackage{clockdate}{2026-09-30}{1.0.0}
+\ProvidesExplPackage{clockdate}{2026-10-02}{1.0.0}
   {Print the time of day and the calendar date}
 
 \msg_new:nnn { clockdate } { l3kernel }
@@ -1171,6 +1171,7 @@
 % Define keys
 
 \bool_new:N \g__clockdate_overwrite_date_bool
+\prop_new:N \l_clockdate_load_prop
 
 \str_new:N \l_clockdate_clock_format_str
 \str_new:N \l_clockdate_hour_format_str
@@ -1197,8 +1198,8 @@
 
     , load .code:n =
         {
-          \tl_if_exist:cTF { l__clockdate_save_ \tl_to_str:n {#1} _tl }
-            { \use:c { l__clockdate_save_ \tl_to_str:n {#1} _tl } }
+          \prop_if_in:NnTF \l_clockdate_load_prop {#1}
+            { \prop_item:Nn \l_clockdate_load_prop {#1} }
             { \msg_error:nnn { clockdate } { load-invalid } {#1} }
         }
     , load .value_required:n = true
@@ -1424,13 +1425,6 @@
   }
 \__clockdate_keys_set_initial:
 
-\cs_new_protected:Npn \clockdate_keys_save:nn #1#2
-  {
-    \tl_clear_new:c { l__clockdate_save_ \tl_to_str:n {#1} _tl }
-    \keys_precompile:nnc { clockdate } {#2}
-      { l__clockdate_save_ \tl_to_str:n {#1} _tl }
-  }
-
 \NewDocumentCommand \clockdatesetup { m }
   {
     \mode_if_math:TF
@@ -1445,8 +1439,8 @@
 \msg_new:nnn { clockdate } { load-invalid }
   {
     Invalid~ value~ '#1'~ \msg_line_context:. \\
-    The~ value~ of~ the~ key~ 'load'~ must~ first~ be~ declared~ using~
-    '\iow_char:N \\ clockdate_keys_save:nn'.
+    The~ value~ of~ the~ key~ 'load'~ must~ be~ in~
+    '\iow_char:N \\ l_clockdate_load_prop'.
   }
 % Messages used in \clock.
 \msg_new:nnn { clockdate } { clock-invalid }
