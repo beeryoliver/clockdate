@@ -1200,9 +1200,10 @@
 
     , load .code:n =
         {
-          \prop_if_in:NnTF \l_clockdate_load_prop {#1}
-            { \prop_item:Nn \l_clockdate_load_prop {#1} }
+          \prop_get:NnN \l_clockdate_load_prop {#1} \l__clockdate_tmp_tl
+          \quark_if_no_value:NTF \l__clockdate_tmp_tl
             { \msg_error:nnn { clockdate } { load-invalid } {#1} }
+            \l__clockdate_tmp_tl
         }
     , load .value_required:n = true
 
@@ -1441,7 +1442,7 @@
 \msg_new:nnn { clockdate } { load-invalid }
   {
     Invalid~ value~ '#1'~ \msg_line_context:. \\
-    The~ value~ of~ the~ key~ 'load'~ must~ be~ in~
+    The~ value~ of~ the~ key~ 'load'~ must~ be~ a~ key~ in~
     '\iow_char:N \\ l_clockdate_load_prop'.
   }
 % Messages used in \clock.
