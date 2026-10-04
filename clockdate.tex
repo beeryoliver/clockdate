@@ -2,7 +2,7 @@
 
 
 \usepackage{clockdate}
-\clockdatesetup{overwrite-date}
+\clockdatesetup{redefine-date}
 \ExplSyntaxOn
 \keys_precompile:nnN { clockdate }
   {
@@ -27,7 +27,7 @@ Print the time of day and the calendar date
 
 Oliver Beery
 
-Version 1.0.0\quad\date{2026-10-2}
+Version 1.0.0\quad\date{2026-10-3}
 
 
 \section{Introduction}
@@ -197,7 +197,7 @@ This section documents the commands provided by the \pkg{clockdate} package.
 This section documents the keys provided by the \pkg{clockdate} package.
 Set the package keys using \cs{clockdatesetup} (\S\ref{sec:cmds}).
 
-\begin{code}{overwrite-date, \date, \Date}
+\begin{code}{redefine-date, \date, \Date}
   Redefines \cs{date} as equivalent to \cs{calendardate}.
   Defines \cs{Date} as equivalent to \cs{Calendardate}.
   This is done at the \hook{begindocument} hook so that the original
@@ -735,7 +735,7 @@ This subsection documents the hooks provided by the \pkg{clockdate} package.
   from testing if the next token is a period (See \S\ref{subsubsec:printampm},
   \S\ref{subsubsec:printymd}, and \S\ref{subsubsec:printera}).
   \hook{cmd/date/after} and \hook{cmd/Date/after} are disabled only if the key
-  \key{overwrite-date} is set (\S\ref{sec:keys}).
+  \key{redefine-date} is set (\S\ref{sec:keys}).
 \end{code}
 
 \begin{code}{clockdate/clock}
