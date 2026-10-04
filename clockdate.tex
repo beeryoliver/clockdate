@@ -2,7 +2,7 @@
 
 
 \usepackage{clockdate}
-\clockdatesetup{redefine-date}
+\clockdatesetup{redefine-date, define-current-time}
 \ExplSyntaxOn
 \keys_precompile:nnN { clockdate }
   {
@@ -202,6 +202,13 @@ Set the package keys using \cs{clockdatesetup} (\S\ref{sec:cmds}).
   Defines \cs{Date} as equivalent to \cs{Calendardate}.
   This is done at the \hook{begindocument} hook so that the original
   definition of \cs{date} remains usuable in the preamble.
+  This key can only be used in the preamble.
+\end{code}
+
+\begin{code}{define-current-time, \hour, \minute}
+  Defines \cs{hour} and \cs{minute} as count registers that store the current
+  hour and minute, even if \cs{hour} or \cs{minute} have already been defined.
+  This is done at the \hook{begindocument} hook.
   This key can only be used in the preamble.
 \end{code}
 
