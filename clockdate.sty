@@ -186,7 +186,7 @@
         \hook_disable_generic:n { cmd / date / after }
         \hook_disable_generic:n { cmd / Date / after }
       }
-    \bool_if:NT \g__clockate_define_current_time_bool
+    \bool_if:NT \g__clockdate_define_current_time_bool
       {
         \cs_undefine:N \hour
         \cs_undefine:N \minute
@@ -1182,7 +1182,7 @@
 % Define keys
 
 \bool_new:N \g__clockdate_redefine_date_bool
-\bool_new:N \g__clockate_define_current_time_bool
+\bool_new:N \g__clockdate_define_current_time_bool
 \prop_new:N \l_clockdate_load_prop
 
 \str_new:N \l_clockdate_clock_format_str
@@ -1206,7 +1206,7 @@
     , redefine-date .usage:n = preamble
 
     , define-current-time .code:n =
-        { \bool_gset_true:N \g__clockate_define_current_time_bool }
+        { \bool_gset_true:N \g__clockdate_define_current_time_bool }
     , define-current-time .value_forbidden:n = true
     , define-current-time .usage:n = preamble
 
