@@ -1,11 +1,13 @@
-\ProvidesFile{clockdate-input-clock.tex}[2026-09-28]
+\ProvidesFile{clockdate-input-clock.tex}[2026-10-03]
 
 \begin{table}
   \centering
   \caption
     {%
       Example usage of \cs{clock} with all the \pkg{clockdate} package keys set
-      to their initial values.%
+      to their initial values.
+      Using \cs{hour} and \cs{minute} require setting the key
+      \key{define-current-time} (\S\ref{sec:keys}).%
       \label{table:clock}%
     }
   \bigskip
@@ -18,6 +20,7 @@
     \toprule
       markup & result \\
     \midrule
+      \cs{hour}:\cs{minute} & \hour:\minute \\
       6                  & 6                  \\
       14                 & 14                 \\
       8:30               & 8:30               \\
