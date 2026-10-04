@@ -186,6 +186,15 @@
         \hook_disable_generic:n { cmd / date / after }
         \hook_disable_generic:n { cmd / Date / after }
       }
+    \bool_if:NT \g__clockdate_define_current_time_bool
+      {
+        \cs_undefine:N \hour
+        \cs_undefine:N \minute
+        \int_new:N \hour
+        \int_new:N \minute
+        \int_set_eq:NN \hour \c_sys_hour_int
+        \int_set_eq:NN \minute \c_sys_minute_int
+      }
   }
 
 % \clock
@@ -1173,6 +1182,7 @@
 % Define keys
 
 \bool_new:N \g__clockdate_redefine_date_bool
+\bool_new:N \g__clockdate_define_current_time_bool
 \prop_new:N \l_clockdate_load_prop
 
 \str_new:N \l_clockdate_clock_format_str
@@ -1194,6 +1204,11 @@
         { \bool_gset_true:N \g__clockdate_redefine_date_bool }
     , redefine-date .value_forbidden:n = true
     , redefine-date .usage:n = preamble
+
+    , define-current-time .code:n =
+        { \bool_gset_true:N \g__clockdate_define_current_time_bool }
+    , define-current-time .value_forbidden:n = true
+    , define-current-time .usage:n = preamble
 
     , reset .code:n = { \__clockdate_keys_set_initial: }
     , reset .value_forbidden:n = true
