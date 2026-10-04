@@ -159,6 +159,34 @@
 \hook_disable_generic:n { cmd / calendardate / after }
 \hook_new:n { clockdate / clock }
 \hook_new:n { clockdate / date }
+\hook_gput_code:nnn { begindocument } { clockdate }
+  {
+    \bool_if:NT \g__clockdate_redefine_date_bool
+      {
+        \DeclareDocumentCommand \date { o m }
+          {
+            \mode_if_math:TF
+              { \msg_error:nnn { clockdate } { math-mode-invalid } { date } }
+              {
+                \IfNoValueTF {#1}
+                  { \__clockdate_date:n {#2} }
+                  { \__clockdate_date:nn {#1} {#2} }
+              }
+          }
+        \DeclareDocumentCommand \Date { o m }
+          {
+            \mode_if_math:TF
+              { \msg_error:nnn { clockdate } { math-mode-invalid } { Date } }
+              {
+                \IfNoValueTF {#1}
+                  { \__clockdate_date_capitalize_first:n {#2} }
+                  { \__clockdate_date_capitalize_first:nn {#1} {#2} }
+              }
+          }
+        \hook_disable_generic:n { cmd / date / after }
+        \hook_disable_generic:n { cmd / Date / after }
+      }
+  }
 
 % \clock
 
@@ -540,34 +568,6 @@
         \IfNoValueTF {#1}
           { \__clockdate_date_capitalize_first:n {#2} }
           { \__clockdate_date_capitalize_first:nn {#1} {#2} }
-      }
-  }
-\hook_gput_code:nnn { begindocument } { clockdate }
-  {
-    \bool_if:NT \g__clockdate_redefine_date_bool
-      {
-        \DeclareDocumentCommand \date { o m }
-          {
-            \mode_if_math:TF
-              { \msg_error:nnn { clockdate } { math-mode-invalid } { date } }
-              {
-                \IfNoValueTF {#1}
-                  { \__clockdate_date:n {#2} }
-                  { \__clockdate_date:nn {#1} {#2} }
-              }
-          }
-        \DeclareDocumentCommand \Date { o m }
-          {
-            \mode_if_math:TF
-              { \msg_error:nnn { clockdate } { math-mode-invalid } { Date } }
-              {
-                \IfNoValueTF {#1}
-                  { \__clockdate_date_capitalize_first:n {#2} }
-                  { \__clockdate_date_capitalize_first:nn {#1} {#2} }
-              }
-          }
-        \hook_disable_generic:n { cmd / date / after }
-        \hook_disable_generic:n { cmd / Date / after }
       }
   }
 \cs_new_protected:Npn \__clockdate_date:nn #1#2
