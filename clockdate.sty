@@ -38,7 +38,6 @@
 \seq_new:N \l__clockdate_date_seq
 \cs_new:Npn \__clockdate_date_range_mark:
   { \msg_expandable_error:nn { clockdate } { double-hyphen-invalid } }
-% Used to optimize the printing of day(s) and month(s).
 \seq_new:N \l__clockdate_days_seq
 \seq_new:N \l__clockdate_months_seq
 % Used to indicate when year-month(s) and month-day(s) cannot be distinguished.
