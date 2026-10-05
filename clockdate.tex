@@ -197,6 +197,9 @@ This section documents the commands provided by the \pkg{clockdate} package.
 This section documents the keys provided by the \pkg{clockdate} package.
 Set the package keys using \cs{clockdatesetup} (\S\ref{sec:cmds}).
 
+\subsection{Preamble-only keys}
+\label{subsec:preamblekeys}
+
 \begin{code}{define-current-time, \hour, \minute}
   Defines \cs{hour} and \cs{minute} as count registers that store the current
   hour and minute, even if \cs{hour} or \cs{minute} have already been defined.
@@ -211,6 +214,9 @@ Set the package keys using \cs{clockdatesetup} (\S\ref{sec:cmds}).
   definition of \cs{date} remains usuable in the preamble.
   This key can only be used in the preamble.
 \end{code}
+
+\subsection{Loading precompiled keys}
+\label{subsec:loadkeys}
 
 \begin{code}{reset}
   Meta key that sets all the \pkg{clockdate} package keys to their initial
@@ -742,7 +748,7 @@ This subsection documents the hooks provided by the \pkg{clockdate} package.
   from testing if the next token is a period (See \S\ref{subsubsec:printampm},
   \S\ref{subsubsec:printymd}, and \S\ref{subsubsec:printera}).
   \hook{cmd/date/after} and \hook{cmd/Date/after} are disabled only if the key
-  \key{redefine-date} is set (\S\ref{sec:keys}).
+  \key{redefine-date} is set (\S\ref{subsec:preamblekeys}).
 \end{code}
 
 \begin{code}{clockdate/clock}
@@ -761,7 +767,7 @@ This subsection documents the hooks provided by the \pkg{clockdate} package.
 \label{subsec:save}
 
 \begin{code}{\l_clockdate_load_prop}
-  Property list used in the key \key{load} (\S\ref{sec:keys}).
+  Property list used by the key \key{load} (\S\ref{subsec:loadkeys}).
   The value of the key \key{load} must be a key in \cs{l_clockdate_load_prop}.
   The value of each key in \cs{l_clockdate_load_prop} should contain
   precompiled \pkg{clockdate} keys.
