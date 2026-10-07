@@ -258,12 +258,12 @@
       { \seq_count:N \l__clockdate_tmp_seq }
     \seq_map_inline:Nn \l__clockdate_tmp_seq
       {
-        \str_if_empty:NF \l_clockdate_clocks_str
-          { \str_put_right:Nn \l_clockdate_clocks_str { , } }
         \tl_if_in:nnTF {##1} { -- }
           { \__clockdate_clock_set_range:w ##1 \q__clockdate_stop }
           { \__clockdate_clock_set_single:n {##1} }
       }
+    \str_set:Ne \l_clockdate_clocks_str
+      { \exp_after:wN \use_none:n \l_clockdate_clocks_str }
     \exp_after:wN \__clockdate_clock_set_loop:nnnnnn \l__clockdate_clocks_tl
       { \q_recursion_tail } { } { } { } { } { }
     \q_recursion_stop
