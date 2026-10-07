@@ -414,15 +414,7 @@
                 \clockdate_print_second:n {#3}
               }
           }
-        \tl_if_empty:nTF {#4}
-          {
-            \bool_if:NT \l__clockdate_tmp_bool
-              {
-                \exp_not:N \l_clockdate_ampm_separator_tl
-                \__clockdate_clock_hour_if_am:nTF {#1}
-                  \clockdate_print_am: \clockdate_print_pm:
-              }
-          }
+        \tl_if_empty:nF {#4}
           {
             \bool_lazy_and:nnT
               { \l__clockdate_tmp_bool }
@@ -458,12 +450,13 @@
                     \clockdate_print_second:n {#6}
                   }
               }
-            \bool_if:NT \l__clockdate_tmp_bool
-              {
-                \exp_not:N \l_clockdate_ampm_separator_tl
-                \__clockdate_clock_hour_if_am:nTF {#4}
-                  \clockdate_print_am: \clockdate_print_pm:
-              }
+          }
+        \bool_if:NT \l__clockdate_tmp_bool
+          {
+            \exp_not:N \l_clockdate_ampm_separator_tl
+            \__clockdate_clock_hour_if_am:nTF
+              { \tl_if_empty:nTF {#4} {#1} {#4} }
+              \clockdate_print_am: \clockdate_print_pm:
           }
       }
     \__clockdate_clock_set_loop:nnnnnn
