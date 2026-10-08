@@ -141,10 +141,13 @@ This section documents the commands provided by the \pkg{clockdate} package.
     \item \meta{month}|-|\meta{day(s)}
     \item \meta{year}|-|\meta{month(s)}
     \item \meta{year}
+    \item \meta{empty}|-|\meta{year}|-|\meta{month}|-|\meta{day(s)}
+    \item \meta{empty}|-|\meta{year}|-|\meta{month(s)}
+    \item \meta{empty}|-|\meta{year}
   \end{itemize}
 
-  \meta{year} may be substituted with \meta{empty}|-|\meta{year} to ensure that
-  it is always before the common era.
+  If the first field is \meta{empty}, then the year is always before the
+  common era.
 
   \meta{day(s)} must take any of the following forms:
   \begin{itemize}
