@@ -617,14 +617,14 @@
             { 2 } { \__clockdate_print_year: }
             { 3 }
             {
-              \exp_args:Ne \__clockdate_date_year_months:n
+              \exp_args:Ne \__clockdate_date_YM:n
                 { \seq_item:Nn \l__clockdate_tmp_seq {3} }
             }
             { 4 }
             {
               \use:e
                 {
-                  \__clockdate_date_year_month_days:nn
+                  \__clockdate_date_YMD:nn
                     { \seq_item:Nn \l__clockdate_tmp_seq {3} }
                     { \seq_item:Nn \l__clockdate_tmp_seq {4} }
                 }
@@ -644,16 +644,16 @@
                 {
                   \str_set_eq:NN \l_clockdate_month_str \l_clockdate_year_str
                   \str_clear:N \l_clockdate_year_str
-                  \exp_args:Ne \__clockdate_date_month_days:n
+                  \exp_args:Ne \__clockdate_date_MD:n
                 }
-                { \exp_args:Ne \__clockdate_date_year_months:n }
+                { \exp_args:Ne \__clockdate_date_YM:n }
                 { \seq_item:Nn \l__clockdate_tmp_seq {2} }
             }
             { 3 }
             {
               \use:e
                 {
-                  \__clockdate_date_year_month_days:nn
+                  \__clockdate_date_YMD:nn
                     { \seq_item:Nn \l__clockdate_tmp_seq {2} }
                     { \seq_item:Nn \l__clockdate_tmp_seq {3} }
                 }
@@ -675,13 +675,13 @@
     \tl_replace_all:Nnn \exp_not:N \l__clockdate_input_tl
       { -- } { \exp_not:N \__clockdate_date_range_mark: }
   }
-\cs_new_protected:Npn \__clockdate_date_year_month_days:nn #1#2
+\cs_new_protected:Npn \__clockdate_date_YMD:nn #1#2
   {
-    \__clockdate_date_year_month_days_set:nn {#1} {#2}
+    \__clockdate_date_YMD_set:nn {#1} {#2}
     \hook_use:n { clockdate / date }
-    \__clockdate_date_year_month_days_print:
+    \__clockdate_date_YMD_print:
   }
-\cs_new_protected:Npn \__clockdate_date_year_month_days_print:
+\cs_new_protected:Npn \__clockdate_date_YMD_print:
   {
     \str_case:Vn \l_clockdate_order_str
       {
@@ -711,26 +711,22 @@
         }
       }
   }
-\cs_new_protected:Npn \__clockdate_date_year_month_days_set:nn #1#2
+\cs_new_protected:Npn \__clockdate_date_YMD_set:nn #1#2
   {
     \str_set:Ne \l_clockdate_month_str { \int_eval:n {#1} }
     \int_compare:nF { 0 < \l_clockdate_month_str < 13 }
       {
-        \cs_set_protected:Npn \__clockdate_date_year_month_days_chk:n ##1
+        \cs_set_protected:Npn \__clockdate_date_YMD_chk:n ##1
           {
-            \clist_map_break:n
-              { \__clockdate_error:nn { year-month-day-invalid } {##1} }
+            \clist_map_break:n { \__clockdate_error:nn { YMD-invalid } {##1} }
           }
       }
     \clist_map_inline:nn {#2}
       {
         \tl_if_in:nnTF {##1} { \__clockdate_date_range_mark: }
+          { \__clockdate_date_YMD_set_range:w ##1 \q__clockdate_stop }
           {
-            \__clockdate_date_year_month_days_set_range:w ##1
-              \q__clockdate_stop
-          }
-          {
-            \exp_args:Ne \__clockdate_date_year_month_days_set_single:n
+            \exp_args:Ne \__clockdate_date_YMD_set_single:n
               { \int_eval:n {##1} }
           }
       }
@@ -739,20 +735,20 @@
     \str_set:Ne \l_clockdate_day_str
       { \exp_after:wN \use_none:n \l_clockdate_day_str }
   }
-\cs_new_protected:Npn \__clockdate_date_year_month_days_set_range:w
+\cs_new_protected:Npn \__clockdate_date_YMD_set_range:w
   #1 \__clockdate_date_range_mark: #2 \q__clockdate_stop
   {
     \use:e
       {
-        \__clockdate_date_year_month_days_set_range:nn
+        \__clockdate_date_YMD_set_range:nn
           { \int_eval:n { \__clockdate_tl_trim_spaces_braces:n {#1} } }
           { \int_eval:n { \__clockdate_tl_trim_spaces_braces:n {#2} } }
       }
   }
-\cs_new_protected:Npn \__clockdate_date_year_month_days_set_range:nn #1#2
+\cs_new_protected:Npn \__clockdate_date_YMD_set_range:nn #1#2
   {
-    \__clockdate_date_year_month_days_chk:n {#1}
-    \__clockdate_date_year_month_days_chk:n {#2}
+    \__clockdate_date_YMD_chk:n {#1}
+    \__clockdate_date_YMD_chk:n {#2}
     \seq_put_right:Nn \l__clockdate_days_seq
       {
         \clockdate_print_day:n {#1}
@@ -761,13 +757,13 @@
       }
     \str_put_right:Nn \l_clockdate_day_str { , #1 -- #2 }
   }
-\cs_new_protected:Npn \__clockdate_date_year_month_days_set_single:n #1
+\cs_new_protected:Npn \__clockdate_date_YMD_set_single:n #1
   {
-    \__clockdate_date_year_month_days_chk:n {#1}
+    \__clockdate_date_YMD_chk:n {#1}
     \seq_put_right:Nn \l__clockdate_days_seq { \clockdate_print_day:n {#1} }
     \str_put_right:Nn \l_clockdate_day_str { , #1 }
   }
-\cs_new_protected:Npn \__clockdate_date_year_month_days_chk:n #1
+\cs_new_protected:Npn \__clockdate_date_YMD_chk:n #1
   {
     \int_compare:nT { 0 < #1 < 29 } { \prg_break: }
     \int_compare:nNnT {#1} = { 31 }
@@ -779,8 +775,7 @@
         \int_compare:nNnTF \l_clockdate_month_str = 2
           { \__clockdate_date_year_if_leap:T { \prg_break: } } { \prg_break: }
       }
-    \clist_map_break:n
-      { \__clockdate_error:nn { year-month-day-invalid } {#1} }
+    \clist_map_break:n { \__clockdate_error:nn { YMD-invalid } {#1} }
     \prg_break_point:
   }
 \cs_new:Npn \__clockdate_date_month_if_thirty_one_days:T
@@ -800,13 +795,13 @@
   {
     \int_if_zero:nT { \int_mod:nn { \l_clockdate_year_str } { 4 } }
   }
-\cs_new_protected:Npn \__clockdate_date_month_days:n #1
+\cs_new_protected:Npn \__clockdate_date_MD:n #1
   {
-    \__clockdate_date_month_days_set:n {#1}
+    \__clockdate_date_MD_set:n {#1}
     \hook_use:n { clockdate / date }
-    \__clockdate_date_month_days_print:
+    \__clockdate_date_MD_print:
   }
-\cs_new_protected:Npn \__clockdate_date_month_days_print:
+\cs_new_protected:Npn \__clockdate_date_MD_print:
   {
     \str_if_eq:eeTF \l_clockdate_order_str { DMY }
       {
@@ -820,14 +815,14 @@
         \__clockdate_print_days:
       }
   }
-\cs_new_protected:Npn \__clockdate_date_month_days_set:n #1
+\cs_new_protected:Npn \__clockdate_date_MD_set:n #1
   {
     \clist_map_inline:nn {#1}
       {
         \tl_if_in:nnTF {##1} { \__clockdate_date_range_mark: }
-          { \__clockdate_date_month_days_set_range:w ##1 \q__clockdate_stop }
+          { \__clockdate_date_MD_set_range:w ##1 \q__clockdate_stop }
           {
-            \exp_args:Ne \__clockdate_date_month_days_set_single:n
+            \exp_args:Ne \__clockdate_date_MD_set_single:n
               { \int_eval:n {##1} }
           }
       }
@@ -838,9 +833,9 @@
     \bool_lazy_and:nnT
       { \l__clockdate_priority_bool }
       { \str_if_eq_p:ee \l_clockdate_priority_str { YM } }
-      { \__clockdate_date_month_days_to_year_months: }
+      { \__clockdate_date_MD_to_YM: }
   }
-\cs_new_protected:Npn \__clockdate_date_month_days_to_year_months:
+\cs_new_protected:Npn \__clockdate_date_MD_to_YM:
   {
     \str_set_eq:NN \l_clockdate_year_str \l_clockdate_month_str
     \str_set_eq:NN \l_clockdate_month_str \l_clockdate_day_str
@@ -863,23 +858,22 @@
           { \clockdate_print_month:n } { \__clockdate_print_month_first:n }
         \seq_put_left:NV \l__clockdate_months_seq \l__clockdate_tmp_tl
       }
-    \cs_set_eq:NN \__clockdate_date_month_days_print:
-      \__clockdate_date_year_months_print:
+    \cs_set_eq:NN \__clockdate_date_MD_print: \__clockdate_date_YM_print:
   }
-\cs_new_protected:Npn \__clockdate_date_month_days_set_range:w
+\cs_new_protected:Npn \__clockdate_date_MD_set_range:w
   #1 \__clockdate_date_range_mark: #2 \q__clockdate_stop
   {
     \use:e
       {
-        \__clockdate_date_month_days_set_range:nn
+        \__clockdate_date_MD_set_range:nn
           { \int_eval:n { \__clockdate_tl_trim_spaces_braces:n {#1} } }
           { \int_eval:n { \__clockdate_tl_trim_spaces_braces:n {#2} } }
       }
   }
-\cs_new_protected:Npn \__clockdate_date_month_days_set_range:nn #1#2
+\cs_new_protected:Npn \__clockdate_date_MD_set_range:nn #1#2
   {
-    \__clockdate_date_month_days_chk:n {#1}
-    \__clockdate_date_month_days_chk:n {#2}
+    \__clockdate_date_MD_chk:n {#1}
+    \__clockdate_date_MD_chk:n {#2}
     \seq_put_right:Nn \l__clockdate_days_seq
       {
         \clockdate_print_day:n {#1}
@@ -888,13 +882,13 @@
       }
     \str_put_right:Nn \l_clockdate_day_str { , #1 -- #2 }
   }
-\cs_new_protected:Npn \__clockdate_date_month_days_set_single:n #1
+\cs_new_protected:Npn \__clockdate_date_MD_set_single:n #1
   {
-    \__clockdate_date_month_days_chk:n {#1}
+    \__clockdate_date_MD_chk:n {#1}
     \seq_put_right:Nn \l__clockdate_days_seq { \clockdate_print_day:n {#1} }
     \str_put_right:Nn \l_clockdate_day_str { , #1 }
   }
-\cs_new_protected:Npn \__clockdate_date_month_days_chk:n #1
+\cs_new_protected:Npn \__clockdate_date_MD_chk:n #1
   {
     \int_compare:nNnT {#1} > { 12 }
       { \bool_set_false:N \l__clockdate_priority_bool }
@@ -903,16 +897,16 @@
       { \__clockdate_date_month_if_thirty_one_days:T { \prg_break: } }
     \int_compare:nNnT {#1} = { 30 }
       { \int_compare:nNnF \l_clockdate_month_str = 2 { \prg_break: } }
-    \clist_map_break:n { \__clockdate_error:nn { month-day-invalid } {#1} }
+    \clist_map_break:n { \__clockdate_error:nn { MD-invalid } {#1} }
     \prg_break_point:
   }
-\cs_new_protected:Npn \__clockdate_date_year_months:n #1
+\cs_new_protected:Npn \__clockdate_date_YM:n #1
   {
-    \__clockdate_date_year_months_set:n {#1}
+    \__clockdate_date_YM_set:n {#1}
     \hook_use:n { clockdate / date }
-    \__clockdate_date_year_months_print:
+    \__clockdate_date_YM_print:
   }
-\cs_new_protected:Npn \__clockdate_date_year_months_print:
+\cs_new_protected:Npn \__clockdate_date_YM_print:
   {
     \str_if_eq:eeTF \l_clockdate_order_str { YMD }
       {
@@ -926,14 +920,14 @@
         \__clockdate_print_year:
       }
   }
-\cs_new_protected:Npn \__clockdate_date_year_months_set:n #1
+\cs_new_protected:Npn \__clockdate_date_YM_set:n #1
   {
     \clist_map_inline:nn {#1}
       {
         \tl_if_in:nnTF {##1} { \__clockdate_date_range_mark: }
-          { \__clockdate_date_year_months_set_range:w ##1 \q__clockdate_stop }
+          { \__clockdate_date_YM_set_range:w ##1 \q__clockdate_stop }
           {
-            \exp_args:Ne \__clockdate_date_year_months_set_single:n
+            \exp_args:Ne \__clockdate_date_YM_set_single:n
               { \int_eval:n {##1} }
           }
       }
@@ -942,20 +936,20 @@
     \str_set:Ne \l_clockdate_month_str
       { \exp_after:wN \use_none:n \l_clockdate_month_str }
   }
-\cs_new_protected:Npn \__clockdate_date_year_months_set_range:w
+\cs_new_protected:Npn \__clockdate_date_YM_set_range:w
   #1 \__clockdate_date_range_mark: #2 \q__clockdate_stop
   {
     \use:e
       {
-        \__clockdate_date_year_months_set_range:nn
+        \__clockdate_date_YM_set_range:nn
           { \int_eval:n { \__clockdate_tl_trim_spaces_braces:n {#1} } }
           { \int_eval:n { \__clockdate_tl_trim_spaces_braces:n {#2} } }
       }
   }
-\cs_new_protected:Npn \__clockdate_date_year_months_set_range:nn #1#2
+\cs_new_protected:Npn \__clockdate_date_YM_set_range:nn #1#2
   {
-    \__clockdate_date_year_months_chk:n {#1}
-    \__clockdate_date_year_months_chk:n {#2}
+    \__clockdate_date_YM_chk:n {#1}
+    \__clockdate_date_YM_chk:n {#2}
     \seq_put_right:Ne \l__clockdate_months_seq
       {
         \bool_lazy_all:nTF
@@ -971,9 +965,9 @@
       }
     \str_put_right:Nn \l_clockdate_month_str { , #1 -- #2 }
   }
-\cs_new_protected:Npn \__clockdate_date_year_months_set_single:n #1
+\cs_new_protected:Npn \__clockdate_date_YM_set_single:n #1
   {
-    \__clockdate_date_year_months_chk:n {#1}
+    \__clockdate_date_YM_chk:n {#1}
     \seq_put_right:Ne \l__clockdate_months_seq
       {
         \bool_lazy_all:nTF
@@ -987,13 +981,10 @@
       }
     \str_put_right:Nn \l_clockdate_month_str { , #1 }
   }
-\cs_new_protected:Npn \__clockdate_date_year_months_chk:n #1
+\cs_new_protected:Npn \__clockdate_date_YM_chk:n #1
   {
     \int_compare:nF { 0 < #1 < 13 }
-      {
-        \clist_map_break:n
-          { \__clockdate_error:nn { year-month-invalid } {#1} }
-      }
+      { \clist_map_break:n { \__clockdate_error:nn { YM-invalid } {#1} } }
   }
 \cs_new_protected:Npn \__clockdate_print_year:
   { \exp_args:NV \clockdate_print_year:n \l_clockdate_year_str }
@@ -1485,7 +1476,7 @@
   { The~ <day(s)>~ field~ must~ not~ be~ empty~ \msg_line_context:. }
 \msg_new:nnn { clockdate } { months-empty }
   { The~ <month(s)>~ field~ must~ not~ be~ empty~ \msg_line_context:. }
-\msg_new:nnn { clockdate } { year-month-day-invalid }
+\msg_new:nnn { clockdate } { YMD-invalid }
   {
     Invalid~ calendar~ date~ \msg_line_context:. \\ \\
     \iow_indent:n
@@ -1495,12 +1486,12 @@
         day:~ '#1'
       }
   }
-\msg_new:nnn { clockdate } { month-day-invalid }
+\msg_new:nnn { clockdate } { MD-invalid }
   {
     Invalid~ calendar~ date~ \msg_line_context:. \\ \\
     \iow_indent:n { month:~ '\l_clockdate_month_str' \\ day:~ '#1' }
   }
-\msg_new:nnn { clockdate } { year-month-invalid }
+\msg_new:nnn { clockdate } { YM-invalid }
   {
     Invalid~ calendar~ date~ \msg_line_context:. \\ \\
     \iow_indent:n { year:~ '\l_clockdate_year_str' \\ month:~ '#1' }
