@@ -954,8 +954,8 @@
       {
         \bool_lazy_all:nTF
           {
-            { \l_clockdate_capitalize_first_bool }
             { \str_if_empty_p:N \l_clockdate_month_str }
+            { \l_clockdate_capitalize_first_bool }
             { ! \str_if_eq_p:ee \l_clockdate_order_str { YMD } }
           }
           { \__clockdate_print_month_first:n {#1} }
@@ -972,8 +972,8 @@
       {
         \bool_lazy_all:nTF
           {
-            { \l_clockdate_capitalize_first_bool }
             { \str_if_empty_p:N \l_clockdate_month_str }
+            { \l_clockdate_capitalize_first_bool }
             { ! \str_if_eq_p:ee \l_clockdate_order_str { YMD } }
           }
           { \__clockdate_print_month_first:n {#1} }
