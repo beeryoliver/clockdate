@@ -22,6 +22,8 @@
 % Some variables
 
 \tl_new:N \l__clockdate_input_tl
+\cs_new:Npn \__clockdate_range_mark:
+  { \msg_expandable_error:nn { clockdate } { double-hyphen-invalid } }
 
 \seq_new:N \l__clockdate_clock_seq
 \seq_new:N \l__clockdate_clocks_seq
@@ -35,8 +37,6 @@
 
 \str_new:N \l_clockdate_clocks_str
 
-\cs_new:Npn \__clockdate_date_range_mark:
-  { \msg_expandable_error:nn { clockdate } { double-hyphen-invalid } }
 \seq_new:N \l__clockdate_days_seq
 \seq_new:N \l__clockdate_months_seq
 % Used to indicate when year-month(s) and month-day(s) cannot be distinguished.
@@ -248,6 +248,8 @@
       { \exp_not:V \c__clockdate_active_colon_tl } { \c_colon_str }
     \tl_replace_all:Nnn \exp_not:N \l__clockdate_input_tl
       { \exp_not:V \c__clockdate_active_hyphen_tl } { - }
+    \tl_replace_all:Nnn \exp_not:N \l__clockdate_input_tl
+      { -- } { \exp_not:N \__clockdate_range_mark: }
   }
 \cs_new_protected:Npn \__clockdate_clock_set:
   {
@@ -258,7 +260,7 @@
       { \seq_count:N \l__clockdate_tmp_seq }
     \seq_map_inline:Nn \l__clockdate_tmp_seq
       {
-        \tl_if_in:nnTF {##1} { -- }
+        \tl_if_in:nnTF {##1} { \__clockdate_range_mark: }
           { \__clockdate_clock_set_range:w ##1 \q__clockdate_stop }
           { \__clockdate_clock_set_single:n {##1} }
       }
@@ -269,7 +271,7 @@
     \q_recursion_stop
   }
 \cs_new_protected:Npn \__clockdate_clock_set_range:w
-  #1 -- #2 \q__clockdate_stop
+  #1 \__clockdate_range_mark: #2 \q__clockdate_stop
   {
     \__clockdate_clock_set_split:n {#1}
     \str_put_right:Nn \l_clockdate_clocks_str { -- }
@@ -673,7 +675,7 @@
     \tl_replace_all:Nnn \exp_not:N \l__clockdate_input_tl
       { \exp_not:V \c__clockdate_active_hyphen_tl } { - }
     \tl_replace_all:Nnn \exp_not:N \l__clockdate_input_tl
-      { -- } { \exp_not:N \__clockdate_date_range_mark: }
+      { -- } { \exp_not:N \__clockdate_range_mark: }
   }
 \cs_new_protected:Npn \__clockdate_date_YMD:nn #1#2
   {
@@ -723,7 +725,7 @@
       }
     \clist_map_inline:nn {#2}
       {
-        \tl_if_in:nnTF {##1} { \__clockdate_date_range_mark: }
+        \tl_if_in:nnTF {##1} { \__clockdate_range_mark: }
           { \__clockdate_date_YMD_set_range:w ##1 \q__clockdate_stop }
           {
             \exp_args:Ne \__clockdate_date_YMD_set_single:n
@@ -736,7 +738,7 @@
       { \exp_after:wN \use_none:n \l_clockdate_day_str }
   }
 \cs_new_protected:Npn \__clockdate_date_YMD_set_range:w
-  #1 \__clockdate_date_range_mark: #2 \q__clockdate_stop
+  #1 \__clockdate_range_mark: #2 \q__clockdate_stop
   {
     \use:e
       {
@@ -819,7 +821,7 @@
   {
     \clist_map_inline:nn {#1}
       {
-        \tl_if_in:nnTF {##1} { \__clockdate_date_range_mark: }
+        \tl_if_in:nnTF {##1} { \__clockdate_range_mark: }
           { \__clockdate_date_MD_set_range:w ##1 \q__clockdate_stop }
           {
             \exp_args:Ne \__clockdate_date_MD_set_single:n
@@ -861,7 +863,7 @@
     \cs_set_eq:NN \__clockdate_date_MD_print: \__clockdate_date_YM_print:
   }
 \cs_new_protected:Npn \__clockdate_date_MD_set_range:w
-  #1 \__clockdate_date_range_mark: #2 \q__clockdate_stop
+  #1 \__clockdate_range_mark: #2 \q__clockdate_stop
   {
     \use:e
       {
@@ -924,7 +926,7 @@
   {
     \clist_map_inline:nn {#1}
       {
-        \tl_if_in:nnTF {##1} { \__clockdate_date_range_mark: }
+        \tl_if_in:nnTF {##1} { \__clockdate_range_mark: }
           { \__clockdate_date_YM_set_range:w ##1 \q__clockdate_stop }
           {
             \exp_args:Ne \__clockdate_date_YM_set_single:n
@@ -937,7 +939,7 @@
       { \exp_after:wN \use_none:n \l_clockdate_month_str }
   }
 \cs_new_protected:Npn \__clockdate_date_YM_set_range:w
-  #1 \__clockdate_date_range_mark: #2 \q__clockdate_stop
+  #1 \__clockdate_range_mark: #2 \q__clockdate_stop
   {
     \use:e
       {
