@@ -7,7 +7,7 @@
 % Loading the package
 
 \NeedsTeXFormat{LaTeX2e}[2023-11-01]
-\ProvidesExplPackage{clockdate}{2026-10-08}{1.0.0}
+\ProvidesExplPackage{clockdate}{2026-10-09}{1.0.0}
   {Print the time of day and the calendar date}
 
 \msg_new:nnn { clockdate } { l3kernel }
@@ -25,7 +25,6 @@
 \cs_new:Npn \__clockdate_range_mark:
   { \msg_expandable_error:nn { clockdate } { double-hyphen-invalid } }
 
-\seq_new:N \l__clockdate_clock_seq
 \seq_new:N \l__clockdate_clocks_seq
 \int_new:N \l__clockdate_clocks_step_int
 \int_new:N \l__clockdate_clocks_count_int
@@ -87,10 +86,10 @@
 \str_new:N \l__clockdate_tmp_str
 \int_new:N \l__clockdate_tmp_int
 \seq_new:N \l__clockdate_tmp_seq
+\clist_new:N \l__clockdate_tmp_clist
 
 % Some functions
 
-\cs_generate_variant:Nn \seq_set_from_clist:Nn { NV }
 \cs_new_eq:NN \__clockdate_begin: \group_begin:
 \cs_new_protected:Npn \__clockdate_end:
   { \use_none:n \q__clockdate_end \group_end: }
@@ -253,12 +252,12 @@
   }
 \cs_new_protected:Npn \__clockdate_clock_set:
   {
-    \seq_set_from_clist:NV \l__clockdate_tmp_seq \l__clockdate_input_tl
-    \seq_if_empty:NT \l__clockdate_tmp_seq
+    \clist_set:NV \l__clockdate_tmp_clist \l__clockdate_input_tl
+    \clist_if_empty:NT \l__clockdate_tmp_clist
       { \__clockdate_error:n { clocks-empty } }
     \int_set:Nn \l__clockdate_clocks_count_int
-      { \seq_count:N \l__clockdate_tmp_seq }
-    \seq_map_inline:Nn \l__clockdate_tmp_seq
+      { \clist_count:N \l__clockdate_tmp_clist }
+    \clist_map_inline:Nn \l__clockdate_tmp_clist
       {
         \tl_if_in:nnTF {##1} { \__clockdate_range_mark: }
           { \__clockdate_clock_set_range:w ##1 \q__clockdate_stop }
@@ -284,21 +283,21 @@
   }
 \cs_new_protected:Npn \__clockdate_clock_set_split:n #1
   {
-    \seq_set_split:NVn \l__clockdate_clock_seq \c_colon_str {#1}
-    \int_case:nnF { \seq_count:N \l__clockdate_clock_seq }
+    \seq_set_split:NVn \l__clockdate_tmp_seq \c_colon_str {#1}
+    \int_case:nnF { \seq_count:N \l__clockdate_tmp_seq }
       {
         { 1 }
         {
           \exp_args:Ne \__clockdate_clock_set_hour:n
-            { \int_eval:n { \seq_item:Nn \l__clockdate_clock_seq {1} } }
+            { \int_eval:n { \seq_item:Nn \l__clockdate_tmp_seq {1} } }
         }
         { 2 }
         {
           \use:e
             {
               \__clockdate_clock_set_hour_minute:nn
-                { \int_eval:n { \seq_item:Nn \l__clockdate_clock_seq {1} } }
-                { \int_eval:n { \seq_item:Nn \l__clockdate_clock_seq {2} } }
+                { \int_eval:n { \seq_item:Nn \l__clockdate_tmp_seq {1} } }
+                { \int_eval:n { \seq_item:Nn \l__clockdate_tmp_seq {2} } }
             }
         }
         { 3 }
@@ -306,18 +305,18 @@
           \use:e
             {
               \__clockdate_clock_set_hour_minute_second:nnn
-                { \int_eval:n { \seq_item:Nn \l__clockdate_clock_seq {1} } }
-                { \int_eval:n { \seq_item:Nn \l__clockdate_clock_seq {2} } }
-                { \int_eval:n { \seq_item:Nn \l__clockdate_clock_seq {3} } }
+                { \int_eval:n { \seq_item:Nn \l__clockdate_tmp_seq {1} } }
+                { \int_eval:n { \seq_item:Nn \l__clockdate_tmp_seq {2} } }
+                { \int_eval:n { \seq_item:Nn \l__clockdate_tmp_seq {3} } }
             }
         }
       }
-      { \seq_map_break:n { \__clockdate_error:nn { clock-invalid } {#1} } }
+      { \clist_map_break:n { \__clockdate_error:nn { clock-invalid } {#1} } }
   }
 \cs_new_protected:Npn \__clockdate_clock_set_hour:n #1
   {
     \int_compare:nF { 0 <= #1 < 25 }
-      { \seq_map_break:n { \__clockdate_error:nn { hour-invalid } {#1} } }
+      { \clist_map_break:n { \__clockdate_error:nn { hour-invalid } {#1} } }
     \__clockdate_clock_same_ampm_chk:n {#1}
     \tl_put_right:Nn \l__clockdate_clocks_tl { {#1} { } { } }
     \str_put_right:Nn \l_clockdate_clocks_str {#1}
@@ -332,7 +331,7 @@
           { \int_compare_p:n { 0 <= #2 < 60 } }
       }
       {
-        \seq_map_break:n
+        \clist_map_break:n
           { \__clockdate_error:nnn { hour-minute-invalid } {#1} {#2} }
       }
     \__clockdate_clock_same_ampm_chk:n {#1}
@@ -357,7 +356,7 @@
           }
       }
       {
-        \seq_map_break:n
+        \clist_map_break:n
           {
             \__clockdate_error:nnnn { hour-minute-second-invalid }
               {#1} {#2} {#3}
