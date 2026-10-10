@@ -27,7 +27,7 @@ Print the time of day and the calendar date
 
 Oliver Beery
 
-Version 1.0.0\quad\date{2026-10-8}
+Version 1.0.0\quad\date{2026-10-9}
 
 
 \section{Introduction}
@@ -327,8 +327,9 @@ This subsection documents the keys that modify the behavior of \cs{clock}
 
   The am/pm is omitted if \key{ampm=none} or \key{clock=24}.
 
-  If the value is |a.m.| or |A.M.|, the trailing am/pm will not print an extra
-  period if the next token after \cs{clock} is a period.
+  If \cs{clock} ends with an am/pm that ends with a period, then the trailing
+  am/pm will not print an extra period if the next token after \cs{clock} is a
+  period.
   If the am/pm prints the period, it is followed by \cs{@} because the sentence
   does not end here.
 \end{code}
@@ -477,11 +478,11 @@ This subsection documents the keys that modify the behavior of
 
   By default, |mmm| prints the month in the same form as |mmmm|, except that
   some months are abbreviated: Jan., Feb., Aug., Sept., Oct., Nov., Dec.
-  The abbreviated month will not print an extra period if the next token after
-  \cs{calendardate} is a period and \cs{calendardate} ends with an abbreviated
-  month that ends in a period.
-  If the abbreviated month prints the period, it is followed by \cs{@} because
-  the sentence does not end here.
+  If \cs{calendardate} ends with a month that ends with a period, then the
+  trailing month will not print an extra period if the next token after
+  \cs{calendardate} is a period.
+  If the month prints the period, it is followed by \cs{@} because the sentence
+  does not end here.
   See \S\ref{subsec:expl3date} for more details.
 \end{code}
 
@@ -658,7 +659,7 @@ This subsection documents the keys that modify the behavior of
   |integer| prints the year as an integer which may be positive, zero, or
   negative.
 
-  If the calendar date ends with an era that ends with a period, then the
+  If \cs{calendardate} ends with an era that ends with a period, then the
   trailing era will not print an extra period if the next token after
   \cs{calendardate} is a period.
   If the era prints the period, it is followed by \cs{@} because the sentence
