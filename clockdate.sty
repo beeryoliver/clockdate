@@ -613,8 +613,7 @@
     \tl_set:Nn \l__clockdate_input_tl {#1}
     \__clockdate_date_normalize:
     \seq_set_split:NnV \l__clockdate_tmp_seq { - } \l__clockdate_input_tl
-    \seq_get_left:NN \l__clockdate_tmp_seq \l__clockdate_tmp_tl
-    \tl_if_blank:VTF \l__clockdate_tmp_tl
+    \tl_if_blank:eTF { \seq_item:Nn \l__clockdate_tmp_seq {1} }
       {
         \str_set:Ne \l_clockdate_year_str
           {
@@ -643,7 +642,7 @@
       }
       {
         \str_set:Ne \l_clockdate_year_str
-          { \int_eval:n { \l__clockdate_tmp_tl } }
+          { \int_eval:n { \seq_item:Nn \l__clockdate_tmp_seq {1} } }
         \int_case:nnF { \seq_count:N \l__clockdate_tmp_seq }
           {
             { 1 } { \__clockdate_print_year: }
