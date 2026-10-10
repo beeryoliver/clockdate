@@ -1,15 +1,24 @@
-\ProvidesFile{clockdate-input-era.tex}[2026-07-05]
+\ProvidesFile{clockdate-input-era.tex}[2026-10-10]
 
 \begingroup
   \centering
-  \begin{tblr}{colspec={lll}, cell{2-Z}{1}={cmd=\texttt}}
+  \begin{tblr}
+    {
+        colspec={lll}
+      , cell{2-Z}{1}={cmd=\texttt}
+      , cell{6-Z}{2-3}={cmd=\textsc}
+    }
     \toprule
       \meta{choice} & AD/CE & BC/BCE \\
     \midrule
-      A.D. & A.D. & B.C.   \\
-      AD   & AD   & BC     \\
-      C.E. & C.E. & B.C.E. \\
-      CE   & CE   & BCE    \\
+      A.D.         & A.D. & B.C.   \\
+      AD           & AD   & BC     \\
+      C.E.         & C.E. & B.C.E. \\
+      CE           & CE   & BCE    \\
+      a.d.-scshape & a.d. & b.c.   \\
+      ad-scshape   & ad   & bc     \\
+      c.e.-scshape & c.e. & b.c.e. \\
+      ce-scshape   & ce   & bce    \\
     \bottomrule
   \end{tblr}
   \par

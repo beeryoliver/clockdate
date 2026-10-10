@@ -27,7 +27,7 @@ Print the time of day and the calendar date
 
 Oliver Beery
 
-Version 1.0.0\quad\date{2026-10-9}
+Version 1.0.0\quad\date{2026-10-10}
 
 
 \section{Introduction}
@@ -319,9 +319,16 @@ This subsection documents the keys that modify the behavior of \cs{clock}
 
 \begin{code}{ampm}
   \begin{syntax}
-    \key{ampm=a.m.|am|a|A.M.|AM|A|none}
+    \key{ampm=\meta{choice}}
   \end{syntax}
   Choice key that sets the format in which the am/pm is printed.
+  \meta{choice} must match any of the following:
+  \begin{itemize}
+    \item |a.m.|, |am|, |a|
+    \item |A.M.|, |AM|, |A|
+    \item |a.m.-scshape|, |am-scshape|, |a-scshape|
+    \item |none|
+  \end{itemize}
   The initial value is |AM|.
   \input{clockdate-input-ampm.tex}
 
@@ -650,9 +657,17 @@ This subsection documents the keys that modify the behavior of
 
 \begin{code}{era}
   \begin{syntax}
-    \key{era=A.D.|AD|C.E.|CE|integer}
+    \key{era=\meta{choice}}
   \end{syntax}
   Choice key that sets the format in which the era is printed.
+  \meta{choice} must match any of the following:
+  \begin{itemize}
+    \item |A.D.|, |AD|
+    \item |C.E.|, |CE|
+    \item |a.d.-scshape|, |ad-scshape|
+    \item |c.e.-scshape|, |ce-scshape|
+    \item |integer|
+  \end{itemize}
   The initial value is |CE|.
   \input{clockdate-input-era.tex}
 
