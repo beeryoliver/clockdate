@@ -7,7 +7,7 @@
 % Loading the package
 
 \NeedsTeXFormat{LaTeX2e}[2023-11-01]
-\ProvidesExplPackage{clockdate}{2026-10-09}{1.0.0}
+\ProvidesExplPackage{clockdate}{2026-10-10}{1.0.0}
   {Print the time of day and the calendar date}
 
 \msg_new:nnn { clockdate } { l3kernel }
@@ -534,6 +534,10 @@
         { A.M. } { A.M \clockdate_end_period: }
         { AM   } { AM \@ }
         { A    } { A \@ }
+        { a.m.-scshape }
+          { \group_begin: \scshape a.m \clockdate_end_period: \group_end: }
+        { am-scshape } { \textsc {am} }
+        { a-scshape } { \textsc {a} }
       }
   }
 \cs_new_protected:Npn \clockdate_print_pm:
@@ -546,6 +550,10 @@
         { A.M. } { P.M \clockdate_end_period: }
         { AM   } { PM \@ }
         { A    } { P \@ }
+        { a.m.-scshape }
+          { \group_begin: \scshape p.m \clockdate_end_period: \group_end: }
+        { am-scshape } { \textsc {pm} }
+        { a-scshape } { \textsc {p} }
       }
   }
 
@@ -1087,6 +1095,79 @@
             }
             { \l_clockdate_era_separator_tl BCE \@ }
         }
+        { a.d.-scshape }
+        {
+          \int_compare:nNnTF {#1} > 0
+            {
+              \int_compare:nNnTF {#1} < \l_clockdate_era_threshold_int
+                {
+                  \bool_if:NTF \l_clockdate_ad_first_bool
+                    {
+                      \textsc {a.d.} \l_clockdate_ad_first_separator_tl
+                      \l__clockdate_tmp_str
+                    }
+                    {
+                      \l__clockdate_tmp_str \l_clockdate_era_separator_tl
+                      \group_begin:
+                        \scshape a.d \clockdate_end_period:
+                      \group_end:
+                    }
+                }
+                { \l__clockdate_tmp_str }
+            }
+            {
+              \l__clockdate_tmp_str \l_clockdate_era_separator_tl
+              \group_begin: \scshape b.c \clockdate_end_period: \group_end:
+            }
+        }
+        { ad-scshape }
+        {
+          \int_compare:nNnTF {#1} > 0
+            {
+              \int_compare:nNnTF {#1} < \l_clockdate_era_threshold_int
+                {
+                  \bool_if:NTF \l_clockdate_ad_first_bool
+                    {
+                      \textsc {ad} \l_clockdate_ad_first_separator_tl
+                      \l__clockdate_tmp_str
+                    }
+                    {
+                      \l__clockdate_tmp_str \l_clockdate_era_separator_tl
+                      \textsc {ad}
+                    }
+                }
+                { \l__clockdate_tmp_str }
+            }
+            {
+              \l__clockdate_tmp_str \l_clockdate_era_separator_tl \textsc {bc}
+            }
+        }
+        { c.e.-scshape }
+        {
+          \l__clockdate_tmp_str
+          \int_compare:nNnTF {#1} > 0
+            {
+              \int_compare:nNnT {#1} < \l_clockdate_era_threshold_int
+                {
+                  \l_clockdate_era_separator_tl
+                  \group_begin: \scshape c.e \clockdate_end_period: \group_end:
+                }
+            }
+            {
+              \l_clockdate_era_separator_tl
+              \group_begin: \scshape b.c.e \clockdate_end_period: \group_end:
+            }
+        }
+        { ce-scshape }
+        {
+          \l__clockdate_tmp_str
+          \int_compare:nNnTF {#1} > 0
+            {
+              \int_compare:nNnT {#1} < \l_clockdate_era_threshold_int
+                { \l_clockdate_era_separator_tl \textsc {ce} }
+            }
+            { \l_clockdate_era_separator_tl \textsc {bce} }
+        }
         { integer }
         {
           \int_case:nn { \int_sign:n {#1} }
@@ -1235,7 +1316,8 @@
         }
     , time-separator .value_required:n = true
 
-    , ampm .choices:nn = { a.m. , am , a , A.M. , AM , A , none }
+    , ampm .choices:nn =
+        { a.m., am, a, A.M., AM, A, a.m.-scshape, am-scshape, a-scshape, none }
         { \str_set:Nn \l_clockdate_ampm_format_str {#1} }
     , ampm .value_required:n = true
 
@@ -1354,7 +1436,11 @@
     , months-range-separator .tl_set:N = \l_clockdate_months_range_separator_tl
     , months-range-separator .value_required:n = true
 
-    , era .choices:nn = { A.D. , AD , C.E. , CE , integer }
+    , era .choices:nn =
+        {
+          A.D., AD, C.E., CE, a.d.-scshape, ad-scshape,
+          c.e.-scshape, ce-scshape, integer
+        }
         { \str_set:Nn \l_clockdate_era_format_str {#1} }
     , era .value_required:n = true
 

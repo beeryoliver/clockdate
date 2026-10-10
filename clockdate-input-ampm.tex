@@ -1,17 +1,25 @@
-\ProvidesFile{clockdate-input-ampm.tex}[2026-07-05]
+\ProvidesFile{clockdate-input-ampm.tex}[2026-10-10]
 
 \begingroup
   \centering
-  \begin{tblr}{colspec={lll}, cell{2-Z}{1}={cmd=\texttt}}
+  \begin{tblr}
+    {
+        colspec={lll}
+      , cell{2-Z}{1}={cmd=\texttt}
+      , cell{X-Z}{2-3}={cmd=\textsc}
+    }
     \toprule
       \meta{choice} & am & pm \\
     \midrule
-      a.m. & a.m. & p.m. \\
-      am   & am   & pm   \\
-      a    & a    & p    \\
-      A.M. & A.M. & P.M. \\
-      AM   & AM   & PM   \\
-      A    & A    & P    \\
+      a.m.         & a.m. & p.m. \\
+      am           & am   & pm   \\
+      a            & a    & p    \\
+      A.M.         & A.M. & P.M. \\
+      AM           & AM   & PM   \\
+      A            & A    & P    \\
+      a.m.-scshape & a.m. & p.m. \\
+      am-scshape   & am   & pm   \\
+      a-scshape    & a    & p    \\
     \bottomrule
   \end{tblr}
   \par
