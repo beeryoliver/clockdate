@@ -27,7 +27,7 @@ Print the time of day and the calendar date
 
 Oliver Beery
 
-Version 1.0.0\quad\date{2026-10-10}
+Version 1.0.0\quad\date{2026-10-11}
 
 
 \section{Introduction}
@@ -472,6 +472,15 @@ This subsection documents the keys that modify the behavior of
   The initial value is |y|.
 \end{code}
 
+\begin{code}{yy-year-prefix}
+  \begin{syntax}
+    \key{yy-year-prefix=\meta{token list}}
+  \end{syntax}
+  Prepends \meta{token list} to the printed year if \key{year=yy} and the year
+  omits 1 or more digits.
+  The initial value is \cs{rq}.
+\end{code}
+
 \begin{code}{month}
   \begin{syntax}
     \key{month=m|mm|mmm|mmmm}
@@ -868,6 +877,7 @@ They are read-only and should not be modified directly.
 \begin{code}
   {
     \l_clockdate_year_format_str,
+    \l_clockdate_yy_year_prefix_tl,
     \l_clockdate_month_format_str,
     \l_clockdate_day_format_str,
     \l_clockdate_day_ordinal_bool

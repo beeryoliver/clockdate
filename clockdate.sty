@@ -83,7 +83,6 @@
 % Scratch variables
 \bool_new:N \l__clockdate_tmp_bool
 \tl_new:N \l__clockdate_tmp_tl
-\str_new:N \l__clockdate_tmp_str
 \int_new:N \l__clockdate_tmp_int
 \seq_new:N \l__clockdate_tmp_seq
 \clist_new:N \l__clockdate_tmp_clist
@@ -1004,7 +1003,7 @@
   { \exp_args:NV \clockdate_print_year:n \l_clockdate_year_str }
 \cs_new_protected:Npn \clockdate_print_year:n #1
   {
-    \str_set:Ne \l__clockdate_tmp_str
+    \tl_set:Ne \l__clockdate_tmp_tl
       {
         \bool_lazy_or:nnTF
           { \int_compare_p:nNn {#1} > 0 }
@@ -1015,23 +1014,29 @@
       {
         { yy }
         {
-          \str_set:Ne \l__clockdate_tmp_str
+          \int_compare:nNnTF \l__clockdate_tmp_tl < { 100 }
             {
-              \int_compare:nNnTF \l__clockdate_tmp_str < { 10 }
-                { 0 \l__clockdate_tmp_str }
-                { \str_range:Nnn \l__clockdate_tmp_str { -2 } { -1 } }
+              \int_compare:nNnT \l__clockdate_tmp_tl < { 10 }
+                { \tl_put_left:Nn \l__clockdate_tmp_tl { 0 } }
+            }
+            {
+              \tl_set:Ne \l__clockdate_tmp_tl
+                {
+                  \exp_not:N \l_clockdate_yy_year_prefix_tl
+                  \tl_range:Nnn \l__clockdate_tmp_tl { -2 } { -1 }
+                }
             }
         }
         { yyyy }
         {
-          \str_put_left:Ne \l__clockdate_tmp_str
+          \int_compare:nNnTF \l__clockdate_tmp_tl < { 10 }
+            { \tl_put_left:Nn \l__clockdate_tmp_tl { 000 } }
             {
-              \int_compare:nNnTF \l__clockdate_tmp_str < { 10 } { 000 }
+              \int_compare:nNnTF \l__clockdate_tmp_tl < { 100 }
+                { \tl_put_left:Nn \l__clockdate_tmp_tl { 00 } }
                 {
-                  \int_compare:nNnTF \l__clockdate_tmp_str < { 100 } { 00 }
-                    {
-                      \int_compare:nNnT \l__clockdate_tmp_str < { 1000 } { 0 }
-                    }
+                  \int_compare:nNnT \l__clockdate_tmp_tl < { 1000 }
+                    { \tl_put_left:Nn \l__clockdate_tmp_tl { 0 } }
                 }
             }
         }
@@ -1047,17 +1052,17 @@
                   \bool_if:NTF \l_clockdate_ad_first_bool
                     {
                       A.D. \@ \l_clockdate_ad_first_separator_tl
-                      \l__clockdate_tmp_str
+                      \l__clockdate_tmp_tl
                     }
                     {
-                      \l__clockdate_tmp_str \l_clockdate_era_separator_tl
+                      \l__clockdate_tmp_tl \l_clockdate_era_separator_tl
                       A.D \clockdate_end_period:
                     }
                 }
-                { \l__clockdate_tmp_str }
+                { \l__clockdate_tmp_tl }
             }
             {
-              \l__clockdate_tmp_str \l_clockdate_era_separator_tl
+              \l__clockdate_tmp_tl \l_clockdate_era_separator_tl
               B.C \clockdate_end_period:
             }
         }
@@ -1070,19 +1075,19 @@
                   \bool_if:NTF \l_clockdate_ad_first_bool
                     {
                       AD \@ \l_clockdate_ad_first_separator_tl
-                      \l__clockdate_tmp_str
+                      \l__clockdate_tmp_tl
                     }
                     {
-                      \l__clockdate_tmp_str \l_clockdate_era_separator_tl AD \@
+                      \l__clockdate_tmp_tl \l_clockdate_era_separator_tl AD \@
                     }
                 }
-                { \l__clockdate_tmp_str }
+                { \l__clockdate_tmp_tl }
             }
-            { \l__clockdate_tmp_str \l_clockdate_era_separator_tl BC \@ }
+            { \l__clockdate_tmp_tl \l_clockdate_era_separator_tl BC \@ }
         }
         { C.E. }
         {
-          \l__clockdate_tmp_str
+          \l__clockdate_tmp_tl
           \int_compare:nNnTF {#1} > 0
             {
               \int_compare:nNnT {#1} < \l_clockdate_era_threshold_int
@@ -1092,7 +1097,7 @@
         }
         { CE }
         {
-          \l__clockdate_tmp_str
+          \l__clockdate_tmp_tl
           \int_compare:nNnTF {#1} > 0
             {
               \int_compare:nNnT {#1} < \l_clockdate_era_threshold_int
@@ -1109,19 +1114,19 @@
                   \bool_if:NTF \l_clockdate_ad_first_bool
                     {
                       \textsc {a.d.} \@ \l_clockdate_ad_first_separator_tl
-                      \l__clockdate_tmp_str
+                      \l__clockdate_tmp_tl
                     }
                     {
-                      \l__clockdate_tmp_str \l_clockdate_era_separator_tl
+                      \l__clockdate_tmp_tl \l_clockdate_era_separator_tl
                       \group_begin:
                         \scshape a.d \clockdate_end_period:
                       \group_end:
                     }
                 }
-                { \l__clockdate_tmp_str }
+                { \l__clockdate_tmp_tl }
             }
             {
-              \l__clockdate_tmp_str \l_clockdate_era_separator_tl
+              \l__clockdate_tmp_tl \l_clockdate_era_separator_tl
               \group_begin: \scshape b.c \clockdate_end_period: \group_end:
             }
         }
@@ -1134,22 +1139,22 @@
                   \bool_if:NTF \l_clockdate_ad_first_bool
                     {
                       \textsc {ad} \l_clockdate_ad_first_separator_tl
-                      \l__clockdate_tmp_str
+                      \l__clockdate_tmp_tl
                     }
                     {
-                      \l__clockdate_tmp_str \l_clockdate_era_separator_tl
+                      \l__clockdate_tmp_tl \l_clockdate_era_separator_tl
                       \textsc {ad}
                     }
                 }
-                { \l__clockdate_tmp_str }
+                { \l__clockdate_tmp_tl }
             }
             {
-              \l__clockdate_tmp_str \l_clockdate_era_separator_tl \textsc {bc}
+              \l__clockdate_tmp_tl \l_clockdate_era_separator_tl \textsc {bc}
             }
         }
         { c.e.-scshape }
         {
-          \l__clockdate_tmp_str
+          \l__clockdate_tmp_tl
           \int_compare:nNnTF {#1} > 0
             {
               \int_compare:nNnT {#1} < \l_clockdate_era_threshold_int
@@ -1165,7 +1170,7 @@
         }
         { ce-scshape }
         {
-          \l__clockdate_tmp_str
+          \l__clockdate_tmp_tl
           \int_compare:nNnTF {#1} > 0
             {
               \int_compare:nNnT {#1} < \l_clockdate_era_threshold_int
@@ -1181,7 +1186,7 @@
               {  0 } { \l_clockdate_zero_year_prefix_tl }
               { -1 } { \l_clockdate_negative_year_prefix_tl }
             }
-          \l__clockdate_tmp_str
+          \l__clockdate_tmp_tl
         }
       }
   }
@@ -1371,6 +1376,9 @@
         { \str_set:Nn \l_clockdate_year_format_str {#1} }
     , year .value_required:n = true
 
+    , yy-year-prefix .tl_set:N = \l_clockdate_yy_year_prefix_tl
+    , yy-year-prefix .value_required:n = true
+
     , month .choices:nn = { m , mm , mmm , mmmm }
         { \str_set:Nn \l_clockdate_month_format_str {#1} }
     , month .value_required:n = true
@@ -1492,6 +1500,7 @@
     \str_set:Nn \l_clockdate_order_str { DMY }
     \bool_set_false:N \l_clockdate_capitalize_first_bool
     \str_set:Nn \l_clockdate_year_format_str { y }
+    \tl_set:Nn \l_clockdate_yy_year_prefix_tl { \rq }
     \str_set:Nn \l_clockdate_month_format_str { mmmm }
     \str_set:Nn \l_clockdate_day_format_str { d }
     \bool_set_false:N \l_clockdate_day_ordinal_bool
