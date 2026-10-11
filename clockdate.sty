@@ -466,7 +466,7 @@
   {
     \exp_args:Nee \__clockdate_clock_compare:nn
       {
-        \int_compare:nNnTF {#1} = { 24 } { 0 } {#1}
+        \int_compare:nNnF {#1} = { 24 } {#1}
         \tl_if_empty:nTF {#2} { 0000 }
           {
             \int_compare:nNnT {#2} < { 10 } { 0 } #2
@@ -475,7 +475,7 @@
           }
       }
       {
-        \int_compare:nNnTF {#4} = { 24 } { 0 } {#4}
+        \int_compare:nNnF {#4} = { 24 } {#4}
         \tl_if_empty:nTF {#5} { 0000 }
           {
             \int_compare:nNnT {#5} < { 10 } { 0 } #5
