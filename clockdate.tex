@@ -1100,6 +1100,36 @@ The initial definitions are in \file{clockdate.sty}.
   that the period has the same formatting as the preceding text.
   If \cs{clockdate_end_period:} prints the period, it is followed by \cs{@}
   because the sentence does not end here.
+
+  The code below demonstrates examples of \cs{clock} and \cs{calendardate}
+  where a period placed after the command does not result in the erroneous
+  printing of an extra period.
+  \begin{verbatim}
+\clock[ampm=a.m.]{8:30}.\\
+\clock[ampm=a.m.]{8:30}\\
+\clock[ampm=A.M.]{12:30}.\\
+\clock[ampm=A.M.]{12:30}\\
+\clock[ampm=a.m.-scshape]{9--17}.\\
+\clock[ampm=a.m.-scshape]{9--17}\\
+\calendardate[order=YMD, month=mmm]{2005-8}.\\
+\calendardate[order=YMD, month=mmm]{2005-8}\\
+\calendardate[era=A.D.]{-78}.\\
+\calendardate[era=A.D.]{-78}\\
+\calendardate[era=C.E.]{70}.\\
+\calendardate[era=C.E.]{70}
+  \end{verbatim}
+  \clock[ampm=a.m.]{8:30}.\\
+  \clock[ampm=a.m.]{8:30}\\
+  \clock[ampm=A.M.]{12:30}.\\
+  \clock[ampm=A.M.]{12:30}\\
+  \clock[ampm=a.m.-scshape]{9--17}.\\
+  \clock[ampm=a.m.-scshape]{9--17}\\
+  \calendardate[order=YMD, month=mmm]{2005-8}.\\
+  \calendardate[order=YMD, month=mmm]{2005-8}\\
+  \calendardate[era=A.D.]{-78}.\\
+  \calendardate[era=A.D.]{-78}\\
+  \calendardate[era=C.E.]{70}.\\
+  \calendardate[era=C.E.]{70}
 \end{code}
 
 
