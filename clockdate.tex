@@ -250,6 +250,22 @@ This subsection documents the keys that modify the behavior of \cs{clock}
   clock.
   If the value is |24|, the am/pm is always omitted.
   The initial value is |12|.
+  \begin{verbatim}
+    \clock{5:45}\\
+    \clock{14:30}\\
+    \clock{18:05--21:00}\\
+    \clockdatesetup{clock=24}%
+    \clock{5:45}\\
+    \clock{14:30}\\
+    \clock{18:05--21:00}
+  \end{verbatim}
+  \clock{5:45}\\
+  \clock{14:30}\\
+  \clock{18:05--21:00}\\
+  \clockdatesetup{clock=24}%
+  \clock{5:45}\\
+  \clock{14:30}\\
+  \clock{18:05--21:00}
 \end{code}
 
 \subsubsection{Printing the hour, minute, and second}
@@ -263,6 +279,18 @@ This subsection documents the keys that modify the behavior of \cs{clock}
   |h| prints the hour with the minimum number of digits.
   |hh| prints the hour with two digits, adding a leading zero if necessary.
   The initial value is |h|.
+  \begin{verbatim}
+    \clock{4}\\
+    \clock{9:25}\\
+    \clockdatesetup{hour=hh}%
+    \clock{4}\\
+    \clock{9:25}
+  \end{verbatim}
+  \clock{4}\\
+  \clock{9:25}\\
+  \clockdatesetup{hour=hh}%
+  \clock{4}\\
+  \clock{9:25}
 \end{code}
 
 \begin{code}{minute}
@@ -273,6 +301,18 @@ This subsection documents the keys that modify the behavior of \cs{clock}
   |m| prints the minute with the minimum number of digits.
   |mm| prints the minute with two digits, adding a leading zero if necessary.
   The initial value is |mm|.
+  \begin{verbatim}
+    \clock{9:00}\\
+    \clock{13:05}\\
+    \clockdatesetup{minute=m}%
+    \clock{9:00}\\
+    \clock{13:05}
+  \end{verbatim}
+  \clock{9:00}\\
+  \clock{13:05}\\
+  \clockdatesetup{minute=m}%
+  \clock{9:00}\\
+  \clock{13:05}
 \end{code}
 
 \begin{code}{second}
@@ -283,6 +323,18 @@ This subsection documents the keys that modify the behavior of \cs{clock}
   |s| prints the second with the minimum number of digits.
   |ss| prints the second with two digits, adding a leading zero if necessary.
   The initial value is |ss|.
+  \begin{verbatim}
+    \clock{16:00:00}\\
+    \clock{9:23:03--9:23:09}\\
+    \clockdatesetup{second=s}%
+    \clock{16:00:00}\\
+    \clock{9:23:03--9:23:09}
+  \end{verbatim}
+  \clock{16:00:00}\\
+  \clock{9:23:03--9:23:09}\\
+  \clockdatesetup{second=s}%
+  \clock{16:00:00}\\
+  \clock{9:23:03--9:23:09}
 \end{code}
 
 \subsubsection{Separating the hour, minute, and second}
@@ -295,6 +347,18 @@ This subsection documents the keys that modify the behavior of \cs{clock}
   Sets the separator between \meta{hour} and \meta{minute} to
   \meta{token list}.
   The initial value is |:|.
+  \begin{verbatim}
+    \clock{10:30}\\
+    \clock{17:15--19:45}\\
+    \clockdatesetup{hour-minute-separator=.}%
+    \clock{10:30}\\
+    \clock{17:15--19:45}
+  \end{verbatim}
+  \clock{10:30}\\
+  \clock{17:15--19:45}\\
+  \clockdatesetup{hour-minute-separator=.}%
+  \clock{10:30}\\
+  \clock{17:15--19:45}
 \end{code}
 
 \begin{code}{minute-second-separator}
@@ -304,6 +368,18 @@ This subsection documents the keys that modify the behavior of \cs{clock}
   Sets the separator between \meta{minute} and \meta{second} to
   \meta{token list}.
   The initial value is |:|.
+  \begin{verbatim}
+    \clock{7:34:15}\\
+    \clock{10:00:09--12:15:35}\\
+    \clockdatesetup{minute-second-separator=.}%
+    \clock{7:34:15}\\
+    \clock{10:00:09--12:15:35}
+  \end{verbatim}
+  \clock{7:34:15}\\
+  \clock{10:00:09--12:15:35}\\
+  \clockdatesetup{minute-second-separator=.}%
+  \clock{7:34:15}\\
+  \clock{10:00:09--12:15:35}
 \end{code}
 
 \begin{code}{time-separator}
@@ -330,7 +406,7 @@ This subsection documents the keys that modify the behavior of \cs{clock}
     \item |none|
   \end{itemize}
   The initial value is |AM|.
-  \input{clockdate-input-ampm.tex}
+  % \input{clockdate-input-ampm.tex}
 
   The am/pm is omitted if \key{ampm=none} or \key{clock=24}.
 
@@ -339,6 +415,34 @@ This subsection documents the keys that modify the behavior of \cs{clock}
   period.
   If the am/pm prints the period, it is followed by \cs{@} because the sentence
   does not end here.
+  \begin{verbatim}
+    \clock[ampm=a.m.]{11:15--15}.\\
+    \clock[ampm=a.m.]{11:15--15}\\
+    \clock[ampm=am]{11:15--15}\\
+    \clock[ampm=a]{11:15--15}\\
+    \clock[ampm=A.M.]{11:15--15}.\\
+    \clock[ampm=A.M.]{11:15--15}\\
+    \clock[ampm=AM]{11:15--15}\\
+    \clock[ampm=A]{11:15--15}\\
+    \clock[ampm=a.m.-scshape]{11:15--15}.\\
+    \clock[ampm=a.m.-scshape]{11:15--15}\\
+    \clock[ampm=am-scshape]{11:15--15}\\
+    \clock[ampm=a-scshape]{11:15--15}\\
+    \clock[ampm=none]{11:15--15}
+  \end{verbatim}
+  \clock[ampm=a.m.]{11:15--15}.\\
+  \clock[ampm=a.m.]{11:15--15}\\
+  \clock[ampm=am]{11:15--15}\\
+  \clock[ampm=a]{11:15--15}\\
+  \clock[ampm=A.M.]{11:15--15}.\\
+  \clock[ampm=A.M.]{11:15--15}\\
+  \clock[ampm=AM]{11:15--15}\\
+  \clock[ampm=A]{11:15--15}\\
+  \clock[ampm=a.m.-scshape]{11:15--15}.\\
+  \clock[ampm=a.m.-scshape]{11:15--15}\\
+  \clock[ampm=am-scshape]{11:15--15}\\
+  \clock[ampm=a-scshape]{11:15--15}\\
+  \clock[ampm=none]{11:15--15}
 \end{code}
 
 \begin{code}{ampm-separator}
@@ -347,6 +451,24 @@ This subsection documents the keys that modify the behavior of \cs{clock}
   \end{syntax}
   Sets the separator before the am/pm to \meta{token list}.
   The initial value is \cs{nobreakspace}.
+  \begin{verbatim}
+    \clock{5:45}\\
+    \clock{15:10}\\
+    \clockdatesetup{ampm-separator=}%
+    \clock{5:45}\\
+    \clock{15:10}\\
+    \clockdatesetup{ampm-separator=\thinspace}%
+    \clock{5:45}\\
+    \clock{15:10}
+  \end{verbatim}
+  \clock{5:45}\\
+  \clock{15:10}\\
+  \clockdatesetup{ampm-separator=}%
+  \clock{5:45}\\
+  \clock{15:10}\\
+  \clockdatesetup{ampm-separator=\thinspace}%
+  \clock{5:45}\\
+  \clock{15:10}
 \end{code}
 
 \begin{code}{ampm-omit-range}
@@ -357,6 +479,18 @@ This subsection documents the keys that modify the behavior of \cs{clock}
   \meta{clock_1} and \meta{clock_2} would print the same meridiem and
   $\meta{clock_2}>\meta{clock_1}$.
   The initial value is |true|.
+  \begin{verbatim}
+    \clock{4--6}\\
+    \clock{7,13--16:25}\\
+    \clockdatesetup{ampm-omit-range=false}%
+    \clock{4--6}\\
+    \clock{7,13--16:25}
+  \end{verbatim}
+  \clock{4--6}\\
+  \clock{7,13--16:25}\\
+  \clockdatesetup{ampm-omit-range=false}%
+  \clock{4--6}\\
+  \clock{7,13--16:25}
 \end{code}
 
 \begin{code}{ampm-omit-list}
@@ -366,6 +500,18 @@ This subsection documents the keys that modify the behavior of \cs{clock}
   Boolean key that sets if each \meta{clock}---except the very last---omits the
   am/pm if each \meta{clock} would print the same meridiem.
   The initial value is |true|.
+  \begin{verbatim}
+    \clock{5,7,9}\\
+    \clock{6,8--11}\\
+    \clockdatesetup{ampm-omit-list=false}%
+    \clock{5,7,9}\\
+    \clock{6,8--11}\\
+  \end{verbatim}
+  \clock{5,7,9}\\
+  \clock{6,8--11}\\
+  \clockdatesetup{ampm-omit-list=false}%
+  \clock{5,7,9}\\
+  \clock{6,8--11}\\
 \end{code}
 
 \subsubsection{Separating the clocks}
@@ -378,6 +524,12 @@ This subsection documents the keys that modify the behavior of \cs{clock}
   Sets the separator between each item in \meta{clocks} to \meta{token list} if
   \meta{clocks} contains exactly two items.
   The initial value is | and |.
+  \begin{verbatim}
+    \clock{5,17}\\
+    \clock[clocks-pair-separator={ or }]{5,17}
+  \end{verbatim}
+  \clock{5,17}\\
+  \clock[clocks-pair-separator={ or }]{5,17}
 \end{code}
 
 \begin{code}{clocks-nonfinal-separator}
@@ -387,6 +539,12 @@ This subsection documents the keys that modify the behavior of \cs{clock}
   Sets the separator between each item in \meta{clocks}---except the last
   two---to \meta{token list} if \meta{clocks} contains three or more items.
   The initial value is |, |.
+  \begin{verbatim}
+    \clock{11,12:30,2:45:00}\\
+    \clock[clocks-nonfinal-separator={; }]{11,12:30,2:45:00}
+  \end{verbatim}
+  \clock{11,12:30,2:45:00}\\
+  \clock[clocks-nonfinal-separator={; }]{11,12:30,2:45:00}
 \end{code}
 
 \begin{code}{clocks-final-separator}
@@ -396,6 +554,12 @@ This subsection documents the keys that modify the behavior of \cs{clock}
   Sets the separator between the last two items in \meta{clocks} to
   \meta{token list} if \meta{clocks} contains three or more items.
   The initial value is |, and |.
+  \begin{verbatim}
+    \clock{11,12:30,2:45:00}\\
+    \clock[clocks-final-separator={ and }]{11,12:30,2:45:00}
+  \end{verbatim}
+  \clock{11,12:30,2:45:00}\\
+  \clock[clocks-final-separator={ and }]{11,12:30,2:45:00}
 \end{code}
 
 \begin{code}{clocks-separator}
@@ -417,6 +581,18 @@ This subsection documents the keys that modify the behavior of \cs{clock}
   Sets the separator between \meta{clock_1} and \meta{clock_2} in a clock range
   to \meta{token list}.
   The initial value is | to |.
+  \begin{verbatim}
+    \clock{6--8:30}\\
+    \clock{11:20--14:10}\\
+    \clockdatesetup{clocks-range-separator=\textendash}%
+    \clock{6--8:30}\\
+    \clock{11:20--14:10}
+  \end{verbatim}
+  \clock{6--8:30}\\
+  \clock{11:20--14:10}\\
+  \clockdatesetup{clocks-range-separator=\textendash}%
+  \clock{6--8:30}\\
+  \clock{11:20--14:10}
 \end{code}
 
 \subsection{\cs{calendardate}}
@@ -435,6 +611,12 @@ This subsection documents the keys that modify the behavior of
   This situation occurs if \meta{date(s)} contains exactly two fields and all
   values within are an \meta{integer} from \num{1} to \num{12}.
   The initial value is |MD|.
+  \begin{verbatim}
+    \calendardate{12-12}\\
+    \calendardate[priority=YM]{12-12}
+  \end{verbatim}
+  \calendardate{12-12}\\
+  \calendardate[priority=YM]{12-12}
 \end{code}
 
 \begin{code}{order}
@@ -443,6 +625,30 @@ This subsection documents the keys that modify the behavior of
   \end{syntax}
   Choice key that sets the order in which the year, month, and day are printed.
   The initial value is |DMY|.
+  \begin{verbatim}
+    \calendardate{1929-10-24}\\
+    \calendardate{10-31}\\
+    \calendardate{2023-5}\\
+    \clockdatesetup{order=YMD}%
+    \calendardate{1929-10-24}\\
+    \calendardate{10-31}\\
+    \calendardate{2023-5}\\
+    \clockdatesetup{order=MDY}%
+    \calendardate{1929-10-24}\\
+    \calendardate{10-31}\\
+    \calendardate{2023-5}
+  \end{verbatim}
+  \calendardate{1929-10-24}\\
+  \calendardate{10-31}\\
+  \calendardate{2023-5}\\
+  \clockdatesetup{order=YMD}%
+  \calendardate{1929-10-24}\\
+  \calendardate{10-31}\\
+  \calendardate{2023-5}\\
+  \clockdatesetup{order=MDY}%
+  \calendardate{1929-10-24}\\
+  \calendardate{10-31}\\
+  \calendardate{2023-5}
 \end{code}
 
 \begin{code}{capitalize-first}
@@ -470,6 +676,36 @@ This subsection documents the keys that modify the behavior of
   |yyyy| prints the year with a minimum of four digits, adding leading zeroes
   if necessary.
   The initial value is |y|.
+  \begin{verbatim}
+    \calendardate{2}\\
+    \calendardate{19}\\
+    \calendardate{199}\\
+    \calendardate{1999}\\
+    \clockdatesetup{year=yy}%
+    \calendardate{2}\\
+    \calendardate{19}\\
+    \calendardate{199}\\
+    \calendardate{1999}\\
+    \clockdatesetup{year=yyyy}%
+    \calendardate{2}\\
+    \calendardate{19}\\
+    \calendardate{199}\\
+    \calendardate{1999}
+  \end{verbatim}
+  \calendardate{2}\\
+  \calendardate{19}\\
+  \calendardate{199}\\
+  \calendardate{1999}\\
+  \clockdatesetup{year=yy}%
+  \calendardate{2}\\
+  \calendardate{19}\\
+  \calendardate{199}\\
+  \calendardate{1999}\\
+  \clockdatesetup{year=yyyy}%
+  \calendardate{2}\\
+  \calendardate{19}\\
+  \calendardate{199}\\
+  \calendardate{1999}
 \end{code}
 
 \begin{code}{yy-year-prefix}
@@ -479,6 +715,14 @@ This subsection documents the keys that modify the behavior of
   Prepends \meta{token list} to the printed year if \key{year=yy} and the year
   omits 1 or more digits.
   The initial value is \cs{rq}.
+  \begin{verbatim}
+    \clockdatesetup{year=yy}%
+    \calendardate{2003-3-20}\\
+    \calendardate[yy-year-prefix=]{2003-3-20}
+  \end{verbatim}
+  \clockdatesetup{year=yy}%
+  \calendardate{2003-3-20}\\
+  \calendardate[yy-year-prefix=]{2003-3-20}
 \end{code}
 
 \begin{code}{month}
@@ -500,6 +744,22 @@ This subsection documents the keys that modify the behavior of
   If the month prints the period, it is followed by \cs{@} because the sentence
   does not end here.
   See \S\ref{subsec:expl3date} for more details.
+  \begin{verbatim}
+    \calendardate{2-14}\\
+    \calendardate[month=mmm]{2-14}\\
+    \calendardate[month=mm]{2-14}\\
+    \calendardate[month=m]{2-14}\\
+    \clockdatesetup{order=YMD, month=mmm}%
+    \calendardate{2011-8}.\\
+    \calendardate{2011-8}
+  \end{verbatim}
+  \calendardate{2-14}\\
+  \calendardate[month=mmm]{2-14}\\
+  \calendardate[month=mm]{2-14}\\
+  \calendardate[month=m]{2-14}\\
+  \clockdatesetup{order=YMD, month=mmm}%
+  \calendardate{2011-8}.\\
+  \calendardate{2011-8}
 \end{code}
 
 \begin{code}{day}
@@ -510,6 +770,12 @@ This subsection documents the keys that modify the behavior of
   |d| prints the day with the minimum number of digits.
   |dd| prints the day with two digits, adding a leading zero if necessary.
   The initial value is |d|.
+  \begin{verbatim}
+    \calendardate{11-02}\\
+    \calendardate[day=dd]{11-02}
+  \end{verbatim}
+  \calendardate{11-02}\\
+  \calendardate[day=dd]{11-02}
 \end{code}
 
 \begin{code}{day-ordinal}
@@ -521,6 +787,18 @@ This subsection documents the keys that modify the behavior of
   The initial value is |false|.
   You can customize the display of the ordinal day by redefining
   \cs{clockdate_day_ordinal_format:n} (\S\ref{subsec:expl3date}).
+  \begin{verbatim}
+    \calendardate{2025-5-2}\\
+    \calendardate{8-1--13}\\
+    \clockdatesetup{day-ordinal=true}%
+    \calendardate{2025-5-2}\\
+    \calendardate{8-1--13}
+  \end{verbatim}
+  \calendardate{2025-5-2}\\
+  \calendardate{8-1--13}\\
+  \clockdatesetup{day-ordinal=true}%
+  \calendardate{2025-5-2}\\
+  \calendardate{8-1--13}
 \end{code}
 
 \subsubsection{Separating the year, month, and day}
@@ -532,6 +810,18 @@ This subsection documents the keys that modify the behavior of
   \end{syntax}
   Sets the separator between \meta{year} and \meta{month} to \meta{token list}.
   The initial value is | |.
+  \begin{verbatim}
+    \calendardate{2023-5}\\
+    \calendardate{2012-12-21}\\
+    \clockdatesetup{year-month-separator=-}%
+    \calendardate{2023-5}\\
+    \calendardate{2012-12-21}
+  \end{verbatim}
+  \calendardate{2023-5}\\
+  \calendardate{2012-12-21}\\
+  \clockdatesetup{year-month-separator=-}%
+  \calendardate{2023-5}\\
+  \calendardate{2012-12-21}
 \end{code}
 
 \begin{code}{month-day-separator}
@@ -540,6 +830,18 @@ This subsection documents the keys that modify the behavior of
   \end{syntax}
   Sets the separator between \meta{month} and \meta{day} to \meta{token list}.
   The initial value is | |.
+  \begin{verbatim}
+    \calendardate{7-4}\\
+    \calendardate{2012-12-21}\\
+    \clockdatesetup{month-day-separator=-}%
+    \calendardate{7-4}\\
+    \calendardate{2012-12-21}
+  \end{verbatim}
+  \calendardate{7-4}\\
+  \calendardate{2012-12-21}\\
+  \clockdatesetup{month-day-separator=-}%
+  \calendardate{7-4}\\
+  \calendardate{2012-12-21}
 \end{code}
 
 \begin{code}{year-day-separator}
@@ -548,6 +850,14 @@ This subsection documents the keys that modify the behavior of
   \end{syntax}
   Sets the separator between \meta{year} and \meta{day} to \meta{token list}.
   The initial value is |, |.
+  \begin{verbatim}
+    \clockdatesetup{order=MDY}%
+    \calendardate{1963-11-22}\\
+    \calendardate[year-day-separator={ }]{1963-11-22}
+  \end{verbatim}
+  \clockdatesetup{order=MDY}%
+  \calendardate{1963-11-22}\\
+  \calendardate[year-day-separator={ }]{1963-11-22}
 \end{code}
 
 \begin{code}{date-separator}
@@ -572,6 +882,12 @@ This subsection documents the keys that modify the behavior of
   Sets the separator between each item in \meta{days} to \meta{token list} if
   \meta{days} contains exactly two items.
   The initial value is | and |.
+  \begin{verbatim}
+    \calendardate{1948-7-10,15}\\
+    \calendardate[days-pair-separator={ or }]{1948-7-10,15}
+  \end{verbatim}
+  \calendardate{1948-7-10,15}\\
+  \calendardate[days-pair-separator={ or }]{1948-7-10,15}
 \end{code}
 
 \begin{code}{days-nonfinal-separator}
@@ -581,6 +897,12 @@ This subsection documents the keys that modify the behavior of
   Sets the separator between each item in \meta{days}---except the last
   two---to \meta{token list} if \meta{days} contains three or more items.
   The initial value is |, |.
+  \begin{verbatim}
+    \calendardate{7-5,7,8}\\
+    \calendardate[days-nonfinal-separator={,}]{7-5,7,8}
+  \end{verbatim}
+  \calendardate{7-5,7,8}\\
+  \calendardate[days-nonfinal-separator={,}]{7-5,7,8}
 \end{code}
 
 \begin{code}{days-final-separator}
@@ -590,6 +912,12 @@ This subsection documents the keys that modify the behavior of
   Sets the separator between the last two items in \meta{days} to
   \meta{token list} if \meta{days} contains three or more items.
   The initial value is |, and |.
+  \begin{verbatim}
+    \calendardate{7-5,7,8}\\
+    \calendardate[days-final-separator={ and }]{7-5,7,8}
+  \end{verbatim}
+  \calendardate{7-5,7,8}\\
+  \calendardate[days-final-separator={ and }]{7-5,7,8}
 \end{code}
 
 \begin{code}{days-separator}
@@ -611,6 +939,12 @@ This subsection documents the keys that modify the behavior of
   Sets the separator between \meta{day_1} and \meta{day_2} in a day range to
   \meta{token list}.
   The initial value is | to |.
+  \begin{verbatim}
+    \calendardate{1963-10-16--28}\\
+    \calendardate[days-range-separator=\textendash]{1963-10-16--28}
+  \end{verbatim}
+  \calendardate{1963-10-16--28}\\
+  \calendardate[days-range-separator=\textendash]{1963-10-16--28}
 \end{code}
 
 \begin{code}{months-pair-separator}
@@ -620,6 +954,12 @@ This subsection documents the keys that modify the behavior of
   Sets the separator between each item in \meta{months} to \meta{token list} if
   \meta{months} contains exactly two items.
   The initial value is | and |.
+  \begin{verbatim}
+    \calendardate{2004-2,4}\\
+    \calendardate[months-pair-separator={ or }]{2004-2,4}
+  \end{verbatim}
+  \calendardate{2004-2,4}\\
+  \calendardate[months-pair-separator={ or }]{2004-2,4}
 \end{code}
 
 \begin{code}{months-nonfinal-separator}
@@ -629,6 +969,12 @@ This subsection documents the keys that modify the behavior of
   Sets the separator between each item in \meta{months}---except the last
   two---to \meta{token list} if \meta{months} contains three or more items.
   The initial value is |, |.
+  \begin{verbatim}
+    \calendardate{2020-1,2,3}\\
+    \calendardate[months-nonfinal-separator={; }]{2020-1,2,3}
+  \end{verbatim}
+  \calendardate{2020-1,2,3}\\
+  \calendardate[months-nonfinal-separator={; }]{2020-1,2,3}
 \end{code}
 
 \begin{code}{months-final-separator}
@@ -638,6 +984,12 @@ This subsection documents the keys that modify the behavior of
   Sets the separator between the last two items in \meta{months} to
   \meta{token list} if \meta{months} contains three or more items.
   The initial value is |, and |.
+  \begin{verbatim}
+    \calendardate{2020-1,2,3}\\
+    \calendardate[months-final-separator={ and }]{2020-1,2,3}
+  \end{verbatim}
+  \calendardate{2020-1,2,3}\\
+  \calendardate[months-final-separator={ and }]{2020-1,2,3}
 \end{code}
 
 \begin{code}{months-separator}
@@ -659,6 +1011,12 @@ This subsection documents the keys that modify the behavior of
   Sets the separator between \meta{month_1} and \meta{month_2} in a month range
   to \meta{token list}.
   The initial value is | to |.
+  \begin{verbatim}
+    \calendardate{2020-1--3}\\
+    \calendardate[months-range-separator=\textendash]{2020-1--3}
+  \end{verbatim}
+  \calendardate{2020-1--3}\\
+  \calendardate[months-range-separator=\textendash]{2020-1--3}
 \end{code}
 
 \subsubsection{Printing the era}
@@ -678,7 +1036,7 @@ This subsection documents the keys that modify the behavior of
     \item |integer|
   \end{itemize}
   The initial value is |CE|.
-  \input{clockdate-input-era.tex}
+  % \input{clockdate-input-era.tex}
 
   |integer| prints the year as an integer which may be positive, zero, or
   negative.
@@ -688,6 +1046,34 @@ This subsection documents the keys that modify the behavior of
   \cs{calendardate} is a period.
   If the era prints the period, it is followed by \cs{@} because the sentence
   does not end here.
+  \begin{verbatim}
+    \calendardate[era=A.D.]{-43-3-15}.\\
+    \calendardate[era=A.D.]{-43-3-15}\\
+    \calendardate[era=AD]{-43-3-15}\\
+    \calendardate[era=C.E.]{-43-3-15}.\\
+    \calendardate[era=C.E.]{-43-3-15}\\
+    \calendardate[era=CE]{-43-3-15}\\
+    \calendardate[era=a.d.-scshape]{-43-3-15}.\\
+    \calendardate[era=a.d.-scshape]{-43-3-15}\\
+    \calendardate[era=ad-scshape]{-43-3-15}\\
+    \calendardate[era=c.e.-scshape]{-43-3-15}.\\
+    \calendardate[era=c.e.-scshape]{-43-3-15}\\
+    \calendardate[era=ce-scshape]{-43-3-15}\\
+    \calendardate[era=integer]{-43-3-15}
+  \end{verbatim}
+  \calendardate[era=A.D.]{-43-3-15}.\\
+  \calendardate[era=A.D.]{-43-3-15}\\
+  \calendardate[era=AD]{-43-3-15}\\
+  \calendardate[era=C.E.]{-43-3-15}.\\
+  \calendardate[era=C.E.]{-43-3-15}\\
+  \calendardate[era=CE]{-43-3-15}\\
+  \calendardate[era=a.d.-scshape]{-43-3-15}.\\
+  \calendardate[era=a.d.-scshape]{-43-3-15}\\
+  \calendardate[era=ad-scshape]{-43-3-15}\\
+  \calendardate[era=c.e.-scshape]{-43-3-15}.\\
+  \calendardate[era=c.e.-scshape]{-43-3-15}\\
+  \calendardate[era=ce-scshape]{-43-3-15}\\
+  \calendardate[era=integer]{-43-3-15}
 \end{code}
 
 \begin{code}{era-threshold}
@@ -696,6 +1082,12 @@ This subsection documents the keys that modify the behavior of
   \end{syntax}
   The AD and CE are printed only if \meta{year} is less than \meta{integer}.
   The initial value is \num{100}.
+  \begin{verbatim}
+    \calendardate{105}\\
+    \calendardate[era-threshold=106]{105}
+  \end{verbatim}
+  \calendardate{105}\\
+  \calendardate[era-threshold=106]{105}
 \end{code}
 
 \begin{code}{era-separator}
@@ -704,6 +1096,18 @@ This subsection documents the keys that modify the behavior of
   \end{syntax}
   Sets the separator between the year and the era to \meta{token list}.
   The initial value is \cs{nobreakspace}.
+  \begin{verbatim}
+    \calendardate{-43}\\
+    \calendardate{70}\\
+    \clockdatesetup{era-separator=\thinspace}%
+    \calendardate{-43}\\
+    \calendardate{70}
+  \end{verbatim}
+  \calendardate{-43}\\
+  \calendardate{70}\\
+  \clockdatesetup{era-separator=\thinspace}%
+  \calendardate{-43}\\
+  \calendardate{70}
 \end{code}
 
 \begin{code}{ad-first}
@@ -712,6 +1116,14 @@ This subsection documents the keys that modify the behavior of
   \end{syntax}
   Boolean key that sets if the AD is printed before the year.
   The initial value is |true|.
+  \begin{verbatim}
+    \clockdatesetup{era=AD}%
+    \calendardate{70}\\
+    \calendardate[ad-first=false]{70}
+  \end{verbatim}
+  \clockdatesetup{era=AD}%
+  \calendardate{70}\\
+  \calendardate[ad-first=false]{70}
 \end{code}
 
 \begin{code}{ad-first-separator}
@@ -721,6 +1133,14 @@ This subsection documents the keys that modify the behavior of
   Sets the separator between the year and the AD to \meta{token list} if
   \key{ad-first=true}.
   The initial value is \cs{nobreakspace}.
+  \begin{verbatim}
+    \clockdatesetup{era=AD}%
+    \calendardate{70}\\
+    \calendardate[ad-first-separator=]{70}
+  \end{verbatim}
+  \clockdatesetup{era=AD}%
+  \calendardate{70}\\
+  \calendardate[ad-first-separator=]{70}
 \end{code}
 
 \begin{code}{positive-year-prefix}
@@ -730,6 +1150,14 @@ This subsection documents the keys that modify the behavior of
   Prepends \meta{token list} to the printed year if \key{era=integer} and the
   year is positive.
   The initial value is \meta{empty}.
+  \begin{verbatim}
+    \clockdatesetup{era=integer}%
+    \calendardate{14}\\
+    \calendardate[positive-year-prefix=+]{14}
+  \end{verbatim}
+  \clockdatesetup{era=integer}%
+  \calendardate{14}\\
+  \calendardate[positive-year-prefix=+]{14}
 \end{code}
 
 \begin{code}{negative-year-prefix}
@@ -739,6 +1167,14 @@ This subsection documents the keys that modify the behavior of
   Prepends \meta{token list} to the printed year if \key{era=integer} and the
   year is negative.
   The initial value is \cs{textminus}.
+  \begin{verbatim}
+    \clockdatesetup{era=integer}%
+    \calendardate{-78}\\
+    \calendardate[negative-year-prefix=-]{-78}
+  \end{verbatim}
+  \clockdatesetup{era=integer}%
+  \calendardate{-78}\\
+  \calendardate[negative-year-prefix=-]{-78}
 \end{code}
 
 \begin{code}{zero-year-prefix}
@@ -748,6 +1184,14 @@ This subsection documents the keys that modify the behavior of
   Prepends \meta{token list} to the printed year if \key{era=integer} and the
   year is zero.
   The initial value is \meta{empty}.
+  \begin{verbatim}
+    \clockdatesetup{era=integer}%
+    \calendardate{0}\\
+    \calendardate[zero-year-prefix=+]{0}
+  \end{verbatim}
+  \clockdatesetup{era=integer}%
+  \calendardate{0}\\
+  \calendardate[zero-year-prefix=+]{0}
 \end{code}
 
 
@@ -799,19 +1243,19 @@ package.
 
   Example usage:
   \begin{verbatim}
-\ExplSyntaxOn
-\keys_precompile:nnN { clockdate }
-  {
-      clocks-pair-separator  = {  ~or~ }
-    , clocks-final-separator = { ,~or~ }
-    , days-pair-separator    = {  ~or~ }
-    , days-final-separator   = { ,~or~ }
-    , months-pair-separator  = {  ~or~ }
-    , months-final-separator = { ,~or~ }
-  }
-  \l_tmpa_tl
-\prop_put:NnV \l_clockdate_load_prop { or } \l_tmpa_tl
-\ExplSyntaxOff
+    \ExplSyntaxOn
+    \keys_precompile:nnN { clockdate }
+      {
+          clocks-pair-separator  = {  ~or~ }
+        , clocks-final-separator = { ,~or~ }
+        , days-pair-separator    = {  ~or~ }
+        , days-final-separator   = { ,~or~ }
+        , months-pair-separator  = {  ~or~ }
+        , months-final-separator = { ,~or~ }
+      }
+      \l_tmpa_tl
+    \prop_put:NnV \l_clockdate_load_prop { or } \l_tmpa_tl
+    \ExplSyntaxOff
   \end{verbatim}
 \end{code}
 
@@ -1055,19 +1499,19 @@ The initial definitions are in \file{clockdate.sty}.
   |#1| represents the value of \meta{day}.
   The initial definition is:
   \begin{verbatim}
-\cs_new_protected:Npn \clockdate_day_ordinal_format:n #1
-  {
-    \textsuperscript
+    \cs_new_protected:Npn \clockdate_day_ordinal_format:n #1
       {
-        \int_case:nnF {#1}
+        \textsuperscript
           {
-            {  1 } { st } {  2 } { nd } {  3 } { rd }
-            { 21 } { st } { 22 } { nd } { 23 } { rd }
-            { 31 } { st }
+            \int_case:nnF {#1}
+              {
+                {  1 } { st } {  2 } { nd } {  3 } { rd }
+                { 21 } { st } { 22 } { nd } { 23 } { rd }
+                { 31 } { st }
+              }
+              { th }
           }
-          { th }
       }
-  }
   \end{verbatim}
 \end{code}
 

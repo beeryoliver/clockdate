@@ -1,7 +1,7 @@
 % Loading the class
 
 \NeedsTeXFormat{LaTeX2e}[2023-11-01]
-\ProvidesExplClass{beerydoc}{2026-09-13}{0.0.0}{}
+\ProvidesExplClass{beerydoc}{2026-10-12}{0.0.0}{}
 \prop_gput:Nnn \g_msg_module_type_prop { beerydoc } { Class }
 
 \msg_new:nnn { beerydoc } { l3kernel }
@@ -550,6 +550,7 @@
     \bool_set_true:N \l__beerydoc_code_bool
     \box_gclear:N \g__beerydoc_syntax_box
     \cs_set_eq:NN \footnote \__beerydoc_code_footnote:n
+    \fvset { gobble = 4 }
   }
 \cs_new_protected:Npn \__beerydoc_code_footnote:n #1
   {
@@ -898,6 +899,10 @@
 \UseTblrLibrary { booktabs , siunitx }
 
 % Verbatim
+
+\usepackage{fancyvrb}
+\cs_set_eq:NN \verbatim \Verbatim
+\cs_set_eq:NN \endverbatim \endVerbatim
 
 \cs_new_protected:Npn \__beerydoc_active_vert:
   {
