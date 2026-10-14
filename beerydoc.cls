@@ -1,7 +1,7 @@
 % Loading the class
 
 \NeedsTeXFormat{LaTeX2e}[2023-11-01]
-\ProvidesExplClass{beerydoc}{2026-10-12}{0.0.0}{}
+\ProvidesExplClass{beerydoc}{2026-10-14}{0.0.0}{}
 \prop_gput:Nnn \g_msg_module_type_prop { beerydoc } { Class }
 
 \msg_new:nnn { beerydoc } { l3kernel }
@@ -841,6 +841,52 @@
   { \raggedright \normalsize \bfseries }
   { \thesubsubsection } { 1em }
   { } { }
+
+\int_new:N \g__beerydoc_toc_section_int
+\dim_new:N \g__beerydoc_toc_subsection_leftmargin_dim
+\box_new:N \g__beerydoc_toc_subsection_leftmargin_box
+\int_new:N \g__beerydoc_toc_subsection_int
+\dim_new:N \g__beerydoc_toc_subsubsection_leftmargin_dim
+\box_new:N \g__beerydoc_toc_subsubsection_leftmargin_box
+
+\titlecontents { section }
+  [ 0pt ] % left
+  { % abovecode
+    \int_gincr:N \g__beerydoc_toc_section_int
+    \hbox_gset:Nn \g__beerydoc_toc_subsection_leftmargin_box
+      { \int_use:N \g__beerydoc_toc_section_int \quad }
+    \dim_gset:Nn \g__beerydoc_toc_subsection_leftmargin_dim
+      { \box_wd:N \g__beerydoc_toc_subsection_leftmargin_box }
+  }
+  { \bfseries \thecontentslabel \quad } % numbered entry format
+   % numberless entry format
+  { \skip_horizontal:N \g__beerydoc_toc_subsection_leftmargin_dim }
+  { \enskip \textbar \enskip \thecontentspage } % filler page format
+  [ \smallskip ] % below code
+\titlecontents { subsection }
+  [ \dim_use:N \g__beerydoc_toc_subsection_leftmargin_dim ]
+  {
+    \int_gincr:N \g__beerydoc_toc_subsection_int
+    \hbox_gset:Nn \g__beerydoc_toc_subsubsection_leftmargin_box
+      {
+        \int_use:N \g__beerydoc_toc_section_int \quad
+        \int_use:N \g__beerydoc_toc_section_int .
+        \int_use:N \g__beerydoc_toc_subsection_int \quad
+      }
+    \dim_gset:Nn \g__beerydoc_toc_subsubsection_leftmargin_dim
+      { \box_wd:N \g__beerydoc_toc_subsubsection_leftmargin_box }
+  }
+  { \thecontentslabel \quad }
+  { \thecontentslabel \quad }
+  { \enskip \textbar \enskip \thecontentspage }
+  [ \smallskip ]
+\titlecontents { subsubsection }
+  [ \dim_use:N \g__beerydoc_toc_subsubsection_leftmargin_dim ]
+  { }
+  { \thecontentslabel \quad }
+  { \thecontentslabel \quad }
+  { \enskip \textbar \enskip \thecontentspage }
+  [ \smallskip ]
 
 % Lists, List headings
 
