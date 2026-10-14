@@ -777,10 +777,16 @@ This subsection documents the keys that modify the behavior of
   The initial value is |d|.
   \begin{verbatim}
     \calendardate{11-02}\\
-    \calendardate[day=dd]{11-02}
+    \calendardate{1993-4-3,6}\\
+    \clockdatesetup{day=dd}%
+    \calendardate{11-02}\\
+    \calendardate{1993-4-3,6}
   \end{verbatim}
   \calendardate{11-02}\\
-  \calendardate[day=dd]{11-02}
+  \calendardate{1993-4-3,6}\\
+  \clockdatesetup{day=dd}%
+  \calendardate{11-02}\\
+  \calendardate{1993-4-3,6}
 \end{code}
 
 \begin{code}{day-ordinal}
