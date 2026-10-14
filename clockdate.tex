@@ -233,22 +233,6 @@ Set the package keys using \cs{clockdatesetup} (\S\ref{sec:cmds}).
   This key can only be used in the preamble.
 \end{code}
 
-\subsection{Loading precompiled keys}
-\label{subsec:loadkeys}
-
-\begin{code}{reset}
-  Meta key that sets all the \pkg{clockdate} keys to their initial values.
-\end{code}
-
-\begin{code}{load}
-  \begin{syntax}
-    \key{load=\meta{string}}
-  \end{syntax}
-  Used to load precompiled \pkg{clockdate} keys.
-  \meta{string} must be a key in \cs{l_clockdate_load_prop}
-  (\S\ref{subsec:save}).
-\end{code}
-
 \subsection{\cs{clock}}
 \label{subsec:clock}
 
@@ -1317,6 +1301,22 @@ This subsection documents the keys that modify the behavior of
   \calendardate[zero-year-prefix=+]{0}
 \end{code}
 
+\subsection{Loading precompiled keys}
+\label{subsec:loadkeys}
+
+\begin{code}{reset}
+  Meta key that sets all the \pkg{clockdate} keys to their initial values.
+\end{code}
+
+\begin{code}{load}
+  \begin{syntax}
+    \key{load=\meta{string}}
+  \end{syntax}
+  Used to load precompiled \pkg{clockdate} keys.
+  \meta{string} must be a key in \cs{l_clockdate_load_prop}
+  (\S\ref{subsec:save}).
+\end{code}
+
 
 \section{Programming}
 \label{sec:programming}
@@ -1375,6 +1375,8 @@ package.
         , days-final-separator   = { ,~or~ }
         , months-pair-separator  = {  ~or~ }
         , months-final-separator = { ,~or~ }
+        , years-pair-separator   = {  ~or~ }
+        , years-final-separator  = { ,~or~ }
       }
       \l_tmpa_tl
     \prop_put:NnV \l_clockdate_load_prop { or } \l_tmpa_tl
