@@ -1308,13 +1308,34 @@ This subsection documents the keys that modify the behavior of
   Meta key that sets all the \pkg{clockdate} keys to their initial values.
 \end{code}
 
-\begin{code}{load}
+\begin{code}{load, \l_clockdate_load_prop}
   \begin{syntax}
     \key{load=\meta{string}}
   \end{syntax}
-  Used to load precompiled \pkg{clockdate} keys.
-  \meta{string} must be a key in \cs{l_clockdate_load_prop}
-  (\S\ref{subsec:save}).
+  The key \key{load} should be used to load precompiled \pkg{clockdate} keys.
+  \meta{string} must be a key in \cs{l_clockdate_load_prop}.
+  The value of each key in \cs{l_clockdate_load_prop} should contain
+  precompiled \pkg{clockdate} keys.
+  \cs{l_clockdate_load_prop} initially contains no entries.
+
+  The following example initializes \key{load=or} to load precompiled keys:
+  \begin{verbatim}
+    \ExplSyntaxOn
+    \keys_precompile:nnN { clockdate }
+      {
+          clocks-pair-separator  = {  ~or~ }
+        , clocks-final-separator = { ,~or~ }
+        , days-pair-separator    = {  ~or~ }
+        , days-final-separator   = { ,~or~ }
+        , months-pair-separator  = {  ~or~ }
+        , months-final-separator = { ,~or~ }
+        , years-pair-separator   = {  ~or~ }
+        , years-final-separator  = { ,~or~ }
+      }
+      \l_tmpa_tl
+    \prop_put:NnV \l_clockdate_load_prop { or } \l_tmpa_tl
+    \ExplSyntaxOff
+  \end{verbatim}
 \end{code}
 
 
@@ -1352,36 +1373,6 @@ package.
   Hook used in \cs{calendardate} after parsing its input and setting all the
   variables in \S\ref{subsec:vardate}, but before printing the calendar date.
   This hook should not be used to set the \pkg{clockdate} keys.
-\end{code}
-
-\subsection{Precompiling the keys}
-\label{subsec:save}
-
-\begin{code}{\l_clockdate_load_prop}
-  Property list used by the key \key{load} (\S\ref{subsec:loadkeys}).
-  The value of the key \key{load} must be a key in \cs{l_clockdate_load_prop}.
-  The value of each key in \cs{l_clockdate_load_prop} should contain
-  precompiled \pkg{clockdate} keys.
-  \cs{l_clockdate_load_prop} initially contains no entries.
-
-  Example usage:
-  \begin{verbatim}
-    \ExplSyntaxOn
-    \keys_precompile:nnN { clockdate }
-      {
-          clocks-pair-separator  = {  ~or~ }
-        , clocks-final-separator = { ,~or~ }
-        , days-pair-separator    = {  ~or~ }
-        , days-final-separator   = { ,~or~ }
-        , months-pair-separator  = {  ~or~ }
-        , months-final-separator = { ,~or~ }
-        , years-pair-separator   = {  ~or~ }
-        , years-final-separator  = { ,~or~ }
-      }
-      \l_tmpa_tl
-    \prop_put:NnV \l_clockdate_load_prop { or } \l_tmpa_tl
-    \ExplSyntaxOff
-  \end{verbatim}
 \end{code}
 
 \subsection{Variables set by \cs{clockdatesetup}}
