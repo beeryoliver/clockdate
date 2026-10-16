@@ -7,7 +7,7 @@
 % Loading the package
 
 \NeedsTeXFormat{LaTeX2e}[2023-11-01]
-\ProvidesExplPackage{clockdate}{2026-10-13}{1.0.0}
+\ProvidesExplPackage{clockdate}{2026-10-16}{1.0.0}
   {Print the time of day and the calendar date}
 
 \msg_new:nnn { clockdate } { l3kernel }
@@ -1492,6 +1492,35 @@
         }
     , date-separator .value_required:n = true
 
+    , era .choices:nn =
+        {
+          A.D., AD, C.E., CE, a.d.-scshape, ad-scshape,
+          c.e.-scshape, ce-scshape, integer
+        }
+        { \str_set:Nn \l_clockdate_era_format_str {#1} }
+    , era .value_required:n = true
+
+    , era-threshold .int_set:N = \l_clockdate_era_threshold_int
+    , era-threshold .value_required:n = true
+
+    , era-separator .tl_set:N = \l_clockdate_era_separator_tl
+    , era-separator .value_required:n = true
+
+    , ad-first .bool_set:N = \l_clockdate_ad_first_bool
+    , ad-first .value_required:n = true
+
+    , ad-first-separator .tl_set:N = \l_clockdate_ad_first_separator_tl
+    , ad-first-separator .value_required:n = true
+
+    , positive-year-prefix .tl_set:N = \l_clockdate_positive_year_prefix_tl
+    , positive-year-prefix .value_required:n = true
+
+    , negative-year-prefix .tl_set:N = \l_clockdate_negative_year_prefix_tl
+    , negative-year-prefix .value_required:n = true
+
+    , zero-year-prefix .tl_set:N = \l_clockdate_zero_year_prefix_tl
+    , zero-year-prefix .value_required:n = true
+
     , days-pair-separator .tl_set:N = \l_clockdate_days_pair_separator_tl
     , days-pair-separator .value_required:n = true
 
@@ -1554,35 +1583,6 @@
 
     , years-range-separator .tl_set:N = \l_clockdate_years_range_separator_tl
     , years-range-separator .value_required:n = true
-
-    , era .choices:nn =
-        {
-          A.D., AD, C.E., CE, a.d.-scshape, ad-scshape,
-          c.e.-scshape, ce-scshape, integer
-        }
-        { \str_set:Nn \l_clockdate_era_format_str {#1} }
-    , era .value_required:n = true
-
-    , era-threshold .int_set:N = \l_clockdate_era_threshold_int
-    , era-threshold .value_required:n = true
-
-    , era-separator .tl_set:N = \l_clockdate_era_separator_tl
-    , era-separator .value_required:n = true
-
-    , ad-first .bool_set:N = \l_clockdate_ad_first_bool
-    , ad-first .value_required:n = true
-
-    , ad-first-separator .tl_set:N = \l_clockdate_ad_first_separator_tl
-    , ad-first-separator .value_required:n = true
-
-    , positive-year-prefix .tl_set:N = \l_clockdate_positive_year_prefix_tl
-    , positive-year-prefix .value_required:n = true
-
-    , negative-year-prefix .tl_set:N = \l_clockdate_negative_year_prefix_tl
-    , negative-year-prefix .value_required:n = true
-
-    , zero-year-prefix .tl_set:N = \l_clockdate_zero_year_prefix_tl
-    , zero-year-prefix .value_required:n = true
   }
 
 \cs_new_protected:Npn \__clockdate_keys_set_initial:
@@ -1613,6 +1613,14 @@
     \tl_set_eq:NN \l_clockdate_year_month_separator_tl \c_space_tl
     \tl_set_eq:NN \l_clockdate_month_day_separator_tl \c_space_tl
     \tl_set:Nn \l_clockdate_year_day_separator_tl { ,~ }
+    \str_set:Nn \l_clockdate_era_format_str { CE }
+    \int_set:Nn \l_clockdate_era_threshold_int { 100 }
+    \tl_set:Nn \l_clockdate_era_separator_tl { \nobreakspace }
+    \bool_set_true:N \l_clockdate_ad_first_bool
+    \tl_set:Nn \l_clockdate_ad_first_separator_tl { \nobreakspace }
+    \tl_clear:N \l_clockdate_positive_year_prefix_tl
+    \tl_set:Nn \l_clockdate_negative_year_prefix_tl { \textminus }
+    \tl_clear:N \l_clockdate_zero_year_prefix_tl
     \tl_set:Nn \l_clockdate_days_pair_separator_tl { ~and~ }
     \tl_set:Nn \l_clockdate_days_nonfinal_separator_tl { ,~ }
     \tl_set:Nn \l_clockdate_days_final_separator_tl { ,~and~ }
@@ -1625,14 +1633,6 @@
     \tl_set:Nn \l_clockdate_years_nonfinal_separator_tl { ,~ }
     \tl_set:Nn \l_clockdate_years_final_separator_tl { ,~and~ }
     \tl_set:Nn \l_clockdate_years_range_separator_tl { ~to~ }
-    \str_set:Nn \l_clockdate_era_format_str { CE }
-    \int_set:Nn \l_clockdate_era_threshold_int { 100 }
-    \tl_set:Nn \l_clockdate_era_separator_tl { \nobreakspace }
-    \bool_set_true:N \l_clockdate_ad_first_bool
-    \tl_set:Nn \l_clockdate_ad_first_separator_tl { \nobreakspace }
-    \tl_clear:N \l_clockdate_positive_year_prefix_tl
-    \tl_set:Nn \l_clockdate_negative_year_prefix_tl { \textminus }
-    \tl_clear:N \l_clockdate_zero_year_prefix_tl
   }
 \__clockdate_keys_set_initial:
 
