@@ -1473,7 +1473,7 @@ They are read-only and should not be modified directly.
 This subsection documents the variables that are set within \cs{clock}.
 Outside of \cs{clock}, they do not have defined behavior.
 
-\begin{code}{\l_clockdate_clocks_str}
+\begin{code}{\l_clockdate_clock_str}
   The value of \meta{clock(s)}.
   The value takes the same form as the \meta{clock(s)} as explained for
   \cs{clock}.
@@ -1507,7 +1507,7 @@ Outside of \cs{calendardate}, they do not have defined behavior.
   The value takes the same form as the \meta{day(s)} as explained for
   \cs{calendardate}.
   The value is an \meta{integer} if exactly one day is printed.
-  The value is \meta{empty} if \meta{day(s)} is omitted.
+  The value is \meta{empty} if no days are printed.
 \end{code}
 
 \subsection{Functions used in \cs{clock}}
