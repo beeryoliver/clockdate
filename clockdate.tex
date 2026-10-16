@@ -1656,38 +1656,20 @@ The initial definitions are in \file{clockdate.sty}.
 The \pkg{clockdate} package uses some ideas from the \pkg{datetime2} and
 \pkg{siunitx} packages.
 
-\listheading
-  {
-    The keys in \S\ref{subsubsec:hms} resemble the following \pkg{datetime2}
-    options:
-  }
-\begin{itemize}
-  \item \key{hourminsep}
-  \item \key{minsecsep}
-  \item \key{timesep}
-\end{itemize}
+Some \pkg{clockdate} keys resemble some \pkg{datetime2} options:
+\input{clockdate-input-datetime2.tex}
 
 \listheading
   {
-    The keys in \S\ref{subsubsec:ymd} resemble the following \pkg{datetime2}
-    options:
+    Some \pkg{clockdate} keys use a similar naming convention to the
+    \pkg{siunitx} options \key{list-pair-separator} and
+    \key{list-final-separator}:
   }
 \begin{itemize}
-  \item \key{yearmonthsep}
-  \item \key{monthdaysep}
-  \item \key{dayyearsep}
-  \item \key{datesep}
-\end{itemize}
-
-\listheading
-  {
-    The keys in \S\ref{subsubsec:clocks} and \S\ref{subsubsec:dates} use a
-    similar naming convention to the following \pkg{siunitx} options:
-  }
-\begin{itemize}
-  % \item \key{list-separator}
-  \item \key{list-pair-separator}
-  \item \key{list-final-separator}
+  \item \key{clocks-pair-separator}, \key{clocks-final-separator}
+  \item \key{days-pair-separator}, \key{days-final-separator}
+  \item \key{months-pair-separator}, \key{months-final-separator}
+  \item \key{years-pair-separator}, \key{years-final-separator}
 \end{itemize}
 
 
