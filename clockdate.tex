@@ -29,7 +29,7 @@ Print the time of day and the calendar date
 
 Oliver Beery
 
-Version 1.0.0\quad\date{2026-10-15}
+Version 1.0.0\quad\date{2026-10-16}
 
 \pdfbookmark[1]{Contents}{contents}
 \tableofcontents
@@ -875,6 +875,180 @@ This subsection documents the keys that modify the behavior of
   \end{itemize}
 \end{code}
 
+\subsubsection{era}
+\label{subsubsec:era}
+
+\begin{code}{era}
+  \begin{syntax}
+    \key{era=\meta{choice}}
+  \end{syntax}
+  Choice key that sets the format in which the era is printed.
+  \meta{choice} must match any of the following:
+  \begin{itemize}
+    \item |A.D.|, |AD|
+    \item |C.E.|, |CE|
+    \item |a.d.-scshape|, |ad-scshape|
+    \item |c.e.-scshape|, |ce-scshape|
+    \item |integer|
+  \end{itemize}
+  The initial value is |CE|.
+
+  |integer| prints the year as an integer which may be positive, zero, or
+  negative.
+
+  If \cs{calendardate} ends with an era that ends with a period, then the
+  trailing era will not print an extra period if the next token after
+  \cs{calendardate} is a period.
+  If the era prints the period, it is followed by \cs{@} because the sentence
+  does not end here.
+  \begin{verbatim}
+    \calendardate[era=A.D.]{-43-3-15}.\\
+    \calendardate[era=A.D.]{-43-3-15}\\
+    \calendardate[era=AD]{-43-3-15}\\
+    \calendardate[era=C.E.]{-43-3-15}.\\
+    \calendardate[era=C.E.]{-43-3-15}\\
+    \calendardate[era=CE]{-43-3-15}\\
+    \calendardate[era=a.d.-scshape]{-43-3-15}.\\
+    \calendardate[era=a.d.-scshape]{-43-3-15}\\
+    \calendardate[era=ad-scshape]{-43-3-15}\\
+    \calendardate[era=c.e.-scshape]{-43-3-15}.\\
+    \calendardate[era=c.e.-scshape]{-43-3-15}\\
+    \calendardate[era=ce-scshape]{-43-3-15}\\
+    \calendardate[era=integer]{-43-3-15}
+  \end{verbatim}
+  \calendardate[era=A.D.]{-43-3-15}.\\
+  \calendardate[era=A.D.]{-43-3-15}\\
+  \calendardate[era=AD]{-43-3-15}\\
+  \calendardate[era=C.E.]{-43-3-15}.\\
+  \calendardate[era=C.E.]{-43-3-15}\\
+  \calendardate[era=CE]{-43-3-15}\\
+  \calendardate[era=a.d.-scshape]{-43-3-15}.\\
+  \calendardate[era=a.d.-scshape]{-43-3-15}\\
+  \calendardate[era=ad-scshape]{-43-3-15}\\
+  \calendardate[era=c.e.-scshape]{-43-3-15}.\\
+  \calendardate[era=c.e.-scshape]{-43-3-15}\\
+  \calendardate[era=ce-scshape]{-43-3-15}\\
+  \calendardate[era=integer]{-43-3-15}
+\end{code}
+
+\begin{code}{era-threshold}
+  \begin{syntax}
+    \key{era-threshold=\meta{integer}}
+  \end{syntax}
+  The AD and CE are printed only if \meta{year} is less than \meta{integer}.
+  The initial value is \num{100}.
+  \begin{verbatim}
+    \calendardate{105}\\
+    \calendardate[era-threshold=106]{105}
+  \end{verbatim}
+  \calendardate{105}\\
+  \calendardate[era-threshold=106]{105}
+\end{code}
+
+\begin{code}{era-separator}
+  \begin{syntax}
+    \key{era-separator=\meta{token list}}
+  \end{syntax}
+  Sets the separator between the year and the era to \meta{token list}.
+  The initial value is \cs{nobreakspace}.
+  \begin{verbatim}
+    \calendardate{-43}\\
+    \calendardate{70}\\
+    \clockdatesetup{era-separator=\thinspace}%
+    \calendardate{-43}\\
+    \calendardate{70}
+  \end{verbatim}
+  \calendardate{-43}\\
+  \calendardate{70}\\
+  \clockdatesetup{era-separator=\thinspace}%
+  \calendardate{-43}\\
+  \calendardate{70}
+\end{code}
+
+\begin{code}{ad-first}
+  \begin{syntax}
+    \key{ad-first=true|false}
+  \end{syntax}
+  Boolean key that sets if the AD is printed before the year.
+  The initial value is |true|.
+  \begin{verbatim}
+    \clockdatesetup{era=AD}%
+    \calendardate{70}\\
+    \calendardate[ad-first=false]{70}
+  \end{verbatim}
+  \clockdatesetup{era=AD}%
+  \calendardate{70}\\
+  \calendardate[ad-first=false]{70}
+\end{code}
+
+\begin{code}{ad-first-separator}
+  \begin{syntax}
+    \key{ad-first-separator=\meta{token list}}
+  \end{syntax}
+  Sets the separator between the year and the AD to \meta{token list} if
+  \key{ad-first=true}.
+  The initial value is \cs{nobreakspace}.
+  \begin{verbatim}
+    \clockdatesetup{era=AD}%
+    \calendardate{70}\\
+    \calendardate[ad-first-separator=]{70}
+  \end{verbatim}
+  \clockdatesetup{era=AD}%
+  \calendardate{70}\\
+  \calendardate[ad-first-separator=]{70}
+\end{code}
+
+\begin{code}{positive-year-prefix}
+  \begin{syntax}
+    \key{positive-year-prefix=\meta{token list}}
+  \end{syntax}
+  Prepends \meta{token list} to the printed year if \key{era=integer} and the
+  year is positive.
+  The initial value is \meta{empty}.
+  \begin{verbatim}
+    \clockdatesetup{era=integer}%
+    \calendardate{14}\\
+    \calendardate[positive-year-prefix=+]{14}
+  \end{verbatim}
+  \clockdatesetup{era=integer}%
+  \calendardate{14}\\
+  \calendardate[positive-year-prefix=+]{14}
+\end{code}
+
+\begin{code}{negative-year-prefix}
+  \begin{syntax}
+    \key{negative-year-prefix=\meta{token list}}
+  \end{syntax}
+  Prepends \meta{token list} to the printed year if \key{era=integer} and the
+  year is negative.
+  The initial value is \cs{textminus}.
+  \begin{verbatim}
+    \clockdatesetup{era=integer}%
+    \calendardate{-78}\\
+    \calendardate[negative-year-prefix=-]{-78}
+  \end{verbatim}
+  \clockdatesetup{era=integer}%
+  \calendardate{-78}\\
+  \calendardate[negative-year-prefix=-]{-78}
+\end{code}
+
+\begin{code}{zero-year-prefix}
+  \begin{syntax}
+    \key{zero-year-prefix=\meta{token list}}
+  \end{syntax}
+  Prepends \meta{token list} to the printed year if \key{era=integer} and the
+  year is zero.
+  The initial value is \meta{empty}.
+  \begin{verbatim}
+    \clockdatesetup{era=integer}%
+    \calendardate{0}\\
+    \calendardate[zero-year-prefix=+]{0}
+  \end{verbatim}
+  \clockdatesetup{era=integer}%
+  \calendardate{0}\\
+  \calendardate[zero-year-prefix=+]{0}
+\end{code}
+
 \subsubsection{days, months, years}
 \label{subsubsec:dates}
 
@@ -1122,180 +1296,6 @@ This subsection documents the keys that modify the behavior of
   \calendardate{-515--70}
 \end{code}
 
-\subsubsection{era}
-\label{subsubsec:era}
-
-\begin{code}{era}
-  \begin{syntax}
-    \key{era=\meta{choice}}
-  \end{syntax}
-  Choice key that sets the format in which the era is printed.
-  \meta{choice} must match any of the following:
-  \begin{itemize}
-    \item |A.D.|, |AD|
-    \item |C.E.|, |CE|
-    \item |a.d.-scshape|, |ad-scshape|
-    \item |c.e.-scshape|, |ce-scshape|
-    \item |integer|
-  \end{itemize}
-  The initial value is |CE|.
-
-  |integer| prints the year as an integer which may be positive, zero, or
-  negative.
-
-  If \cs{calendardate} ends with an era that ends with a period, then the
-  trailing era will not print an extra period if the next token after
-  \cs{calendardate} is a period.
-  If the era prints the period, it is followed by \cs{@} because the sentence
-  does not end here.
-  \begin{verbatim}
-    \calendardate[era=A.D.]{-43-3-15}.\\
-    \calendardate[era=A.D.]{-43-3-15}\\
-    \calendardate[era=AD]{-43-3-15}\\
-    \calendardate[era=C.E.]{-43-3-15}.\\
-    \calendardate[era=C.E.]{-43-3-15}\\
-    \calendardate[era=CE]{-43-3-15}\\
-    \calendardate[era=a.d.-scshape]{-43-3-15}.\\
-    \calendardate[era=a.d.-scshape]{-43-3-15}\\
-    \calendardate[era=ad-scshape]{-43-3-15}\\
-    \calendardate[era=c.e.-scshape]{-43-3-15}.\\
-    \calendardate[era=c.e.-scshape]{-43-3-15}\\
-    \calendardate[era=ce-scshape]{-43-3-15}\\
-    \calendardate[era=integer]{-43-3-15}
-  \end{verbatim}
-  \calendardate[era=A.D.]{-43-3-15}.\\
-  \calendardate[era=A.D.]{-43-3-15}\\
-  \calendardate[era=AD]{-43-3-15}\\
-  \calendardate[era=C.E.]{-43-3-15}.\\
-  \calendardate[era=C.E.]{-43-3-15}\\
-  \calendardate[era=CE]{-43-3-15}\\
-  \calendardate[era=a.d.-scshape]{-43-3-15}.\\
-  \calendardate[era=a.d.-scshape]{-43-3-15}\\
-  \calendardate[era=ad-scshape]{-43-3-15}\\
-  \calendardate[era=c.e.-scshape]{-43-3-15}.\\
-  \calendardate[era=c.e.-scshape]{-43-3-15}\\
-  \calendardate[era=ce-scshape]{-43-3-15}\\
-  \calendardate[era=integer]{-43-3-15}
-\end{code}
-
-\begin{code}{era-threshold}
-  \begin{syntax}
-    \key{era-threshold=\meta{integer}}
-  \end{syntax}
-  The AD and CE are printed only if \meta{year} is less than \meta{integer}.
-  The initial value is \num{100}.
-  \begin{verbatim}
-    \calendardate{105}\\
-    \calendardate[era-threshold=106]{105}
-  \end{verbatim}
-  \calendardate{105}\\
-  \calendardate[era-threshold=106]{105}
-\end{code}
-
-\begin{code}{era-separator}
-  \begin{syntax}
-    \key{era-separator=\meta{token list}}
-  \end{syntax}
-  Sets the separator between the year and the era to \meta{token list}.
-  The initial value is \cs{nobreakspace}.
-  \begin{verbatim}
-    \calendardate{-43}\\
-    \calendardate{70}\\
-    \clockdatesetup{era-separator=\thinspace}%
-    \calendardate{-43}\\
-    \calendardate{70}
-  \end{verbatim}
-  \calendardate{-43}\\
-  \calendardate{70}\\
-  \clockdatesetup{era-separator=\thinspace}%
-  \calendardate{-43}\\
-  \calendardate{70}
-\end{code}
-
-\begin{code}{ad-first}
-  \begin{syntax}
-    \key{ad-first=true|false}
-  \end{syntax}
-  Boolean key that sets if the AD is printed before the year.
-  The initial value is |true|.
-  \begin{verbatim}
-    \clockdatesetup{era=AD}%
-    \calendardate{70}\\
-    \calendardate[ad-first=false]{70}
-  \end{verbatim}
-  \clockdatesetup{era=AD}%
-  \calendardate{70}\\
-  \calendardate[ad-first=false]{70}
-\end{code}
-
-\begin{code}{ad-first-separator}
-  \begin{syntax}
-    \key{ad-first-separator=\meta{token list}}
-  \end{syntax}
-  Sets the separator between the year and the AD to \meta{token list} if
-  \key{ad-first=true}.
-  The initial value is \cs{nobreakspace}.
-  \begin{verbatim}
-    \clockdatesetup{era=AD}%
-    \calendardate{70}\\
-    \calendardate[ad-first-separator=]{70}
-  \end{verbatim}
-  \clockdatesetup{era=AD}%
-  \calendardate{70}\\
-  \calendardate[ad-first-separator=]{70}
-\end{code}
-
-\begin{code}{positive-year-prefix}
-  \begin{syntax}
-    \key{positive-year-prefix=\meta{token list}}
-  \end{syntax}
-  Prepends \meta{token list} to the printed year if \key{era=integer} and the
-  year is positive.
-  The initial value is \meta{empty}.
-  \begin{verbatim}
-    \clockdatesetup{era=integer}%
-    \calendardate{14}\\
-    \calendardate[positive-year-prefix=+]{14}
-  \end{verbatim}
-  \clockdatesetup{era=integer}%
-  \calendardate{14}\\
-  \calendardate[positive-year-prefix=+]{14}
-\end{code}
-
-\begin{code}{negative-year-prefix}
-  \begin{syntax}
-    \key{negative-year-prefix=\meta{token list}}
-  \end{syntax}
-  Prepends \meta{token list} to the printed year if \key{era=integer} and the
-  year is negative.
-  The initial value is \cs{textminus}.
-  \begin{verbatim}
-    \clockdatesetup{era=integer}%
-    \calendardate{-78}\\
-    \calendardate[negative-year-prefix=-]{-78}
-  \end{verbatim}
-  \clockdatesetup{era=integer}%
-  \calendardate{-78}\\
-  \calendardate[negative-year-prefix=-]{-78}
-\end{code}
-
-\begin{code}{zero-year-prefix}
-  \begin{syntax}
-    \key{zero-year-prefix=\meta{token list}}
-  \end{syntax}
-  Prepends \meta{token list} to the printed year if \key{era=integer} and the
-  year is zero.
-  The initial value is \meta{empty}.
-  \begin{verbatim}
-    \clockdatesetup{era=integer}%
-    \calendardate{0}\\
-    \calendardate[zero-year-prefix=+]{0}
-  \end{verbatim}
-  \clockdatesetup{era=integer}%
-  \calendardate{0}\\
-  \calendardate[zero-year-prefix=+]{0}
-\end{code}
-
 \subsection{Loading precompiled keys}
 \label{subsec:loadkeys}
 
@@ -1437,6 +1437,20 @@ They are read-only and should not be modified directly.
 
 \begin{code}
   {
+    \l_clockdate_era_format_str,
+    \l_clockdate_era_threshold_int,
+    \l_clockdate_era_separator_tl,
+    \l_clockdate_ad_first_bool,
+    \l_clockdate_ad_first_separator_tl,
+    \l_clockdate_positive_year_prefix_tl,
+    \l_clockdate_negative_year_prefix_tl,
+    \l_clockdate_zero_year_prefix_tl
+  }
+  The values of the keys documented in \S\ref{subsubsec:era}.
+\end{code}
+
+\begin{code}
+  {
     \l_clockdate_days_pair_separator_tl,
     \l_clockdate_days_nonfinal_separator_tl,
     \l_clockdate_days_final_separator_tl,
@@ -1451,20 +1465,6 @@ They are read-only and should not be modified directly.
     \l_clockdate_years_range_separator_tl
   }
   The values of the keys documented in \S\ref{subsubsec:dates}.
-\end{code}
-
-\begin{code}
-  {
-    \l_clockdate_era_format_str,
-    \l_clockdate_era_threshold_int,
-    \l_clockdate_era_separator_tl,
-    \l_clockdate_ad_first_bool,
-    \l_clockdate_ad_first_separator_tl,
-    \l_clockdate_positive_year_prefix_tl,
-    \l_clockdate_negative_year_prefix_tl,
-    \l_clockdate_zero_year_prefix_tl
-  }
-  The values of the keys documented in \S\ref{subsubsec:era}.
 \end{code}
 
 \subsection{Variables set in \cs{clock}}
