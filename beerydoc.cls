@@ -1,7 +1,7 @@
 % Loading the class
 
 \NeedsTeXFormat{LaTeX2e}[2023-11-01]
-\ProvidesExplClass{beerydoc}{2026-10-14}{0.0.0}{}
+\ProvidesExplClass{beerydoc}{2026-10-16}{0.0.0}{}
 \prop_gput:Nnn \g_msg_module_type_prop { beerydoc } { Class }
 
 \msg_new:nnn { beerydoc } { l3kernel }
@@ -205,6 +205,7 @@
     \group_begin:
       \tl_set:Nn \l__beerydoc_key_tl {#1}
       \tl_replace_all:Nnn \l__beerydoc_key_tl { / } { \slash }
+      \tl_replace_all:NVn \l__beerydoc_key_tl \c__beerydoc_active_vert_tl { | }
       \ttfamily
       \l__beerydoc_key_tl \@
     \group_end:
