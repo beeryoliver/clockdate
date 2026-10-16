@@ -31,6 +31,7 @@ Oliver Beery
 
 Version 1.0.0\quad\date{2026-10-15}
 
+\pdfbookmark[1]{Contents}{contents}
 \tableofcontents
 \pagebreak
 
@@ -265,8 +266,8 @@ This subsection documents the keys that modify the behavior of \cs{clock}
   \clock{18:05--21:00}
 \end{code}
 
-\subsubsection{Printing the hour, minute, and second}
-\label{subsubsec:printhms}
+\subsubsection{hour, minute, second}
+\label{subsubsec:hms}
 
 \begin{code}{hour}
   \begin{syntax}
@@ -334,9 +335,6 @@ This subsection documents the keys that modify the behavior of \cs{clock}
   \clock{9:23:03--9:23:09}
 \end{code}
 
-\subsubsection{Separating the hour, minute, and second}
-\label{subsubsec:sephms}
-
 \begin{code}{hour-minute-separator}
   \begin{syntax}
     \key{hour-minute-separator=\meta{token list}}
@@ -387,8 +385,8 @@ This subsection documents the keys that modify the behavior of \cs{clock}
   \key{minute-second-separator} to \meta{token list}.
 \end{code}
 
-\subsubsection{Printing the am/pm}
-\label{subsubsec:printampm}
+\subsubsection{am/pm}
+\label{subsubsec:ampm}
 
 \begin{code}{ampm}
   \begin{syntax}
@@ -510,8 +508,8 @@ This subsection documents the keys that modify the behavior of \cs{clock}
   \clock{6,8--11}\\
 \end{code}
 
-\subsubsection{Separating the clocks}
-\label{subsubsec:sepclocks}
+\subsubsection{clocks}
+\label{subsubsec:clocks}
 
 \begin{code}{clocks-pair-separator}
   \begin{syntax}
@@ -658,8 +656,8 @@ This subsection documents the keys that modify the behavior of
   See \S\ref{subsec:expl3date} for more details.
 \end{code}
 
-\subsubsection{Printing the year, month, and day}
-\label{subsubsec:printymd}
+\subsubsection{year, month, day}
+\label{subsubsec:ymd}
 
 \begin{code}{year}
   \begin{syntax}
@@ -809,9 +807,6 @@ This subsection documents the keys that modify the behavior of
   \calendardate{1903-7-1--19}
 \end{code}
 
-\subsubsection{Separating the year, month, and day}
-\label{subsubsec:sepymd}
-
 \begin{code}{year-month-separator}
   \begin{syntax}
     \key{year-month-separator=\meta{token list}}
@@ -880,8 +875,8 @@ This subsection documents the keys that modify the behavior of
   \end{itemize}
 \end{code}
 
-\subsubsection{Separating the days, months, and years}
-\label{subsubsec:sepdates}
+\subsubsection{days, months, years}
+\label{subsubsec:dates}
 
 \begin{code}{days-pair-separator}
   \begin{syntax}
@@ -1127,8 +1122,8 @@ This subsection documents the keys that modify the behavior of
   \calendardate{-515--70}
 \end{code}
 
-\subsubsection{Printing the era}
-\label{subsubsec:printera}
+\subsubsection{era}
+\label{subsubsec:era}
 
 \begin{code}{era}
   \begin{syntax}
@@ -1357,8 +1352,8 @@ package.
     cmd/Date/after
   }
   These generic |cmd| hooks are disabled because they would prevent the command
-  from testing if the next token is a period (See \S\ref{subsubsec:printampm},
-  \S\ref{subsubsec:printymd}, and \S\ref{subsubsec:printera}).
+  from testing if the next token is a period (See \S\ref{subsubsec:ampm},
+  \S\ref{subsubsec:ymd}, and \S\ref{subsubsec:era}).
   \hook{cmd/date/after} and \hook{cmd/Date/after} are disabled only if the key
   \key{redefine-date} is set (\S\ref{subsec:preamblekeys}).
 \end{code}
@@ -1390,17 +1385,11 @@ They are read-only and should not be modified directly.
   {
     \l_clockdate_hour_format_str,
     \l_clockdate_minute_format_str,
-    \l_clockdate_second_format_str
-  }
-  The values of the keys documented in \S\ref{subsubsec:printhms}.
-\end{code}
-
-\begin{code}
-  {
+    \l_clockdate_second_format_str,
     \l_clockdate_hour_minute_separator_tl,
     \l_clockdate_minute_second_separator_tl
   }
-  The values of the keys documented in \S\ref{subsubsec:sephms}.
+  The values of the keys documented in \S\ref{subsubsec:hms}.
 \end{code}
 
 \begin{code}
@@ -1410,7 +1399,7 @@ They are read-only and should not be modified directly.
     \l_clockdate_ampm_omit_range_bool,
     \l_clockdate_ampm_omit_list_bool
   }
-  The values of the keys documented in \S\ref{subsubsec:printampm}.
+  The values of the keys documented in \S\ref{subsubsec:ampm}.
 \end{code}
 
 \begin{code}
@@ -1420,7 +1409,7 @@ They are read-only and should not be modified directly.
     \l_clockdate_clocks_final_separator_tl,
     \l_clockdate_clocks_range_separator_tl
   }
-  The value of the keys documented in \S\ref{subsubsec:sepclocks}.
+  The value of the keys documented in \S\ref{subsubsec:clocks}.
 \end{code}
 
 \begin{code}
@@ -1438,18 +1427,12 @@ They are read-only and should not be modified directly.
     \l_clockdate_yy_year_prefix_tl,
     \l_clockdate_month_format_str,
     \l_clockdate_day_format_str,
-    \l_clockdate_day_ordinal_bool
-  }
-  The values of the keys documented in \S\ref{subsubsec:printymd}.
-\end{code}
-
-\begin{code}
-  {
+    \l_clockdate_day_ordinal_bool,
     \l_clockdate_year_month_separator_tl,
     \l_clockdate_month_day_separator_tl,
     \l_clockdate_year_day_separator_tl
   }
-  The values of the keys documented in \S\ref{subsubsec:sepymd}.
+  The values of the keys documented in \S\ref{subsubsec:ymd}.
 \end{code}
 
 \begin{code}
@@ -1467,7 +1450,7 @@ They are read-only and should not be modified directly.
     \l_clockdate_years_final_separator_tl,
     \l_clockdate_years_range_separator_tl
   }
-  The values of the keys documented in \S\ref{subsubsec:sepdates}.
+  The values of the keys documented in \S\ref{subsubsec:dates}.
 \end{code}
 
 \begin{code}
@@ -1481,7 +1464,7 @@ They are read-only and should not be modified directly.
     \l_clockdate_negative_year_prefix_tl,
     \l_clockdate_zero_year_prefix_tl
   }
-  The values of the keys documented in \S\ref{subsubsec:printera}.
+  The values of the keys documented in \S\ref{subsubsec:era}.
 \end{code}
 
 \subsection{Variables set in \cs{clock}}
@@ -1676,7 +1659,7 @@ The \pkg{clockdate} package uses some ideas from the \pkg{datetime2} and
 
 \listheading
   {
-    The keys in \S\ref{subsubsec:sephms} resemble the following \pkg{datetime2}
+    The keys in \S\ref{subsubsec:hms} resemble the following \pkg{datetime2}
     options:
   }
 \begin{itemize}
@@ -1687,7 +1670,7 @@ The \pkg{clockdate} package uses some ideas from the \pkg{datetime2} and
 
 \listheading
   {
-    The keys in \S\ref{subsubsec:sepymd} resemble the following \pkg{datetime2}
+    The keys in \S\ref{subsubsec:ymd} resemble the following \pkg{datetime2}
     options:
   }
 \begin{itemize}
@@ -1699,8 +1682,8 @@ The \pkg{clockdate} package uses some ideas from the \pkg{datetime2} and
 
 \listheading
   {
-    The keys in \S\ref{subsubsec:sepclocks} and \S\ref{subsubsec:sepdates} use
-    a similar naming convention to the following \pkg{siunitx} options:
+    The keys in \S\ref{subsubsec:clocks} and \S\ref{subsubsec:dates} use a
+    similar naming convention to the following \pkg{siunitx} options:
   }
 \begin{itemize}
   % \item \key{list-separator}
