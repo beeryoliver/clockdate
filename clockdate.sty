@@ -34,7 +34,7 @@
 \bool_set_true:N \l__clockdate_clocks_if_same_ampm_bool
 \tl_new:N \l__clockdate_clocks_tl
 
-\str_new:N \l_clockdate_clocks_str
+\str_new:N \l_clockdate_clock_str
 
 \bool_new:N \l__clockdate_date_empty_first_bool
 \seq_new:N \l__clockdate_years_seq
@@ -231,7 +231,7 @@
   }
 \cs_new_protected:Npn \__clockdate_clock_init:
   {
-    \str_clear:N \l_clockdate_clocks_str
+    \str_clear:N \l_clockdate_clock_str
     \bool_lazy_or:nnT
       { \str_if_eq_p:ee \l_clockdate_clock_format_str { 24 } }
       { \str_if_eq_p:ee \l_clockdate_ampm_format_str { none } }
@@ -260,8 +260,8 @@
       { \clist_count:N \l__clockdate_tmp_clist }
     \clist_map_inline:Nn \l__clockdate_tmp_clist
       {
-        \str_if_empty:NF \l_clockdate_clocks_str
-          { \str_put_right:Nn \l_clockdate_clocks_str { , } }
+        \str_if_empty:NF \l_clockdate_clock_str
+          { \str_put_right:Nn \l_clockdate_clock_str { , } }
         \tl_if_in:nnTF {##1} { \__clockdate_range_mark: }
           { \__clockdate_clock_set_range:w ##1 \q__clockdate_stop }
           { \__clockdate_clock_set_single:n {##1} }
@@ -274,7 +274,7 @@
   #1 \__clockdate_range_mark: #2 \q__clockdate_stop
   {
     \__clockdate_clock_set_split:n {#1}
-    \str_put_right:Nn \l_clockdate_clocks_str { -- }
+    \str_put_right:Nn \l_clockdate_clock_str { -- }
     \__clockdate_clock_set_split:n {#2}
   }
 \cs_new_protected:Npn \__clockdate_clock_set_single:n #1
@@ -320,7 +320,7 @@
       { \clist_map_break:n { \__clockdate_error:nn { hour-invalid } {#1} } }
     \__clockdate_clock_same_ampm_chk:n {#1}
     \tl_put_right:Nn \l__clockdate_clocks_tl { {#1} { } { } }
-    \str_put_right:Nn \l_clockdate_clocks_str {#1}
+    \str_put_right:Nn \l_clockdate_clock_str {#1}
   }
 \cs_new_protected:Npn \__clockdate_clock_set_hour_minute:nn #1#2
   {
@@ -337,7 +337,7 @@
       }
     \__clockdate_clock_same_ampm_chk:n {#1}
     \tl_put_right:Nn \l__clockdate_clocks_tl { {#1} {#2} { } }
-    \str_put_right:Nn \l_clockdate_clocks_str { #1 : #2 }
+    \str_put_right:Nn \l_clockdate_clock_str { #1 : #2 }
   }
 \cs_new_protected:Npn \__clockdate_clock_set_hour_minute_second:nnn #1#2#3
   {
@@ -365,7 +365,7 @@
       }
     \__clockdate_clock_same_ampm_chk:n {#1}
     \tl_put_right:Nn \l__clockdate_clocks_tl { {#1} {#2} {#3} }
-    \str_put_right:Nn \l_clockdate_clocks_str { #1 : #2 : #3 }
+    \str_put_right:Nn \l_clockdate_clock_str { #1 : #2 : #3 }
   }
 \cs_new_protected:Npn \__clockdate_clock_same_ampm_chk:n #1
   {
