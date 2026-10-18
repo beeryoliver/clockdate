@@ -495,9 +495,9 @@
 \cs_new_protected:Npn \__clockdate_print_clocks:
   {
     \seq_use:Nnnn \l__clockdate_clocks_seq
-      \l_clockdate_clocks_pair_separator_tl
-      \l_clockdate_clocks_nonfinal_separator_tl
-      \l_clockdate_clocks_final_separator_tl
+      { \l_clockdate_clocks_pair_separator_tl }
+      { \l_clockdate_clocks_nonfinal_separator_tl }
+      { \l_clockdate_clocks_final_separator_tl }
   }
 \cs_new_protected:Npn \clockdate_print_hour:n #1
   {
@@ -1089,9 +1089,9 @@
 \cs_new_protected:Npn \__clockdate_print_years:
   {
     \seq_use:Nnnn \l__clockdate_years_seq
-      \l_clockdate_years_pair_separator_tl
-      \l_clockdate_years_nonfinal_separator_tl
-      \l_clockdate_years_final_separator_tl
+      { \l_clockdate_years_pair_separator_tl }
+      { \l_clockdate_years_nonfinal_separator_tl }
+      { \l_clockdate_years_final_separator_tl }
   }
 \cs_new_protected:Npn \__clockdate_print_year:
   { \exp_args:NV \clockdate_print_year:n \l_clockdate_years_str }
@@ -1287,9 +1287,9 @@
 \cs_new_protected:Npn \__clockdate_print_months:
   {
     \seq_use:Nnnn \l__clockdate_months_seq
-      \l_clockdate_months_pair_separator_tl
-      \l_clockdate_months_nonfinal_separator_tl
-      \l_clockdate_months_final_separator_tl
+      { \l_clockdate_months_pair_separator_tl }
+      { \l_clockdate_months_nonfinal_separator_tl }
+      { \l_clockdate_months_final_separator_tl }
   }
 \cs_new_protected:Npn \__clockdate_print_month:
   { \exp_args:NV \clockdate_print_month:n \l_clockdate_months_str }
@@ -1319,9 +1319,9 @@
 \cs_new_protected:Npn \__clockdate_print_days:
   {
     \seq_use:Nnnn \l__clockdate_days_seq
-      \l_clockdate_days_pair_separator_tl
-      \l_clockdate_days_nonfinal_separator_tl
-      \l_clockdate_days_final_separator_tl
+      { \l_clockdate_days_pair_separator_tl }
+      { \l_clockdate_days_nonfinal_separator_tl }
+      { \l_clockdate_days_final_separator_tl }
   }
 \cs_new_protected:Npn \clockdate_print_day:n #1
   {
