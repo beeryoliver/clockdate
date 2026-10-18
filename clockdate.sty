@@ -30,8 +30,8 @@
 \int_new:N \l__clockdate_clocks_count_int
 \bool_new:N \l__clockdate_print_ampm_bool
 \bool_set_true:N \l__clockdate_print_ampm_bool
-\bool_new:N \l__clockdate_clocks_if_same_ampm_bool
-\bool_set_true:N \l__clockdate_clocks_if_same_ampm_bool
+\bool_new:N \l__clockdate_if_same_ampm_bool
+\bool_set_true:N \l__clockdate_if_same_ampm_bool
 \tl_new:N \l__clockdate_clocks_tl
 
 \str_new:N \l_clockdate_clocks_str
@@ -377,7 +377,7 @@
           {
             \exp_not:n
               {
-                \bool_set_false:N \l__clockdate_clocks_if_same_ampm_bool
+                \bool_set_false:N \l__clockdate_if_same_ampm_bool
                 \cs_set_eq:NN \__clockdate_clock_same_ampm_chk:n \use_none:n
               }
           }
@@ -395,7 +395,7 @@
             ! \bool_lazy_all_p:n
               {
                 { \l_clockdate_ampm_omit_list_bool }
-                { \l__clockdate_clocks_if_same_ampm_bool }
+                { \l__clockdate_if_same_ampm_bool }
                 {
                   ! \int_compare_p:nNn \l__clockdate_clocks_step_int =
                     \l__clockdate_clocks_count_int
