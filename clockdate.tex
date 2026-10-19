@@ -29,7 +29,7 @@ Print the time of day and the calendar date
 
 Oliver Beery
 
-Version 1.0.0\quad\date{2026-10-18}
+Version 1.0.0\quad\date{2026-10-19}
 
 \pdfbookmark[1]{Contents}{contents}
 \tableofcontents
@@ -1379,13 +1379,11 @@ package.
 \begin{code}{clockdate/clock}
   Hook used in \cs{clock} after parsing its input and setting all the variables
   in \S\ref{subsec:varclock}, but before printing the time of day.
-  This hook should not be used to set the \pkg{clockdate} keys.
 \end{code}
 
 \begin{code}{clockdate/date}
   Hook used in \cs{calendardate} after parsing its input and setting all the
   variables in \S\ref{subsec:vardate}, but before printing the calendar date.
-  This hook should not be used to set the \pkg{clockdate} keys.
 \end{code}
 
 \subsection{Variables set by \cs{clockdatesetup}}

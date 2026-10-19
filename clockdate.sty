@@ -26,10 +26,7 @@
   { \msg_expandable_error:nn { clockdate } { double-hyphen-invalid } }
 
 \seq_new:N \l__clockdate_clocks_seq
-\int_new:N \l__clockdate_clocks_step_int
 \int_new:N \l__clockdate_clocks_count_int
-\bool_new:N \l__clockdate_print_ampm_bool
-\bool_set_true:N \l__clockdate_print_ampm_bool
 \bool_new:N \l__clockdate_if_same_ampm_bool
 \bool_set_true:N \l__clockdate_if_same_ampm_bool
 \tl_new:N \l__clockdate_clocks_tl
@@ -83,7 +80,6 @@
 \group_end:
 
 % Scratch variables
-\bool_new:N \l__clockdate_tmp_bool
 \tl_new:N \l__clockdate_tmp_tl
 \int_new:N \l__clockdate_tmp_int
 \seq_new:N \l__clockdate_tmp_seq
@@ -230,13 +226,7 @@
     \__clockdate_print_clocks:
   }
 \cs_new_protected:Npn \__clockdate_clock_init:
-  {
-    \str_clear:N \l_clockdate_clocks_str
-    \bool_lazy_or:nnT
-      { \str_if_eq_p:ee \l_clockdate_clock_format_str { 24 } }
-      { \str_if_eq_p:ee \l_clockdate_ampm_format_str { none } }
-      { \bool_set_false:N \l__clockdate_print_ampm_bool }
-  }
+  { \str_clear:N \l_clockdate_clocks_str }
 \cs_new_protected:Npe \__clockdate_clock_normalize:
   {
     \tl_replace_all:Nnn \exp_not:N \l__clockdate_input_tl
@@ -263,7 +253,8 @@
           { \__clockdate_clock_set_range:w ##1 \q__clockdate_stop }
           { \__clockdate_clock_set_single:n {##1} }
       }
-    \exp_after:wN \__clockdate_clock_set_loop:nnnnnn \l__clockdate_clocks_tl
+    \exp_after:wN \__clockdate_clock_set_loop_start:nnnnnn
+      \l__clockdate_clocks_tl
       { \q_recursion_tail } { } { } { } { } { }
     \q_recursion_stop
   }
@@ -380,85 +371,87 @@
           }
       }
   }
-\cs_new_protected:Npn \__clockdate_clock_set_loop:nnnnnn #1#2#3#4#5#6
+\cs_new_protected:Npn \__clockdate_clock_set_loop_start:nnnnnn
+  { \__clockdate_clock_set_loop:nnnnnnn { 1 } }
+\cs_new_protected:Npn \__clockdate_clock_set_loop:nnnnnnn #1#2#3#4#5#6#7
   {
-    \quark_if_recursion_tail_stop:n {#1}
-    \int_incr:N \l__clockdate_clocks_step_int
-    \bool_set:Nn \l__clockdate_tmp_bool
-      {
-        \bool_lazy_and_p:nn
-          { \l__clockdate_print_ampm_bool }
-          {
-            ! \bool_lazy_all_p:n
-              {
-                { \l_clockdate_ampm_omit_list_bool }
-                { \l__clockdate_if_same_ampm_bool }
-                {
-                  ! \int_compare_p:nNn \l__clockdate_clocks_step_int =
-                    \l__clockdate_clocks_count_int
-                }
-              }
-          }
-      }
+    \quark_if_recursion_tail_stop:n {#2}
     \seq_put_right:Ne \l__clockdate_clocks_seq
       {
-        \clockdate_print_hour:n {#1}
-        \tl_if_empty:nF {#2}
+        \clockdate_print_hour:n {#2}
+        \tl_if_empty:nF {#3}
           {
             \exp_not:N \l_clockdate_hour_minute_separator_tl
-            \clockdate_print_minute:n {#2}
-            \tl_if_empty:nF {#3}
+            \clockdate_print_minute:n {#3}
+            \tl_if_empty:nF {#4}
               {
                 \exp_not:N \l_clockdate_minute_second_separator_tl
-                \clockdate_print_second:n {#3}
+                \clockdate_print_second:n {#4}
               }
           }
-        \tl_if_empty:nF {#4}
+        \tl_if_empty:nF {#5}
           {
-            \bool_lazy_and:nnT
-              { \l__clockdate_tmp_bool }
+            \exp_not:N \bool_lazy_and:nnT
+              { \exp_not:N \__clockdate_clock_if_print_ampm_p:n {#1} }
               {
-                ! \bool_lazy_all_p:n
+                ! \exp_not:N \bool_lazy_all_p:n
                   {
-                    { \l_clockdate_ampm_omit_range_bool }
+                    { \exp_not:N \l_clockdate_ampm_omit_range_bool }
                     {
                       \__clockdate_bool_if_eq_p:nn
-                        { \__clockdate_clock_hour_if_am_p:n {#1} }
-                        { \__clockdate_clock_hour_if_am_p:n {#4} }
+                        { \__clockdate_clock_hour_if_am_p:n {#2} }
+                        { \__clockdate_clock_hour_if_am_p:n {#5} }
                     }
                     {
                       \__clockdate_clock_compare_p:nnnnnn
-                        {#1} {#2} {#3} {#4} {#5} {#6}
+                        {#2} {#3} {#4} {#5} {#6} {#7}
                     }
                   }
               }
               {
                 \exp_not:N \l_clockdate_ampm_separator_tl
-                \__clockdate_clock_hour_if_am:nTF {#1}
+                \__clockdate_clock_hour_if_am:nTF {#2}
                   \clockdate_print_am: \clockdate_print_pm:
               }
             \exp_not:N \l_clockdate_clocks_range_separator_tl
-            \clockdate_print_hour:n {#4}
-            \tl_if_empty:nF {#5}
+            \clockdate_print_hour:n {#5}
+            \tl_if_empty:nF {#6}
               {
                 \exp_not:N \l_clockdate_hour_minute_separator_tl
-                \clockdate_print_minute:n {#5}
-                \tl_if_empty:nF {#6}
+                \clockdate_print_minute:n {#6}
+                \tl_if_empty:nF {#7}
                   {
                     \exp_not:N \l_clockdate_minute_second_separator_tl
-                    \clockdate_print_second:n {#6}
+                    \clockdate_print_second:n {#7}
                   }
               }
           }
-        \bool_if:NT \l__clockdate_tmp_bool
+        \exp_not:N \__clockdate_clock_if_print_ampm:nT {#1}
           {
             \exp_not:N \l_clockdate_ampm_separator_tl
             \__clockdate_clock_hour_if_am:nTF
-              { \tl_if_empty:nTF {#4} {#1} {#4} }
+              { \tl_if_empty:nTF {#5} {#2} {#5} }
               \clockdate_print_am: \clockdate_print_pm:
           }
       }
-    \__clockdate_clock_set_loop:nnnnnn
+    \exp_args:Ne \__clockdate_clock_set_loop:nnnnnnn { \int_eval:n { #1 + 1 } }
+  }
+\prg_new_conditional:Npnn \__clockdate_clock_if_print_ampm:n #1 { p , T }
+  {
+    \bool_lazy_all:nTF
+      {
+        { \str_if_eq_p:ee \l_clockdate_clock_format_str { 12 } }
+        { ! \str_if_eq_p:ee \l_clockdate_ampm_format_str { none } }
+        {
+          ! \bool_lazy_all_p:n
+            {
+              { \l_clockdate_ampm_omit_list_bool }
+              { \l__clockdate_if_same_ampm_bool }
+              { ! \int_compare_p:nNn {#1} = \l__clockdate_clocks_count_int }
+            }
+        }
+      }
+      \prg_return_true: \prg_return_false:
   }
 \cs_new:Npn \__clockdate_clock_compare_p:nnnnnn #1#2#3#4#5#6
   {
