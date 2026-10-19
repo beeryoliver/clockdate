@@ -1263,6 +1263,7 @@
             }
             { \l_clockdate_era_separator_tl \textsc {bce} }
         }
+        { none } { \l__clockdate_tmp_tl }
         { integer }
         {
           \int_case:nn { \int_sign:n {#1} }
@@ -1495,7 +1496,7 @@
     , era .choices:nn =
         {
           A.D., AD, C.E., CE, a.d.-scshape, ad-scshape,
-          c.e.-scshape, ce-scshape, integer
+          c.e.-scshape, ce-scshape, none, integer
         }
         { \str_set:Nn \l_clockdate_era_format_str {#1} }
     , era .value_required:n = true

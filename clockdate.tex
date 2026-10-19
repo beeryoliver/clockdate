@@ -907,10 +907,12 @@ This subsection documents the keys that modify the behavior of
     \item |C.E.|, |CE|
     \item |a.d.-scshape|, |ad-scshape|
     \item |c.e.-scshape|, |ce-scshape|
+    \item |none|
     \item |integer|
   \end{itemize}
   The initial value is |CE|.
 
+  |none| omits the era.
   |integer| prints the year as an integer which may be positive, zero, or
   negative.
 
@@ -932,6 +934,7 @@ This subsection documents the keys that modify the behavior of
     \calendardate[era=c.e.-scshape]{-43-3-15}.\\
     \calendardate[era=c.e.-scshape]{-43-3-15}\\
     \calendardate[era=ce-scshape]{-43-3-15}\\
+    \calendardate[era=none]{-43-3-15}\\
     \calendardate[era=integer]{-43-3-15}
   \end{verbatim}
   \calendardate[era=A.D.]{-43-3-15}.\\
@@ -946,6 +949,7 @@ This subsection documents the keys that modify the behavior of
   \calendardate[era=c.e.-scshape]{-43-3-15}.\\
   \calendardate[era=c.e.-scshape]{-43-3-15}\\
   \calendardate[era=ce-scshape]{-43-3-15}\\
+  \calendardate[era=none]{-43-3-15}\\
   \calendardate[era=integer]{-43-3-15}
 \end{code}
 
