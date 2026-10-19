@@ -889,13 +889,17 @@
     \__clockdate_date_YM_chk:n {#2}
     \seq_put_right:Ne \l__clockdate_months_seq
       {
-        \bool_lazy_all:nTF
+        \str_if_empty:NTF \l_clockdate_months_str
           {
-            { \str_if_empty_p:N \l_clockdate_months_str }
-            { \l_clockdate_capitalize_first_bool }
-            { ! \str_if_eq_p:ee \l_clockdate_order_str { YMD } }
+            \exp_not:n
+              {
+                \bool_lazy_and:nnTF
+                  { \l_clockdate_capitalize_first_bool }
+                  { ! \str_if_eq_p:ee \l_clockdate_order_str { YMD } }
+                  { \__clockdate_print_month_first:n {#1} }
+                  { \clockdate_print_month:n {#1} }
+              }
           }
-          { \__clockdate_print_month_first:n {#1} }
           { \clockdate_print_month:n {#1} }
         \exp_not:N \l_clockdate_months_range_separator_tl
         \clockdate_print_month:n {#2}
@@ -907,13 +911,17 @@
     \__clockdate_date_YM_chk:n {#1}
     \seq_put_right:Ne \l__clockdate_months_seq
       {
-        \bool_lazy_all:nTF
+        \str_if_empty:NTF \l_clockdate_months_str
           {
-            { \str_if_empty_p:N \l_clockdate_months_str }
-            { \l_clockdate_capitalize_first_bool }
-            { ! \str_if_eq_p:ee \l_clockdate_order_str { YMD } }
+            \exp_not:n
+              {
+                \bool_lazy_and:nnTF
+                  { \l_clockdate_capitalize_first_bool }
+                  { ! \str_if_eq_p:ee \l_clockdate_order_str { YMD } }
+                  { \__clockdate_print_month_first:n {#1} }
+                  { \clockdate_print_month:n {#1} }
+              }
           }
-          { \__clockdate_print_month_first:n {#1} }
           { \clockdate_print_month:n {#1} }
       }
     \str_put_right:Nn \l_clockdate_months_str { , #1 }
