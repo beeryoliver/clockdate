@@ -811,34 +811,6 @@
       { \__clockdate_error:n { days-empty } }
     \str_set:Ne \l_clockdate_days_str
       { \exp_after:wN \use_none:n \l_clockdate_days_str }
-    \bool_lazy_and:nnT
-      { \l__clockdate_priority_bool }
-      { \str_if_eq_p:ee \l_clockdate_priority_str { YM } }
-      { \__clockdate_date_MD_to_YM: }
-  }
-\cs_new_protected:Npn \__clockdate_date_MD_to_YM:
-  {
-    \str_set_eq:NN \l_clockdate_years_str \l_clockdate_months_str
-    \str_set_eq:NN \l_clockdate_months_str \l_clockdate_days_str
-    \str_clear:N \l_clockdate_days_str
-    \seq_map_variable:NNn \l__clockdate_days_seq \l__clockdate_tmp_tl
-      {
-        \tl_replace_once:Nnn \l__clockdate_tmp_tl
-          { \l_clockdate_days_range_separator_tl }
-          { \l_clockdate_months_range_separator_tl }
-        \tl_replace_all:Nnn \l__clockdate_tmp_tl
-          { \clockdate_print_day:n } { \clockdate_print_month:n }
-        \seq_put_right:NV \l__clockdate_months_seq \l__clockdate_tmp_tl
-      }
-    \bool_lazy_and:nnT
-      { \l_clockdate_capitalize_first_bool }
-      { ! \str_if_eq_p:ee \l_clockdate_order_str { YMD } }
-      {
-        \seq_pop_left:NN \l__clockdate_months_seq \l__clockdate_tmp_tl
-        \tl_replace_once:Nnn \l__clockdate_tmp_tl
-          { \clockdate_print_month:n } { \__clockdate_print_month_first:n }
-        \seq_put_left:NV \l__clockdate_months_seq \l__clockdate_tmp_tl
-      }
   }
 \cs_new_protected:Npn \__clockdate_date_MD_set_range:w
   #1 \__clockdate_range_mark: #2 \q__clockdate_stop
@@ -1011,6 +983,10 @@
   }
 \cs_new_protected:Npn \__clockdate_date_print:
   {
+    \bool_lazy_and:nnT
+      { \l__clockdate_priority_bool }
+      { \str_if_eq_p:ee \l_clockdate_priority_str { YM } }
+      { \__clockdate_date_MD_to_YM: }
     \str_if_empty:NTF \l_clockdate_days_str
       {
         \str_if_empty:NTF \l_clockdate_months_str
@@ -1019,6 +995,30 @@
       {
         \str_if_empty:NTF \l_clockdate_years_str
           \__clockdate_print_month_days: \__clockdate_print_year_month_days:
+      }
+  }
+\cs_new_protected:Npn \__clockdate_date_MD_to_YM:
+  {
+    \str_set_eq:NN \l_clockdate_years_str \l_clockdate_months_str
+    \str_set_eq:NN \l_clockdate_months_str \l_clockdate_days_str
+    \str_clear:N \l_clockdate_days_str
+    \seq_map_variable:NNn \l__clockdate_days_seq \l__clockdate_tmp_tl
+      {
+        \tl_replace_once:Nnn \l__clockdate_tmp_tl
+          { \l_clockdate_days_range_separator_tl }
+          { \l_clockdate_months_range_separator_tl }
+        \tl_replace_all:Nnn \l__clockdate_tmp_tl
+          { \clockdate_print_day:n } { \clockdate_print_month:n }
+        \seq_put_right:NV \l__clockdate_months_seq \l__clockdate_tmp_tl
+      }
+    \bool_lazy_and:nnT
+      { \l_clockdate_capitalize_first_bool }
+      { ! \str_if_eq_p:ee \l_clockdate_order_str { YMD } }
+      {
+        \seq_pop_left:NN \l__clockdate_months_seq \l__clockdate_tmp_tl
+        \tl_replace_once:Nnn \l__clockdate_tmp_tl
+          { \clockdate_print_month:n } { \__clockdate_print_month_first:n }
+        \seq_put_left:NV \l__clockdate_months_seq \l__clockdate_tmp_tl
       }
   }
 \cs_new_protected:Npn \__clockdate_print_year_month_days:
