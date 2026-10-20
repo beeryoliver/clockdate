@@ -410,33 +410,33 @@ This subsection documents the keys that modify the behavior of \cs{clock}
   If the am/pm prints the period, it is followed by \cs{@} because the sentence
   does not end here.
   \begin{verbatim}
-    \clock[ampm=a.m.]{9--15}.\\
     \clock[ampm=a.m.]{9--15}\\
     \clock[ampm=am]{9--15}\\
     \clock[ampm=a]{9--15}\\
-    \clock[ampm=A.M.]{9--15}.\\
     \clock[ampm=A.M.]{9--15}\\
     \clock[ampm=AM]{9--15}\\
     \clock[ampm=A]{9--15}\\
-    \clock[ampm=a.m.-scshape]{9--15}.\\
     \clock[ampm=a.m.-scshape]{9--15}\\
     \clock[ampm=am-scshape]{9--15}\\
     \clock[ampm=a-scshape]{9--15}\\
-    \clock[ampm=none]{9--15}
+    \clock[ampm=none]{9--15}\\
+    \clock[ampm=a.m.]{8}.\\
+    \clock[ampm=A.M.]{8}.\\
+    \clock[ampm=a.m.-scshape]{8}.
   \end{verbatim}
-  \clock[ampm=a.m.]{9--15}.\\
   \clock[ampm=a.m.]{9--15}\\
   \clock[ampm=am]{9--15}\\
   \clock[ampm=a]{9--15}\\
-  \clock[ampm=A.M.]{9--15}.\\
   \clock[ampm=A.M.]{9--15}\\
   \clock[ampm=AM]{9--15}\\
   \clock[ampm=A]{9--15}\\
-  \clock[ampm=a.m.-scshape]{9--15}.\\
   \clock[ampm=a.m.-scshape]{9--15}\\
   \clock[ampm=am-scshape]{9--15}\\
   \clock[ampm=a-scshape]{9--15}\\
-  \clock[ampm=none]{9--15}
+  \clock[ampm=none]{9--15}\\
+  \clock[ampm=a.m.]{8}.\\
+  \clock[ampm=A.M.]{8}.\\
+  \clock[ampm=a.m.-scshape]{8}.
 \end{code}
 
 \begin{code}{ampm-separator}
@@ -932,10 +932,10 @@ This subsection documents the keys that modify the behavior of
     \calendardate[era=ce-scshape]{-515--70}\\
     \calendardate[era=none]{-515--70}\\
     \calendardate[era=integer]{-515--70}\\
-    \calendardate[era=C.E.]{-515}.\\
-    \calendardate[era=C.E.]{-515}\\
-    \calendardate[era=C.E.]{70}.\\
-    \calendardate[era=C.E.]{70}
+    \calendardate[era=A.D., ad-first=false]{54}.\\
+    \calendardate[era=C.E.]{54}.\\
+    \calendardate[era=a.d.-scshape, ad-first=false]{54}.\\
+    \calendardate[era=c.e.-scshape]{54}.
   \end{verbatim}
   \calendardate[era=A.D.]{-515--70}\\
   \calendardate[era=AD]{-515--70}\\
@@ -947,10 +947,10 @@ This subsection documents the keys that modify the behavior of
   \calendardate[era=ce-scshape]{-515--70}\\
   \calendardate[era=none]{-515--70}\\
   \calendardate[era=integer]{-515--70}\\
-  \calendardate[era=C.E.]{-515}.\\
-  \calendardate[era=C.E.]{-515}\\
-  \calendardate[era=C.E.]{70}.\\
-  \calendardate[era=C.E.]{70}
+  \calendardate[era=A.D., ad-first=false]{54}.\\
+  \calendardate[era=C.E.]{54}.\\
+  \calendardate[era=a.d.-scshape, ad-first=false]{54}.\\
+  \calendardate[era=c.e.-scshape]{54}.
 \end{code}
 
 \begin{code}{era-threshold}
