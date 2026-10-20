@@ -395,8 +395,8 @@ This subsection documents the keys that modify the behavior of \cs{clock}
   Choice key that sets the format in which the am/pm is printed.
   \meta{choice} must match any of the following:
   \begin{itemize}
-    \item |a.m.|, |am|, |a|
     \item |A.M.|, |AM|, |A|
+    \item |a.m.|, |am|, |a|
     \item |a.m.-scshape|, |am-scshape|, |a-scshape|
     \item |none|
   \end{itemize}
@@ -410,32 +410,32 @@ This subsection documents the keys that modify the behavior of \cs{clock}
   If the am/pm prints the period, it is followed by \cs{@} because the sentence
   does not end here.
   \begin{verbatim}
-    \clock[ampm=a.m.]{9--15}\\
-    \clock[ampm=am]{9--15}\\
-    \clock[ampm=a]{9--15}\\
     \clock[ampm=A.M.]{9--15}\\
     \clock[ampm=AM]{9--15}\\
     \clock[ampm=A]{9--15}\\
+    \clock[ampm=a.m.]{9--15}\\
+    \clock[ampm=am]{9--15}\\
+    \clock[ampm=a]{9--15}\\
     \clock[ampm=a.m.-scshape]{9--15}\\
     \clock[ampm=am-scshape]{9--15}\\
     \clock[ampm=a-scshape]{9--15}\\
     \clock[ampm=none]{9--15}\\
-    \clock[ampm=a.m.]{8}.\\
     \clock[ampm=A.M.]{8}.\\
+    \clock[ampm=a.m.]{8}.\\
     \clock[ampm=a.m.-scshape]{8}.
   \end{verbatim}
-  \clock[ampm=a.m.]{9--15}\\
-  \clock[ampm=am]{9--15}\\
-  \clock[ampm=a]{9--15}\\
   \clock[ampm=A.M.]{9--15}\\
   \clock[ampm=AM]{9--15}\\
   \clock[ampm=A]{9--15}\\
+  \clock[ampm=a.m.]{9--15}\\
+  \clock[ampm=am]{9--15}\\
+  \clock[ampm=a]{9--15}\\
   \clock[ampm=a.m.-scshape]{9--15}\\
   \clock[ampm=am-scshape]{9--15}\\
   \clock[ampm=a-scshape]{9--15}\\
   \clock[ampm=none]{9--15}\\
-  \clock[ampm=a.m.]{8}.\\
   \clock[ampm=A.M.]{8}.\\
+  \clock[ampm=a.m.]{8}.\\
   \clock[ampm=a.m.-scshape]{8}.
 \end{code}
 
