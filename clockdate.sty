@@ -525,12 +525,12 @@
   {
     \str_case:Vn \l_clockdate_ampm_format_str
       {
-        { a.m. } { a.m \clockdate_end_period: }
-        { am   } { am }
-        { a    } { a }
         { A.M. } { A.M \clockdate_end_period: }
         { AM   } { AM \@ }
         { A    } { A \@ }
+        { a.m. } { a.m \clockdate_end_period: }
+        { am   } { am }
+        { a    } { a }
         { a.m.-scshape }
           { \group_begin: \scshape a.m \clockdate_end_period: \group_end: }
         { am-scshape } { \textsc {am} }
@@ -541,12 +541,12 @@
   {
     \str_case:Vn \l_clockdate_ampm_format_str
       {
-        { a.m. } { p.m \clockdate_end_period: }
-        { am   } { pm }
-        { a    } { p }
         { A.M. } { P.M \clockdate_end_period: }
         { AM   } { PM \@ }
         { A    } { P \@ }
+        { a.m. } { p.m \clockdate_end_period: }
+        { am   } { pm }
+        { a    } { p }
         { a.m.-scshape }
           { \group_begin: \scshape p.m \clockdate_end_period: \group_end: }
         { am-scshape } { \textsc {pm} }
@@ -1413,7 +1413,7 @@
     , time-separator .value_required:n = true
 
     , ampm .choices:nn =
-        { a.m., am, a, A.M., AM, A, a.m.-scshape, am-scshape, a-scshape, none }
+        { A.M., AM, A, a.m., am, a, a.m.-scshape, am-scshape, a-scshape, none }
         { \str_set:Nn \l_clockdate_ampm_format_str {#1} }
     , ampm .value_required:n = true
 
