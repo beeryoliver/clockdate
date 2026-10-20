@@ -903,10 +903,8 @@ This subsection documents the keys that modify the behavior of
   Choice key that sets the format in which the era is printed.
   \meta{choice} must match any of the following:
   \begin{itemize}
-    \item |A.D.|, |AD|
-    \item |C.E.|, |CE|
-    \item |a.d.-scshape|, |ad-scshape|
-    \item |c.e.-scshape|, |ce-scshape|
+    \item |C.E.|, |CE|, |c.e.-scshape|, |ce-scshape|
+    \item |A.D.|, |AD|, |a.d.-scshape|, |ad-scshape|
     \item |none|
     \item |integer|
   \end{itemize}
@@ -922,35 +920,37 @@ This subsection documents the keys that modify the behavior of
   If the era prints the period, it is followed by \cs{@} because the sentence
   does not end here.
   \begin{verbatim}
-    \calendardate[era=A.D.]{-515--70}\\
-    \calendardate[era=AD]{-515--70}\\
     \calendardate[era=C.E.]{-515--70}\\
     \calendardate[era=CE]{-515--70}\\
-    \calendardate[era=a.d.-scshape]{-515--70}\\
-    \calendardate[era=ad-scshape]{-515--70}\\
     \calendardate[era=c.e.-scshape]{-515--70}\\
     \calendardate[era=ce-scshape]{-515--70}\\
+    \calendardate[era=A.D.]{-515--70}\\
+    \calendardate[era=AD]{-515--70}\\
+    \calendardate[era=a.d.-scshape]{-515--70}\\
+    \calendardate[era=ad-scshape]{-515--70}\\
     \calendardate[era=none]{-515--70}\\
     \calendardate[era=integer]{-515--70}\\
-    \calendardate[era=A.D., ad-first=false]{54}.\\
     \calendardate[era=C.E.]{54}.\\
-    \calendardate[era=a.d.-scshape, ad-first=false]{54}.\\
-    \calendardate[era=c.e.-scshape]{54}.
+    \calendardate[era=c.e.-scshape]{54}.\\
+    \clockdatesetup{ad-first=false}%
+    \calendardate[era=A.D.]{54}.\\
+    \calendardate[era=a.d.-scshape]{54}.
   \end{verbatim}
-  \calendardate[era=A.D.]{-515--70}\\
-  \calendardate[era=AD]{-515--70}\\
   \calendardate[era=C.E.]{-515--70}\\
   \calendardate[era=CE]{-515--70}\\
-  \calendardate[era=a.d.-scshape]{-515--70}\\
-  \calendardate[era=ad-scshape]{-515--70}\\
   \calendardate[era=c.e.-scshape]{-515--70}\\
   \calendardate[era=ce-scshape]{-515--70}\\
+  \calendardate[era=A.D.]{-515--70}\\
+  \calendardate[era=AD]{-515--70}\\
+  \calendardate[era=a.d.-scshape]{-515--70}\\
+  \calendardate[era=ad-scshape]{-515--70}\\
   \calendardate[era=none]{-515--70}\\
   \calendardate[era=integer]{-515--70}\\
-  \calendardate[era=A.D., ad-first=false]{54}.\\
   \calendardate[era=C.E.]{54}.\\
-  \calendardate[era=a.d.-scshape, ad-first=false]{54}.\\
-  \calendardate[era=c.e.-scshape]{54}.
+  \calendardate[era=c.e.-scshape]{54}.\\
+  \clockdatesetup{ad-first=false}%
+  \calendardate[era=A.D.]{54}.\\
+  \calendardate[era=a.d.-scshape]{54}.
 \end{code}
 
 \begin{code}{era-threshold}
