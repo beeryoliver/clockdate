@@ -1128,6 +1128,52 @@
       }
     \str_case:Vn \l_clockdate_era_format_str
       {
+        { C.E. }
+        {
+          \l__clockdate_tmp_tl
+          \int_compare:nNnTF {#1} > 0
+            {
+              \int_compare:nNnT {#1} < \l_clockdate_era_threshold_int
+                { \l_clockdate_era_separator_tl C.E \clockdate_end_period: }
+            }
+            { \l_clockdate_era_separator_tl B.C.E \clockdate_end_period: }
+        }
+        { CE }
+        {
+          \l__clockdate_tmp_tl
+          \int_compare:nNnTF {#1} > 0
+            {
+              \int_compare:nNnT {#1} < \l_clockdate_era_threshold_int
+                { \l_clockdate_era_separator_tl CE \@ }
+            }
+            { \l_clockdate_era_separator_tl BCE \@ }
+        }
+        { c.e.-scshape }
+        {
+          \l__clockdate_tmp_tl
+          \int_compare:nNnTF {#1} > 0
+            {
+              \int_compare:nNnT {#1} < \l_clockdate_era_threshold_int
+                {
+                  \l_clockdate_era_separator_tl
+                  \group_begin: \scshape c.e \clockdate_end_period: \group_end:
+                }
+            }
+            {
+              \l_clockdate_era_separator_tl
+              \group_begin: \scshape b.c.e \clockdate_end_period: \group_end:
+            }
+        }
+        { ce-scshape }
+        {
+          \l__clockdate_tmp_tl
+          \int_compare:nNnTF {#1} > 0
+            {
+              \int_compare:nNnT {#1} < \l_clockdate_era_threshold_int
+                { \l_clockdate_era_separator_tl \textsc {ce} }
+            }
+            { \l_clockdate_era_separator_tl \textsc {bce} }
+        }
         { A.D. }
         {
           \int_compare:nNnTF {#1} > 0
@@ -1169,26 +1215,6 @@
                 { \l__clockdate_tmp_tl }
             }
             { \l__clockdate_tmp_tl \l_clockdate_era_separator_tl BC \@ }
-        }
-        { C.E. }
-        {
-          \l__clockdate_tmp_tl
-          \int_compare:nNnTF {#1} > 0
-            {
-              \int_compare:nNnT {#1} < \l_clockdate_era_threshold_int
-                { \l_clockdate_era_separator_tl C.E \clockdate_end_period: }
-            }
-            { \l_clockdate_era_separator_tl B.C.E \clockdate_end_period: }
-        }
-        { CE }
-        {
-          \l__clockdate_tmp_tl
-          \int_compare:nNnTF {#1} > 0
-            {
-              \int_compare:nNnT {#1} < \l_clockdate_era_threshold_int
-                { \l_clockdate_era_separator_tl CE \@ }
-            }
-            { \l_clockdate_era_separator_tl BCE \@ }
         }
         { a.d.-scshape }
         {
@@ -1236,32 +1262,6 @@
             {
               \l__clockdate_tmp_tl \l_clockdate_era_separator_tl \textsc {bc}
             }
-        }
-        { c.e.-scshape }
-        {
-          \l__clockdate_tmp_tl
-          \int_compare:nNnTF {#1} > 0
-            {
-              \int_compare:nNnT {#1} < \l_clockdate_era_threshold_int
-                {
-                  \l_clockdate_era_separator_tl
-                  \group_begin: \scshape c.e \clockdate_end_period: \group_end:
-                }
-            }
-            {
-              \l_clockdate_era_separator_tl
-              \group_begin: \scshape b.c.e \clockdate_end_period: \group_end:
-            }
-        }
-        { ce-scshape }
-        {
-          \l__clockdate_tmp_tl
-          \int_compare:nNnTF {#1} > 0
-            {
-              \int_compare:nNnT {#1} < \l_clockdate_era_threshold_int
-                { \l_clockdate_era_separator_tl \textsc {ce} }
-            }
-            { \l_clockdate_era_separator_tl \textsc {bce} }
         }
         { none } { \l__clockdate_tmp_tl }
         { integer }
@@ -1495,8 +1495,9 @@
 
     , era .choices:nn =
         {
-          A.D., AD, C.E., CE, a.d.-scshape, ad-scshape,
-          c.e.-scshape, ce-scshape, none, integer
+          C.E., CE, c.e.-scshape, ce-scshape,
+          A.D., AD, a.d.-scshape, ad-scshape,
+          none, integer
         }
         { \str_set:Nn \l_clockdate_era_format_str {#1} }
     , era .value_required:n = true
