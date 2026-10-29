@@ -29,7 +29,7 @@ Print the time of day and the calendar date
 
 Oliver Beery
 
-Version 1.0.0\quad\date{2026-10-20}
+Version 1.0.0\quad\date{2026-10-29}
 
 \pdfbookmark[1]{Contents}{contents}
 \tableofcontents
@@ -417,10 +417,7 @@ This subsection documents the keys that modify the behavior of \cs{clock}
     \clock[ampm=a.m.-scshape]{9--15}\\
     \clock[ampm=am-scshape]{9--15}\\
     \clock[ampm=a-scshape]{9--15}\\
-    \clock[ampm=none]{9--15}\\
-    \clock[ampm=A.M.]{8}.\\
-    \clock[ampm=a.m.]{8}.\\
-    \clock[ampm=a.m.-scshape]{8}.
+    \clock[ampm=none]{9--15}
   \end{verbatim}
   \clock[ampm=A.M.]{9--15}\\
   \clock[ampm=AM]{9--15}\\
@@ -431,11 +428,23 @@ This subsection documents the keys that modify the behavior of \cs{clock}
   \clock[ampm=a.m.-scshape]{9--15}\\
   \clock[ampm=am-scshape]{9--15}\\
   \clock[ampm=a-scshape]{9--15}\\
-  \clock[ampm=none]{9--15}\\
-  \clock[ampm=A.M.]{8}.\\
-  \clock[ampm=a.m.]{8}.\\
-  \clock[ampm=a.m.-scshape]{8}.
+  \clock[ampm=none]{9--15}
 \end{code}
+\clearpage % manual
+\begin{verbatim}
+  \clock[ampm=A.M.]{8}.\\
+  \clock[ampm=A.M.]{16}.\\
+  \clock[ampm=a.m.]{8}.\\
+  \clock[ampm=a.m.]{16}.\\
+  \clock[ampm=a.m.-scshape]{8}.\\
+  \clock[ampm=a.m.-scshape]{16}.
+\end{verbatim}
+\clock[ampm=A.M.]{8}.\\
+\clock[ampm=A.M.]{16}.\\
+\clock[ampm=a.m.]{8}.\\
+\clock[ampm=a.m.]{16}.\\
+\clock[ampm=a.m.-scshape]{8}.\\
+\clock[ampm=a.m.-scshape]{16}.
 
 \begin{code}{ampm-separator}
   \begin{syntax}
@@ -766,16 +775,26 @@ This subsection documents the keys that modify the behavior of
     \calendardate[month=mm]{2-14}\\
     \calendardate[month=m]{2-14}\\
     \clockdatesetup{month=mmm, order=YMD}%
+    \calendardate{2011-1}.\\
+    \calendardate{2011-2}.\\
     \calendardate{2011-8}.\\
-    \calendardate{2011-8}
+    \calendardate{2011-9}.\\
+    \calendardate{2011-10}.\\
+    \calendardate{2011-11}.\\
+    \calendardate{2011-12}.
   \end{verbatim}
   \calendardate{2-14}\\
   \calendardate[month=mmm]{2-14}\\
   \calendardate[month=mm]{2-14}\\
   \calendardate[month=m]{2-14}\\
   \clockdatesetup{month=mmm, order=YMD}%
+  \calendardate{2011-1}.\\
+  \calendardate{2011-2}.\\
   \calendardate{2011-8}.\\
-  \calendardate{2011-8}
+  \calendardate{2011-9}.\\
+  \calendardate{2011-10}.\\
+  \calendardate{2011-11}.\\
+  \calendardate{2011-12}.
 \end{code}
 
 \begin{code}{day}
@@ -900,8 +919,8 @@ This subsection documents the keys that modify the behavior of
   Choice key that sets the format in which the era is printed.
   \meta{choice} must match any of the following:
   \begin{itemize}
-    \item |C.E.|, |CE|, |c.e.-scshape|, |ce-scshape|
-    \item |A.D.|, |AD|, |a.d.-scshape|, |ad-scshape|
+    \item |C.E.|, |CE|, |c.e.|, |ce|, |c.e.-scshape|, |ce-scshape|
+    \item |A.D.|, |AD|, |a.d.|, |ad|, |a.d.-scshape|, |ad-scshape|
     \item |none|
     \item |integer|
   \end{itemize}
@@ -919,36 +938,64 @@ This subsection documents the keys that modify the behavior of
   \begin{verbatim}
     \calendardate[era=C.E.]{-515--70}\\
     \calendardate[era=CE]{-515--70}\\
+    \calendardate[era=c.e.]{-515--70}\\
+    \calendardate[era=ce]{-515--70}\\
     \calendardate[era=c.e.-scshape]{-515--70}\\
     \calendardate[era=ce-scshape]{-515--70}\\
     \calendardate[era=A.D.]{-515--70}\\
     \calendardate[era=AD]{-515--70}\\
+    \calendardate[era=a.d.]{-515--70}\\
+    \calendardate[era=ad]{-515--70}\\
     \calendardate[era=a.d.-scshape]{-515--70}\\
     \calendardate[era=ad-scshape]{-515--70}\\
     \calendardate[era=none]{-515--70}\\
     \calendardate[era=integer]{-515--70}\\
-    \calendardate[era=C.E.]{54}.\\
-    \calendardate[era=c.e.-scshape]{54}.\\
-    \clockdatesetup{ad-first=false}%
-    \calendardate[era=A.D.]{54}.\\
-    \calendardate[era=a.d.-scshape]{54}.
   \end{verbatim}
   \calendardate[era=C.E.]{-515--70}\\
   \calendardate[era=CE]{-515--70}\\
+  \calendardate[era=c.e.]{-515--70}\\
+  \calendardate[era=ce]{-515--70}\\
   \calendardate[era=c.e.-scshape]{-515--70}\\
   \calendardate[era=ce-scshape]{-515--70}\\
   \calendardate[era=A.D.]{-515--70}\\
   \calendardate[era=AD]{-515--70}\\
+  \calendardate[era=a.d.]{-515--70}\\
+  \calendardate[era=ad]{-515--70}\\
   \calendardate[era=a.d.-scshape]{-515--70}\\
   \calendardate[era=ad-scshape]{-515--70}\\
   \calendardate[era=none]{-515--70}\\
   \calendardate[era=integer]{-515--70}\\
+\end{code}
+\clearpage % manual
+\begin{verbatim}
   \calendardate[era=C.E.]{54}.\\
+  \calendardate[era=C.E.]{-78}.\\
+  \calendardate[era=c.e.]{54}.\\
+  \calendardate[era=c.e.]{-78}.\\
   \calendardate[era=c.e.-scshape]{54}.\\
+  \calendardate[era=c.e.-scshape]{-78}.\\
   \clockdatesetup{ad-first=false}%
   \calendardate[era=A.D.]{54}.\\
-  \calendardate[era=a.d.-scshape]{54}.
-\end{code}
+  \calendardate[era=A.D.]{-78}.\\
+  \calendardate[era=a.d.]{54}.\\
+  \calendardate[era=a.d.]{-78}.\\
+  \calendardate[era=a.d.-scshape]{54}.\\
+  \calendardate[era=a.d.-scshape]{-78}.
+\end{verbatim}
+\calendardate[era=C.E.]{54}.\\
+\calendardate[era=C.E.]{-78}.\\
+\calendardate[era=c.e.]{54}.\\
+\calendardate[era=c.e.]{-78}.\\
+\calendardate[era=c.e.-scshape]{54}.\\
+\calendardate[era=c.e.-scshape]{-78}.\\
+\clockdatesetup{ad-first=false}%
+\calendardate[era=A.D.]{54}.\\
+\calendardate[era=A.D.]{-78}.\\
+\calendardate[era=a.d.]{54}.\\
+\calendardate[era=a.d.]{-78}.\\
+\calendardate[era=a.d.-scshape]{54}.\\
+\calendardate[era=a.d.-scshape]{-78}.
+\clockdatesetup{ad-first=true}
 
 \begin{code}{era-threshold}
   \begin{syntax}
