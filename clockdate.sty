@@ -7,7 +7,7 @@
 % Loading the package
 
 \NeedsTeXFormat{LaTeX2e}[2023-11-01]
-\ProvidesExplPackage{clockdate}{2026-10-19}{1.0.0}
+\ProvidesExplPackage{clockdate}{2026-10-29}{1.0.0}
   {Print the time of day and the calendar date}
 
 \msg_new:nnn { clockdate } { l3kernel }
@@ -1148,6 +1148,26 @@
             }
             { \l_clockdate_era_separator_tl BCE \@ }
         }
+        { c.e. }
+        {
+          \l__clockdate_tmp_tl
+          \int_compare:nNnTF {#1} > 0
+            {
+              \int_compare:nNnT {#1} < \l_clockdate_era_threshold_int
+                { \l_clockdate_era_separator_tl c.e \clockdate_end_period: }
+            }
+            { \l_clockdate_era_separator_tl b.c.e \clockdate_end_period: }
+        }
+        { ce }
+        {
+          \l__clockdate_tmp_tl
+          \int_compare:nNnTF {#1} > 0
+            {
+              \int_compare:nNnT {#1} < \l_clockdate_era_threshold_int
+                { \l_clockdate_era_separator_tl ce }
+            }
+            { \l_clockdate_era_separator_tl bce }
+        }
         { c.e.-scshape }
         {
           \l__clockdate_tmp_tl
@@ -1215,6 +1235,46 @@
                 { \l__clockdate_tmp_tl }
             }
             { \l__clockdate_tmp_tl \l_clockdate_era_separator_tl BC \@ }
+        }
+        { a.d. }
+        {
+          \int_compare:nNnTF {#1} > 0
+            {
+              \int_compare:nNnTF {#1} < \l_clockdate_era_threshold_int
+                {
+                  \bool_if:NTF \l_clockdate_ad_first_bool
+                    {
+                      a.d. \@ \l_clockdate_ad_first_separator_tl
+                      \l__clockdate_tmp_tl
+                    }
+                    {
+                      \l__clockdate_tmp_tl \l_clockdate_era_separator_tl
+                      a.d \clockdate_end_period:
+                    }
+                }
+                { \l__clockdate_tmp_tl }
+            }
+            {
+              \l__clockdate_tmp_tl \l_clockdate_era_separator_tl
+              b.c \clockdate_end_period:
+            }
+        }
+        { ad }
+        {
+          \int_compare:nNnTF {#1} > 0
+            {
+              \int_compare:nNnTF {#1} < \l_clockdate_era_threshold_int
+                {
+                  \bool_if:NTF \l_clockdate_ad_first_bool
+                    {
+                      ad \l_clockdate_ad_first_separator_tl
+                      \l__clockdate_tmp_tl
+                    }
+                    { \l__clockdate_tmp_tl \l_clockdate_era_separator_tl ad }
+                }
+                { \l__clockdate_tmp_tl }
+            }
+            { \l__clockdate_tmp_tl \l_clockdate_era_separator_tl bc }
         }
         { a.d.-scshape }
         {
@@ -1495,8 +1555,8 @@
 
     , era .choices:nn =
         {
-          C.E., CE, c.e.-scshape, ce-scshape,
-          A.D., AD, a.d.-scshape, ad-scshape,
+          C.E., CE, c.e., ce, c.e.-scshape, ce-scshape,
+          A.D., AD, a.d., ad, a.d.-scshape, ad-scshape,
           none, integer
         }
         { \str_set:Nn \l_clockdate_era_format_str {#1} }
