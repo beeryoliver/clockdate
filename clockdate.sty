@@ -7,7 +7,7 @@
 % Loading the package
 
 \NeedsTeXFormat{LaTeX2e}[2023-11-01]
-\ProvidesExplPackage{clockdate}{2026-10-29}{1.0.0}
+\ProvidesExplPackage{clockdate}{2026-11-01}{1.0.0}
   {Print the time of day and the calendar date}
 
 \msg_new:nnn { clockdate } { l3kernel }
@@ -1126,216 +1126,88 @@
             }
         }
       }
-    \str_case:Vn \l_clockdate_era_format_str
+    \cs_if_exist_use:cTF
+      { __clockdate_print_year_ \l_clockdate_era_format_str :n } { {#1} }
       {
-        { C.E. }
-        {
-          \l__clockdate_tmp_tl
-          \int_compare:nNnTF {#1} > 0
+        \str_case:Vn \l_clockdate_era_format_str
+          {
+            { none } { \l__clockdate_tmp_tl }
+            { integer }
             {
-              \int_compare:nNnT {#1} < \l_clockdate_era_threshold_int
-                { \l_clockdate_era_separator_tl C.E \clockdate_end_period: }
-            }
-            { \l_clockdate_era_separator_tl B.C.E \clockdate_end_period: }
-        }
-        { CE }
-        {
-          \l__clockdate_tmp_tl
-          \int_compare:nNnTF {#1} > 0
-            {
-              \int_compare:nNnT {#1} < \l_clockdate_era_threshold_int
-                { \l_clockdate_era_separator_tl CE \@ }
-            }
-            { \l_clockdate_era_separator_tl BCE \@ }
-        }
-        { c.e. }
-        {
-          \l__clockdate_tmp_tl
-          \int_compare:nNnTF {#1} > 0
-            {
-              \int_compare:nNnT {#1} < \l_clockdate_era_threshold_int
-                { \l_clockdate_era_separator_tl c.e \clockdate_end_period: }
-            }
-            { \l_clockdate_era_separator_tl b.c.e \clockdate_end_period: }
-        }
-        { ce }
-        {
-          \l__clockdate_tmp_tl
-          \int_compare:nNnTF {#1} > 0
-            {
-              \int_compare:nNnT {#1} < \l_clockdate_era_threshold_int
-                { \l_clockdate_era_separator_tl ce }
-            }
-            { \l_clockdate_era_separator_tl bce }
-        }
-        { c.e.-scshape }
-        {
-          \l__clockdate_tmp_tl
-          \int_compare:nNnTF {#1} > 0
-            {
-              \int_compare:nNnT {#1} < \l_clockdate_era_threshold_int
+              \int_case:nn { \int_sign:n {#1} }
                 {
-                  \l_clockdate_era_separator_tl
-                  \group_begin: \scshape c.e \clockdate_end_period: \group_end:
+                  {  1 } { \l_clockdate_positive_year_prefix_tl }
+                  {  0 } { \l_clockdate_zero_year_prefix_tl }
+                  { -1 } { \l_clockdate_negative_year_prefix_tl }
                 }
+              \l__clockdate_tmp_tl
             }
-            {
-              \l_clockdate_era_separator_tl
-              \group_begin: \scshape b.c.e \clockdate_end_period: \group_end:
-            }
-        }
-        { ce-scshape }
-        {
-          \l__clockdate_tmp_tl
-          \int_compare:nNnTF {#1} > 0
-            {
-              \int_compare:nNnT {#1} < \l_clockdate_era_threshold_int
-                { \l_clockdate_era_separator_tl \textsc {ce} }
-            }
-            { \l_clockdate_era_separator_tl \textsc {bce} }
-        }
-        { A.D. }
-        {
-          \int_compare:nNnTF {#1} > 0
-            {
-              \int_compare:nNnTF {#1} < \l_clockdate_era_threshold_int
-                {
-                  \bool_if:NTF \l_clockdate_ad_first_bool
-                    {
-                      A.D. \@ \l_clockdate_ad_first_separator_tl
-                      \l__clockdate_tmp_tl
-                    }
-                    {
-                      \l__clockdate_tmp_tl \l_clockdate_era_separator_tl
-                      A.D \clockdate_end_period:
-                    }
-                }
-                { \l__clockdate_tmp_tl }
-            }
-            {
-              \l__clockdate_tmp_tl \l_clockdate_era_separator_tl
-              B.C \clockdate_end_period:
-            }
-        }
-        { AD }
-        {
-          \int_compare:nNnTF {#1} > 0
-            {
-              \int_compare:nNnTF {#1} < \l_clockdate_era_threshold_int
-                {
-                  \bool_if:NTF \l_clockdate_ad_first_bool
-                    {
-                      AD \@ \l_clockdate_ad_first_separator_tl
-                      \l__clockdate_tmp_tl
-                    }
-                    {
-                      \l__clockdate_tmp_tl \l_clockdate_era_separator_tl AD \@
-                    }
-                }
-                { \l__clockdate_tmp_tl }
-            }
-            { \l__clockdate_tmp_tl \l_clockdate_era_separator_tl BC \@ }
-        }
-        { a.d. }
-        {
-          \int_compare:nNnTF {#1} > 0
-            {
-              \int_compare:nNnTF {#1} < \l_clockdate_era_threshold_int
-                {
-                  \bool_if:NTF \l_clockdate_ad_first_bool
-                    {
-                      a.d. \@ \l_clockdate_ad_first_separator_tl
-                      \l__clockdate_tmp_tl
-                    }
-                    {
-                      \l__clockdate_tmp_tl \l_clockdate_era_separator_tl
-                      a.d \clockdate_end_period:
-                    }
-                }
-                { \l__clockdate_tmp_tl }
-            }
-            {
-              \l__clockdate_tmp_tl \l_clockdate_era_separator_tl
-              b.c \clockdate_end_period:
-            }
-        }
-        { ad }
-        {
-          \int_compare:nNnTF {#1} > 0
-            {
-              \int_compare:nNnTF {#1} < \l_clockdate_era_threshold_int
-                {
-                  \bool_if:NTF \l_clockdate_ad_first_bool
-                    {
-                      ad \l_clockdate_ad_first_separator_tl
-                      \l__clockdate_tmp_tl
-                    }
-                    { \l__clockdate_tmp_tl \l_clockdate_era_separator_tl ad }
-                }
-                { \l__clockdate_tmp_tl }
-            }
-            { \l__clockdate_tmp_tl \l_clockdate_era_separator_tl bc }
-        }
-        { a.d.-scshape }
-        {
-          \int_compare:nNnTF {#1} > 0
-            {
-              \int_compare:nNnTF {#1} < \l_clockdate_era_threshold_int
-                {
-                  \bool_if:NTF \l_clockdate_ad_first_bool
-                    {
-                      \textsc {a.d.} \@ \l_clockdate_ad_first_separator_tl
-                      \l__clockdate_tmp_tl
-                    }
-                    {
-                      \l__clockdate_tmp_tl \l_clockdate_era_separator_tl
-                      \group_begin:
-                        \scshape a.d \clockdate_end_period:
-                      \group_end:
-                    }
-                }
-                { \l__clockdate_tmp_tl }
-            }
-            {
-              \l__clockdate_tmp_tl \l_clockdate_era_separator_tl
-              \group_begin: \scshape b.c \clockdate_end_period: \group_end:
-            }
-        }
-        { ad-scshape }
-        {
-          \int_compare:nNnTF {#1} > 0
-            {
-              \int_compare:nNnTF {#1} < \l_clockdate_era_threshold_int
-                {
-                  \bool_if:NTF \l_clockdate_ad_first_bool
-                    {
-                      \textsc {ad} \l_clockdate_ad_first_separator_tl
-                      \l__clockdate_tmp_tl
-                    }
-                    {
-                      \l__clockdate_tmp_tl \l_clockdate_era_separator_tl
-                      \textsc {ad}
-                    }
-                }
-                { \l__clockdate_tmp_tl }
-            }
-            {
-              \l__clockdate_tmp_tl \l_clockdate_era_separator_tl \textsc {bc}
-            }
-        }
-        { none } { \l__clockdate_tmp_tl }
-        { integer }
-        {
-          \int_case:nn { \int_sign:n {#1} }
-            {
-              {  1 } { \l_clockdate_positive_year_prefix_tl }
-              {  0 } { \l_clockdate_zero_year_prefix_tl }
-              { -1 } { \l_clockdate_negative_year_prefix_tl }
-            }
-          \l__clockdate_tmp_tl
-        }
+          }
       }
   }
+\group_begin:
+  \cs_set_protected:Npn \__clockdate_tmp:nnn #1#2#3
+    {
+      \quark_if_recursion_tail_stop:n {#1}
+      \cs_new_protected:cpn { __clockdate_print_year_#1:n } ##1
+        {
+          \l__clockdate_tmp_tl
+          \int_compare:nNnTF {##1} > 0
+            {
+              \int_compare:nNnT {##1} < \l_clockdate_era_threshold_int
+                { \l_clockdate_era_separator_tl #2 }
+            }
+            { \l_clockdate_era_separator_tl #3 }
+        }
+      \__clockdate_tmp:nnn
+    }
+  \__clockdate_tmp:nnn
+    { C.E. } { C.E \clockdate_end_period: } { B.C.E \clockdate_end_period: }
+    { CE } { CE \@ } { BCE \@ }
+    { c.e. } { c.e \clockdate_end_period: } { b.c.e \clockdate_end_period: }
+    { ce } { ce } { bce }
+    { c.e.-scshape }
+      { \group_begin: \scshape c.e \clockdate_end_period: \group_end: }
+      { \group_begin: \scshape b.c.e \clockdate_end_period: \group_end: }
+    { ce-scshape } { \textsc {ce} } { \textsc {bce} }
+    { \q_recursion_tail } { } { }
+  \q_recursion_stop
+  \cs_set_protected:Npn \__clockdate_tmp:nnnn #1#2#3#4
+    {
+      \quark_if_recursion_tail_stop:n {#1}
+      \cs_new_protected:cpn { __clockdate_print_year_#1:n } ##1
+        {
+          \int_compare:nNnTF {##1} > 0
+            {
+              \int_compare:nNnTF {##1} < \l_clockdate_era_threshold_int
+                {
+                  \bool_if:NTF \l_clockdate_ad_first_bool
+                    {
+                      #2 \l_clockdate_ad_first_separator_tl
+                      \l__clockdate_tmp_tl
+                    }
+                    { \l__clockdate_tmp_tl \l_clockdate_era_separator_tl #3 }
+                }
+                { \l__clockdate_tmp_tl }
+            }
+            { \l__clockdate_tmp_tl \l_clockdate_era_separator_tl #4 }
+        }
+      \__clockdate_tmp:nnnn
+    }
+  \__clockdate_tmp:nnnn
+    { A.D. } { A.D. \@ } { A.D \clockdate_end_period: }
+      { B.C \clockdate_end_period: }
+    { AD } { AD \@ } { AD \@ } { BC \@ }
+    { a.d. } { a.d. \@ } { a.d \clockdate_end_period: }
+      { b.c \clockdate_end_period: }
+    { ad } { ad } { ad } { bc }
+    { a.d.-scshape } { \textsc {a.d.} \@ }
+      { \group_begin: \scshape a.d \clockdate_end_period: \group_end: }
+      { \group_begin: \scshape b.c \clockdate_end_period: \group_end: }
+    { ad-scshape } { \textsc {ad} } { \textsc {ad} } { \textsc {bc} }
+    { \q_recursion_tail } { } { } { }
+  \q_recursion_stop
+\group_end:
 \cs_new_protected:Npn \__clockdate_print_months:
   {
     \seq_use:Nnnn \l__clockdate_months_seq
