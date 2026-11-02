@@ -1,7 +1,7 @@
 % Loading the class
 
 \NeedsTeXFormat{LaTeX2e}[2023-11-01]
-\ProvidesExplClass{beerydoc}{2026-10-31}{0.0.0}{}
+\ProvidesExplClass{beerydoc}{2026-11-01}{0.0.0}{}
 \prop_gput:Nnn \g_msg_module_type_prop { beerydoc } { Class }
 
 \msg_new:nnn { beerydoc } { l3kernel }
@@ -168,6 +168,8 @@
 \cs_new:Npe \digits { \c_beerydoc_digits_str }
 \cs_new:Npe \pangram { \c_beerydoc_pangram_tl }
 
+\NewDocumentCommand \beerydocsetup { m } { \keys_set:nn { beerydoc } {#1} }
+
 \NewDocumentCommand \key { o m }
   {
     \mode_if_math:TF
@@ -190,12 +192,6 @@
       \keys_set:nn { beerydoc / key } {#1}
       \__beerydoc_key_value:n {#2}
     \group_end:
-  }
-\keys_define:nn { beerydoc / key }
-  {
-      neq .bool_set:N = \l__beerydoc_key_value_neq_bool
-    , neq .value_forbidden:n = true
-    , neq .default:n = true
   }
 \cs_new_protected:Npn \__beerydoc_key_value:w #1 = #2 \q__beerydoc_stop
   {
@@ -504,20 +500,6 @@
 % codedoc and syntax environments
 
 % For the codedoc and syntax environments, I have used ideas from l3doc.
-\str_new:N \l__beerydoc_codedoc_input_separator_str
-\str_set:Nn \l__beerydoc_codedoc_input_separator_str { , }
-\keys_define:nn { beerydoc / codedoc }
-  {
-      input-separator .code:n =
-        {
-          \str_set:Nn \l__beerydoc_codedoc_input_separator_str {#1}
-          \str_if_empty:NT \l__beerydoc_codedoc_input_separator_str
-            { \msg_error:nn { beerydoc } { codedoc-input-separator-invalid } }
-          \str_if_in:NnT \l__beerydoc_codedoc_input_separator_str { ~ }
-            { \msg_error:nn { beerydoc } { codedoc-input-separator-invalid } }
-        }
-    , input-separator .value_required:n = true
-  }
 \NewDocumentEnvironment { codedoc } { o +v }
   {
     \IfNoValueF {#1} { \keys_set:nn { beerydoc / codedoc } {#1} }
@@ -726,14 +708,6 @@
       { \msg_error:nn { beerydoc } { syntax-env-not-nestable } }
     \bool_set_true:N \l__beerydoc_syntax_bool
   }
-
-\keys_define:nn { beerydoc / codedemo }
-  {
-      gobble .int_set:N = \l__beerydoc_codedemo_gobble_int
-    , gobble .value_required:n = true
-  }
-\int_set:Nn \l__beerydoc_codedemo_gobble_int { 2 }
-
 \NewDocumentEnvironment { codedemo } { o c }
   {
     \IfNoValueF {#1} { \keys_set:nn { beerydoc / codedemo } {#1} }
@@ -1123,6 +1097,34 @@
     \cs_set_eq:NN \cs   \__beerydoc_pdfstring_cs:n
     \cs_set_eq:NN \key  \__beerydoc_pdfstring_key_value:w
   }
+
+% Keys
+
+\keys_define:nn { beerydoc / key }
+  {
+      neq .bool_set:N = \l__beerydoc_key_value_neq_bool
+    , neq .default:n = true
+  }
+\str_new:N \l__beerydoc_codedoc_input_separator_str
+\str_set:Nn \l__beerydoc_codedoc_input_separator_str { , }
+\keys_define:nn { beerydoc / codedoc }
+  {
+      input-separator .code:n =
+        {
+          \str_set:Nn \l__beerydoc_codedoc_input_separator_str {#1}
+          \str_if_empty:NT \l__beerydoc_codedoc_input_separator_str
+            { \msg_error:nn { beerydoc } { codedoc-input-separator-invalid } }
+          \str_if_in:NnT \l__beerydoc_codedoc_input_separator_str { ~ }
+            { \msg_error:nn { beerydoc } { codedoc-input-separator-invalid } }
+        }
+    , input-separator .value_required:n = true
+  }
+\keys_define:nn { beerydoc / codedemo }
+  {
+      gobble .int_set:N = \l__beerydoc_codedemo_gobble_int
+    , gobble .value_required:n = true
+  }
+\int_set:Nn \l__beerydoc_codedemo_gobble_int { 2 }
 
 % Messages
 
