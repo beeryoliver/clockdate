@@ -37,6 +37,7 @@
 \seq_new:N \l__clockdate_years_seq
 \seq_new:N \l__clockdate_days_seq
 \seq_new:N \l__clockdate_months_seq
+\tl_new:N \l__clockdate_year_tl
 % Used to indicate when year-month(s) and month-day(s) cannot be distinguished.
 \bool_new:N \l__clockdate_priority_bool
 \bool_set_true:N \l__clockdate_priority_bool
@@ -1088,7 +1089,7 @@
   { \exp_args:NV \clockdate_print_year:n \l_clockdate_years_str }
 \cs_new_protected:Npn \clockdate_print_year:n #1
   {
-    \tl_set:Ne \l__clockdate_tmp_tl
+    \tl_set:Ne \l__clockdate_year_tl
       {
         \bool_lazy_or:nnTF
           { \int_compare_p:nNn {#1} > 0 }
@@ -1099,29 +1100,29 @@
       {
         { yy }
         {
-          \int_compare:nNnTF \l__clockdate_tmp_tl < { 100 }
+          \int_compare:nNnTF \l__clockdate_year_tl < { 100 }
             {
-              \int_compare:nNnT \l__clockdate_tmp_tl < { 10 }
-                { \tl_put_left:Nn \l__clockdate_tmp_tl { 0 } }
+              \int_compare:nNnT \l__clockdate_year_tl < { 10 }
+                { \tl_put_left:Nn \l__clockdate_year_tl { 0 } }
             }
             {
-              \tl_set:Ne \l__clockdate_tmp_tl
+              \tl_set:Ne \l__clockdate_year_tl
                 {
                   \exp_not:N \l_clockdate_yy_year_prefix_tl
-                  \tl_range:Nnn \l__clockdate_tmp_tl { -2 } { -1 }
+                  \tl_range:Nnn \l__clockdate_year_tl { -2 } { -1 }
                 }
             }
         }
         { yyyy }
         {
-          \int_compare:nNnTF \l__clockdate_tmp_tl < { 10 }
-            { \tl_put_left:Nn \l__clockdate_tmp_tl { 000 } }
+          \int_compare:nNnTF \l__clockdate_year_tl < { 10 }
+            { \tl_put_left:Nn \l__clockdate_year_tl { 000 } }
             {
-              \int_compare:nNnTF \l__clockdate_tmp_tl < { 100 }
-                { \tl_put_left:Nn \l__clockdate_tmp_tl { 00 } }
+              \int_compare:nNnTF \l__clockdate_year_tl < { 100 }
+                { \tl_put_left:Nn \l__clockdate_year_tl { 00 } }
                 {
-                  \int_compare:nNnT \l__clockdate_tmp_tl < { 1000 }
-                    { \tl_put_left:Nn \l__clockdate_tmp_tl { 0 } }
+                  \int_compare:nNnT \l__clockdate_year_tl < { 1000 }
+                    { \tl_put_left:Nn \l__clockdate_year_tl { 0 } }
                 }
             }
         }
@@ -1129,20 +1130,16 @@
     \cs_if_exist_use:cTF
       { __clockdate_print_year_ \l_clockdate_era_format_str :n } { {#1} }
       {
-        \str_case:Vn \l_clockdate_era_format_str
+        \str_if_eq:eeT \l_clockdate_era_format_str { integer }
           {
-            { none } { \l__clockdate_tmp_tl }
-            { integer }
-            {
-              \int_case:nn { \int_sign:n {#1} }
-                {
-                  {  1 } { \l_clockdate_positive_year_prefix_tl }
-                  {  0 } { \l_clockdate_zero_year_prefix_tl }
-                  { -1 } { \l_clockdate_negative_year_prefix_tl }
-                }
-              \l__clockdate_tmp_tl
-            }
+            \int_case:nn { \int_sign:n {#1} }
+              {
+                {  1 } { \l_clockdate_positive_year_prefix_tl }
+                {  0 } { \l_clockdate_zero_year_prefix_tl }
+                { -1 } { \l_clockdate_negative_year_prefix_tl }
+              }
           }
+        \l__clockdate_year_tl
       }
   }
 \group_begin:
@@ -1151,7 +1148,7 @@
       \quark_if_recursion_tail_stop:n {#1}
       \cs_new_protected:cpn { __clockdate_print_year_#1:n } ##1
         {
-          \l__clockdate_tmp_tl
+          \l__clockdate_year_tl
           \int_compare:nNnTF {##1} > 0
             {
               \int_compare:nNnT {##1} < \l_clockdate_era_threshold_int
@@ -1184,13 +1181,13 @@
                   \bool_if:NTF \l_clockdate_ad_first_bool
                     {
                       #2 \l_clockdate_ad_first_separator_tl
-                      \l__clockdate_tmp_tl
+                      \l__clockdate_year_tl
                     }
-                    { \l__clockdate_tmp_tl \l_clockdate_era_separator_tl #3 }
+                    { \l__clockdate_year_tl \l_clockdate_era_separator_tl #3 }
                 }
-                { \l__clockdate_tmp_tl }
+                { \l__clockdate_year_tl }
             }
-            { \l__clockdate_tmp_tl \l_clockdate_era_separator_tl #4 }
+            { \l__clockdate_year_tl \l_clockdate_era_separator_tl #4 }
         }
       \__clockdate_tmp:nnnn
     }
