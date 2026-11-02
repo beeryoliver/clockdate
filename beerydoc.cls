@@ -1009,7 +1009,7 @@
 % Verbatim
 
 \usepackage{fancyvrb}
-\fvset { gobble = 2 }
+\fvset { gobble = 2 , fontsize = \small }
 \cs_set_eq:NN \verbatim \Verbatim
 \cs_set_eq:NN \endverbatim \endVerbatim
 
