@@ -1355,27 +1355,6 @@
     , ampm-omit-list .bool_set:N = \l_clockdate_ampm_omit_list_bool
     , ampm-omit-list .value_required:n = true
 
-    , clocks-pair-separator .tl_set:N = \l_clockdate_clocks_pair_separator_tl
-    , clocks-pair-separator .value_required:n = true
-
-    , clocks-nonfinal-separator .tl_set:N =
-        \l_clockdate_clocks_nonfinal_separator_tl
-    , clocks-nonfinal-separator .value_required:n = true
-
-    , clocks-final-separator .tl_set:N = \l_clockdate_clocks_final_separator_tl
-    , clocks-final-separator .value_required:n = true
-
-    , clocks-separator .code:n =
-        {
-          \tl_set:Nn \l_clockdate_clocks_pair_separator_tl {#1}
-          \tl_set:Nn \l_clockdate_clocks_nonfinal_separator_tl {#1}
-          \tl_set:Nn \l_clockdate_clocks_final_separator_tl {#1}
-        }
-    , clocks-separator .value_required:n = true
-
-    , clocks-range-separator .tl_set:N = \l_clockdate_clocks_range_separator_tl
-    , clocks-range-separator .value_required:n = true
-
     , priority .choices:nn = { MD , YM }
         { \str_set:Nn \l_clockdate_priority_str {#1} }
     , priority .value_required:n = true
@@ -1451,69 +1430,33 @@
 
     , zero-year-prefix .tl_set:N = \l_clockdate_zero_year_prefix_tl
     , zero-year-prefix .value_required:n = true
+  }
+\cs_set:Npn \__clockdate_tmp:n #1
+  {
+    , #1-pair-separator .tl_set:c = { l_clockdate_#1_pair_separator_tl }
+    , #1-pair-separator .value_required:n = true
 
-    , days-pair-separator .tl_set:N = \l_clockdate_days_pair_separator_tl
-    , days-pair-separator .value_required:n = true
+    , #1-nonfinal-separator .tl_set:c =
+        { l_clockdate_#1_nonfinal_separator_tl }
+    , #1-nonfinal-separator .value_required:n = true
 
-    , days-nonfinal-separator .tl_set:N =
-        \l_clockdate_days_nonfinal_separator_tl
-    , days-nonfinal-separator .value_required:n = true
+    , #1-final-separator .tl_set:c = { l_clockdate_#1_final_separator_tl }
+    , #1-final-separator .value_required:n = true
 
-    , days-final-separator .tl_set:N = \l_clockdate_days_final_separator_tl
-    , days-final-separator .value_required:n = true
-
-    , days-separator .code:n =
+    , #1-separator .code:n =
         {
-          \tl_set:Nn \l_clockdate_days_pair_separator_tl {#1}
-          \tl_set:Nn \l_clockdate_days_nonfinal_separator_tl {#1}
-          \tl_set:Nn \l_clockdate_days_final_separator_tl {#1}
+          \tl_set:Nn \exp_not:c { l_clockdate_#1_pair_separator_tl } {##1}
+          \tl_set:Nn \exp_not:c { l_clockdate_#1_nonfinal_separator_tl } {##1}
+          \tl_set:Nn \exp_not:c { l_clockdate_#1_final_separator_tl } {##1}
         }
-    , days-separator .value_required:n = true
+    , #1-separator .value_required:n = true
 
-    , days-range-separator .tl_set:N = \l_clockdate_days_range_separator_tl
-    , days-range-separator .value_required:n = true
-
-    , months-pair-separator .tl_set:N = \l_clockdate_months_pair_separator_tl
-    , months-pair-separator .value_required:n = true
-
-    , months-nonfinal-separator .tl_set:N =
-        \l_clockdate_months_nonfinal_separator_tl
-    , months-nonfinal-separator .value_required:n = true
-
-    , months-final-separator .tl_set:N = \l_clockdate_months_final_separator_tl
-    , months-final-separator .value_required:n = true
-
-    , months-separator .code:n =
-        {
-          \tl_set:Nn \l_clockdate_months_pair_separator_tl {#1}
-          \tl_set:Nn \l_clockdate_months_nonfinal_separator_tl {#1}
-          \tl_set:Nn \l_clockdate_months_final_separator_tl {#1}
-        }
-    , months-separator .value_required:n = true
-
-    , months-range-separator .tl_set:N = \l_clockdate_months_range_separator_tl
-    , months-range-separator .value_required:n = true
-
-    , years-pair-separator .tl_set:N = \l_clockdate_years_pair_separator_tl
-    , years-pair-separator .value_required:n = true
-
-    , years-nonfinal-separator .tl_set:N =
-        \l_clockdate_years_nonfinal_separator_tl
-    , years-nonfinal-separator .value_required:n = true
-
-    , years-final-separator .tl_set:N = \l_clockdate_years_final_separator_tl
-    , years-final-separator .value_required:n = true
-
-    , years-separator .code:n =
-        {
-          \tl_set:Nn \l_clockdate_years_pair_separator_tl {#1}
-          \tl_set:Nn \l_clockdate_years_nonfinal_separator_tl {#1}
-          \tl_set:Nn \l_clockdate_years_final_separator_tl {#1}
-        }
-    , years-separator .value_required:n = true
-
-    , years-range-separator .tl_set:N = \l_clockdate_years_range_separator_tl
-    , years-range-separator .value_required:n = true
+    , #1-range-separator .tl_set:c = { l_clockdate_#1_range_separator_tl }
+    , #1-range-separator .value_required:n = true
+  }
+\keys_define:ne { clockdate }
+  {
+    \tl_map_function:nN { {clocks} {days} {months} {years} } \__clockdate_tmp:n
   }
 
 \cs_new_protected:Npn \__clockdate_keys_set_initial:
