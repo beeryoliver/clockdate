@@ -1,7 +1,7 @@
 % Loading the class
 
 \NeedsTeXFormat{LaTeX2e}[2023-11-01]
-\ProvidesExplClass{beerydoc}{2026-11-01}{0.0.0}{}
+\ProvidesExplClass{beerydoc}{2026-11-04}{0.0.0}{}
 \prop_gput:Nnn \g_msg_module_type_prop { beerydoc } { Class }
 
 \msg_new:nnn { beerydoc } { l3kernel }
@@ -226,16 +226,22 @@
   {
     \group_begin:
       \tl_set:Nn \l__beerydoc_value_tl {#1}
-      \tl_replace_all:NVn \l__beerydoc_value_tl \c__beerydoc_active_vert_tl
-        { | }
-      \tl_replace_all:NVn \l__beerydoc_value_tl \c_catcode_active_space_tl
-        { \textvisiblespace }
-      \tl_replace_all:Nnn \l__beerydoc_value_tl { ~ } { \textvisiblespace }
+      \__beerydoc_value_list_replace:
       \seq_set_split:NnV \l__beerydoc_value_seq { | } \l__beerydoc_value_tl
       \ttfamily
       \seq_use:Nn \l__beerydoc_value_seq { \__beerydoc_value_separator: }
       \@
     \group_end:
+  }
+\cs_new_protected:Npe \__beerydoc_value_list_replace:
+  {
+    \tl_replace_all:Nnn \exp_not:N \l__beerydoc_value_tl
+      { \exp_not:V \c__beerydoc_active_vert_tl } { | }
+    \tl_replace_all:Nnn \exp_not:N \l__beerydoc_value_tl
+      { \exp_not:V \c_catcode_active_space_tl }
+      { \exp_not:N \textvisiblespace }
+    \tl_replace_all:Nnn \exp_not:N \l__beerydoc_value_tl
+      { ~ } { \exp_not:N \textvisiblespace }
   }
 \cs_new_protected:Npn \__beerydoc_value_separator:
   { \ensuremath { \, \vert \, } }
@@ -272,11 +278,13 @@
     \tl_replace_all:Nnn \exp_not:N \l__beerydoc_cs_tl
       { \exp_not:N \_ } { \c_underscore_str }
   }
-\cs_new_protected:Npn \__beerydoc_cs_replace_spaces:
+\cs_new_protected:Npe \__beerydoc_cs_replace_spaces:
   {
-    \tl_replace_all:NVn \l__beerydoc_cs_tl \c_catcode_active_space_tl
-      { \textvisiblespace }
-    \tl_replace_all:Nnn \l__beerydoc_cs_tl { ~ } { \textvisiblespace }
+    \tl_replace_all:Nnn \exp_not:N \l__beerydoc_cs_tl
+      { \exp_not:V \c_catcode_active_space_tl }
+      { \exp_not:N \textvisiblespace }
+    \tl_replace_all:Nnn \exp_not:N \l__beerydoc_cs_tl
+      { ~ } { \exp_not:N \textvisiblespace }
   }
 \cs_new_protected:Npn \__beerydoc_cs_hyphenation:
   {
@@ -690,9 +698,10 @@
           \bool_if:NT \l__beerydoc_codedoc_names_long_bool
             { - \l__beerydoc_codedoc_names_dim + \marginparwidth }
         }
-      \skip_zero:N \parskip
       \ttfamily \small
       \raggedright
+      \skip_zero:N \parskip
+      \dim_zero:N \parindent
       \obeyspaces \obeylines
   }
 \cs_new_protected:Npn \__beerydoc_syntax_end:
@@ -762,18 +771,14 @@
     \vcoffin_set:Nnn \l__beerydoc_codedemo_verb_coffin { \textwidth }
       {
         \ttfamily \small
-        \skip_zero:N \parskip
         \raggedright
+        \skip_zero:N \parskip
+        \dim_zero:N \parindent
         \cs_set_protected:Npn \obeyedline { \mbox { } \par }
-        \noindent
         \l__beerydoc_codedemo_verb_tl
       }
     \vcoffin_set:Nnn \l__beerydoc_codedemo_use_coffin { \textwidth }
-      {
-        \raggedright
-        \noindent
-        \tl_retokenize:V \l__beerydoc_codedemo_use_tl
-    }
+      { \tl_retokenize:V \l__beerydoc_codedemo_use_tl }
     \coffin_join:NnnNnnnn
       \l__beerydoc_codedemo_verb_coffin { l } { b }
       \l__beerydoc_codedemo_use_coffin  { l } { t }
