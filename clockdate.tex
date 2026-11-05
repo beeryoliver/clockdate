@@ -1247,15 +1247,15 @@ This subsection documents the variables that are set by \cs{clockdatesetup}
 (\S\ref{sec:cmds}).
 They are read-only and should not be modified directly.
 
-\begin{codedoc}{\l_clockdate_clock_format_str}
+\begin{codedoc}{\l_clockdate_clock_str}
   The value of the key \key{clock} (\S\ref{subsec:clock}).
 \end{codedoc}
 
 \begin{codedoc}
   {
-    \l_clockdate_hour_format_str,
-    \l_clockdate_minute_format_str,
-    \l_clockdate_second_format_str,
+    \l_clockdate_hour_str,
+    \l_clockdate_minute_str,
+    \l_clockdate_second_str,
     \l_clockdate_hour_minute_separator_tl,
     \l_clockdate_minute_second_separator_tl
   }
@@ -1264,7 +1264,7 @@ They are read-only and should not be modified directly.
 
 \begin{codedoc}
   {
-    \l_clockdate_ampm_format_str,
+    \l_clockdate_ampm_str,
     \l_clockdate_ampm_separator_tl,
     \l_clockdate_ampm_omit_range_bool,
     \l_clockdate_ampm_omit_list_bool
@@ -1293,10 +1293,10 @@ They are read-only and should not be modified directly.
 
 \begin{codedoc}
   {
-    \l_clockdate_year_format_str,
+    \l_clockdate_year_str,
     \l_clockdate_yy_year_prefix_tl,
-    \l_clockdate_month_format_str,
-    \l_clockdate_day_format_str,
+    \l_clockdate_month_str,
+    \l_clockdate_day_str,
     \l_clockdate_day_ordinal_bool,
     \l_clockdate_year_month_separator_tl,
     \l_clockdate_month_day_separator_tl,
@@ -1307,7 +1307,7 @@ They are read-only and should not be modified directly.
 
 \begin{codedoc}
   {
-    \l_clockdate_era_format_str,
+    \l_clockdate_era_str,
     \l_clockdate_era_threshold_int,
     \l_clockdate_era_separator_tl,
     \l_clockdate_ad_first_bool,
@@ -1470,16 +1470,16 @@ The initial definitions are in \file{clockdate.sty}.
   |#1| represents the value of \meta{day}.
 \end{codedoc}
 
-\begin{codedoc}{\clockdate_day_ordinal_format:n}
+\begin{codedoc}{\clockdate_day_ordinal:n}
   \begin{syntax}
-    \cs{clockdate_day_ordinal_format:n} \marg{day}
+    \cs{clockdate_day_ordinal:n} \marg{day}
   \end{syntax}
   Function used in \cs{clockdate_print_day:n} that sets the format in which the
   suffix of the ordinal day is printed.
   |#1| represents the value of \meta{day}.
   The initial definition is:
   \begin{verbatim}
-    \cs_new_protected:Npn \clockdate_day_ordinal_format:n #1
+    \cs_new_protected:Npn \clockdate_day_ordinal:n #1
       {
         \textsuperscript
           {

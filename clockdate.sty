@@ -451,8 +451,8 @@
   {
     \bool_lazy_all:nTF
       {
-        { \str_if_eq_p:ee \l_clockdate_clock_format_str { 12 } }
-        { ! \str_if_eq_p:ee \l_clockdate_ampm_format_str { none } }
+        { \str_if_eq_p:ee \l_clockdate_clock_str { 12 } }
+        { ! \str_if_eq_p:ee \l_clockdate_ampm_str { none } }
         {
           ! \bool_lazy_all_p:n
             {
@@ -504,14 +504,14 @@
   {
     \int_set:Nn \l__clockdate_tmp_int
       {
-        \str_if_eq:eeTF \l_clockdate_clock_format_str { 24 } {#1}
+        \str_if_eq:eeTF \l_clockdate_clock_str { 24 } {#1}
           {
             \int_if_zero:nTF {#1} { 12 }
               { #1 \int_compare:nNnT {#1} > { 12 } { - 12 } }
           }
       }
     \bool_lazy_and:nnT
-      { \str_if_eq_p:ee \l_clockdate_hour_format_str { hh } }
+      { \str_if_eq_p:ee \l_clockdate_hour_str { hh } }
       { \int_compare_p:nNn \l__clockdate_tmp_int < { 10 } }
       { 0 }
     \int_use:N \l__clockdate_tmp_int
@@ -519,7 +519,7 @@
 \cs_new_protected:Npn \clockdate_print_minute:n #1
   {
     \bool_lazy_and:nnT
-      { \str_if_eq_p:ee \l_clockdate_minute_format_str { mm } }
+      { \str_if_eq_p:ee \l_clockdate_minute_str { mm } }
       { \int_compare_p:nNn {#1} < { 10 } }
       { 0 }
     #1
@@ -527,14 +527,14 @@
 \cs_new_protected:Npn \clockdate_print_second:n #1
   {
     \bool_lazy_and:nnT
-      { \str_if_eq_p:ee \l_clockdate_second_format_str { ss } }
+      { \str_if_eq_p:ee \l_clockdate_second_str { ss } }
       { \int_compare_p:nNn {#1} < { 10 } }
       { 0 }
     #1
   }
 \cs_new_protected:Npn \clockdate_print_am:
   {
-    \str_case:Vn \l_clockdate_ampm_format_str
+    \str_case:Vn \l_clockdate_ampm_str
       {
         { A.M. } { A.M \clockdate_end_period: }
         { AM   } { AM \@ }
@@ -550,7 +550,7 @@
   }
 \cs_new_protected:Npn \clockdate_print_pm:
   {
-    \str_case:Vn \l_clockdate_ampm_format_str
+    \str_case:Vn \l_clockdate_ampm_str
       {
         { A.M. } { P.M \clockdate_end_period: }
         { AM   } { PM \@ }
@@ -1103,10 +1103,10 @@
       {
         \bool_lazy_or:nnTF
           { \int_compare_p:nNn {#1} > 0 }
-          { \str_if_eq_p:ee \l_clockdate_era_format_str { integer } }
+          { \str_if_eq_p:ee \l_clockdate_era_str { integer } }
           { \int_abs:n {#1} } { \int_eval:n { 1 - #1 } }
       }
-    \str_case:Vn \l_clockdate_year_format_str
+    \str_case:Vn \l_clockdate_year_str
       {
         { yy }
         {
@@ -1137,10 +1137,10 @@
             }
         }
       }
-    \cs_if_exist_use:cTF
-      { __clockdate_print_year_ \l_clockdate_era_format_str :n } { {#1} }
+    \cs_if_exist_use:cTF { __clockdate_print_year_ \l_clockdate_era_str :n }
+      { {#1} }
       {
-        \str_if_eq:eeT \l_clockdate_era_format_str { integer }
+        \str_if_eq:eeT \l_clockdate_era_str { integer }
           {
             \int_case:nn { \int_sign:n {#1} }
               {
@@ -1226,7 +1226,7 @@
   { \exp_args:NV \clockdate_print_month:n \l_clockdate_months_str }
 \cs_new_protected:Npn \clockdate_print_month:n #1
   {
-    \str_case:Vn \l_clockdate_month_format_str
+    \str_case:Vn \l_clockdate_month_str
       {
         { m } {#1}
         { mm } { \int_compare:nNnT {#1} < { 10 } { 0 } #1 }
@@ -1258,14 +1258,13 @@
 \cs_new_protected:Npn \clockdate_print_day:n #1
   {
     \bool_lazy_and:nnT
-      { \str_if_eq_p:ee \l_clockdate_day_format_str { dd } }
+      { \str_if_eq_p:ee \l_clockdate_day_str { dd } }
       { \int_compare_p:nNn {#1} < { 10 } }
       { 0 }
     #1
-    \bool_if:NT \l_clockdate_day_ordinal_bool
-      { \clockdate_day_ordinal_format:n {#1} }
+    \bool_if:NT \l_clockdate_day_ordinal_bool { \clockdate_day_ordinal:n {#1} }
   }
-\cs_new_protected:Npn \clockdate_day_ordinal_format:n #1
+\cs_new_protected:Npn \clockdate_day_ordinal:n #1
   {
     \textsuperscript
       {
@@ -1285,18 +1284,18 @@
 \bool_new:N \g__clockdate_redefine_date_bool
 \prop_new:N \l_clockdate_load_prop
 
-\str_new:N \l_clockdate_clock_format_str
-\str_new:N \l_clockdate_hour_format_str
-\str_new:N \l_clockdate_minute_format_str
-\str_new:N \l_clockdate_second_format_str
-\str_new:N \l_clockdate_ampm_format_str
+\str_new:N \l_clockdate_clock_str
+\str_new:N \l_clockdate_hour_str
+\str_new:N \l_clockdate_minute_str
+\str_new:N \l_clockdate_second_str
+\str_new:N \l_clockdate_ampm_str
 
 \str_new:N \l_clockdate_priority_str
 \str_new:N \l_clockdate_order_str
-\str_new:N \l_clockdate_year_format_str
-\str_new:N \l_clockdate_month_format_str
-\str_new:N \l_clockdate_day_format_str
-\str_new:N \l_clockdate_era_format_str
+\str_new:N \l_clockdate_year_str
+\str_new:N \l_clockdate_month_str
+\str_new:N \l_clockdate_day_str
+\str_new:N \l_clockdate_era_str
 
 \keys_define:nn { clockdate }
   {
@@ -1323,19 +1322,18 @@
     , load .value_required:n = true
 
     , clock .choices:nn = { 12 , 24 }
-        { \str_set:Nn \l_clockdate_clock_format_str {#1} }
+        { \str_set:Nn \l_clockdate_clock_str {#1} }
     , clock .value_required:n = true
 
-    , hour .choices:nn = { h , hh }
-        { \str_set:Nn \l_clockdate_hour_format_str {#1} }
+    , hour .choices:nn = { h , hh } { \str_set:Nn \l_clockdate_hour_str {#1} }
     , hour .value_required:n = true
 
     , minute .choices:nn = { m , mm }
-        { \str_set:Nn \l_clockdate_minute_format_str {#1} }
+        { \str_set:Nn \l_clockdate_minute_str {#1} }
     , minute .value_required:n = true
 
     , second .choices:nn = { s , ss }
-        { \str_set:Nn \l_clockdate_second_format_str {#1} }
+        { \str_set:Nn \l_clockdate_second_str {#1} }
     , second .value_required:n = true
 
     , hour-minute-separator .tl_set:N = \l_clockdate_hour_minute_separator_tl
@@ -1354,7 +1352,7 @@
 
     , ampm .choices:nn =
         { A.M., AM, A, a.m., am, a, a.m.-scshape, am-scshape, a-scshape, none }
-        { \str_set:Nn \l_clockdate_ampm_format_str {#1} }
+        { \str_set:Nn \l_clockdate_ampm_str {#1} }
     , ampm .value_required:n = true
 
     , ampm-separator .tl_set:N = \l_clockdate_ampm_separator_tl
@@ -1378,18 +1376,17 @@
     , capitalize-first .value_required:n = true
 
     , year .choices:nn = { y , yy , yyyy }
-        { \str_set:Nn \l_clockdate_year_format_str {#1} }
+        { \str_set:Nn \l_clockdate_year_str {#1} }
     , year .value_required:n = true
 
     , yy-year-prefix .tl_set:N = \l_clockdate_yy_year_prefix_tl
     , yy-year-prefix .value_required:n = true
 
     , month .choices:nn = { m , mm , mmm , mmmm , abbr }
-        { \str_set:Nn \l_clockdate_month_format_str {#1} }
+        { \str_set:Nn \l_clockdate_month_str {#1} }
     , month .value_required:n = true
 
-    , day .choices:nn = { d , dd }
-        { \str_set:Nn \l_clockdate_day_format_str {#1} }
+    , day .choices:nn = { d , dd } { \str_set:Nn \l_clockdate_day_str {#1} }
     , day .value_required:n = true
 
     , day-ordinal .bool_set:N = \l_clockdate_day_ordinal_bool
@@ -1418,7 +1415,7 @@
           A.D., AD, a.d., ad, a.d.-scshape, ad-scshape,
           none, integer
         }
-        { \str_set:Nn \l_clockdate_era_format_str {#1} }
+        { \str_set:Nn \l_clockdate_era_str {#1} }
     , era .value_required:n = true
 
     , era-threshold .int_set:N = \l_clockdate_era_threshold_int
@@ -1472,13 +1469,13 @@
 
 \cs_new_protected:Npn \__clockdate_keys_set_initial:
   {
-    \str_set:Nn \l_clockdate_clock_format_str { 12 }
-    \str_set:Nn \l_clockdate_hour_format_str { h }
-    \str_set:Nn \l_clockdate_minute_format_str { mm }
-    \str_set:Nn \l_clockdate_second_format_str { ss }
+    \str_set:Nn \l_clockdate_clock_str { 12 }
+    \str_set:Nn \l_clockdate_hour_str { h }
+    \str_set:Nn \l_clockdate_minute_str { mm }
+    \str_set:Nn \l_clockdate_second_str { ss }
     \tl_set:NV \l_clockdate_hour_minute_separator_tl \c_colon_str
     \tl_set:NV \l_clockdate_minute_second_separator_tl \c_colon_str
-    \str_set:Nn \l_clockdate_ampm_format_str { AM }
+    \str_set:Nn \l_clockdate_ampm_str { AM }
     \tl_set:Nn \l_clockdate_ampm_separator_tl { \nobreakspace }
     \bool_set_true:N \l_clockdate_ampm_omit_range_bool
     \bool_set_true:N \l_clockdate_ampm_omit_list_bool
@@ -1490,15 +1487,15 @@
     \str_set:Nn \l_clockdate_priority_str { MD }
     \str_set:Nn \l_clockdate_order_str { DMY }
     \bool_set_false:N \l_clockdate_capitalize_first_bool
-    \str_set:Nn \l_clockdate_year_format_str { y }
+    \str_set:Nn \l_clockdate_year_str { y }
     \tl_set:Nn \l_clockdate_yy_year_prefix_tl { \rq }
-    \str_set:Nn \l_clockdate_month_format_str { mmmm }
-    \str_set:Nn \l_clockdate_day_format_str { d }
+    \str_set:Nn \l_clockdate_month_str { mmmm }
+    \str_set:Nn \l_clockdate_day_str { d }
     \bool_set_false:N \l_clockdate_day_ordinal_bool
     \tl_set_eq:NN \l_clockdate_year_month_separator_tl \c_space_tl
     \tl_set_eq:NN \l_clockdate_month_day_separator_tl \c_space_tl
     \tl_set:Nn \l_clockdate_year_day_separator_tl { ,~ }
-    \str_set:Nn \l_clockdate_era_format_str { CE }
+    \str_set:Nn \l_clockdate_era_str { CE }
     \int_set:Nn \l_clockdate_era_threshold_int { 100 }
     \tl_set:Nn \l_clockdate_era_separator_tl { \nobreakspace }
     \bool_set_true:N \l_clockdate_ad_first_bool
