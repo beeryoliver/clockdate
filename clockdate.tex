@@ -644,16 +644,17 @@ This subsection documents the keys that modify the behavior of
 
 \begin{codedoc}{month}
   \begin{syntax}
-    \key{month=m|mm|mmm|mmmm}
+    \key{month=m|mm|mmm|mmmm|abbr}
   \end{syntax}
   Choice key that sets the format in which the month is printed.
   |m| prints the month with the minimum number of digits.
-  |mm| prints the month with two digits, adding a leading zero if necessary.
-  |mmm| prints the month in short form.
+  |mm| prints the two-digit month, adding a leading zero if necessary.
+  |mmm| prints the 3-letter month.
   |mmmm| prints the month with the name of the month fully spelled out.
+  |abbr| prints the abbreviated month.
   The initial value is |mmmm|.
 
-  By default, |mmm| prints the month in the same form as |mmmm|, except that
+  By default, |abbr| prints the month in the same form as |mmmm|, except that
   some months are abbreviated: Jan., Feb., Aug., Sept., Oct., Nov., Dec.
   If \cs{calendardate} ends with a month that ends with a period, then the
   trailing month will not print an extra period if the next token after
@@ -663,19 +664,35 @@ This subsection documents the keys that modify the behavior of
   See \S\ref{subsec:expl3date} for more details.
   \begin{codedemo}
     \calendardate{2-14}\\
+    \calendardate{1-1}\\
     \calendardate[month=mmm]{2-14}\\
+    \calendardate[month=mmm]{1-1}\\
     \calendardate[month=mm]{2-14}\\
+    \calendardate[month=mm]{1-1}\\
     \calendardate[month=m]{2-14}\\
-    \clockdatesetup{month=mmm, order=YMD}%
-    \calendardate{2011-1}.\\
-    \calendardate{2011-2}.\\
-    \calendardate{2011-8}.\\
-    \calendardate{2011-9}.\\
-    \calendardate{2011-10}.\\
-    \calendardate{2011-11}.\\
-    \calendardate{2011-12}.
+    \calendardate[month=m]{1-1}\\
+    \calendardate[month=abbr]{2-14}\\
+    \calendardate[month=abbr]{1-1}
   \end{codedemo}
 \end{codedoc}
+\begin{codedemo}
+  \clockdatesetup{month=abbr, order=YMD}%
+  \calendardate{2011-1}.\\
+  \calendardate{2011-2}.\\
+  \calendardate{2011-8}.\\
+  \calendardate{2011-9}.\\
+  \calendardate{2011-10}.\\
+  \calendardate{2011-11}.\\
+  \calendardate{2011-12}.\\
+  \clockdatesetup{order=DMY}%
+  \calendardate{1-29}.\\
+  \calendardate{2-29}.\\
+  \calendardate{8-29}.\\
+  \calendardate{9-29}.\\
+  \calendardate{10-29}.\\
+  \calendardate{11-29}.\\
+  \calendardate{12-29}.
+\end{codedemo}
 
 \begin{codedoc}{day}
   \begin{syntax}
@@ -1411,9 +1428,14 @@ The initial definitions are in \file{clockdate.sty}.
   |#1| represents the value of \meta{month}.
 \end{codedoc}
 
-\begin{codedoc}{\l_clockdate_months_mmmm_seq, \l_clockdate_months_mmm_seq}
+\begin{codedoc}
+  {
+    \l_clockdate_months_mmmm_seq,
+    \l_clockdate_months_mmm_seq,
+    \l_clockdate_months_abbr_seq
+  }
   Variables used in \cs{clockdate_print_month:n} that store the months used if
-  the value of the key \key{month} is |mmmm| or |mmm|.
+  the value of the key \key{month} is |mmmm|, |mmm|, or |abbr|.
   The initial values are displayed in Table~\ref{table:months}.
 \end{codedoc}
 
@@ -1424,8 +1446,8 @@ The initial definitions are in \file{clockdate.sty}.
   month if it is printed at the start of \cs{calendardate}.
   This variable does not have defined behavior outside of
   \cs{clockdate_print_month:n}.
-  This variable may be used in \cs{l_clockdate_months_mmm_seq} and
-  \cs{l_clockdate_months_mmmm_seq}.
+  This variable may be used in \cs{l_clockdate_months_mmm_seq},
+  \cs{l_clockdate_months_mmmm_seq}, and \cs{l_clockdate_months_abbr_seq}.
 \end{codedoc}
 
 \begin{codedoc}{\clockdate_print_day:n}
@@ -1472,7 +1494,7 @@ The initial definitions are in \file{clockdate.sty}.
   This function is used in:
   \begin{itemize}
     \item \cs{clockdate_print_am:}, \cs{clockdate_print_pm:}
-    \item \cs{clockdate_print_month:n}, \cs{l_clockdate_months_mmm_seq}
+    \item \cs{clockdate_print_month:n}, \cs{l_clockdate_months_abbr_seq}
     \item \cs{clockdate_print_year:n}
   \end{itemize}
 

@@ -7,7 +7,7 @@
 % Loading the package
 
 \NeedsTeXFormat{LaTeX2e}[2023-11-01]
-\ProvidesExplPackage{clockdate}{2026-11-03}{1.0.0}
+\ProvidesExplPackage{clockdate}{2026-11-05}{1.0.0}
   {Print the time of day and the calendar date}
 
 \msg_new:nnn { clockdate } { l3kernel }
@@ -55,6 +55,9 @@
   }
 \seq_new:N \l_clockdate_months_mmm_seq
 \seq_set_split:Nnn \l_clockdate_months_mmm_seq { }
+  { {Jan} {Feb} {Mar} {Apr} {May} {Jun} {Jul} {Aug} {Sep} {Oct} {Nov} {Dec} }
+\seq_new:N \l_clockdate_months_abbr_seq
+\seq_set_split:Nnn \l_clockdate_months_abbr_seq { }
   {
     { Jan \clockdate_end_period: }
     { Feb \clockdate_end_period: }
@@ -1229,6 +1232,7 @@
         { mm } { \int_compare:nNnT {#1} < { 10 } { 0 } #1 }
         { mmm } { \seq_item:Nn \l_clockdate_months_mmm_seq {#1} }
         { mmmm } { \seq_item:Nn \l_clockdate_months_mmmm_seq {#1} }
+        { abbr } { \seq_item:Nn \l_clockdate_months_abbr_seq {#1} }
       }
   }
 \cs_new_protected:Npn \__clockdate_print_month_first:
@@ -1380,7 +1384,7 @@
     , yy-year-prefix .tl_set:N = \l_clockdate_yy_year_prefix_tl
     , yy-year-prefix .value_required:n = true
 
-    , month .choices:nn = { m , mm , mmm , mmmm }
+    , month .choices:nn = { m , mm , mmm , mmmm , abbr }
         { \str_set:Nn \l_clockdate_month_format_str {#1} }
     , month .value_required:n = true
 
