@@ -1226,14 +1226,12 @@
   { \exp_args:NV \clockdate_print_month:n \l_clockdate_months_str }
 \cs_new_protected:Npn \clockdate_print_month:n #1
   {
-    \str_case:Vn \l_clockdate_month_str
+    \str_case:VnF \l_clockdate_month_str
       {
         { m } {#1}
         { mm } { \int_compare:nNnT {#1} < { 10 } { 0 } #1 }
-        { mmm } { \seq_item:Nn \l_clockdate_months_mmm_seq {#1} }
-        { mmmm } { \seq_item:Nn \l_clockdate_months_mmmm_seq {#1} }
-        { abbr } { \seq_item:Nn \l_clockdate_months_abbr_seq {#1} }
       }
+      { \seq_item:cn { l_clockdate_months_ \l_clockdate_month_str _seq } {#1} }
   }
 \cs_new_protected:Npn \__clockdate_print_month_first:
   {
