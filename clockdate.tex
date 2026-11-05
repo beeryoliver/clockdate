@@ -29,7 +29,7 @@ Print the time of day and the calendar date
 
 Oliver Beery
 
-Version 1.0.0\quad\date{2026-11-4}
+Version 1.0.0\quad\date{2026-11-5}
 
 \pdfbookmark[1]{Contents}{contents}
 \tableofcontents
@@ -1151,9 +1151,9 @@ This subsection documents the keys that modify the behavior of
     \key{load=\meta{string}}
   \end{syntax}
   The key \key{load} should be used to load precompiled \pkg{clockdate} keys.
-  \meta{string} must be a key in \cs{l_clockdate_load_prop}.
-  The value of each key in \cs{l_clockdate_load_prop} should contain
-  precompiled \pkg{clockdate} keys.
+  \meta{string} must be a \meta{key} in \cs{l_clockdate_load_prop}.
+  The \meta{value} of each \meta{key} in \cs{l_clockdate_load_prop} should
+  contain precompiled \pkg{clockdate} keys.
   \cs{l_clockdate_load_prop} initially contains no entries.
 
   The following example initializes \key{load=or} to load precompiled keys:
