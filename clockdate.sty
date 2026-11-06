@@ -7,7 +7,7 @@
 % Loading the package
 
 \NeedsTeXFormat{LaTeX2e}[2023-11-01]
-\ProvidesExplPackage{clockdate}{2026-11-05}{1.0.0}
+\ProvidesExplPackage{clockdate}{2026-11-06}{1.0.0}
   {Print the time of day and the calendar date}
 
 \msg_new:nnn { clockdate } { l3kernel }
@@ -1260,9 +1260,10 @@
       { \int_compare_p:nNn {#1} < { 10 } }
       { 0 }
     #1
-    \bool_if:NT \l_clockdate_day_ordinal_bool { \clockdate_day_ordinal:n {#1} }
+    \bool_if:NT \l_clockdate_day_ordinal_bool
+      { \clockdate_print_day_ordinal:n {#1} }
   }
-\cs_new_protected:Npn \clockdate_day_ordinal:n #1
+\cs_new_protected:Npn \clockdate_print_day_ordinal:n #1
   {
     \textsuperscript
       {
