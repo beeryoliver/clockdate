@@ -1454,6 +1454,7 @@ The initial definitions are in \file{clockdate.sty}.
 
 \input{clockdate-input-months.tex}
 
+\clearpage % manual, needed to correct bad float placement
 \begin{codedoc}{\l_clockdate_if_capitalized_bool}
   Boolean that may be used in \cs{clockdate_print_month:n} to capitalize the
   month if it is printed at the start of \cs{calendardate}.
@@ -1461,6 +1462,46 @@ The initial definitions are in \file{clockdate.sty}.
   \cs{clockdate_print_month:n}.
   This variable may be used in \cs{l_clockdate_months_mmm_seq},
   \cs{l_clockdate_months_mmmm_seq}, and \cs{l_clockdate_months_abbr_seq}.
+
+  The example below sets \cs{l_clockdate_months_mmmm_seq} for Spanish months.
+  \begin{codedemo}
+    \ExplSyntaxOn
+    \seq_set_from_clist:Nn \l_clockdate_months_mmmm_seq
+      {
+          \bool_if:NTF \l_clockdate_capitalize_first_bool
+            { Enero } { enero }
+        , \bool_if:NTF \l_clockdate_capitalize_first_bool
+            { Febrero } { febrero }
+        , \bool_if:NTF \l_clockdate_capitalize_first_bool
+            { Marzo } { marzo }
+        , \bool_if:NTF \l_clockdate_capitalize_first_bool
+            { Abril } { abril }
+        , \bool_if:NTF \l_clockdate_capitalize_first_bool
+            { Mayo } { mayo }
+        , \bool_if:NTF \l_clockdate_capitalize_first_bool
+            { Junio } { junio }
+        , \bool_if:NTF \l_clockdate_capitalize_first_bool
+            { Julio } { Julio }
+        , \bool_if:NTF \l_clockdate_capitalize_first_bool
+            { Agosto } { agosto }
+        , \bool_if:NTF \l_clockdate_capitalize_first_bool
+            { Septiembre } { septiembre }
+        , \bool_if:NTF \l_clockdate_capitalize_first_bool
+            { Octubre } { octubre }
+        , \bool_if:NTF \l_clockdate_capitalize_first_bool
+            { Noviembre } { noviembre }
+        , \bool_if:NTF \l_clockdate_capitalize_first_bool
+            { Diciembre } { diciembre }
+      }
+    \ExplSyntaxOff
+    \clockdatesetup{year-month-separator={ de }}
+    \calendardate{2026-1}\\
+    \calendardate{2026-2}\\
+    \calendardate{2026-3}\\
+    \Calendardate{2026-1}\\
+    \Calendardate{2026-2}\\
+    \Calendardate{2026-3}
+  \end{codedemo}
 \end{codedoc}
 
 \begin{codedoc}{\clockdate_print_day:n}
@@ -1532,7 +1573,7 @@ The initial definitions are in \file{clockdate.sty}.
 The \pkg{clockdate} package uses some ideas from the \pkg{datetime2} and
 \pkg{siunitx} packages.
 
-Some \pkg{clockdate} keys resemble some \pkg{datetime2} options:
+Some \pkg{clockdate} keys resemble some \pkg{datetime2} options:\nopagebreak
 \input{clockdate-input-datetime2.tex}
 
 \listheading
