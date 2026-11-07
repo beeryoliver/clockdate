@@ -1468,29 +1468,20 @@ The initial definitions are in \file{clockdate.sty}.
     \ExplSyntaxOn
     \seq_set_from_clist:Nn \l_clockdate_months_mmmm_seq
       {
-          \bool_if:NTF \l_clockdate_capitalize_first_bool
-            { Enero } { enero }
-        , \bool_if:NTF \l_clockdate_capitalize_first_bool
-            { Febrero } { febrero }
-        , \bool_if:NTF \l_clockdate_capitalize_first_bool
-            { Marzo } { marzo }
-        , \bool_if:NTF \l_clockdate_capitalize_first_bool
-            { Abril } { abril }
-        , \bool_if:NTF \l_clockdate_capitalize_first_bool
-            { Mayo } { mayo }
-        , \bool_if:NTF \l_clockdate_capitalize_first_bool
-            { Junio } { junio }
-        , \bool_if:NTF \l_clockdate_capitalize_first_bool
-            { Julio } { Julio }
-        , \bool_if:NTF \l_clockdate_capitalize_first_bool
-            { Agosto } { agosto }
-        , \bool_if:NTF \l_clockdate_capitalize_first_bool
+          \bool_if:NTF \l_clockdate_if_capitalized_bool { Enero } { enero }
+        , \bool_if:NTF \l_clockdate_if_capitalized_bool { Febrero } { febrero }
+        , \bool_if:NTF \l_clockdate_if_capitalized_bool { Marzo } { marzo }
+        , \bool_if:NTF \l_clockdate_if_capitalized_bool { Abril } { abril }
+        , \bool_if:NTF \l_clockdate_if_capitalized_bool { Mayo } { mayo }
+        , \bool_if:NTF \l_clockdate_if_capitalized_bool { Junio } { junio }
+        , \bool_if:NTF \l_clockdate_if_capitalized_bool { Julio } { Julio }
+        , \bool_if:NTF \l_clockdate_if_capitalized_bool { Agosto } { agosto }
+        , \bool_if:NTF \l_clockdate_if_capitalized_bool
             { Septiembre } { septiembre }
-        , \bool_if:NTF \l_clockdate_capitalize_first_bool
-            { Octubre } { octubre }
-        , \bool_if:NTF \l_clockdate_capitalize_first_bool
+        , \bool_if:NTF \l_clockdate_if_capitalized_bool { Octubre } { octubre }
+        , \bool_if:NTF \l_clockdate_if_capitalized_bool
             { Noviembre } { noviembre }
-        , \bool_if:NTF \l_clockdate_capitalize_first_bool
+        , \bool_if:NTF \l_clockdate_if_capitalized_bool
             { Diciembre } { diciembre }
       }
     \ExplSyntaxOff
