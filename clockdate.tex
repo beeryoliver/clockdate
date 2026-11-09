@@ -588,7 +588,7 @@ This subsection documents the keys that modify the behavior of
   the start of \cs{calendardate}.
   The initial value is |false|.
   See \cs{Calendardate} (\S\ref{sec:cmds}).
-  See \S\ref{subsec:expl3date} for more details.
+  See \S\ref{subsec:expl3date} for more information.
 \end{codedoc}
 
 \subsubsection{year, month, day}
@@ -673,7 +673,7 @@ This subsection documents the keys that modify the behavior of
   \cs{calendardate} is a period.
   If the month prints the period, it is followed by \cs{@} because the sentence
   does not end here.
-  See \S\ref{subsec:expl3date} for more details.
+  See \S\ref{subsec:expl3date} for more information.
   \begin{codedemo}
     \calendardate{2-14}\\
     \calendardate{1-1}\\
@@ -1489,11 +1489,8 @@ The initial definitions are in \file{clockdate.sty}.
 
 \begin{codedoc}{\l_clockdate_if_capitalized_bool}
   Boolean that may be used in \cs{clockdate_print_month:n} to capitalize the
-  month if both of the following are true:
-  \begin{itemize}
-    \item it is printed at the start of \cs{calendardate}
-    \item \key{capitalize-first=true} (\S\ref{subsec:date})
-  \end{itemize}
+  month if it is printed at the start of \cs{calendardate} and
+  \key{capitalize-first=true} (\S\ref{subsec:date}).
   This variable does not have defined behavior outside of
   \cs{clockdate_print_month:n}.
   The initial definition of \cs{clockdate_print_month:n} does not use
