@@ -7,7 +7,7 @@
 % Loading the package
 
 \NeedsTeXFormat{LaTeX2e}[2023-11-01]
-\ProvidesExplPackage{clockdate}{2026-11-08}{1.0.0}
+\ProvidesExplPackage{clockdate}{2026-11-09}{1.0.0}
   {Print the time of day and the calendar date}
 
 \msg_new:nnn { clockdate } { l3kernel }
@@ -897,9 +897,9 @@
                 \bool_lazy_and:nnTF
                   { \l_clockdate_capitalize_first_bool }
                   { ! \str_if_eq_p:ee \l_clockdate_order_str { YMD } }
-                  { \__clockdate_print_month_first:n {#1} }
-                  { \clockdate_print_month:n {#1} }
               }
+              { \__clockdate_print_month_first:n {#1} }
+              { \clockdate_print_month:n {#1} }
           }
           { \clockdate_print_month:n {#1} }
         \exp_not:N \l_clockdate_months_range_separator_tl
@@ -919,9 +919,9 @@
                 \bool_lazy_and:nnTF
                   { \l_clockdate_capitalize_first_bool }
                   { ! \str_if_eq_p:ee \l_clockdate_order_str { YMD } }
-                  { \__clockdate_print_month_first:n {#1} }
-                  { \clockdate_print_month:n {#1} }
               }
+              { \__clockdate_print_month_first:n {#1} }
+              { \clockdate_print_month:n {#1} }
           }
           { \clockdate_print_month:n {#1} }
       }
