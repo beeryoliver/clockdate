@@ -1489,11 +1489,15 @@ The initial definitions are in \file{clockdate.sty}.
 
 \begin{codedoc}{\l_clockdate_if_capitalized_bool}
   Boolean that may be used in \cs{clockdate_print_month:n} to capitalize the
-  month if it is printed at the start of \cs{calendardate}.
+  month if both of the following are true:
+  \begin{itemize}
+    \item it is printed at the start of \cs{calendardate}
+    \item \key{capitalize-first=true} (\S\ref{subsec:date})
+  \end{itemize}
   This variable does not have defined behavior outside of
   \cs{clockdate_print_month:n}.
-  This variable may be used in \cs{l_clockdate_months_mmm_seq},
-  \cs{l_clockdate_months_mmmm_seq}, and \cs{l_clockdate_months_abbr_seq}.
+  The initial definition of \cs{clockdate_print_month:n} does not use
+  \cs{l_clockdate_if_capitalized_bool}.
 \end{codedoc}
 
 \clearpage
