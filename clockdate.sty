@@ -7,7 +7,7 @@
 % Loading the package
 
 \NeedsTeXFormat{LaTeX2e}[2023-11-01]
-\ProvidesExplPackage{clockdate}{2026-11-06}{1.0.0}
+\ProvidesExplPackage{clockdate}{2026-11-08}{1.0.0}
   {Print the time of day and the calendar date}
 
 \msg_new:nnn { clockdate } { l3kernel }
@@ -1367,12 +1367,12 @@
         { \str_set:Nn \l_clockdate_priority_str {#1} }
     , priority .value_required:n = true
 
+    , capitalize-first .bool_set:N = \l_clockdate_capitalize_first_bool
+    , capitalize-first .value_required:n = true
+
     , order .choices:nn = { DMY , YMD , MDY }
         { \str_set:Nn \l_clockdate_order_str {#1} }
     , order .value_required:n = true
-
-    , capitalize-first .bool_set:N = \l_clockdate_capitalize_first_bool
-    , capitalize-first .value_required:n = true
 
     , year .choices:nn = { y , yy , yyyy }
         { \str_set:Nn \l_clockdate_year_str {#1} }
@@ -1484,8 +1484,8 @@
     \tl_set:Nn \l_clockdate_clocks_range_separator_tl { ~to~ }
 
     \str_set:Nn \l_clockdate_priority_str { MD }
-    \str_set:Nn \l_clockdate_order_str { DMY }
     \bool_set_false:N \l_clockdate_capitalize_first_bool
+    \str_set:Nn \l_clockdate_order_str { DMY }
     \str_set:Nn \l_clockdate_year_str { y }
     \tl_set:Nn \l_clockdate_yy_year_prefix_tl { \rq }
     \str_set:Nn \l_clockdate_month_str { mmmm }

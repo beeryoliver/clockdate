@@ -559,6 +559,17 @@ This subsection documents the keys that modify the behavior of
   \end{codedemo}
 \end{codedoc}
 
+\begin{codedoc}{capitalize-first}
+  \begin{syntax}
+    \key{capitalize-first=true|false}
+  \end{syntax}
+  Boolean key that sets if the month will be capitalized if it is printed at
+  the start of \cs{calendardate}.
+  The initial value is |false|.
+  See \cs{Calendardate} (\S\ref{sec:cmds}).
+  See \S\ref{subsec:expl3date} for more information.
+\end{codedoc}
+
 \begin{codedoc}{order}
   \begin{syntax}
     \key{order=DMY|YMD|MDY}
@@ -578,17 +589,6 @@ This subsection documents the keys that modify the behavior of
     \calendardate{10-31}\\
     \calendardate{2023-5}
   \end{codedemo}
-\end{codedoc}
-
-\begin{codedoc}{capitalize-first}
-  \begin{syntax}
-    \key{capitalize-first=true|false}
-  \end{syntax}
-  Boolean key that sets if the month will be capitalized if it is printed at
-  the start of \cs{calendardate}.
-  The initial value is |false|.
-  See \cs{Calendardate} (\S\ref{sec:cmds}).
-  See \S\ref{subsec:expl3date} for more information.
 \end{codedoc}
 
 \subsubsection{year, month, day}
@@ -1285,8 +1285,8 @@ They are read-only and should not be modified directly.
 \begin{codedoc}
   {
     \l_clockdate_priority_str,
-    \l_clockdate_order_str,
-    \l_clockdate_capitalize_first_bool
+    \l_clockdate_capitalize_first_bool,
+    \l_clockdate_order_str
   }
   The value of the keys documented at the start of \S\ref{subsec:date}.
 \end{codedoc}
