@@ -162,6 +162,16 @@
   {
     \bool_if:NT \g__clockdate_define_current_time_bool
       {
+        \cs_if_exist:NT \hour
+          {
+            \msg_warning:nnnn { clockdate } { cmd-already-defined }
+              { define-current-time } { hour }
+          }
+        \cs_if_exist:NT \minute
+          {
+            \msg_warning:nnnn { clockdate } { cmd-already-defined }
+              { define-current-time } { minute }
+          }
         \cs_undefine:N \hour
         \cs_undefine:N \minute
         \int_new:N \hour
@@ -180,6 +190,11 @@
                   { \__clockdate_date:n {#2} }
                   { \__clockdate_date:nn {#1} {#2} }
               }
+          }
+        \cs_if_exist:NT \Date
+          {
+            \msg_warning:nnnn { clockdate } { cmd-already-defined }
+              { redefine-date } { Date }
           }
         \DeclareDocumentCommand \Date { o m }
           {
@@ -1527,6 +1542,12 @@
 
 % Messages
 
+\msg_new:nnn { clockdate } { cmd-already-defined }
+  {
+    '\iow_char:N \\ #2'~ already~ defined. \\
+    The~ definition~ of~ '\iow_char:N \\ #2'~ has~ been~ overwritten~ by~ the~
+    key~ '#1'.
+  }
 \msg_new:nnn { clockdate } { math-mode-invalid }
   { '\iow_char:N \\ #1'~ invalid~ in~ math~ mode~ \msg_line_context:. }
 \msg_new:nnn { clockdate } { load-invalid }
