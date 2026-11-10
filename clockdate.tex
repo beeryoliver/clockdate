@@ -1468,16 +1468,13 @@ The initial definitions are in \file{clockdate.sty}.
   \begin{verbatim}
     \cs_new_protected:Npn \clockdate_print_day_ordinal:n #1
       {
-        \textsuperscript
+        \int_case:nnF {#1}
           {
-            \int_case:nnF {#1}
-              {
-                {  1 } { st } {  2 } { nd } {  3 } { rd }
-                { 21 } { st } { 22 } { nd } { 23 } { rd }
-                { 31 } { st }
-              }
-              { th }
+            {  1 } { st } {  2 } { nd } {  3 } { rd }
+            { 21 } { st } { 22 } { nd } { 23 } { rd }
+            { 31 } { st }
           }
+          { th }
       }
   \end{verbatim}
 \end{codedoc}
