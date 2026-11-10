@@ -29,7 +29,7 @@ Print the time of day and the calendar date
 
 Oliver Beery
 
-Version 1.0.0\quad\date{2026-11-8}
+Version 1.0.0\quad\date{2026-11-9}
 
 \pdfbookmark[1]{Contents}{contents}
 \tableofcontents
@@ -218,9 +218,14 @@ Set the package keys using \cs{clockdatesetup} (\S\ref{sec:cmds}).
 \label{subsec:preamblekeys}
 
 \begin{codedoc}{define-current-time, \hour, \minute}
-  Defines \cs{hour} and \cs{minute} as count registers that store the current
-  hour and minute, even if \cs{hour} or \cs{minute} have already been defined.
-  This is done at the \hook{begindocument} hook.
+  At the \hook{begindocument} hook:
+  \begin{itemize}
+    \item
+    Defines \cs{hour} and \cs{minute} as count registers that store the
+    current hour and minute, even if \cs{hour} or \cs{minute} are already
+    defined.
+    \item Issues a warning if \cs{hour} or \cs{minute} are already defined.
+  \end{itemize}
   This key can only be used in the preamble.
   \begin{codedemo}
     \clock{\hour}\\
@@ -229,10 +234,14 @@ Set the package keys using \cs{clockdatesetup} (\S\ref{sec:cmds}).
 \end{codedoc}
 
 \begin{codedoc}{redefine-date, \date, \Date}
-  Redefines \cs{date} as equivalent to \cs{calendardate}.
-  Defines \cs{Date} as equivalent to \cs{Calendardate}.
-  This is done at the \hook{begindocument} hook so that the original
-  definition of \cs{date} remains usuable in the preamble.
+  At the \hook{begindocument} hook:
+  \begin{itemize}
+    \item Redefines \cs{date} as equivalent to \cs{calendardate}.
+    \item
+    Defines \cs{Date} as equivalent to \cs{Calendardate}, even if \cs{Date} is
+    already defined.
+    \item Issues a warning if \cs{Date} is already defined.
+  \end{itemize}
   This key can only be used in the preamble.
   \begin{codedemo}
     \calendardate{1920-8-26}\\
