@@ -1477,6 +1477,23 @@ The initial definitions are in \file{clockdate.sty}.
           { th }
       }
   \end{verbatim}
+  To display the suffix of the ordinal day in superscripts, you can use the
+  following code:
+  \begin{verbatim}
+    \cs_set_protected:Npn \clockdate_print_day_ordinal:n #1
+      {
+        \textsuperscript
+          {
+            \int_case:nnF {#1}
+              {
+                {  1 } { st } {  2 } { nd } {  3 } { rd }
+                { 21 } { st } { 22 } { nd } { 23 } { rd }
+                { 31 } { st }
+              }
+              { th }
+          }
+      }
+  \end{verbatim}
 \end{codedoc}
 
 \begin{codedoc}
