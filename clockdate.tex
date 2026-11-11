@@ -814,8 +814,8 @@ This subsection documents the keys that modify the behavior of
   Choice key that sets the format in which the era is printed.
   \meta{choice} must match any of the following:
   \begin{itemize}
-    \item |C.E.|, |CE|, |c.e.|, |ce|, |c.e.-scshape|, |ce-scshape|
-    \item |A.D.|, |AD|, |a.d.|, |ad|, |a.d.-scshape|, |ad-scshape|
+    \item |C.E.|, |CE|, |c.e.-scshape|, |ce-scshape|
+    \item |A.D.|, |AD|, |a.d.-scshape|, |ad-scshape|
     \item |none|
     \item |integer|
   \end{itemize}
@@ -833,14 +833,10 @@ This subsection documents the keys that modify the behavior of
   \begin{codedemo}
     \calendardate[era=C.E.]{-515--70}\\
     \calendardate[era=CE]{-515--70}\\
-    \calendardate[era=c.e.]{-515--70}\\
-    \calendardate[era=ce]{-515--70}\\
     \calendardate[era=c.e.-scshape]{-515--70}\\
     \calendardate[era=ce-scshape]{-515--70}\\
     \calendardate[era=A.D.]{-515--70}\\
     \calendardate[era=AD]{-515--70}\\
-    \calendardate[era=a.d.]{-515--70}\\
-    \calendardate[era=ad]{-515--70}\\
     \calendardate[era=a.d.-scshape]{-515--70}\\
     \calendardate[era=ad-scshape]{-515--70}\\
     \calendardate[era=none]{-515--70}\\
@@ -851,15 +847,11 @@ This subsection documents the keys that modify the behavior of
 \begin{codedemo}
   \calendardate[era=C.E.]{54}.\\
   \calendardate[era=C.E.]{-78}.\\
-  \calendardate[era=c.e.]{54}.\\
-  \calendardate[era=c.e.]{-78}.\\
   \calendardate[era=c.e.-scshape]{54}.\\
   \calendardate[era=c.e.-scshape]{-78}.\\
   \clockdatesetup{ad-first=false}%
   \calendardate[era=A.D.]{54}.\\
   \calendardate[era=A.D.]{-78}.\\
-  \calendardate[era=a.d.]{54}.\\
-  \calendardate[era=a.d.]{-78}.\\
   \calendardate[era=a.d.-scshape]{54}.\\
   \calendardate[era=a.d.-scshape]{-78}.
 \end{codedemo}
