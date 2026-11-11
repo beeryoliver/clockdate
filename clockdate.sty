@@ -1187,8 +1187,6 @@
   \__clockdate_tmp:nnn
     { C.E. } { C.E \clockdate_end_period: } { B.C.E \clockdate_end_period: }
     { CE } { CE \@ } { BCE \@ }
-    { c.e. } { c.e \clockdate_end_period: } { b.c.e \clockdate_end_period: }
-    { ce } { ce } { bce }
     { c.e.-scshape }
       { \group_begin: \scshape c.e \clockdate_end_period: \group_end: }
       { \group_begin: \scshape b.c.e \clockdate_end_period: \group_end: }
@@ -1221,9 +1219,6 @@
     { A.D. } { A.D. \@ } { A.D \clockdate_end_period: }
       { B.C \clockdate_end_period: }
     { AD } { AD \@ } { AD \@ } { BC \@ }
-    { a.d. } { a.d. \@ } { a.d \clockdate_end_period: }
-      { b.c \clockdate_end_period: }
-    { ad } { ad } { ad } { bc }
     { a.d.-scshape } { \textsc {a.d.} \@ }
       { \group_begin: \scshape a.d \clockdate_end_period: \group_end: }
       { \group_begin: \scshape b.c \clockdate_end_period: \group_end: }
@@ -1423,9 +1418,8 @@
 
     , era .choices:nn =
         {
-          C.E., CE, c.e., ce, c.e.-scshape, ce-scshape,
-          A.D., AD, a.d., ad, a.d.-scshape, ad-scshape,
-          none, integer
+          C.E., CE, c.e.-scshape, ce-scshape,
+          A.D., AD, a.d.-scshape, ad-scshape, none, integer
         }
         { \str_set:Nn \l_clockdate_era_str {#1} }
     , era .value_required:n = true
