@@ -29,7 +29,7 @@ Print the time of day and the calendar date
 
 Oliver Beery
 
-Version 1.0.0\quad\date{2026-11-10}
+Version 1.0.0\quad\date{2026-11-11}
 
 \pdfbookmark[1]{Contents}{contents}
 \tableofcontents
@@ -863,8 +863,11 @@ This subsection documents the keys that modify the behavior of
   The AD and CE are printed only if \meta{year} is less than \meta{integer}.
   The initial value is \num{100}.
   \begin{codedemo}
-    \calendardate{105}\\
-    \calendardate[era-threshold=106]{105}
+    \calendardate{100}\\
+    \calendardate[era=AD]{100}\\
+    \clockdatesetup{era-threshold=101}%
+    \calendardate{100}\\
+    \calendardate[era=AD]{100}
   \end{codedemo}
 \end{codedoc}
 
