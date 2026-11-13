@@ -29,7 +29,7 @@ Print the time of day and the calendar date
 
 Oliver Beery
 
-Version 1.0.0\quad\date{2026-11-12}
+Version 1.0.0\quad\date{2026-11-13}
 
 \pdfbookmark[1]{Contents}{contents}
 \tableofcontents
@@ -822,8 +822,8 @@ This subsection documents the keys that modify the behavior of
   The initial value is |CE|.
 
   |none| omits the era.
-  |integer| prints the year as an integer which may be positive, zero, or
-  negative.
+  |integer| omits the era and instead prints the year as an integer which may
+  be positive, zero, or negative.
 
   If \cs{calendardate} ends with an era that ends with a period, then the
   trailing era will not print an extra period if the next token after
@@ -876,6 +876,8 @@ This subsection documents the keys that modify the behavior of
     \key{era-separator=\meta{token list}}
   \end{syntax}
   Sets the separator between the year and the era to \meta{token list}.
+  If the AD is printed before the year, the separator between the year and the
+  AD is instead set by the key \key{ad-first-separator}.
   The initial value is \cs{nobreakspace}.
   \begin{codedemo}
     \calendardate{-43}\\
