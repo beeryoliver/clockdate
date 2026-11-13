@@ -2,7 +2,7 @@
 
 
 \usepackage{clockdate}
-\clockdatesetup{define-current-time, redefine-date}
+\clockdatesetup{define-hour-minute, redefine-date}
 \ExplSyntaxOn
 \keys_precompile:nnN { clockdate }
   {
@@ -29,7 +29,7 @@ Print the time of day and the calendar date
 
 Oliver Beery
 
-Version 1.0.0\quad\date{2026-11-11}
+Version 1.0.0\quad\date{2026-11-12}
 
 \pdfbookmark[1]{Contents}{contents}
 \tableofcontents
@@ -217,7 +217,7 @@ Set the package keys using \cs{clockdatesetup} (\S\ref{sec:cmds}).
 \subsection{Preamble-only keys}
 \label{subsec:preamblekeys}
 
-\begin{codedoc}{define-current-time, \hour, \minute}
+\begin{codedoc}{define-hour-minute, \hour, \minute}
   At the \hook{begindocument} hook:
   \begin{itemize}
     \item

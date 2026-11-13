@@ -160,17 +160,17 @@
 \hook_new:n { clockdate / date }
 \hook_gput_code:nnn { begindocument } { clockdate }
   {
-    \bool_if:NT \g__clockdate_define_current_time_bool
+    \bool_if:NT \g__clockdate_define_hour_minute_bool
       {
         \cs_if_exist:NT \hour
           {
             \msg_warning:nnnn { clockdate } { cmd-already-defined }
-              { define-current-time } { hour }
+              { define-hour-minute } { hour }
           }
         \cs_if_exist:NT \minute
           {
             \msg_warning:nnnn { clockdate } { cmd-already-defined }
-              { define-current-time } { minute }
+              { define-hour-minute } { minute }
           }
         \cs_undefine:N \hour
         \cs_undefine:N \minute
@@ -1286,7 +1286,7 @@
 
 % Define keys
 
-\bool_new:N \g__clockdate_define_current_time_bool
+\bool_new:N \g__clockdate_define_hour_minute_bool
 \bool_new:N \g__clockdate_redefine_date_bool
 \prop_new:N \l_clockdate_load_prop
 
@@ -1305,10 +1305,10 @@
 
 \keys_define:nn { clockdate }
   {
-      define-current-time .code:n =
-        { \bool_gset_true:N \g__clockdate_define_current_time_bool }
-    , define-current-time .value_forbidden:n = true
-    , define-current-time .usage:n = preamble
+      define-hour-minute .code:n =
+        { \bool_gset_true:N \g__clockdate_define_hour_minute_bool }
+    , define-hour-minute .value_forbidden:n = true
+    , define-hour-minute .usage:n = preamble
 
     , redefine-date .code:n =
         { \bool_gset_true:N \g__clockdate_redefine_date_bool }
