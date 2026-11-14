@@ -7,7 +7,7 @@
 % Loading the package
 
 \NeedsTeXFormat{LaTeX2e}[2023-11-01]
-\ProvidesExplPackage{clockdate}{2026-11-12}{1.0.0}
+\ProvidesExplPackage{clockdate}{2026-11-13}{1.0.0}
   {Print the time of day and the calendar date}
 
 \msg_new:nnn { clockdate } { l3kernel }
@@ -1286,9 +1286,9 @@
 
 % Define keys
 
+\prop_new:N \l_clockdate_load_prop
 \bool_new:N \g__clockdate_define_hour_minute_bool
 \bool_new:N \g__clockdate_redefine_date_bool
-\prop_new:N \l_clockdate_load_prop
 
 \str_new:N \l_clockdate_clock_str
 \str_new:N \l_clockdate_hour_str
@@ -1305,17 +1305,7 @@
 
 \keys_define:nn { clockdate }
   {
-      define-hour-minute .code:n =
-        { \bool_gset_true:N \g__clockdate_define_hour_minute_bool }
-    , define-hour-minute .value_forbidden:n = true
-    , define-hour-minute .usage:n = preamble
-
-    , redefine-date .code:n =
-        { \bool_gset_true:N \g__clockdate_redefine_date_bool }
-    , redefine-date .value_forbidden:n = true
-    , redefine-date .usage:n = preamble
-
-    , reset .code:n = { \__clockdate_keys_set_initial: }
+      reset .code:n = { \__clockdate_keys_set_initial: }
     , reset .value_forbidden:n = true
 
     , load .code:n =
@@ -1326,6 +1316,16 @@
             \l__clockdate_tmp_tl
         }
     , load .value_required:n = true
+
+    , define-hour-minute .code:n =
+        { \bool_gset_true:N \g__clockdate_define_hour_minute_bool }
+    , define-hour-minute .value_forbidden:n = true
+    , define-hour-minute .usage:n = preamble
+
+    , redefine-date .code:n =
+        { \bool_gset_true:N \g__clockdate_redefine_date_bool }
+    , redefine-date .value_forbidden:n = true
+    , redefine-date .usage:n = preamble
 
     , clock .choices:nn = { 12 , 24 }
         { \str_set:Nn \l_clockdate_clock_str {#1} }
