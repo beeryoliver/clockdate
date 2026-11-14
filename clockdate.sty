@@ -482,7 +482,7 @@
   }
 \cs_new:Npn \__clockdate_clock_compare_p:nnnnnn #1#2#3#4#5#6
   {
-    \exp_args:Nee \__clockdate_clock_compare:nn
+    \int_compare_p:nNn
       {
         \int_compare:nNnTF {#1} = { 24 } { 0 }
           {
@@ -495,6 +495,7 @@
               }
           }
       }
+      <
       {
         \int_compare:nNnTF {#4} = { 24 } { 0 }
           {
@@ -508,7 +509,6 @@
           }
       }
   }
-\cs_new:Npn \__clockdate_clock_compare:nn #1 { \int_compare_p:nNn {#1} < }
 \cs_new_protected:Npn \__clockdate_print_clocks:
   {
     \seq_use:Nnnn \l__clockdate_clocks_seq
