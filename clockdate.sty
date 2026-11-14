@@ -7,7 +7,7 @@
 % Loading the package
 
 \NeedsTeXFormat{LaTeX2e}[2023-11-01]
-\ProvidesExplPackage{clockdate}{2026-11-13}{1.0.0}
+\ProvidesExplPackage{clockdate}{2026-11-14}{1.0.0}
   {Print the time of day and the calendar date}
 
 \msg_new:nnn { clockdate } { l3kernel }
@@ -1535,8 +1535,7 @@
 \msg_new:nnn { clockdate } { cmd-already-defined }
   {
     '\iow_char:N \\ #2'~ already~ defined. \\
-    The~ definition~ of~ '\iow_char:N \\ #2'~ has~ been~ overwritten~ by~ the~
-    key~ '#1'.
+    '\iow_char:N \\ #2'~ has~ been~ redefined~ by~ the~ key~ '#1'.
   }
 \msg_new:nnn { clockdate } { math-mode-invalid }
   { '\iow_char:N \\ #1'~ invalid~ in~ math~ mode~ \msg_line_context:. }
