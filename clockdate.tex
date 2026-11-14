@@ -259,6 +259,9 @@ Set the package keys using \cs{clockdatesetup} (\S\ref{sec:cmds}).
 This subsection documents the keys that modify the behavior of \cs{clock}
 (\S\ref{sec:cmds}).
 
+\subsubsection{hour, minute, second}
+\label{subsubsec:hms}
+
 \begin{codedoc}{clock}
   \begin{syntax}
     \key{clock=12|24}
@@ -277,9 +280,6 @@ This subsection documents the keys that modify the behavior of \cs{clock}
     \clock{18:05--21:00}
   \end{codedemo}
 \end{codedoc}
-
-\subsubsection{hour, minute, second}
-\label{subsubsec:hms}
 
 \begin{codedoc}{hour}
   \begin{syntax}
@@ -390,7 +390,7 @@ This subsection documents the keys that modify the behavior of \cs{clock}
   The initial value is |AM|.
 
   The am/pm is omitted if \key{ampm=none} or \key{clock=24}
-  (\S\ref{subsec:clock}).
+  (\S\ref{subsubsec:hms}).
 
   If \cs{clock} ends with an am/pm that ends with a period, then the trailing
   am/pm will not print an extra period if the next token after \cs{clock} is a
@@ -580,6 +580,9 @@ This subsection documents the keys that modify the behavior of
   See \S\ref{subsec:expl3date} for more information.
 \end{codedoc}
 
+\subsubsection{year, month, day}
+\label{subsubsec:ymd}
+
 \begin{codedoc}{order}
   \begin{syntax}
     \key{order=DMY|YMD|MDY}
@@ -600,9 +603,6 @@ This subsection documents the keys that modify the behavior of
     \calendardate{2023-5}
   \end{codedemo}
 \end{codedoc}
-
-\subsubsection{year, month, day}
-\label{subsubsec:ymd}
 
 \begin{codedoc}{year}
   \begin{syntax}
@@ -1254,12 +1254,9 @@ This subsection documents the variables that are set by \cs{clockdatesetup}
 (\S\ref{sec:cmds}).
 They are read-only and should not be modified directly.
 
-\begin{codedoc}{\l_clockdate_clock_str}
-  The value of the key \key{clock} (\S\ref{subsec:clock}).
-\end{codedoc}
-
 \begin{codedoc}
   {
+    \l_clockdate_clock_str,
     \l_clockdate_hour_str,
     \l_clockdate_minute_str,
     \l_clockdate_second_str,
@@ -1289,17 +1286,13 @@ They are read-only and should not be modified directly.
   The value of the keys documented in \S\ref{subsubsec:clocks}.
 \end{codedoc}
 
-\begin{codedoc}
-  {
-    \l_clockdate_priority_str,
-    \l_clockdate_capitalize_first_bool,
-    \l_clockdate_order_str
-  }
+\begin{codedoc}{\l_clockdate_priority_str, \l_clockdate_capitalize_first_bool}
   The value of the keys documented at the start of \S\ref{subsec:date}.
 \end{codedoc}
 
 \begin{codedoc}
   {
+    \l_clockdate_order_str,
     \l_clockdate_year_str,
     \l_clockdate_yy_year_prefix_tl,
     \l_clockdate_month_str,
