@@ -446,9 +446,11 @@ This subsection documents the keys that modify the behavior of \cs{clock}
   \begin{codedemo}
     \clock{4--6}\\
     \clock{7,13--16:25}\\
+    \clock{23--14}\\
     \clockdatesetup{ampm-omit-range=false}%
     \clock{4--6}\\
-    \clock{7,13--16:25}
+    \clock{7,13--16:25}\\
+    \clock{23--14}
   \end{codedemo}
 \end{codedoc}
 
@@ -561,11 +563,15 @@ This subsection documents the keys that modify the behavior of
   values within are an \meta{integer} from \num{1} to \num{12}.
   The initial value is |MD|.
   \begin{codedemo}
-    \calendardate{6-7}\\
-    \calendardate{12-1,2,3}\\
+    \calendardate{12-7}\\
+    \calendardate{6-1,2,12}\\
+    \calendardate{13-7}\\
+    \calendardate{6-1,2,13}\\
     \clockdatesetup{priority=YM}%
-    \calendardate{6-7}\\
-    \calendardate{12-1,2,3}
+    \calendardate{12-7}\\
+    \calendardate{6-1,2,12}\\
+    \calendardate{13-7}\\
+    \calendardate{6-1,2,13}
   \end{codedemo}
 \end{codedoc}
 
