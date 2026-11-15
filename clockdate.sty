@@ -21,12 +21,16 @@
 
 % Some variables
 
+\bool_new:N \l__clockdate_nest_bool
 \tl_new:N \l__clockdate_input_tl
 \cs_new:Npn \__clockdate_range_mark:
   { \msg_expandable_error:nn { clockdate } { double-hyphen-invalid } }
 
 \seq_new:N \l__clockdate_clocks_seq
+\int_new:N \l__clockdate_clocks_step_int
 \int_new:N \l__clockdate_clocks_count_int
+\bool_new:N \l__clockdate_print_ampm_bool
+\bool_set_true:N \l__clockdate_print_ampm_bool
 \bool_new:N \l__clockdate_if_same_ampm_bool
 \bool_set_true:N \l__clockdate_if_same_ampm_bool
 \tl_new:N \l__clockdate_clocks_tl
@@ -84,6 +88,7 @@
 \group_end:
 
 % Scratch variables
+\bool_new:N \l__clockdate_tmp_bool
 \tl_new:N \l__clockdate_tmp_tl
 \int_new:N \l__clockdate_tmp_int
 \seq_new:N \l__clockdate_tmp_seq
@@ -246,7 +251,17 @@
     \__clockdate_print_clocks:
   }
 \cs_new_protected:Npn \__clockdate_clock_init:
-  { \str_clear:N \l_clockdate_clocks_str }
+  {
+    \bool_set_true:N \l__clockdate_nest_bool
+    \str_clear:N \l_clockdate_clocks_str
+    \bool_lazy_or:nnT
+      { \str_if_eq_p:ee \l_clockdate_clock_str { 24 } }
+      { \str_if_eq_p:ee \l_clockdate_ampm_str { none } }
+      {
+        \bool_set_false:N \l__clockdate_print_ampm_bool
+        \cs_set_eq:NN \__clockdate_clock_same_ampm_chk:n \use_none:n
+      }
+  }
 \cs_new_protected:Npe \__clockdate_clock_normalize:
   {
     \tl_replace_all:Nnn \exp_not:N \l__clockdate_input_tl
@@ -273,8 +288,7 @@
           { \__clockdate_clock_set_range:w ##1 \q__clockdate_stop }
           { \__clockdate_clock_set_single:n {##1} }
       }
-    \exp_after:wN \__clockdate_clock_set_loop_start:nnnnnn
-      \l__clockdate_clocks_tl
+    \exp_after:wN \__clockdate_clock_set_loop:nnnnnn \l__clockdate_clocks_tl
       { \q_recursion_tail } { } { } { } { } { }
     \q_recursion_stop
   }
@@ -398,87 +412,85 @@
           }
       }
   }
-\cs_new_protected:Npn \__clockdate_clock_set_loop_start:nnnnnn
-  { \__clockdate_clock_set_loop:nnnnnnn { 1 } }
-\cs_new_protected:Npn \__clockdate_clock_set_loop:nnnnnnn #1#2#3#4#5#6#7
+\cs_new_protected:Npn \__clockdate_clock_set_loop:nnnnnn #1#2#3#4#5#6
   {
-    \quark_if_recursion_tail_stop:n {#2}
-    \seq_put_right:Ne \l__clockdate_clocks_seq
+    \quark_if_recursion_tail_stop:n {#1}
+    \int_incr:N \l__clockdate_clocks_step_int
+    \bool_set:Nn \l__clockdate_tmp_bool
       {
-        \clockdate_print_hour:n {#2}
-        \tl_if_empty:nF {#3}
+        \bool_lazy_and_p:nn
+          { \l__clockdate_print_ampm_bool }
           {
-            \exp_not:N \l_clockdate_hour_minute_separator_tl
-            \clockdate_print_minute:n {#3}
-            \tl_if_empty:nF {#4}
+            ! \bool_lazy_all_p:n
               {
-                \exp_not:N \l_clockdate_minute_second_separator_tl
-                \clockdate_print_second:n {#4}
+                { \l_clockdate_ampm_omit_list_bool }
+                { \l__clockdate_if_same_ampm_bool }
+                {
+                  ! \int_compare_p:nNn \l__clockdate_clocks_step_int =
+                    \l__clockdate_clocks_count_int
+                }
               }
           }
-        \tl_if_empty:nF {#5}
+      }
+    \seq_put_right:Ne \l__clockdate_clocks_seq
+      {
+        \clockdate_print_hour:n {#1}
+        \tl_if_empty:nF {#2}
           {
-            \exp_not:N \bool_lazy_and:nnT
-              { \exp_not:N \__clockdate_clock_if_print_ampm_p:n {#1} }
+            \exp_not:N \l_clockdate_hour_minute_separator_tl
+            \clockdate_print_minute:n {#2}
+            \tl_if_empty:nF {#3}
               {
-                ! \exp_not:N \bool_lazy_all_p:n
+                \exp_not:N \l_clockdate_minute_second_separator_tl
+                \clockdate_print_second:n {#3}
+              }
+          }
+        \tl_if_empty:nF {#4}
+          {
+            \bool_lazy_and:nnT
+              { \l__clockdate_tmp_bool }
+              {
+                ! \bool_lazy_all_p:n
                   {
-                    { \exp_not:N \l_clockdate_ampm_omit_range_bool }
+                    { \l_clockdate_ampm_omit_range_bool }
                     {
                       \__clockdate_bool_if_eq_p:nn
-                        { \__clockdate_clock_hour_if_am_p:n {#2} }
-                        { \__clockdate_clock_hour_if_am_p:n {#5} }
+                        { \__clockdate_clock_hour_if_am_p:n {#1} }
+                        { \__clockdate_clock_hour_if_am_p:n {#4} }
                     }
                     {
                       \__clockdate_clock_compare_p:nnnnnn
-                        {#2} {#3} {#4} {#5} {#6} {#7}
+                        {#1} {#2} {#3} {#4} {#5} {#6}
                     }
                   }
               }
               {
                 \exp_not:N \l_clockdate_ampm_separator_tl
-                \__clockdate_clock_hour_if_am:nTF {#2}
+                \__clockdate_clock_hour_if_am:nTF {#1}
                   \clockdate_print_am: \clockdate_print_pm:
               }
             \exp_not:N \l_clockdate_clocks_range_separator_tl
-            \clockdate_print_hour:n {#5}
-            \tl_if_empty:nF {#6}
+            \clockdate_print_hour:n {#4}
+            \tl_if_empty:nF {#5}
               {
                 \exp_not:N \l_clockdate_hour_minute_separator_tl
-                \clockdate_print_minute:n {#6}
-                \tl_if_empty:nF {#7}
+                \clockdate_print_minute:n {#5}
+                \tl_if_empty:nF {#6}
                   {
                     \exp_not:N \l_clockdate_minute_second_separator_tl
-                    \clockdate_print_second:n {#7}
+                    \clockdate_print_second:n {#6}
                   }
               }
           }
-        \exp_not:N \__clockdate_clock_if_print_ampm:nT {#1}
+        \bool_if:NT \l__clockdate_tmp_bool
           {
             \exp_not:N \l_clockdate_ampm_separator_tl
             \__clockdate_clock_hour_if_am:nTF
-              { \tl_if_empty:nTF {#5} {#2} {#5} }
+              { \tl_if_empty:nTF {#4} {#1} {#4} }
               \clockdate_print_am: \clockdate_print_pm:
           }
       }
-    \exp_args:Ne \__clockdate_clock_set_loop:nnnnnnn { \int_eval:n { #1 + 1 } }
-  }
-\prg_new_conditional:Npnn \__clockdate_clock_if_print_ampm:n #1 { p , T }
-  {
-    \bool_lazy_all:nTF
-      {
-        { \str_if_eq_p:ee \l_clockdate_clock_str { 12 } }
-        { ! \str_if_eq_p:ee \l_clockdate_ampm_str { none } }
-        {
-          ! \bool_lazy_all_p:n
-            {
-              { \l_clockdate_ampm_omit_list_bool }
-              { \l__clockdate_if_same_ampm_bool }
-              { ! \int_compare_p:nNn {#1} = \l__clockdate_clocks_count_int }
-            }
-        }
-      }
-      \prg_return_true: \prg_return_false:
+    \__clockdate_clock_set_loop:nnnnnn
   }
 \cs_new:Npn \__clockdate_clock_compare_p:nnnnnn #1#2#3#4#5#6
   {
@@ -642,6 +654,7 @@
   }
 \cs_new_protected:Npn \__clockdate_date_init:
   {
+    \bool_set_true:N \l__clockdate_nest_bool
     \str_clear:N \l_clockdate_years_str
     \str_clear:N \l_clockdate_months_str
     \str_clear:N \l_clockdate_days_str
@@ -828,6 +841,33 @@
       { \__clockdate_error:n { days-empty } }
     \str_set:Ne \l_clockdate_days_str
       { \exp_after:wN \use_none:n \l_clockdate_days_str }
+    \bool_lazy_and:nnT
+      { \l__clockdate_priority_bool }
+      { \str_if_eq_p:ee \l_clockdate_priority_str { YM } }
+      { \__clockdate_date_MD_to_YM: }
+  }
+\cs_new_protected:Npn \__clockdate_date_MD_to_YM:
+  {
+    \str_set_eq:NN \l_clockdate_years_str \l_clockdate_months_str
+    \str_set_eq:NN \l_clockdate_months_str \l_clockdate_days_str
+    \str_clear:N \l_clockdate_days_str
+    \seq_map_variable:NNn \l__clockdate_days_seq \l__clockdate_tmp_tl
+      {
+        \tl_replace_once:Nne \l__clockdate_tmp_tl { \clockdate_print_day:n }
+          {
+            \bool_lazy_all:nTF
+              {
+                { \seq_if_empty_p:N \l__clockdate_months_seq }
+                { \l_clockdate_capitalize_first_bool }
+                { ! \str_if_eq_p:ee \l_clockdate_order_str { YMD } }
+              }
+              { \__clockdate_print_month_first:n } { \clockdate_print_month:n }
+          }
+        \tl_replace_once:Nnn \l__clockdate_tmp_tl
+          { \l_clockdate_days_range_separator_tl \clockdate_print_day:n }
+          { \l_clockdate_months_range_separator_tl \clockdate_print_month:n }
+        \seq_put_right:NV \l__clockdate_months_seq \l__clockdate_tmp_tl
+      }
   }
 \cs_new_protected:Npn \__clockdate_date_MD_set_range:w
   #1 \__clockdate_range_mark: #2 \q__clockdate_stop
@@ -906,17 +946,13 @@
     \__clockdate_date_YM_chk:n {#2}
     \seq_put_right:Ne \l__clockdate_months_seq
       {
-        \str_if_empty:NTF \l_clockdate_months_str
+        \bool_lazy_all:nTF
           {
-            \exp_not:n
-              {
-                \bool_lazy_and:nnTF
-                  { \l_clockdate_capitalize_first_bool }
-                  { ! \str_if_eq_p:ee \l_clockdate_order_str { YMD } }
-              }
-              { \__clockdate_print_month_first:n {#1} }
-              { \clockdate_print_month:n {#1} }
+            { \str_if_empty_p:N \l_clockdate_months_str }
+            { \l_clockdate_capitalize_first_bool }
+            { ! \str_if_eq_p:ee \l_clockdate_order_str { YMD } }
           }
+          { \__clockdate_print_month_first:n {#1} }
           { \clockdate_print_month:n {#1} }
         \exp_not:N \l_clockdate_months_range_separator_tl
         \clockdate_print_month:n {#2}
@@ -928,17 +964,13 @@
     \__clockdate_date_YM_chk:n {#1}
     \seq_put_right:Ne \l__clockdate_months_seq
       {
-        \str_if_empty:NTF \l_clockdate_months_str
+        \bool_lazy_all:nTF
           {
-            \exp_not:n
-              {
-                \bool_lazy_and:nnTF
-                  { \l_clockdate_capitalize_first_bool }
-                  { ! \str_if_eq_p:ee \l_clockdate_order_str { YMD } }
-              }
-              { \__clockdate_print_month_first:n {#1} }
-              { \clockdate_print_month:n {#1} }
+            { \str_if_empty_p:N \l_clockdate_months_str }
+            { \l_clockdate_capitalize_first_bool }
+            { ! \str_if_eq_p:ee \l_clockdate_order_str { YMD } }
           }
+          { \__clockdate_print_month_first:n {#1} }
           { \clockdate_print_month:n {#1} }
       }
     \str_put_right:Nn \l_clockdate_months_str { , #1 }
@@ -1008,10 +1040,6 @@
   }
 \cs_new_protected:Npn \__clockdate_date_print:
   {
-    \bool_lazy_and:nnT
-      { \l__clockdate_priority_bool }
-      { \str_if_eq_p:ee \l_clockdate_priority_str { YM } }
-      { \__clockdate_date_MD_to_YM: }
     \str_if_empty:NTF \l_clockdate_days_str
       {
         \str_if_empty:NTF \l_clockdate_months_str
@@ -1020,29 +1048,6 @@
       {
         \str_if_empty:NTF \l_clockdate_years_str
           \__clockdate_print_month_days: \__clockdate_print_year_month_days:
-      }
-  }
-\cs_new_protected:Npn \__clockdate_date_MD_to_YM:
-  {
-    \str_set_eq:NN \l_clockdate_years_str \l_clockdate_months_str
-    \str_set_eq:NN \l_clockdate_months_str \l_clockdate_days_str
-    \str_clear:N \l_clockdate_days_str
-    \seq_map_variable:NNn \l__clockdate_days_seq \l__clockdate_tmp_tl
-      {
-        \tl_replace_once:Nne \l__clockdate_tmp_tl { \clockdate_print_day:n }
-          {
-            \bool_lazy_all:nTF
-              {
-                { \seq_if_empty_p:N \l__clockdate_months_seq }
-                { \l_clockdate_capitalize_first_bool }
-                { ! \str_if_eq_p:ee \l_clockdate_order_str { YMD } }
-              }
-              { \__clockdate_print_month_first:n } { \clockdate_print_month:n }
-          }
-        \tl_replace_once:Nnn \l__clockdate_tmp_tl
-          { \l_clockdate_days_range_separator_tl \clockdate_print_day:n }
-          { \l_clockdate_months_range_separator_tl \clockdate_print_month:n }
-        \seq_put_right:NV \l__clockdate_months_seq \l__clockdate_tmp_tl
       }
   }
 \cs_new_protected:Npn \__clockdate_print_year_month_days:
@@ -1527,7 +1532,11 @@
   {
     \mode_if_math:TF
       { \msg_error:nnn { clockdate } { math-mode-invalid } { clockdatesetup } }
-      { \keys_set:nn { clockdate } {#1} }
+      {
+        \bool_if:NTF \l__clockdate_nest_bool
+          { \msg_error:nn { clockdate } { clockdatesetup } }
+          { \keys_set:nn { clockdate } {#1} }
+      }
   }
 
 % Messages
@@ -1544,6 +1553,11 @@
     Invalid~ value~ '#1'~ \msg_line_context:. \\
     The~ value~ of~ the~ key~ 'load'~ must~ be~ a~ key~ in~
     '\iow_char:N \\ l_clockdate_load_prop'.
+  }
+\msg_new:nnn { clockdate } { clockdatesetup }
+  {
+    '\iow_char:N \\ clockdatesetup'~ cannot~ be~ used~ in~
+    \iow_char:N \\ clock~ or~ \iow_char:N \\ calendardate~ \msg_line_context:.
   }
 % Messages used in \clock.
 \msg_new:nnn { clockdate } { clock-invalid }
