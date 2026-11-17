@@ -7,7 +7,7 @@
 % Loading the package
 
 \NeedsTeXFormat{LaTeX2e}[2023-11-01]
-\ProvidesExplPackage{clockdate}{2026-11-14}{1.0.0}
+\ProvidesExplPackage{clockdate}{2026-11-17}{1.0.0}
   {Print the time of day and the calendar date}
 
 \msg_new:nnn { clockdate } { l3kernel }
@@ -445,7 +445,15 @@
                 \clockdate_print_second:n {#3}
               }
           }
-        \tl_if_empty:nF {#4}
+        \tl_if_empty:nTF {#4}
+          {
+            \bool_if:NT \l__clockdate_tmp_bool
+              {
+                \exp_not:N \l_clockdate_ampm_separator_tl
+                \__clockdate_clock_hour_if_am:nTF {#1}
+                  \clockdate_print_am: \clockdate_print_pm:
+              }
+          }
           {
             \bool_lazy_and:nnT
               { \l__clockdate_tmp_bool }
@@ -481,13 +489,12 @@
                     \clockdate_print_second:n {#6}
                   }
               }
-          }
-        \bool_if:NT \l__clockdate_tmp_bool
-          {
-            \exp_not:N \l_clockdate_ampm_separator_tl
-            \__clockdate_clock_hour_if_am:nTF
-              { \tl_if_empty:nTF {#4} {#1} {#4} }
-              \clockdate_print_am: \clockdate_print_pm:
+            \bool_if:NT \l__clockdate_tmp_bool
+              {
+                \exp_not:N \l_clockdate_ampm_separator_tl
+                \__clockdate_clock_hour_if_am:nTF {#4}
+                  \clockdate_print_am: \clockdate_print_pm:
+              }
           }
       }
     \__clockdate_clock_set_loop:nnnnnn
@@ -1310,7 +1317,7 @@
 
 \keys_define:nn { clockdate }
   {
-      reset .code:n = { \__clockdate_keys_set_initial: }
+      reset .code:n = \__clockdate_keys_set_initial:
     , reset .value_forbidden:n = true
 
     , load .code:n =
@@ -1483,8 +1490,8 @@
     \str_set:Nn \l_clockdate_hour_str { h }
     \str_set:Nn \l_clockdate_minute_str { mm }
     \str_set:Nn \l_clockdate_second_str { ss }
-    \tl_set:NV \l_clockdate_hour_minute_separator_tl \c_colon_str
-    \tl_set:NV \l_clockdate_minute_second_separator_tl \c_colon_str
+    \tl_set_eq:NN \l_clockdate_hour_minute_separator_tl \c_colon_str
+    \tl_set_eq:NN \l_clockdate_minute_second_separator_tl \c_colon_str
     \str_set:Nn \l_clockdate_ampm_str { AM }
     \tl_set:Nn \l_clockdate_ampm_separator_tl { \nobreakspace }
     \bool_set_true:N \l_clockdate_ampm_omit_range_bool
