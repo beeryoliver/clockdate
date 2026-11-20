@@ -7,7 +7,7 @@
 % Loading the package
 
 \NeedsTeXFormat{LaTeX2e}[2023-11-01]
-\ProvidesExplPackage{clockdate}{2026-11-17}{1.0.0}
+\ProvidesExplPackage{clockdate}{2026-11-19}{1.0.0}
   {Print the time of day and the calendar date}
 
 \msg_new:nnn { clockdate } { l3kernel }
@@ -1541,7 +1541,7 @@
       { \msg_error:nnn { clockdate } { math-mode-invalid } { clockdatesetup } }
       {
         \bool_if:NTF \l__clockdate_nest_bool
-          { \msg_error:nn { clockdate } { clockdatesetup } }
+          { \msg_error:nn { clockdate } { clockdatesetup-misused } }
           { \keys_set:nn { clockdate } {#1} }
       }
   }
@@ -1555,16 +1555,23 @@
   }
 \msg_new:nnn { clockdate } { math-mode-invalid }
   { '\iow_char:N \\ #1'~ invalid~ in~ math~ mode~ \msg_line_context:. }
+\msg_new:nnn { clockdate } { clockdatesetup-misused }
+  {
+    '\iow_char:N \\ clockdatesetup'~ cannot~ be~ used~ inside~
+    \iow_char:N \\ clock,~ \iow_char:N \\ calendardate,~
+    \bool_if:NTF \g__clockdate_redefine_date_bool
+      {
+        \iow_char:N \\ Calendardate,~ \iow_char:N \\ date,~ and~
+        \iow_char:N \\ Date~
+      }
+      { and~ \iow_char:N \\ Calendardate~ }
+    \msg_line_context:.
+  }
 \msg_new:nnn { clockdate } { load-invalid }
   {
     Invalid~ value~ '#1'~ \msg_line_context:. \\
     The~ value~ of~ the~ key~ 'load'~ must~ be~ a~ key~ in~
-    '\iow_char:N \\ l_clockdate_load_prop'.
-  }
-\msg_new:nnn { clockdate } { clockdatesetup }
-  {
-    '\iow_char:N \\ clockdatesetup'~ cannot~ be~ used~ in~
-    \iow_char:N \\ clock~ or~ \iow_char:N \\ calendardate~ \msg_line_context:.
+    \iow_char:N \\ l_clockdate_load_prop.
   }
 % Messages used in \clock.
 \msg_new:nnn { clockdate } { clock-invalid }
