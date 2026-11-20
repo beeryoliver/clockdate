@@ -29,7 +29,7 @@ Print the time of day and the calendar date
 
 Oliver Beery
 
-Version 1.0.0\quad\date{2026-11-19}
+Version 1.0.0\quad\date{2026-11-20}
 
 \pdfbookmark[1]{Contents}{contents}
 \tableofcontents
@@ -1200,9 +1200,7 @@ This subsection documents the keys that modify the behavior of
   The \meta{value} of each \meta{key} in \cs{l_clockdate_load_prop} should
   contain precompiled \pkg{clockdate} keys.
   \cs{l_clockdate_load_prop} initially contains no entries.
-
-  The following example initializes \key{load=or} to load precompiled keys:
-  \begin{verbatim}
+  \begin{codedemo}
     \ExplSyntaxOn
     \keys_precompile:nnN { clockdate }
       {
@@ -1218,8 +1216,49 @@ This subsection documents the keys that modify the behavior of
       \l_tmpa_tl
     \prop_put:NnV \l_clockdate_load_prop { or } \l_tmpa_tl
     \ExplSyntaxOff
-  \end{verbatim}
+    \begin{multicols}{2}
+      \clock{6,9:15}\\
+      \clock{15:10,17,19}\\
+      \calendardate{11-20,22}\\
+      \calendardate{10-3,13,23}\\
+      \calendardate{2006-3,4}\\
+      \calendardate[month=mmm]{1990-10,11,12}\\
+      \calendardate{-398,{-346}}\\
+      \calendardate{-398,{-346},{-43}}\\
+      \clockdatesetup{load=or}%
+      \clock{6,9:15}\\
+      \clock{15:10,17,19}\\
+      \calendardate{11-20,22}\\
+      \calendardate{10-3,13,23}\\
+      \calendardate{2006-3,4}\\
+      \calendardate[month=mmm]{1990-10,11,12}\\
+      \calendardate{-398,{-346}}\\
+      \calendardate{-398,{-346},{-43}}
+    \end{multicols}
+  \end{codedemo}
 \end{codedoc}
+\begin{codedemo}
+  \ExplSyntaxOn
+  \keys_precompile:nnN { clockdate }
+    {
+        ampm = a.m.
+      , time-separator = .
+      , era = AD
+      , order = MDY
+    }
+    \l_tmpa_tl
+  \prop_put:NnV \l_clockdate_load_prop { myformat } \l_tmpa_tl
+  \ExplSyntaxOff
+  \clock{6:30}\\
+  \clock{15:15:05}\\
+  \calendardate{70}\\
+  \calendardate{2016-5-28}\\
+  \clockdatesetup{load=myformat}%
+  \clock{6:30}\\
+  \clock{15:15:05}\\
+  \calendardate{70}\\
+  \calendardate{2016-5-28}
+\end{codedemo}
 
 
 \section{Programming}
