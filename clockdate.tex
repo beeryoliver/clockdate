@@ -42,7 +42,7 @@ Version 1.0.0\quad\date{2026-11-21}
 \subsection{About}
 \label{subsec:about}
 
-This package provides \cs{clock} and \cs{calendardate}.
+\pkg{clockdate} provides \cs{clock} and \cs{calendardate}.
 \cs{clock} prints the time of day.
 \cs{calendardate} prints the calendar date.
 These commands are ideal for text markup because their syntax is short,
@@ -83,7 +83,7 @@ This section documents the commands provided by the \pkg{clockdate} package.
   \begin{syntax}
     \cs{clockdatesetup} \marg{key-value list}
   \end{syntax}
-  Sets and processes the \pkg{clockdate} package keys (\S\ref{sec:keys}) in
+  Sets and processes the \pkg{clockdate} keys (\S\ref{sec:keys}) in
   \meta{key-value list}.
   All assignments made by \cs{clockdatesetup} are local to the current group.
   Can be used mid-document.
@@ -115,8 +115,8 @@ This section documents the commands provided by the \pkg{clockdate} package.
   (The value of \num{60} allows for leap seconds.)
   If $\meta{hour}=\num{24}$, then \meta{minute} and \meta{second} must be zero.
 
-  The optional argument sets the \pkg{clockdate} package keys in
-  \meta{key-value list} for only that instance of \cs{clock}.
+  The optional argument sets the \pkg{clockdate} keys in \meta{key-value list}
+  for only that instance of \cs{clock}.
 
   Additional parsing details for \meta{clock(s)}:
   \begin{itemize}
@@ -185,8 +185,8 @@ This section documents the commands provided by the \pkg{clockdate} package.
   If \meta{year} is provided, \date{2-29} is error-checked using the Julian
   calendar.
 
-  The optional argument sets the \pkg{clockdate} package keys in
-  \meta{key-value list} for only that instance of \cs{calendardate}.
+  The optional argument sets the \pkg{clockdate} keys in \meta{key-value list}
+  for only that instance of \cs{calendardate}.
   \cs{Calendardate} is equivalent to \cs{calendardate}, except that it always
   sets the key \key{capitalize-first=true} (\S\ref{subsec:date}) for only that
   instance of \cs{Calendardate}.
@@ -1679,8 +1679,8 @@ month should be capitalized.
 \section{References}
 \label{sec:ref}
 
-The \pkg{clockdate} package uses some ideas from the \pkg{datetime2} and
-\pkg{siunitx} packages.
+\pkg{clockdate} uses some ideas from the \pkg{datetime2} and \pkg{siunitx}
+packages.
 
 Some \pkg{clockdate} keys resemble some \pkg{datetime2} options:\nopagebreak
 \input{clockdate-input-datetime2.tex}
