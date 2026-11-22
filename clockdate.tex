@@ -29,7 +29,7 @@ Print the time of day and the calendar date
 
 Oliver Beery
 
-Version 1.0.0\quad\date{2026-11-20}
+Version 1.0.0\quad\date{2026-11-21}
 
 \pdfbookmark[1]{Contents}{contents}
 \tableofcontents
@@ -152,10 +152,6 @@ This section documents the commands provided by the \pkg{clockdate} package.
     \item \meta{blank}|-|\meta{year(s)}
   \end{itemize}
 
-  If the first field is \meta{blank}, then \meta{year} is always negative
-  (before the common era); if printing more than one year, this applies only to
-  the very first \meta{year}.
-
   \meta{day(s)} must take any of the following forms:
   \begin{itemize}
     \item a single day \meta{day}
@@ -180,6 +176,9 @@ This section documents the commands provided by the \pkg{clockdate} package.
   \end{itemize}
 
   \meta{year} and \meta{day} must be an \meta{integer}.
+  If the first field is \meta{blank}, then \meta{year} is always negative
+  (before the common era); if printing more than one year, this applies only to
+  the very first \meta{year}.
   \meta{month} must be an \meta{integer} from \num{1} to \num{12}.
   Each calendar date must be valid.
   \date{2-29} is always valid if \meta{year} is omitted.
